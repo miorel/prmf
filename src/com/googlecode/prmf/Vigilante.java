@@ -3,10 +3,10 @@ class Vigilante implements Role{
 	static String name;
 	static Team team;
 	public Vigilante(Team nteam) {
-		name = "doctor";
+		name = "vigilante";
 		team = nteam;
 	}
 	public void nightAction(Player target) {
-		target.vigilanted = true;
+		target.vigged = true;
 	}
 }
