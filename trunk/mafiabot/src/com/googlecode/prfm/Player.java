@@ -1,10 +1,30 @@
 package com.googlecode.prfm;
 
-public class Player {
-	boolean saved;
-	boolean vigilanted;
+class Player
+{
+	String name;
+	Role role;
+	boolean isAlive;
 	boolean mafiaTarget;
+	boolean saved;
 	boolean checked;
-	public Player() {};
+	boolean vigged;
+	int votedFor;
+	
+	public Player(String name)
+	{
+		this.name = name;
+		isAlive = true;
+		role = null;
+		votedFor = -1;
+	}
+	
+	boolean equals(Player p)
+	{
+		if (this.name.equals(p.name))
+			return true;
+		return false;
+	
+	}
 
 }
