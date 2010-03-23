@@ -1,0 +1,17 @@
+#summary Accelerated Eclipse Guide
+#labels Phase-Implementation,Featured
+
+Here's my accelerated guide to setting up Eclipse to work with our version control system. This might be a bit daunting the first time you do it if you're not familiar with these technologies, so if you reach an impasse, feel free to contact me. I can also help you set this up if we meet in person. Without further ado, the guide:
+
+  * download and install [http://www.eclipse.org/ Eclipse]
+  * install [http://subclipse.tigris.org/ Subclipse]
+   * fire up Eclipse
+   * go to Help, Software Updates, Find and Install
+   * continue following the [http://subclipse.tigris.org/servlets/ProjectProcess?pageID=p4wYuA online instructions]
+  * in Eclipse, create a new project
+   * select New, Project..., SVN, Checkout Projects from SVN
+   * add the repository location
+   * input your credentials when prompted
+   * only get the trunk directory, we'll deal with tags and branches later as needed
+   * say you want the New Project wizard when asked and configure it as a Java project
+   * sit back, relax, the download will finish shortly
