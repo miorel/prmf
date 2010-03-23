@@ -7,7 +7,8 @@ public class VoteTracker {
 	int notVoting;
 	int numberOfPlayers;
 	Player[] players;
-	public VoteTracker(){
+	public VoteTracker(Player[] players){
+		this.players = players;
 		notVoting = players.length;
 		numberOfPlayers = players.length;
 	}
