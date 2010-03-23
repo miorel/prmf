@@ -8,6 +8,7 @@ Here's my accelerated guide to setting up Eclipse to work with our version contr
    * fire up Eclipse
    * go to Help, Software Updates, Find and Install
    * continue following the [http://subclipse.tigris.org/servlets/ProjectProcess?pageID=p4wYuA online instructions]
+   * if something breaks (as often happens on CISE systems), you can install Subclipse from an archived site rather than a remote site: download [http://subclipse.tigris.org/files/documents/906/47423/site-1.6.10.zip site-1.6.10.zip]
   * in Eclipse, create a new project
    * select New, Project..., SVN, Checkout Projects from SVN
    * add the repository location
