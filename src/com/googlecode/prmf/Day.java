@@ -3,11 +3,13 @@ package com.googlecode.prmf;
 public class Day {
 	Timer timer;
 	VoteTracker votes;
+	Player[] players;
 	
 	public Day(int time, Player[] players)
 	{
 		timer = new Timer(time);
 		votes = new VoteTracker(players);
+		this.players = players;
 		
 	}
 	
@@ -15,5 +17,11 @@ public class Day {
 	{
 		
 		//stuff
+	}
+	
+	public int processVote()
+	{
+		
+		return -1;
 	}
 }
