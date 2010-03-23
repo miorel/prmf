@@ -11,8 +11,8 @@ Here's my accelerated guide to setting up Eclipse to work with our version contr
    * if something breaks (as often happens on CISE systems), you can install Subclipse from an archived site rather than a remote site: download [http://subclipse.tigris.org/files/documents/906/47423/site-1.6.10.zip site-1.6.10.zip]
   * in Eclipse, create a new project
    * select New, Project..., SVN, Checkout Projects from SVN
-   * add the repository location
-   * input your credentials when prompted
-   * only get the trunk directory, we'll deal with tags and branches later as needed
+   * add the repository location: [https://prmf.googlecode.com/svn/]
+   * input [https://code.google.com/hosting/settings your credentials] when prompted
+   * only get the project directory from the trunk, we'll deal with tags and branches later if needed
    * say you want the New Project wizard when asked and configure it as a Java project
    * sit back, relax, the download will finish shortly
