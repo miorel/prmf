@@ -10,6 +10,8 @@ class Player
 	boolean checked;
 	boolean vigged;
 	int votedFor;
+	//ID is the player's position in the list of players
+	int ID;
 	
 	public Player(String name)
 	{
@@ -25,6 +27,11 @@ class Player
 			return true;
 		return false;
 	
+	}
+	
+	public String toString()
+	{
+		return name;
 	}
 
 }
