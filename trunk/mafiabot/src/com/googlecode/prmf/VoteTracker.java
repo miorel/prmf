@@ -7,10 +7,12 @@ public class VoteTracker {
 	int notVoting;
 	int numberOfPlayers;
 	Player[] players;
+	
 	public VoteTracker(Player[] players){
 		this.players = players;
 		notVoting = players.length;
 		numberOfPlayers = players.length;
+		noLynchVotes = 0;
 	}
 	
 	public void status()
@@ -19,7 +21,8 @@ public class VoteTracker {
 		for (int i=0;i<numberOfPlayers;++i)
 		{
 			String toAdd = "";
-			if (votes[i] == 0) continue;
+			//must check if player is alive because player can !quit is set to dead.
+			if (votes[i] == 0 && players[i].isAlive) continue;
 			if (toPrint.length() > 0)
 				toAdd += ", ";
 			toAdd += players[i].name;
@@ -37,7 +40,7 @@ public class VoteTracker {
 		toPrint += ".";
 	}
 	
-	public int newVote(Player voter, Player voted)
+	public int newVote(int voter, int voted)
 	{
 		/*in Player, votes for -1 is no vote
 		 * -2 is no lynch
@@ -46,21 +49,54 @@ public class VoteTracker {
 		 *  the return types represent who was lynched: -1 is no majority, -2 is nolynch
 		 *   >=0 is the player lynched
 		 */
-		if (!voter.isAlive)
-			return -1;
-		if (!voted.isAlive)
-			return -1;
-		switch (voter.votedFor)
+
+		//day.processVote(..) takes care of whether voted is valid player
+		
+		if ( voted >= 0)
 		{
-		case -2:
-			--noLynchVotes;
-			break;
-		case -1:
-			break;
-		default:
-			--votes[voter.votedFor];
+			if( players[voter].votedFor >= 0)
+			{
+				--votes[players[voter].votedFor];
+			}
+			else if( players[voter].votedFor == -2)
+			{
+				--noLynchVotes;
+			}
+			players[voter].votedFor = voted;
+			++votes[voted];
 		}
-		++votes[voted.ID];
+		else if( voted == -1)
+		{
+			if(players[voter].votedFor >= 0)
+			{
+				//uncount his previous vote
+				--votes[players[voter].votedFor];
+				players[voter].votedFor = -1;
+			}
+			else if( players[voter].votedFor == -2)
+			{
+				--noLynchVotes;
+				players[voter].votedFor = -1;
+			}
+			else
+			{
+				// if command was to unvote AND players vote was already -1 .. 
+				// he had no vote to begin with...!unvote command should do nothing
+				return -1;
+			}
+		}
+		else if( voted == -2)
+		{
+			if(players[voter].votedFor >= 0 )
+			{
+				--votes[players[voter].votedFor];
+			}
+			if( players[voter].votedFor != -2)
+				++noLynchVotes;
+			
+			players[voter].votedFor = -2;
+		}
+
 		status();
 		return checkMaj();
 	}
@@ -74,7 +110,6 @@ public class VoteTracker {
 			if(votes[i] > needed)
 				return i;	
 		return -1;
-			
-		
 	}
+	
 }

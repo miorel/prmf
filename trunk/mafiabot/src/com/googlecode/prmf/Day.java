@@ -1,20 +1,39 @@
 package com.googlecode.prmf;
+import java.util.*;
 
 public class Day {
         Timer timer;
-        VoteTracker votes;
+        VoteTracker tracker;
         Player[] players;
        
         public Day(int time, Player[] players)
         {
                 timer = new Timer(time);
-                votes = new VoteTracker(players);
+                tracker = new VoteTracker(players);
                 this.players = players;
         }
        
+        public void startDay(boolean killed, String dead, Scanner in)
+        {
+        	System.out.println("Morning welcome message");
+        	if(killed)
+        		System.out.println(dead+ " was found dead in his home this morning!!");
+        	while(in.hasNextLine())
+        	{
+        		String speaker = "testPlayer"; // HOW TO GET SPEAKER? .. must read up on..
+        		String instruc = in.nextLine();
+        		if(parseMessage(instruc, speaker) >= 0)
+        		{
+        			//... say who died
+        			break;
+        		}
+        		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
+        	}
+        }
+        
 		private int searchPlayers(String name)
 		{
-		    int ret = -1;
+		    int ret = -3;
 		    for(int i=0;i<players.length; ++i)
 		    {
 				if(players[i].name.equals(name))
@@ -26,9 +45,9 @@ public class Day {
 		}
 	 
 
-        public boolean parseMessage(String instruc, String speaker)
+        public int parseMessage(String instruc, String speaker)
         {
-        	boolean ret = false;
+        	int ret = -3;
 		    String[] instrucTokens = instruc.split(" ");
 		    String command = instrucTokens[0];
 		    String target = instrucTokens[1];
@@ -37,33 +56,52 @@ public class Day {
 		    int targetId = searchPlayers(target);
 		    
 		    //should be impossible though
-		    if(speakerId == -1)
-		    	return false;
+		    if(speakerId == -3)
+		    	return -3;
 		    
 		    if( command.equals("!lynch") )
 		    {
-		    	players[speakerId].votedFor = targetId; 
-		    	ret = true;
+		    	ret = processVote(speakerId, targetId);
 		    }
 		    else if( command.equals("!nolynch") )
 		    {
-		    	//assuming the decided 'no decision' value is in fact -1.
-		    	players[speakerId].votedFor = -1;
-		    	ret = true;
+		    	ret = processVote(speakerId, -2);
+		    
+		    }
+		    else if( command.equals("!unvote") )
+		    {
+		    	ret = processVote(speakerId, -1);
 		    }
 		    else if( command.equals("!quit") )
 		    {
 		    	//kill speaker
 		    	players[speakerId].isAlive = false;
-		    	ret = true;
+		    	tracker.status();
+		    	ret = -3;
 		    }
 		    
 		    return ret;
         }
        
-        public int processVote()
+        public int processVote(int voter, int voted)
         {
-                return -1;
+        	/** int voted values:
+        	 *  -3 , voted player does not exist
+        	 *  -2 , vote to nolynch
+        	 *  -1 , command to retract vote
+        	 *  i>=0 , player ID
+        	 */ 
+        	
+        		//check to make sure voted name exists
+        		if(voted == -3)
+        			return -3;
+        		
+	    		return tracker.newVote( voter, voted );   
+	    		/**return values:   -3 , bad vote, not processed
+	    		 * 					-2, +1 nolynch
+	    		 * 					-1 , no majority
+	    		 * 					 i>=0  , i lynched.
+				 */
         }
 }
 
