@@ -1,4 +1,4 @@
-package com.googlecode.prfm;
+package com.googlecode.prmf;
 
 import java.io.IOException;
 import java.net.Socket;

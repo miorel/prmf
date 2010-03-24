@@ -1,4 +1,4 @@
-package com.googlecode.prfm;
+package com.googlecode.prmf;
 
 public class VoteTracker {
 	

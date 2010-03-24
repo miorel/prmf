@@ -1,4 +1,4 @@
-package com.googlecode.prfm;
+package com.googlecode.prmf;
 class Mafia implements Role{
 	static String name;
 	static Team team;

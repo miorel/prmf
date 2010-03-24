@@ -1,4 +1,4 @@
-package com.googlecode.prfm;
+package com.googlecode.prmf;
 import java.util.LinkedList;
 
 class Town implements Team{

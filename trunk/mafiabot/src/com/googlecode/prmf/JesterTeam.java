@@ -1,11 +1,10 @@
-package com.googlecode.prfm;
+package com.googlecode.prmf;
 import java.util.LinkedList;
-
-class MafiaTeam implements Team{
+class JesterTeam implements Team{
 	String name;
 	LinkedList<Player> list;
-	public MafiaTeam() {
-		name = "MafiaTeam";
+	public JesterTeam() {
+		name = "JesterTeam";
 		list = new LinkedList<Player>();
 	}
 }

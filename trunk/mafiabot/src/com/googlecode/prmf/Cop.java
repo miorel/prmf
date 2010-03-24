@@ -1,4 +1,4 @@
-package com.googlecode.prfm;
+package com.googlecode.prmf;
 class Cop implements Role{
 	static String name;
 	static Team team;
