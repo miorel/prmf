@@ -1,5 +1,5 @@
 #summary List of contributors
 #labels Featured
 
-Miorel Palii ,
+Miorel Palii <br>
 Rodrigo Salazar
