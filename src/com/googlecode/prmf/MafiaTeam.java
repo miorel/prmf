@@ -22,11 +22,12 @@ class MafiaTeam implements Team{
 				++nonMafia;
 		}
 		return !(nonMafia > mafia);
-	
+		// TODO could also do nonMafia <= mafia, in fact that might be more intuitive
 	}
 	
 	public boolean contains(Player player)
 	{
+		// TODO list already has a contains() method ;)
 		for (Player p : list)
 		{
 			if (player.equals(p))

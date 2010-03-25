@@ -5,6 +5,9 @@ class Vigilante extends Role{
 	public Vigilante(Team nteam) {
 		name = "vigilante";
 		team = nteam;
+		// TODO team is a class (i.e. static) variable
+		// whereas nteam is an instance variable
+		// this seems bad
 	}
 	public void nightAction(Player target) {
 		target.vigged = true;

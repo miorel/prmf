@@ -40,6 +40,7 @@ public class VoteTracker {
 		toPrint += ".";
 	}
 	
+	// TODO probably better (i.e. OOP-ish) to pass in a Player object rather than an int voter 
 	public int newVote(int voter, int voted)
 	{
 		/*in Player, votes for -1 is no vote
