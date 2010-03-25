@@ -7,4 +7,24 @@ class JesterTeam implements Team{
 		name = "JesterTeam";
 		list = new LinkedList<Player>();
 	}
+	
+	public boolean hasWon(Player[] players)
+	{
+		for (Player p : list)
+		{
+			if (p.wasLynched)
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean contains(Player player)
+	{
+		for (Player p : list)
+		{
+			if (p.equals(player))
+				return true;
+		}
+		return false;
+	}
 }

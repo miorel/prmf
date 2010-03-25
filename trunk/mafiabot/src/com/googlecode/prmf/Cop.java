@@ -1,5 +1,5 @@
 package com.googlecode.prmf;
-class Cop implements Role{
+class Cop extends Role{
 	static String name;
 	static Team team;
 	public Cop(Team nteam) {

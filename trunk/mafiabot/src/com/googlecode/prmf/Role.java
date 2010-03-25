@@ -1,4 +1,8 @@
 package com.googlecode.prmf;
-interface Role {
-	void nightAction(Player target);	
+public abstract class Role {
+	static Team team;
+	void nightAction(Player target)
+	{
+		
+	}
 }
