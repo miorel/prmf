@@ -2,5 +2,6 @@
 #labels Featured
 
 Miorel Palii <br>
+Mauricio Bell'Albero <br>
 Rodrigo Salazar <br>
 Joe Thuemler
