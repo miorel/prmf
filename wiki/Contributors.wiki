@@ -1,7 +1,7 @@
 #summary List of contributors
 #labels Featured
 
-Miorel Palii <br>
-Mauricio Bell'Albero <br>
-Rodrigo Salazar <br>
-Joe Thuemler
+  * Miorel Palii
+  * Mauricio Bell'Albero
+  * Rodrigo Salazar
+  * Joe Thuemler
