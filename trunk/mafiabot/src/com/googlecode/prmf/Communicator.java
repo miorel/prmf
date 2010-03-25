@@ -3,6 +3,9 @@ package com.googlecode.prmf;
 public class Communicator {
 	private static Communicator instance;
 	
+	public Communicator() {
+	}
+	
 	public static Communicator getInstance() {
 		if(instance == null)
 			instance = new Communicator();

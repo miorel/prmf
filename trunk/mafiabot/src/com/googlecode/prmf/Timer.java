@@ -1,8 +1,9 @@
-
+// TODO there is a compilation error on the next line
 +package com.googlecode.prmf;
 
 public class Timer
 {
+	// TODO having multiple units of time seems like a poor design choice
 	long lengthInMinutes;
 	long lengthInMillis;
 	long startTime;

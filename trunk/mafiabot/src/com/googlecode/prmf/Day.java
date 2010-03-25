@@ -28,6 +28,9 @@ public class Day {
         			break;
         		}
         		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
+        		
+        		// TODO actually, it would be better to use enums
+        		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
         	}
         }
         
@@ -35,10 +38,11 @@ public class Day {
 		{
 		    int ret = -3;
 		    for(int i=0;i<players.length; ++i)
-		    {
+		    { 
 				if(players[i].name.equals(name))
 				{
 				    ret = i;
+				    // TODO you don't want to keep searching if you've found the correct one  
 				}
 		    }
 		    return ret;
@@ -47,6 +51,7 @@ public class Day {
 
         public int parseMessage(String instruc, String speaker)
         {
+        	// TODO this method looks like a perfect application of Java enums
         	int ret = -3;
 		    String[] instrucTokens = instruc.split(" ");
 		    String command = instrucTokens[0];

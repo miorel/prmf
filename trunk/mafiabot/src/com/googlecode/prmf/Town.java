@@ -12,6 +12,7 @@ class Town implements Team{
 	{
 		for (Player p : players)
 		{
+			// TODO there appears to be a compilation error here
 			if (p.role.team.name.equals("MafiaTeam"))
 				return false;
 		}
@@ -21,6 +22,7 @@ class Town implements Team{
 	
 	public boolean contains(Player player)
 	{
+		// TODO list already has a contains() method ;)
 		for (Player p : list)
 		{
 			if (player.equals(p))
