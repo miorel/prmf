@@ -1,5 +1,5 @@
 package com.googlecode.prmf;
-class Citizen implements Role{
+class Citizen extends Role{
 	static String name;
 	static Team team;
 	public Citizen(Team nteam) {

@@ -9,6 +9,7 @@ class Player
 	boolean saved;
 	boolean checked;
 	boolean vigged;
+	boolean wasLynched;
 	int votedFor;
 	//ID is the player's position in the list of players
 	int ID;
