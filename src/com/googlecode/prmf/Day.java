@@ -13,7 +13,7 @@ public class Day extends Thread{
         boolean killed; //if anyone was killed the previous night
         String dead; // who was killed , if anyone;
         Scanner in; // Should be a scanner which is from main class.
-        
+
         public Day(int time, Player[] players,boolean killed, String dead, Scanner in)
         {
         		this.killed = killed;
