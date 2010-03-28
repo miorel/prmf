@@ -1,5 +1,5 @@
 // TODO there is a compilation error on the next line
-+package com.googlecode.prmf;
+package com.googlecode.prmf;
 
 public class Timer
 {

@@ -1,7 +1,7 @@
 package com.googlecode.prmf;
 import java.util.LinkedList;
 
-class Town implements Team{
+class Town extends Team{
 	String name;
 	LinkedList<Player> list;
 	public Town (){
@@ -12,7 +12,6 @@ class Town implements Team{
 	{
 		for (Player p : players)
 		{
-			// TODO there appears to be a compilation error here
 			if (p.role.team.name.equals("MafiaTeam"))
 				return false;
 		}
