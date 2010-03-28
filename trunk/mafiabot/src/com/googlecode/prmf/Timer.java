@@ -1,6 +1,8 @@
 // TODO there is a compilation error on the next line
 package com.googlecode.prmf;
 
+import com.googlecode.prmf.starter.Communicator;
+
 public class Timer
 {
 	// TODO having multiple units of time seems like a poor design choice
