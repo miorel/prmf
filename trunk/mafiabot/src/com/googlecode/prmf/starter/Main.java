@@ -7,11 +7,12 @@ import com.googlecode.prmf.*;
 public class Main {
 	static Connection conn;
 	static Scanner in;
+	
 	public static void main(String[] arg) 
 	{
 		try
 		{
-			conn = new Connection("irc.freenode.net", 6667);
+			Connection.makeConnection("irc.freenode.net", 6667);
 		}
 		catch(Exception e)
 		{
@@ -26,7 +27,7 @@ public class Main {
 		}
 		catch(Exception e)
 		{
-			System.out.println("oops");
+			System.out.println("oops2");
 		}
 		
 		Connection.ps.println("NICK MAFIABOT22");
