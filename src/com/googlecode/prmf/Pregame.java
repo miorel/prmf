@@ -6,10 +6,12 @@ import java.io.*;
 public class Pregame {
 	
 	InputStream is;
+	String startName;
 	
-	public Pregame(InputStream is)
+	public Pregame(InputStream is, String startName)
 	{
 		this.is = is;
+		this.startName = startName;
 	}
 
 		public void startGame()
@@ -26,7 +28,7 @@ public class Pregame {
 			while(true) //break when the game starts
 			{
 				String line = in.nextLine();
-				String[] data = line.split(" ");
+				String[] data = line.split(" ", 4);
 				String name = data[0];
 				if(data[1].equals("!start"))		
 					break;
@@ -34,7 +36,7 @@ public class Pregame {
 				if(data[1].equals("!join"))
 				{
 					players.add(new Player(data[0]));
-					System.out.println(name + " has joined the game!");
+					Communicator.getInstance().sendMessage(" #UFPT : + " name + " has joined the game!");
 				}
 				
 				if(data[1].equals("!quit"))
