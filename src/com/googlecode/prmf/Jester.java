@@ -1,6 +1,5 @@
 package com.googlecode.prmf;
-// This is TWW2's favorite class and a test to 
-// make sure he got the software working
+// This is TWW2's favorite class.
 
 // TODO it appears that Role is not an interface at this time
 class Jester implements Role{
@@ -13,5 +12,7 @@ class Jester implements Role{
 		// whereas nteam is an instance variable
 		// this seems bad
 	}
-	public void nightAction(Player target) {}
+
+	public void nightAction(Player target) {
+	}
 }
