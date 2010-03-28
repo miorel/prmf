@@ -1,7 +1,8 @@
 package com.googlecode.prmf;
 
 import java.util.*;
-import java.io.*;
+import java.io.*; 
+import com.googlecode.prmf.starter.*;
 
 public class Pregame {
 	
@@ -28,23 +29,28 @@ public class Pregame {
 			while(true) //break when the game starts
 			{
 				String line = in.nextLine();
-				String[] data = line.split(" ", 4);
-				String name = data[0];
-				if(data[1].equals("!start"))		
+				String[] msg = line.split(" ", 4);
+				String user = "#UFPT";
+				
+				if(msg[0].indexOf("!")>1)
+					user = msg[0].substring(1,msg[0].indexOf("!"));
+				
+				String destination = msg[2];
+				if(msg[3].equals(":!start") && user.equals(startName))		
 					break;
 					
-				if(data[1].equals("!join"))
+				if(msg[1].equals(":!join"))
 				{
-					players.add(new Player(data[0]));
-					Communicator.getInstance().sendMessage(" #UFPT : + " name + " has joined the game!");
+					players.add(new Player(msg[0]));
+					Communicator.getInstance().sendMessage(destination, user + " has joined the game!");
 				}
 				
-				if(data[1].equals("!quit"))
+				if(msg[1].equals("!quit"))
 				{
 					for(int a = 0; a < players.size(); ++a)
 					{
 						Player temp = players.get(a);
-						if(temp.name.equals(name))
+						if(temp.name.equals(user))
 							players.remove(a);
 					}
 				}	
