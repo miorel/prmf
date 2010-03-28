@@ -11,10 +11,11 @@ public class Connection
 	public static InputStream is;
 	public static PrintStream ps;
 	
-	public Connection(String socket, int port) throws UnknownHostException, IOException 
+	public static void makeConnection(String socket, int port) throws UnknownHostException, IOException 
 	{
 		soc = new Socket(socket, port);
 		ps = new PrintStream(soc.getOutputStream());
+		is = soc.getInputStream();
 	}
 	
 }
