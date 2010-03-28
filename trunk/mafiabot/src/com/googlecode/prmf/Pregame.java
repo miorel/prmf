@@ -13,9 +13,9 @@ public class Pregame {
 	ArrayList<Role> mafiaRoles;
 	ArrayList<Role> roles; 
 	
-	public Pregame(InputStream is, String startName)
+	public Pregame(String startName)
 	{
-		this.is = is;
+		this.is = Connection.is;
 		this.startName = startName;
 	}
 
