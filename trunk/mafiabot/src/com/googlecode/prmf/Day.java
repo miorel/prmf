@@ -1,6 +1,8 @@
 package com.googlecode.prmf;
 
+//TODO press Ctrl+Shift+O to have Eclipse make imports nice for you.
 import java.util.*;
+//TODO Everything in the java.lang package is automatically imported.
 import java.lang.Thread;
 
 public class Day extends Thread{
@@ -28,7 +30,7 @@ public class Day extends Thread{
         public void run()
         {
         	System.out.println("Morning welcome message");
-        	if(killed)
+        	if(killed) //TODO We might have ladies playing this game at some point. Messages shouldn't be gender-specific.
         		System.out.println(dead+ " was found dead in his home this morning!!");
         	while(in.hasNextLine())
         	{
@@ -37,14 +39,16 @@ public class Day extends Thread{
         		if(parseMessage(instruc, speaker) >= 0)
         		{
         			//... say who died
-        			break;
+        			break;         			// Finchley Central
         		}
         		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
         		
         		// TODO actually, it would be better to use enums
         		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
         	}
-        	
+
+    		//TODO this won't actually do anything unless the inputThread knows
+    		// to check for interrupts.
         	timerThread.timer.interrupt();
         }
         
