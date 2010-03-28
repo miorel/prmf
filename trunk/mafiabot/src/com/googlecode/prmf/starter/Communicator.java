@@ -1,5 +1,5 @@
 package com.googlecode.prmf.starter;
-
+import java.io.*;
 public class Communicator {
 	private static Communicator instance;
 	
@@ -14,8 +14,8 @@ public class Communicator {
 		return instance;
 	}
 	
-	public void sendMessage(String destination, String message) 
+	public void sendMessage(PrintStream os, String destination, String message) 
 	{
-		
+		os.println("PRIVMSG "+destination+" :"+message);
 	}
 }
