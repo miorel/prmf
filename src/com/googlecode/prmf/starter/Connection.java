@@ -7,13 +7,14 @@ import java.util.Scanner;
 
 public class Connection 
 	{
-	Socket soc;
-	PrintStream os;
+	static Socket soc;
+	static InputStream is;
+	static PrintStream ps;
+	
 	public Connection(String socket, int port) throws UnknownHostException, IOException 
 	{
 		soc = new Socket(socket, port);
-		os = new PrintStream(soc.getOutputStream());
+		ps = new PrintStream(soc.getOutputStream());
 	}
-	
 	
 }

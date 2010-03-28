@@ -17,24 +17,24 @@ public class Main {
 			System.out.println("oops");
 		}
 		
-		Communicator.setPrintStream(conn.os);
+		Communicator.setPrintStream(Connection.ps);
 		
 		try
 		{
-		in = new Scanner(conn.soc.getInputStream());
+		in = new Scanner(Connection.is);
 		}
 		catch(Exception e)
 		{
 			System.out.println("oops");
 		}
 		
-		conn.os.println("NICK MAFIABOT22");
+		Connection.ps.println("NICK MAFIABOT22");
 		//System.out.println("**ENTERED NICK");
-		conn.os.println("USER MAFIABOT22 12 * MAFIABOT22");
+		Connection.ps.println("USER MAFIABOT22 12 * MAFIABOT22");
 		//System.out.println("**ENTERED USER LOGIN");
-		conn.os.println("JOIN #UFPT");
+		Connection.ps.println("JOIN #UFPT");
 		//System.out.println("**JOINED CHANNEL");
-		conn.os.println("PRIVMSG #UFPT :HELLO I AM MAFAIA BOTT");
+		Connection.ps.println("PRIVMSG #UFPT :HELLO I AM MAFAIA BOTT");
 		
 		while(in.hasNextLine())
 		{
@@ -49,7 +49,8 @@ public class Main {
 			
 			if(msg.length >= 4 && msg[3].toLowerCase().equals(":!mafia"))
 			{
-				
+				Game game = new Game(msg[1]);
+				game.startGame();
 			}
 			
 			System.out.println(line);
