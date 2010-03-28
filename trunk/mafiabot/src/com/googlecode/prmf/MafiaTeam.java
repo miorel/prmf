@@ -1,7 +1,7 @@
 package com.googlecode.prmf;
 import java.util.LinkedList;
 
-class MafiaTeam implements Team{
+class MafiaTeam extends Team{
 	String name;
 	LinkedList<Player> list;
 	public MafiaTeam() {

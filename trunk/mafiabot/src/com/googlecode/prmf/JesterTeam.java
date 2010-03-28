@@ -1,6 +1,6 @@
 package com.googlecode.prmf;
 import java.util.LinkedList;
-class JesterTeam implements Team {
+class JesterTeam extends Team {
 	String name;
 	LinkedList<Player> list;
 	public JesterTeam() {
