@@ -24,7 +24,7 @@ public class Pregame {
 				if(data[1].equals("!start"))		
 					break;
 					
-				if(data[1].equals("!join")
+				if(data[1].equals("!join"))
 				{
 					players.add(new Player(data[0]));
 					System.out.println(name + " has joined the game!");
@@ -42,20 +42,20 @@ public class Pregame {
 			}
 			
 			//assigning roles
-			int numMafia = players.size()/3
+			int numMafia = players.size()/3;
 			//create the Mafia team
 			for(int a = 0; a < numMafia; ++a)
 			{
-				mafiaRoles.add(new Mafia());
+				mafiaRoles.add(new Mafia(new MafiaTeam()));
 			}
 			
 			//create the Town team
-			for(int a = 0; a < (players.size() - numMafia; ++a)
+			for(int a = 0; a < (players.size() - numMafia); ++a)
 			{
-				townRoles.add(new Citizen());
+				townRoles.add(new Citizen(new Town()));
 			}
-			mafiaRoles.shuffle();
-			townRoles.shuffle();
+			Collections.shuffle(mafiaRoles);
+			Collections.shuffle(townRoles);
 			for(int a = 0; a < numMafia; ++a)
 			{
 				roles.add(mafiaRoles.get(a));
@@ -66,27 +66,9 @@ public class Pregame {
 			}
 			for(int a = 0; a < players.size(); ++a)
 			{
-				player.get(a).role = roles.get(a);
+				players.get(a).role = roles.get(a);
 			}
 			
 		}
 	}
 
-	public class Player
-	{
-		Role myRole;
-		String name;
-		
-	}
-
-	public class Role
-	{
-		String name;
-		Team team;
-	}
-
-	public class Team
-	{
-		String name;
-	}
-}
