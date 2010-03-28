@@ -1,0 +1,18 @@
+#summary Overview of design planning
+#labels Featured,Phase-Design,Phase-Requirements
+
+Bot connects to IRC with config file
+Waits for someone to start a mafia game
+Pregame starts: People join and leave, settings are changed
+Pregame ends: either someone starts the actual game or the game is ended and we go back to waiting.
+
+Game starts: roles are handed out randomly
+Until the game has ended, alternate days and nights (starting with whichever)
+
+Day: Bot waits for votes
+Once the timer expires, or the majority has come to a decision on the voting, enact that decision
+Explain the results of the decision made.
+
+Night: Bot waits for commands
+Once the timer expires, or everyone with an action has given the action, enact the actions in a specific order
+Explain the results
