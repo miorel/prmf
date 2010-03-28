@@ -1,13 +1,20 @@
 package com.googlecode.prmf;
 
 import java.util.*;
+import java.io.*;
 
 public class Pregame {
 	
+	InputStream is;
+	
+	public Pregame(InputStream is)
+	{
+		this.is = is;
+	}
 
-		public static void main(String[] args)
+		public void startGame()
 		{
-			Scanner in = new Scanner(System.in);
+			Scanner in = new Scanner(is);
 			ArrayList<Player> players = new ArrayList<Player>();
 			ArrayList<Role> townRoles = new ArrayList<Role>();
 			ArrayList<Role> mafiaRoles = new ArrayList<Role>();
