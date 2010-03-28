@@ -2,7 +2,7 @@ package com.googlecode.prmf.starter;
 import java.io.*;
 public class Communicator {
 	private static Communicator instance;
-	
+	private static PrintStream ps;
 	public Communicator() 
 	{
 	}
@@ -13,9 +13,13 @@ public class Communicator {
 			instance = new Communicator();
 		return instance;
 	}
-	
-	public void sendMessage(PrintStream os, String destination, String message) 
+	public static void setPrintStream(PrintStream psin)
 	{
-		os.println("PRIVMSG "+destination+" :"+message);
+		ps = psin;
+	}
+	
+	public void sendMessage(String destination, String message) 
+	{
+		ps.println("PRIVMSG "+destination+" :"+message);
 	}
 }
