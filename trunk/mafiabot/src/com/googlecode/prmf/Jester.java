@@ -1,4 +1,6 @@
 package com.googlecode.prmf;
+// This is TWW2's favorite class and a test to 
+// make sure he got the software working
 
 // TODO it appears that Role is not an interface at this time
 class Jester implements Role{
