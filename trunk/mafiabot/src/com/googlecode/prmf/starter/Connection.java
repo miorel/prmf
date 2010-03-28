@@ -10,7 +10,7 @@ public class Connection
 	// TODO it's better practice to actually catch exceptions, and print a useful message
 	public Connection(String socket, int port) throws UnknownHostException, IOException 
 	{
-		Pregame
+		
 		Socket s = new Socket(socket, port);
 		Scanner in = new Scanner(s.getInputStream());
 		PrintStream os = new PrintStream(s.getOutputStream());
