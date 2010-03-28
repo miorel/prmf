@@ -1,19 +1,31 @@
 package com.googlecode.prmf;
-import java.util.*;
 
-public class Day {
-        Timer timer;
+import java.util.*;
+import java.lang.Thread;
+
+public class Day extends Thread{
+		Thread input;
+		TimerThread timerThread;// TimerThread will cease input thread before ending
         VoteTracker tracker;
         Player[] players;
-       
-        public Day(int time, Player[] players)
+        boolean killed; //if anyone was killed the previous night
+        String dead; // who was killed , if anyone;
+        Scanner in; // Should be a scanner which is from main class.
+        
+        public Day(int time, Player[] players,boolean killed, String dead, Scanner in)
         {
-                timer = new Timer(time);
-                tracker = new VoteTracker(players);
-                this.players = players;
+        		this.killed = killed;
+        		this.dead = dead;
+        		this.in = in;
+        		tracker = new VoteTracker(players);
+            	this.players = players;
+            	
+        		input = new Thread(this);
+        		timerThread = new TimerThread(input);
+				input.start(); 
         }
-       
-        public void startDay(boolean killed, String dead, Scanner in)
+        
+        public void run()
         {
         	System.out.println("Morning welcome message");
         	if(killed)
@@ -32,6 +44,8 @@ public class Day {
         		// TODO actually, it would be better to use enums
         		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
         	}
+        	
+        	timerThread.timer.interrupt();
         }
         
 		private int searchPlayers(String name)
