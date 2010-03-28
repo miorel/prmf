@@ -39,13 +39,13 @@ public class Pregame {
 				if(msg[3].equals(":!start") && user.equals(startName))		
 					break;
 					
-				if(msg[1].equals(":!join"))
+				if(msg[3].equals(":!join"))
 				{
-					players.add(new Player(msg[0]));
+					players.add(new Player(user));
 					Communicator.getInstance().sendMessage(destination, user + " has joined the game!");
 				}
 				
-				if(msg[1].equals("!quit"))
+				if(msg[3].equals(":!quit"))
 				{
 					for(int a = 0; a < players.size(); ++a)
 					{
