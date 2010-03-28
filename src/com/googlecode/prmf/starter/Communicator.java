@@ -14,7 +14,8 @@ public class Communicator {
 		return instance;
 	}
 	
-	public void sendMessage(String destination, String message) {
+	public void sendMessage(String destination, String message) 
+	{
 		
 	}
 }

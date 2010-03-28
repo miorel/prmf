@@ -12,7 +12,7 @@ public class Main {
 		}
 		catch(Exception e)
 		{
-			System.out.println("opps");
+			System.out.println("oops");
 		}
 		
 		
