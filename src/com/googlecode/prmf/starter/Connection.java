@@ -7,9 +7,9 @@ import java.util.Scanner;
 
 public class Connection 
 	{
-	static Socket soc;
-	static InputStream is;
-	static PrintStream ps;
+	public static Socket soc;
+	public static InputStream is;
+	public static PrintStream ps;
 	
 	public Connection(String socket, int port) throws UnknownHostException, IOException 
 	{
