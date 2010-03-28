@@ -2,8 +2,9 @@ package com.googlecode.prmf;
 
 //TODO press Ctrl+Shift+O to have Eclipse make imports nice for you.
 import java.util.*;
-//TODO Everything in the java.lang package is automatically imported.
 import java.lang.Thread;
+import java.io.*;
+import com.googlecode.prmf.starter.*;
 
 public class Day extends Thread{
 		Thread input;
@@ -14,11 +15,11 @@ public class Day extends Thread{
         String dead; // who was killed , if anyone;
         Scanner in; // Should be a scanner which is from main class.
 
-        public Day(int time, Player[] players,boolean killed, String dead, Scanner in)
+        public Day(int time, Player[] players,boolean killed, String dead, InputStream in)
         {
         		this.killed = killed;
         		this.dead = dead;
-        		this.in = in;
+        		this.in = new Scanner(in);
         		tracker = new VoteTracker(players);
             	this.players = players;
             	
@@ -29,17 +30,30 @@ public class Day extends Thread{
         
         public void run()
         {
-        	System.out.println("Morning welcome message");
-        	if(killed) //TODO We might have ladies playing this game at some point. Messages shouldn't be gender-specific.
-        		System.out.println(dead+ " was found dead in his home this morning!!");
+        	Communicator.getInstance().sendMessage( "#UFPT","Morning welcome message");
+        	
+        	if(killed)
+        		System.out.println(dead+ " was found dead in his/her home this morning!!");
+        	
         	while(in.hasNextLine())
         	{
         		String speaker = "testPlayer"; // HOW TO GET SPEAKER? .. must read up on..
         		String instruc = in.nextLine();
-        		if(parseMessage(instruc, speaker) >= 0)
+        		int returnCode;
+        		if( (returnCode = parseMessage(instruc, speaker)) >= 0)
         		{
-        			//... say who died
-        			break;         			// Finchley Central
+        			Communicator.getInstance().sendMessage( "#UFPT",players[returnCode] + " was lynched :(");
+        			break;
+        		}
+        		else if(returnCode == -2)
+        		{
+        			Communicator.getInstance().sendMessage( "#UFPT","the majority has voted for no lynching today!");
+        			break;
+        		}
+        		else if(returnCode == -1)
+        		{
+        			Communicator.getInstance().sendMessage( "#UFPT","The town was not able to reach a concensus.");
+        			break;
         		}
         		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
         		
