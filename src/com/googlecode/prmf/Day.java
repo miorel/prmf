@@ -40,6 +40,13 @@ public class Day extends Thread{
         	
         	while(in.hasNextLine())
         	{
+        		
+            	if(Thread.interrupted())
+            	{
+            		Communicator.getInstance().sendMessage( "#UFPT","The day has ended.");
+            		break;
+            	}
+            	
         		String speaker = "testPlayer"; // HOW TO GET SPEAKER? .. must read up on..
         		String instruc = in.nextLine();
         		int returnCode;
@@ -62,11 +69,9 @@ public class Day extends Thread{
         		
         		// TODO actually, it would be better to use enums
         		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
+        		
         	}
 
-    		//TODO this won't actually do anything unless the inputThread knows
-    		// to check for interrupts.
-        	timerThread.timer.interrupt();
         }
         
 		private int searchPlayers(String name)
