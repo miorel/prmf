@@ -1,0 +1,41 @@
+#summary Some ideas which are endorsed by your BDFL
+#labels Featured,Phase-Implementation,Phase-Design
+
+= Declare things as what they're used not as what they are =
+
+That statement probably doesn't make much sense so let's take take a look at this code example:
+
+{{{
+ArrayList<Integer> someNumbers;
+
+someNumbers = new ArrayList<Integer>();
+someNumbers.add(Integer.valueOf(42));
+someNumbers.add(Integer.valueOf(1337));
+}}}
+
+We're just creating a list and adding a couple of numbers to it, right? Seems simple enough. But why did we declare `someNumbers` to be an `ArrayList`? Are we ever using some `ArrayList`-specific feature? No, this would work just as well if it were a `LinkedList` or some other type of list. The declaration should reflect this. The following is highly recommended:
+
+{{{
+List<Integer> someNumbers = new ArrayList<Integer>();
+}}}
+
+Now, if you ever decide that a `LinkedList` would have been better, you can just change one line, and the rest of your code won't care (because it shouldn't).
+
+= Avoid global class variables =
+
+...or in Java terms, avoid fields which are `public static`. Because if you're going to do that, just go all the way and switch to a non-object-oriented language. In fact, while we're on this topic, why don't we generalize this to...
+
+= Public fields are evil =
+
+Your teachers probably drilled the word "encapsulation" into your head. If peer pressure from pretty much the entire programming community isn't convincing enough for you, consider the following simple class:
+
+{{{
+class Person {
+    int daysAlive;
+    Date birthday;
+}
+}}}
+
+We can ask a `Person` object for its age in days or for its birthday. Now right away you'll probably notice that these fields are redundant. If we know the current day we can calculate the birthday from the age and vice versa. Therefore we can save some memory by only keeping one field and calculating the other when needed. If these attributes were accessed through methods, we could easily change implementation details like this one.
+
+To summarize, most of these suggestions summarize to a simple idea: *Write flexible code.* Because you'll almost never get it right the first time :) so you want to make changes as painless as possible.
