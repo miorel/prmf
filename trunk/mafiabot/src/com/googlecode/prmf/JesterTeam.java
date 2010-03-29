@@ -22,12 +22,6 @@ class JesterTeam extends Team {
 	
 	public boolean contains(Player player)
 	{
-		// TODO list has a contains method ;) 
-		for (Player p : list)
-		{
-			if (p.equals(player))
-				return true;
-		}
-		return false;
+		return list.contains(player);
 	}
 }

@@ -21,6 +21,7 @@ public class Pregame {
 		this.startName = startName;
 	}
 
+	//TODO change return type to ENUM for day-start, night-start
 	public void startGame()
 	{
 		Scanner in = new Scanner(Connection.is);
@@ -37,43 +38,61 @@ public class Pregame {
 			String line = in.nextLine();
 			String[] msg = line.split(" ", 4);
 			String user = "#UFPT";
-			
-			if(msg[0].indexOf("!")>1)
-				user = msg[0].substring(1,msg[0].indexOf("!"));
-			
-			String destination = msg[2];
-			if(msg[3].toLowerCase().equals(":!start") && user.equals(startName))		
-				break;
-				
-			//TODO add an !end command that will cancel the current game
-			if(msg[3].toLowerCase().equals(":!join"))
+			if(msg[0].equals("PING"))
 			{
-				Player temp = new Player(user);
-				int index = players.indexOf(temp);
-				System.out.println(index);
-				if(index == -1)
-				{
-					players.add(new Player(user));
-					Communicator.getInstance().sendMessage(destination, user + " has joined the game!");
-				}
-				else
-					Communicator.getInstance().sendMessage(destination, user + " has already joined the game!");
+				//TODO add PONG functionailty
 			}
-			
-			if(msg[3].toLowerCase().equals(":!quit"))
+			//this is kind of a nasty solution...
+			else
 			{
+				if(msg[0].indexOf("!")>1)
+					user = msg[0].substring(1,msg[0].indexOf("!"));
+				
 				Player temp = new Player(user);
 				int index = players.indexOf(temp);
-				System.out.println(index);
-				if(index == -1)
-					Communicator.getInstance().sendMessage(destination, user + " is not part of the game!");
-				else
+				
+				String destination = msg[2];
+				String command = msg[3].toLowerCase();
+				if(command.equals(":!start") && user.equals(startName))		
+					break;
+					
+				if(command.equals(":!join"))
 				{
-					players.remove(index);
-					Communicator.getInstance().sendMessage(destination, user + " has quit the game!");
+					System.out.println(index);
+					if(index == -1)
+					{
+						players.add(new Player(user));
+						Communicator.getInstance().sendMessage(destination, user + " has joined the game!");
+					}
+					else
+						Communicator.getInstance().sendMessage(destination, user + " has already joined the game!");
 				}
 				
-			}	
+				if(command.equals(":!quit"))
+				{
+					System.out.println(index);
+					if(index == -1)
+						Communicator.getInstance().sendMessage(destination, user + " is not part of the game!");
+					else
+					{
+						players.remove(index);
+						Communicator.getInstance().sendMessage(destination, user + " has quit the game!");
+					}
+					
+				}	
+				
+				if (command.equals(":!end"))
+				{
+					if (user.equals(startName))
+					{
+						Communicator.getInstance().sendMessage(destination, user + " has ended the game. Aww :(");
+						return;
+						//does this acceptably end the game? I think so but not positive
+					}
+					else
+						Communicator.getInstance().sendMessage(destination, "Only " + startName + " can end the game!");
+				}
+			}
 		}
 		
 		//assigning roles
@@ -103,6 +122,8 @@ public class Pregame {
 		{
 			players.get(a).role = roles.get(a);
 		}
+		
+		//TODO tell game that a day or night needs to start? should this method have a return type?
 		
 	}
 
