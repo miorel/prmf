@@ -3,12 +3,12 @@ package com.googlecode.prmf;
 
 import com.googlecode.prmf.starter.Communicator;
 
-public class Timer
-{
+public class Timer {
 	// TODO having multiple units of time seems like a poor design choice
 	long lengthInMinutes;
 	long lengthInMillis;
-	long startTime;
+	long startTime; // TODO default visibility is almost as bad as public
+	
 	Timer(int length)
 	{
 		lengthInMinutes = length;

@@ -1,6 +1,7 @@
 package com.googlecode.prmf;
 
 public class Game {
+	//TODO default visibility is almost as bad as public
 	Player[] players;
 	String gameStarter;
 	int numMafia =1;
