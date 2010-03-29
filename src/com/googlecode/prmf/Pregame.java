@@ -53,9 +53,16 @@ public class Pregame {
 				
 				String destination = msg[2];
 				String command = msg[3].toLowerCase();
-				if(command.equals(":!start") && user.equals(new Player(startName)))		
-					break;
-					
+				if(command.equals(":!start"))
+				{
+					if(user.equals(new Player(startName)))		
+					{
+						Communicator.getInstance().sendMessage(destination, "The game has begun!");
+						break;
+					}
+					else
+						Communicator.getInstance().sendMessage(destination, "Only " + startName + " can start the game!");
+				}	
 				if(command.equals(":!join"))
 				{
 					System.out.println(index);
