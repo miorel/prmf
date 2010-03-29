@@ -38,4 +38,6 @@ class Person {
 
 We can ask a `Person` object for its age in days or for its birthday. Now right away you'll probably notice that these fields are redundant. If we know the current day we can calculate the birthday from the age and vice versa. Therefore we can save some memory by only keeping one field and calculating the other when needed. If these attributes were accessed through methods, we could easily change implementation details like this one.
 
+Solution? Make everything `private` unless it has a good reason not to be. If (and only if) you need to access some field outside the class, make a getter and possibly a setter method.
+
 To summarize, most of these suggestions summarize to a simple idea: *Write flexible code.* Because you'll almost never get it right the first time :) so you want to make changes as painless as possible.
