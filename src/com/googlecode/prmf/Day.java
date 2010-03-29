@@ -1,9 +1,9 @@
 package com.googlecode.prmf;
 
-import java.io.InputStream;
 import java.util.Scanner;
 
 import com.googlecode.prmf.starter.Communicator;
+import com.googlecode.prmf.starter.Connection;
 
 public class Day extends Thread{
 		Thread input;
@@ -14,17 +14,21 @@ public class Day extends Thread{
         String dead; // who was killed , if anyone;
         Scanner in;
 
-        public Day(int time, Player[] players,boolean killed, String dead, InputStream in)
+        
+        public Day(Player[] players)
         {
-        		this.killed = killed;
-        		this.dead = dead;
-        		this.in = new Scanner(in);
+        		this.in = new Scanner(Connection.is);
         		tracker = new VoteTracker(players);
             	this.players = players;
-            	
-        		input = new Thread(this);
-        		timerThread = new TimerThread(input);
-				input.start(); 
+        }
+        
+        public void startDay(boolean killed, String dead)
+        {
+    		this.killed = killed;
+    		this.dead = dead;
+    		input = new Thread(this);
+    		timerThread = new TimerThread(input);
+			input.start(); 
         }
         
         public void run()
@@ -73,8 +77,8 @@ public class Day extends Thread{
 				if(players[i].name.equals(name))
 				{
 				    ret = i;
-				    break;
-				    }
+				    // TODO you don't want to keep searching if you've found the correct one  
+				}
 		    }
 		    return ret;
 		}
