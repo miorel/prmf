@@ -43,7 +43,7 @@ public class Main {
 			String line = in.nextLine();
 			
 			String[] msg = line.split(" ",4);
-			String user = channel; // TODO why is this uppercase?
+			String user = channel;
 			
 			if(msg[0].indexOf("!") > 1)
 				user = msg[0].substring(1,msg[0].indexOf("!"));
@@ -51,7 +51,7 @@ public class Main {
 			if(msg.length >= 4 && msg[3].toLowerCase().equals(":!mafia"))
 			{
 				Communicator.getInstance().sendMessage(channel,"MAFAI GAM STARTERED");
-				Game game = new Game(msg[1]);
+				Game game = new Game(user);
 				game.startGame();
 			}
 			
