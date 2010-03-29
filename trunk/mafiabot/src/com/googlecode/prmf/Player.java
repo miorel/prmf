@@ -25,16 +25,25 @@ class Player
 		votedFor = -1; // TODO what does this mean?
 	}
 	
-	// TODO the equals() method should be public take an argument of type Object
-	boolean equals(Player p)
-	{
-		if (this.name.equals(p.name))
-			return true;
-		return false;
 	
+	public boolean equals(Object o) 
+	{
+		boolean ret = false;
+		if(o instanceof Player)
+		{
+			Player temp = (Player)o;
+			
+			if (this.name.equals(temp.name))
+				ret = true;
+		}
+		return ret;	
 	}
 
-	// TODO if you override equals(), Java practice states that you should also override hashCode()
+	
+	public int hashCode()
+	{
+		return name.hashCode();
+	}
 	
 	public String toString()
 	{
