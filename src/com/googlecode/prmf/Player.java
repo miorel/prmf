@@ -2,6 +2,7 @@ package com.googlecode.prmf;
 
 class Player
 {
+	// TODO default visibility is almost as bad as public
 	String name;
 	Role role;
 	// TODO the variables below should have consistent naming
@@ -26,15 +27,11 @@ class Player
 	}
 	
 	
-	public boolean equals(Object o) 
-	{
+	public boolean equals(Object obj) {
 		boolean ret = false;
-		if(o instanceof Player)
-		{
-			Player temp = (Player)o;
-			
-			if (this.name.equals(temp.name))
-				ret = true;
+		if(obj instanceof Player) {
+			Player temp = (Player)obj;
+			ret = this.name.equals(temp.name);
 		}
 		return ret;	
 	}
@@ -49,5 +46,4 @@ class Player
 	{
 		return name;
 	}
-
 }

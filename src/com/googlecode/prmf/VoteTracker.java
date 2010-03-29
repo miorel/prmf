@@ -1,7 +1,7 @@
 package com.googlecode.prmf;
 
 public class VoteTracker {
-	
+	//TODO default visibility is almost as bad as public
 	int[] votes;
 	int noLynchVotes;
 	int notVoting;
@@ -101,7 +101,7 @@ public class VoteTracker {
 		return checkMaj();
 	}
 	
-	public int checkMaj()
+	public int checkMaj() //TODO how about a longer method name?
 	{
 		int needed = numberOfPlayers/2 + 1;
 		if (noLynchVotes > needed)
