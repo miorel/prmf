@@ -5,10 +5,10 @@ import java.io.*;
 import com.googlecode.prmf.starter.*;
 
 public class Pregame {
-	
-	InputStream is;
+	InputStream is; //TODO I/O operations should be isolated from the rest of the program
 	String startName;
 	
+	//TODO default visibility is almost as bad as public
 	ArrayList<Player> players;
 	ArrayList<Role> townRoles;
 	ArrayList<Role> mafiaRoles;

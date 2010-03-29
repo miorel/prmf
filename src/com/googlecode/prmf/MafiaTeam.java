@@ -1,9 +1,10 @@
 package com.googlecode.prmf;
+
 import java.util.LinkedList;
 
 class MafiaTeam extends Team{
-	String name;
-	LinkedList<Player> list;
+	String name; //TODO default visibility is almost as bad as public
+	LinkedList<Player> list; //TODO declare things as what they're used not as what they are
 	public MafiaTeam() {
 		name = "MafiaTeam";
 		list = new LinkedList<Player>();
@@ -25,8 +26,7 @@ class MafiaTeam extends Team{
 		// TODO could also do nonMafia <= mafia, in fact that might be more intuitive
 	}
 	
-	public boolean contains(Player player)
-	{
+	public boolean contains(Player player) {
 		return list.contains(player);
 	}
 }
