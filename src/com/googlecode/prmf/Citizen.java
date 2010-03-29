@@ -1,7 +1,9 @@
 package com.googlecode.prmf;
-class Citizen extends Role{
+
+class Citizen extends Role {
 	static String name;
 	static Team team;
+
 	public Citizen(Team nteam) {
 		name = "citizen";
 		team = nteam;
@@ -9,5 +11,7 @@ class Citizen extends Role{
 		// whereas nteam is an instance variable
 		// this seems bad
 	}
-	public void nightAction(Player target) {}
+
+	public void nightAction(Player target) {
+	}
 }

@@ -1,5 +1,7 @@
 package com.googlecode.prmf.starter;
 
+// TODO please only import things you actually use.
+// Press Ctrl+Shift+O to have Eclipse fix this for you.
 import java.io.*;
 import java.util.*;
 import com.googlecode.prmf.*;
@@ -19,7 +21,7 @@ public class Main {
 			System.out.println("oops");
 		}
 		
-		Communicator.setPrintStream(Connection.ps);
+		Communicator.getInstance().setPrintStream(Connection.ps);
 		
 		try
 		{
@@ -38,16 +40,14 @@ public class Main {
 		//System.out.println("**JOINED CHANNEL");
 		Connection.ps.println("PRIVMSG #UFPT :HELLO I AM MAFAIA BOTT");
 		
-		while(in.hasNextLine())
-		{
+		while(in.hasNextLine()) {
 			String line = in.nextLine();
 			
 			String[] msg = line.split(" ",4);
-			String user = "#UFPT";
+			String user = "#UFPT"; // TODO why is this uppercase?
 			
-			if(msg[0].indexOf("!")>1)
+			if(msg[0].indexOf("!") > 1)
 				user = msg[0].substring(1,msg[0].indexOf("!"));
-			
 			
 			if(msg.length >= 4 && msg[3].toLowerCase().equals(":!mafia"))
 			{

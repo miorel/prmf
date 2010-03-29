@@ -1,5 +1,5 @@
 package com.googlecode.prmf;
-class Cop extends Role{
+class Cop extends Role{ // TODO you're allowed to have empty lines in your code
 	static String name;
 	static Team team;
 	public Cop(Team nteam) {

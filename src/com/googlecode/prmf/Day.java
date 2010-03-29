@@ -1,7 +1,9 @@
 package com.googlecode.prmf;
 
-//TODO press Ctrl+Shift+O to have Eclipse make imports nice for you.
+// TODO press Ctrl+Shift+O to have Eclipse make imports nice for you.
 import java.util.*;
+
+// TODO everything in the java.lang package is automatically imported, the next line may be removed.
 import java.lang.Thread;
 import java.io.*;
 import com.googlecode.prmf.starter.*;

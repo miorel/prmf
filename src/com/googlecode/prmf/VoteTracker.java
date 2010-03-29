@@ -8,15 +8,14 @@ public class VoteTracker {
 	int numberOfPlayers;
 	Player[] players;
 	
-	public VoteTracker(Player[] players){
+	public VoteTracker(Player[] players) {
 		this.players = players;
 		notVoting = players.length;
 		numberOfPlayers = players.length;
 		noLynchVotes = 0;
 	}
 	
-	public void status()
-	{
+	public void status() {
 		String toPrint = "";
 		for (int i=0;i<numberOfPlayers;++i)
 		{

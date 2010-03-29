@@ -8,6 +8,7 @@ public class Pregame {
 	
 	InputStream is;
 	String startName;
+	
 	ArrayList<Player> players;
 	ArrayList<Role> townRoles;
 	ArrayList<Role> mafiaRoles;
@@ -106,6 +107,7 @@ public class Pregame {
 
 	public Player[] getPlayerList()
 	{
+		//TODO 
 		return (Player[])players.toArray();
 	}
 }
