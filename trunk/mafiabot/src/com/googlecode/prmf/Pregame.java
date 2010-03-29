@@ -40,23 +40,37 @@ public class Pregame {
 				user = msg[0].substring(1,msg[0].indexOf("!"));
 			
 			String destination = msg[2];
-			if(msg[3].equals(":!start") && user.equals(startName))		
+			if(msg[3].toLowerCase().equals(":!start") && user.equals(startName))		
 				break;
 				
-			if(msg[3].equals(":!join"))
+			//TODO add an !end command that will cancel the current game
+			if(msg[3].toLowerCase().equals(":!join"))
 			{
-				players.add(new Player(user));
-				Communicator.getInstance().sendMessage(destination, user + " has joined the game!");
+				Player temp = new Player(user);
+				int index = players.indexOf(temp);
+				System.out.println(index);
+				if(index == -1)
+				{
+					players.add(new Player(user));
+					Communicator.getInstance().sendMessage(destination, user + " has joined the game!");
+				}
+				else
+					Communicator.getInstance().sendMessage(destination, user + " has already joined the game!");
 			}
 			
-			if(msg[3].equals(":!quit"))
+			if(msg[3].toLowerCase().equals(":!quit"))
 			{
-				for(int a = 0; a < players.size(); ++a)
+				Player temp = new Player(user);
+				int index = players.indexOf(temp);
+				System.out.println(index);
+				if(index == -1)
+					Communicator.getInstance().sendMessage(destination, user + " is not part of the game!");
+				else
 				{
-					Player temp = players.get(a);
-					if(temp.name.equals(user))
-						players.remove(a);
+					players.remove(index);
+					Communicator.getInstance().sendMessage(destination, user + " has quit the game!");
 				}
+				
 			}	
 		}
 		
@@ -90,8 +104,8 @@ public class Pregame {
 		
 	}
 
-	public ArrayList<Player> getPlayerList()
+	public Player[] getPlayerList()
 	{
-		return players;
+		return (Player[])players.toArray();
 	}
 }
