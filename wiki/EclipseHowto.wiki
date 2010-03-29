@@ -20,9 +20,16 @@ Here's my accelerated guide to setting up Eclipse to work with our version contr
 *How to fix strange compile errors*
 Many of us have had the problem of our Scanner class not being recognized. This is happening because Eclipse doesn't default to the newest JRE we have -- in our case it's using 1.5 when it should be using 1.6. Thankfully we have a fix! For the CISE computers:
 
-* In the command prompt, type "which java". This should give you the directory path to the JRE. Unfortunately, this is most likely a shortcut. The real java should have folder /jre/ in its path 
-* Until you get to the directory with /jre/ in the path, type "ls -l <path>", where path is the path you got in the previous step. You should get another path-- if it's the one with JRE, proceed, else repeat the process with the new path until you get the right one.
-* Copy the path up to /jre and open Eclipse.
-* In Eclipse, choose Projects --> Java Build Path --> Libraries --> Installed JREs --> Add, followed by pasting the URL into the home directory. hit OK, delete the old one and select the new one, then make it workspace default and you are done!
+  * In the command prompt, type "which java". This should give you the directory path to
+the JRE. Unfortunately, this is most likely a shortcut. The real java should have folder
+/jre/ in its path 
+  * Until you get to the directory with /jre/ in the path, type "ls -l path", where
+path is the path you got in the previous step. You should get another path-- if it's the
+one with JRE, proceed, else repeat the process with the new path until you get the right
+one.
+  * Copy the path up to /jre and open Eclipse.
+  * In Eclipse, choose Projects --> Java Build Path --> Libraries --> Installed JREs -->
+Add, followed by pasting the URL into the home directory. hit OK, delete the old one and
+select the new one, then make it workspace default and you are done!
 
 If you aren't on a CISE computer: figure it out yourself :|
