@@ -21,16 +21,15 @@ public class TimerThread  implements Runnable{
 	{
 		this(inputThread, 3*60000);
 	}
+	
 	public void run()
 	{
 		try {
-			
 			Thread.sleep(daytime);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//TODO this won't actually do anything unless the inputThread knows
-		// to check for interrupts.
+
 		inputThread.interrupt();
 	}
 }
