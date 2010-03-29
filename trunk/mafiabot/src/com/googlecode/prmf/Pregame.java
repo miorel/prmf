@@ -107,7 +107,6 @@ public class Pregame {
 
 	public Player[] getPlayerList()
 	{
-		//TODO 
-		return (Player[])players.toArray();
+		return players.toArray(new Player[0]);
 	}
 }

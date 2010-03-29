@@ -27,12 +27,6 @@ class MafiaTeam extends Team{
 	
 	public boolean contains(Player player)
 	{
-		// TODO list already has a contains() method ;)
-		for (Player p : list)
-		{
-			if (player.equals(p))
-				return true;
-		}
-		return false;
+		return list.contains(player);
 	}
 }
