@@ -2,19 +2,19 @@ package com.googlecode.prmf;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 import com.googlecode.prmf.starter.Communicator;
 import com.googlecode.prmf.starter.Connection;
 
 public class Pregame {
-	String startName;
 	
-	//TODO default visibility is almost as bad as public
-	ArrayList<Player> players;
-	ArrayList<Role> townRoles;
-	ArrayList<Role> mafiaRoles;
-	ArrayList<Role> roles; 
+	private String startName;	
+	private List<Player> players;
+	private List<Role> townRoles;
+	private List<Role> mafiaRoles;
+	private List<Role> roles; 
 	
 	public Pregame(String startName)
 	{
@@ -53,7 +53,7 @@ public class Pregame {
 				
 				String destination = msg[2];
 				String command = msg[3].toLowerCase();
-				if(command.equals(":!start") && user.equals(startName))		
+				if(command.equals(":!start") && user.equals(new Player(startName)))		
 					break;
 					
 				if(command.equals(":!join"))

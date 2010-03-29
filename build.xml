@@ -1,25 +1,26 @@
 <project>
 
     <target name="clean">
-        <delete dir="build"/>
+        <delete dir="bin"/>
+    	<delete dir="dist"/>
     </target>
 
     <target name="compile">
-        <mkdir dir="build/classes"/>
-        <javac srcdir="src" destdir="build/classes"/>
+        <mkdir dir="bin"/>
+        <javac srcdir="src" destdir="bin"/>
     </target>
 
-    <target name="jar">
-        <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/MafiaBot.jar" basedir="build/classes">
+    <target name="jar" depends="compile">
+        <mkdir dir="dist"/>
+        <jar destfile="dist/MafiaBot.jar" basedir="bin">
             <manifest>
                 <attribute name="Main-Class" value="com.googlecode.prmf.starter.Main"/>
             </manifest>
         </jar>
     </target>
 
-    <target name="run">
-        <java jar="build/jar/MafiaBot.jar" fork="true"/>
+    <target name="run" depends="jar">
+        <java jar="dist/MafiaBot.jar" fork="true"/>
     </target>
 
 </project>
