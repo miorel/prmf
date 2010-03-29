@@ -55,7 +55,7 @@ public class Pregame {
 				String command = msg[3].toLowerCase();
 				if(command.equals(":!start"))
 				{
-					if(user.equals(new Player(startName)))		
+					if(user.equals(startName))		
 					{
 						Communicator.getInstance().sendMessage(destination, "The game has begun!");
 						break;
