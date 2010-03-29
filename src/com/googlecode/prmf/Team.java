@@ -1,7 +1,10 @@
 package com.googlecode.prmf;
 
+import java.util.List;
+
 abstract class Team {
 	String name; //TODO default visibility is almost as bad as public
+	List<Player> list;
 	// TODO why is an array of players passed as an argument?
 	public boolean hasWon(Player[] players)
 	{
@@ -10,7 +13,6 @@ abstract class Team {
 	}
 	public boolean contains(Player player)
 	{
-		//TODO functionality
-		return false;
+		return list.contains(player);
 	}
 }
