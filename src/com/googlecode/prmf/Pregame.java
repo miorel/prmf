@@ -1,11 +1,13 @@
 package com.googlecode.prmf;
 
-import java.util.*;
-import java.io.*; 
-import com.googlecode.prmf.starter.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+import com.googlecode.prmf.starter.Communicator;
+import com.googlecode.prmf.starter.Connection;
 
 public class Pregame {
-	InputStream is; //TODO I/O operations should be isolated from the rest of the program
 	String startName;
 	
 	//TODO default visibility is almost as bad as public
@@ -16,13 +18,12 @@ public class Pregame {
 	
 	public Pregame(String startName)
 	{
-		this.is = Connection.is;
 		this.startName = startName;
 	}
 
 	public void startGame()
 	{
-		Scanner in = new Scanner(is);
+		Scanner in = new Scanner(Connection.is);
 		players = new ArrayList<Player>();
 		townRoles = new ArrayList<Role>();
 		mafiaRoles = new ArrayList<Role>();
