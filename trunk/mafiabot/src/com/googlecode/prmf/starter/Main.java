@@ -1,10 +1,8 @@
 package com.googlecode.prmf.starter;
 
-// TODO please only import things you actually use.
-// Press Ctrl+Shift+O to have Eclipse fix this for you.
-import java.io.*;
-import java.util.*;
-import com.googlecode.prmf.*;
+import java.util.Scanner;
+
+import com.googlecode.prmf.Game;
 
 public class Main {
 	static Connection conn;
@@ -25,7 +23,7 @@ public class Main {
 		
 		try
 		{
-		in = new Scanner(Connection.is);
+			in = new Scanner(Connection.is);
 		}
 		catch(Exception e)
 		{
@@ -51,6 +49,7 @@ public class Main {
 			
 			if(msg.length >= 4 && msg[3].toLowerCase().equals(":!mafia"))
 			{
+				Communicator.getInstance().sendMessage(user,"MAFAI GAM STARTERED");
 				Game game = new Game(msg[1]);
 				game.startGame();
 			}
