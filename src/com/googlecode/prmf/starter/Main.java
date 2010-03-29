@@ -37,7 +37,7 @@ public class Main {
 		//System.out.println("**ENTERED USER LOGIN");
 		Connection.ps.println("JOIN " + channel);
 		//System.out.println("**JOINED CHANNEL");
-		Connection.ps.println("PRIVMSG "+channel+" :HELLO I AM MAFAIA BOTT");
+		Communicator.getInstance().sendMessage(channel, "Hello, I am MafiaBot.");
 		
 		while(in.hasNextLine()) {
 			String line = in.nextLine();
@@ -48,9 +48,9 @@ public class Main {
 			if(msg[0].indexOf("!") > 1)
 				user = msg[0].substring(1,msg[0].indexOf("!"));
 			
-			if(msg.length >= 4 && msg[3].toLowerCase().equals(":!mafia"))
+			if(msg.length >= 4 && msg[3].toLowerCase().equalsIgnoreCase(":!mafia"))
 			{
-				Communicator.getInstance().sendMessage(channel,"MAFAI GAM STARTERED");
+				Communicator.getInstance().sendMessage(channel,"Mafia game started!");
 				Game game = new Game(user);
 				game.startGame();
 			}
