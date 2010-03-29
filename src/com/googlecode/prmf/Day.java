@@ -1,12 +1,9 @@
 package com.googlecode.prmf;
 
-// TODO press Ctrl+Shift+O to have Eclipse make imports nice for you.
-import java.util.*;
+import java.io.InputStream;
+import java.util.Scanner;
 
-// TODO everything in the java.lang package is automatically imported, the next line may be removed.
-import java.lang.Thread;
-import java.io.*;
-import com.googlecode.prmf.starter.*;
+import com.googlecode.prmf.starter.Communicator;
 
 public class Day extends Thread{
 		Thread input;
@@ -15,7 +12,7 @@ public class Day extends Thread{
         Player[] players;
         boolean killed; //if anyone was killed the previous night
         String dead; // who was killed , if anyone;
-        Scanner in; // Should be a scanner which is from main class.
+        Scanner in;
 
         public Day(int time, Player[] players,boolean killed, String dead, InputStream in)
         {
@@ -76,8 +73,8 @@ public class Day extends Thread{
 				if(players[i].name.equals(name))
 				{
 				    ret = i;
-				    // TODO you don't want to keep searching if you've found the correct one  
-				}
+				    break;
+				    }
 		    }
 		    return ret;
 		}
