@@ -1,8 +1,10 @@
 package com.googlecode.prmf;
 import java.util.LinkedList;
+import java.util.List;
+
 class JesterTeam extends Team {
 	String name; //TODO default visibility is almost as bad as public
-	LinkedList<Player> list; //TODO declare things as what they're used not as what they are
+	List<Player> list;
 
 	public JesterTeam() {
 		name = "JesterTeam";

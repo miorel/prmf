@@ -10,6 +10,6 @@ class Doctor extends Role{
 		// this seems bad
 	}
 	public void nightAction(Player target) {
-		target.saved = true;
+		target.wasSaved = true;
 	}
 }
