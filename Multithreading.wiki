@@ -1,0 +1,78 @@
+#labels Phase-Implementation,Phase-Requirements
+= Multithreading = 
+We need to create additional threads when we need something to be running side-by-side, such as our input and our game.
+
+There are 2 ways to go about this task, extending Thread or implementing Runnable.
+
+If we create a new Threaded object
+{{{
+public class ML extends Thread
+{
+  public void run()
+  {
+     while( //condition ) {}
+  }
+}
+}}}
+
+By creating an object of ML we can have the contents of its run() method executing in a separate thread.
+
+{{{
+public class Main
+{
+  public static void main(String[] args)
+  {
+     ML multithread = new ML();
+     ML.start();
+     System.out.println("ML Thread is now running alongside main thread");
+  }
+}
+}}}
+
+Should be noted that the 'main thread' will end once it reaches end of block but the ML thread will still be running.
+
+To stop a thread we must use the interrupt() method. The interrupt method sends a flag to the thread telling it that it has been signaled to stop. note that it will not stop unless the thread is actively checking for interrupts.
+
+We will use both methods of threading here to show interrupts, its also used in the TimerThread class in mafiabot.
+
+{{{
+public class Worker extends Thread
+{
+  InterrupterThread IT;
+  public Worker()
+  {
+     IT = new InterrupterThread(this);
+     IT.start();
+     this.start();
+     System.out.println("Both threads are now running alongside each other");
+  }
+
+  public void run()
+  {
+     //will continue to do this loop till someone interrupts it
+     while( !this.isInterrupted() )
+     {}
+  }
+}
+
+private class InterrupterThread implements Runnable
+{
+  Thread myThread, workerThread;
+  public InterrupterThread(Thread workerThread)
+  {
+     myThread = new Thread(this);
+     this.workerThread = workerThread;
+     myThread.start();
+  }
+ 
+  public void run()
+  {
+     //Do all the work you need to handle, possible Sleep like timerThread in mafiabot.
+
+     workerThread.interrupt();
+  }
+}
+
+}}}
+
+InterrupterThread's run method will flag interrupt on WorkerThread, and workerThread's run method will exit the while and also end its run method thereafter.
