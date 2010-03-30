@@ -58,7 +58,7 @@ public class Worker extends Thread
 private class InterrupterThread implements Runnable
 {
   Thread myThread, workerThread;
-  public InterrupterThread(Worker workerThread)
+  public InterrupterThread(Thread workerThread)
   {
      myThread = new Thread(this);
      this.workerThread = workerThread;
