@@ -1,7 +1,7 @@
 // TODO there is a compilation error on the next line
 package com.googlecode.prmf;
 
-import com.googlecode.prmf.starter.Communicator;
+
 
 public class Timer {
 	// TODO having multiple units of time seems like a poor design choice
@@ -9,6 +9,7 @@ public class Timer {
 	long lengthInMillis;
 	long startTime; // TODO default visibility is almost as bad as public
 	
+	/*
 	Timer(int length)
 	{
 		lengthInMinutes = length;
@@ -29,11 +30,12 @@ public class Timer {
 		long elapsed = curTime - startTime;
 		if (elapsed > lengthInMillis)
 		{
-			Communicator.getInstance().sendMessage("channel", "Day is over!");
+			inputThread.sendMessage("channel", "Day is over!");
 			return true;
 		}
 		long secondsLeft = lengthInMinutes*60 - (elapsed/1000);
-		Communicator.getInstance().sendMessage("channel", "There are about " + secondsLeft + " seconds left in the day.");
+			inputThread.sendMessage("channel", "There are about " + secondsLeft + " seconds left in the day.");
 		return false;
 	}
+	*/
 }

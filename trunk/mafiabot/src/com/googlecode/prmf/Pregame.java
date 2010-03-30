@@ -3,105 +3,93 @@ package com.googlecode.prmf;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
-import com.googlecode.prmf.starter.Communicator;
-import com.googlecode.prmf.starter.Connection;
+import com.googlecode.prmf.starter.InputThread;
 
 public class Pregame {
 	
+	private InputThread inputThread;
 	private String startName;	
 	private List<Player> players;
 	private List<Role> townRoles;
 	private List<Role> mafiaRoles;
 	private List<Role> roles; 
 	
-	public Pregame(String startName)
+	public Pregame(String startName, InputThread inputThread)
 	{
 		this.startName = startName;
-	}
-
-	//TODO change return type to ENUM for day-start, night-start
-	public void startGame()
-	{
-		Scanner in = new Scanner(Connection.is);
 		players = new ArrayList<Player>();
 		townRoles = new ArrayList<Role>();
 		mafiaRoles = new ArrayList<Role>();
 		roles = new ArrayList<Role>();
-		
-		
-		//joining the game	
-		
-		while(true) //break when the game starts
-		{
-			String line = in.nextLine();
+		this.inputThread = inputThread;
+	}
+
+	//TODO change return type to ENUM for day-start, night-start
+	public void receiveMessage(String line)
+	{
 			String[] msg = line.split(" ", 4);
 			String user = "#UFPT";
-			if(msg[0].equals("PING"))
-			{
-				Connection.ps.println("PONG " + msg[1]);
-			}
+
 			//this is kind of a nasty solution...
-			else
+
+			if(msg[0].indexOf("!")>1)
+				user = msg[0].substring(1,msg[0].indexOf("!"));
+			
+			Player temp = new Player(user);
+			int index = players.indexOf(temp);
+			
+			String destination = msg[2];
+			String command = msg[3].toLowerCase();
+			if(command.equalsIgnoreCase(":!start"))
 			{
-				if(msg[0].indexOf("!")>1)
-					user = msg[0].substring(1,msg[0].indexOf("!"));
-				
-				Player temp = new Player(user);
-				int index = players.indexOf(temp);
-				
-				String destination = msg[2];
-				String command = msg[3].toLowerCase();
-				if(command.equalsIgnoreCase(":!start"))
+				if(user.equals(startName))		
 				{
-					if(user.equals(startName))		
-					{
-						Communicator.getInstance().sendMessage(destination, "The game has begun!");
-						break;
-					}
-					else
-						Communicator.getInstance().sendMessage(destination, "Only " + startName + " can start the game!");
-				}	
-				if(command.equalsIgnoreCase(":!join"))
-				{
-					System.out.println(index);
-					if(index == -1)
-					{
-						players.add(new Player(user));
-						Communicator.getInstance().sendMessage(destination, user + " has joined the game!");
-					}
-					else
-						Communicator.getInstance().sendMessage(destination, user + " has already joined the game!");
+					inputThread.sendMessage(destination, "The game has begun!");
+					return;
 				}
-				
-				if(command.equalsIgnoreCase(":!quit"))
+				else
+					inputThread.sendMessage(destination,  "Only " + startName + " can start the game!");
+			}	
+			if(command.equalsIgnoreCase(":!join"))
+			{
+				System.out.println(index);
+				if(index == -1)
 				{
-					System.out.println(index);
-					if(index == -1)
-						Communicator.getInstance().sendMessage(destination, user + " is not part of the game!");
-					else
-					{
-						players.remove(index);
-						Communicator.getInstance().sendMessage(destination, user + " has quit the game!");
-					}
-					
-				}	
-				
-				if (command.equalsIgnoreCase(":!end"))
-				{
-					if (user.equals(startName))
-					{
-						Communicator.getInstance().sendMessage(destination, user + " has ended the game. Aww :(");
-						return;
-						//does this acceptably end the game? I think so but not positive
-					}
-					else
-						Communicator.getInstance().sendMessage(destination, "Only " + startName + " can end the game!");
+					players.add(new Player(user));
+					inputThread.sendMessage(destination,  user + " has joined the game!");
 				}
+				else
+					inputThread.sendMessage(destination,  user + " has already joined the game!");
 			}
-		}
+			
+			if(command.equalsIgnoreCase(":!quit"))
+			{
+				System.out.println(index);
+				if(index == -1)
+					inputThread.sendMessage(destination, user + " is not part of the game!");
+				else
+				{
+					players.remove(index);
+					inputThread.sendMessage(destination,  user + " has quit the game!");
+				}
+				
+			}	
+			
+			if (command.equalsIgnoreCase(":!end"))
+			{
+				if (user.equals(startName))
+				{
+					inputThread.sendMessage(destination,  user + " has ended the game. Aww :(");
+					return;
+					//does this acceptably end the game? I think so but not positive
+				}
+				else
+					inputThread.sendMessage(destination,  "Only " + startName + " can end the game!");
+			}
 		
+	
+	
 		//assigning roles
 		int numMafia = players.size()/3;
 		//create the Mafia team
@@ -128,7 +116,7 @@ public class Pregame {
 		for(int a = 0; a < players.size(); ++a)
 		{
 			players.get(a).role = roles.get(a);
-			Communicator.getInstance().sendMessage(players.get(a).name, "your role is " + roles.get(a).name);
+			inputThread.sendMessage(players.get(a).name, "your role is " + roles.get(a).name);
 		}
 		
 		//TODO tell game that a day or night needs to start? should this method have a return type?

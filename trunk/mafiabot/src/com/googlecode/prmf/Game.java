@@ -1,29 +1,50 @@
 package com.googlecode.prmf;
 
-public class Game {
-	//TODO default visibility is almost as bad as public
-	Player[] players;
-	String gameStarter;
-	int numMafia =1;
-	boolean dayStart = true;
+import com.googlecode.prmf.starter.InputThread;
+
+public class Game{
+	private Player[] players;
+	private String gameStarter;
+	private int numMafia =1;
+	private boolean dayStart = true;
+	private InputThread inputThread;
+	Pregame pregame;
+	Day day;
+	Night night;
 	
-	public Game(String gameStarter)	{
+	public Game(String gameStarter, InputThread inputThread)	{
 		this.gameStarter = gameStarter;
-		
+		this.inputThread = inputThread;
+		pregame = new Pregame(gameStarter , inputThread);
+		// TODO: add day and night constructors
 	}
 
-	public void startGame() {
-		Pregame pregame = new Pregame(gameStarter);
-		pregame.startGame();
-		players = pregame.getPlayerList();
-		Day day = new Day(players);
-		Night night = new Night(players);
+	public void pregameMessage(String line) 
+	{
+		receiveMessage(line);
 	}
 	
-	public Game(String gameStarter, boolean dayStart, int numMafia)
+	public void dayMessage(String line)
 	{
-		this(gameStarter);
+		
+	}
+	
+	public void nightMessage(String line)
+	{
+		
+	}
+	public void receiveMessage(String line)
+	{
+		//TODO: send to proper object depending on 'state', instead of sending to pregame (temporary)
+		pregameMessage(line);
+	}
+	
+	public Game(String gameStarter, InputThread inputThread, boolean dayStart, int numMafia)
+	{
+		this(gameStarter, inputThread);
 		this.dayStart = dayStart;
 		this.numMafia = numMafia;
 	}
+	
+	
 }

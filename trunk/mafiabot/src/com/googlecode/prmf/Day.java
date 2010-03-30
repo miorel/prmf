@@ -1,9 +1,6 @@
 package com.googlecode.prmf;
 
-import java.util.Scanner;
-
-import com.googlecode.prmf.starter.Communicator;
-import com.googlecode.prmf.starter.Connection;
+import com.googlecode.prmf.starter.InputThread;
 
 public class Day extends Thread{
 		Thread input;
@@ -12,14 +9,13 @@ public class Day extends Thread{
         Player[] players;
         boolean killed; //if anyone was killed the previous night
         String dead; // who was killed , if anyone;
-        Scanner in;
-
+        InputThread inputThread;
         
-        public Day(Player[] players)
+        public Day(Player[] players, InputThread inputThread)
         {
-        		this.in = new Scanner(Connection.is);
         		tracker = new VoteTracker(players);
             	this.players = players;
+            	this.inputThread = inputThread;
         }
         
         public void startDay(boolean killed, String dead)
@@ -31,39 +27,30 @@ public class Day extends Thread{
 			input.start(); 
         }
         
-        public void run()
+        public void receiveMessage(String line)
         {
-        	Communicator.getInstance().sendMessage( "#UFPT","Morning welcome message");
+        	inputThread.sendMessage("#UFPT","Morning welcome message");
         	
         	if(killed)
-        		System.out.println(dead+ " was found dead in his/her home this morning!!");
+        		inputThread.sendMessage("#UFPT",dead+ " was found dead in his/her home this morning!!");
         	
-        	while(in.hasNextLine())
-        	{
-        		
-            	if(Thread.interrupted())
-            	{
-            		Communicator.getInstance().sendMessage( "#UFPT","The day has ended.");
-            		break;
-            	}
-            	
         		String speaker = "testPlayer"; // HOW TO GET SPEAKER? .. must read up on..
-        		String instruc = in.nextLine();
+        		String instruc = line;
         		int returnCode;
         		if( (returnCode = parseMessage(instruc, speaker)) >= 0)
         		{
-        			Communicator.getInstance().sendMessage( "#UFPT",players[returnCode] + " was lynched :(");
-        			break;
+        			inputThread.sendMessage("#UFPT",players[returnCode] + " was lynched :(");
+        			return;
         		}
         		else if(returnCode == -2)
         		{
-        			Communicator.getInstance().sendMessage( "#UFPT","the majority has voted for no lynching today!");
-        			break;
+        			inputThread.sendMessage("#UFPT","the majority has voted for no lynching today!");
+        			return;
         		}
         		else if(returnCode == -1)
         		{
-        			Communicator.getInstance().sendMessage( "#UFPT","The town was not able to reach a concensus.");
-        			break;
+        			inputThread.sendMessage("#UFPT", "The town was not able to reach a concensus.");
+        			return;
         		}
         		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
         		
@@ -72,7 +59,7 @@ public class Day extends Thread{
         		
         	}
 
-        }
+        
         
 		private int searchPlayers(String name)
 		{

@@ -20,8 +20,5 @@ public class Communicator {
 		ps = psin;
 	}
 	
-	public void sendMessage(String destination, String message) 
-	{
-		ps.println("PRIVMSG "+destination+" :"+message);
-	}
+
 }
