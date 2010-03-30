@@ -1,10 +1,10 @@
 package com.googlecode.prmf.starter;
 
-//TODO organize imports; Eclipse can do this automatically for you with Ctrl+Shift+O
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 public class Connection {
 	// TODO why are these static and public?
