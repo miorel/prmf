@@ -1,6 +1,6 @@
 #labels Phase-Implementation,Phase-Requirements
 = Multithreading = 
-We need to create additional threads when we need something to be running side-by-side, such as our input and output.
+We need to create additional threads when we need something to be running side-by-side, such as our input and our game.
 
 There are 2 ways to go about this task, extending Thread or implementing Runnable.
 
