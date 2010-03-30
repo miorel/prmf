@@ -40,7 +40,7 @@ public class Pregame {
 			String user = "#UFPT";
 			if(msg[0].equals("PING"))
 			{
-				//TODO add PONG functionailty
+				Connection.ps.println("PONG " + msg[1]);
 			}
 			//this is kind of a nasty solution...
 			else
@@ -128,6 +128,7 @@ public class Pregame {
 		for(int a = 0; a < players.size(); ++a)
 		{
 			players.get(a).role = roles.get(a);
+			Communicator.getInstance().sendMessage(players.get(a).name, "your role is " + roles.get(a).name);
 		}
 		
 		//TODO tell game that a day or night needs to start? should this method have a return type?
