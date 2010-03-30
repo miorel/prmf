@@ -5,12 +5,12 @@ class Player
 	// TODO default visibility is almost as bad as public
 	String name;
 	Role role;
-	// TODO the variables below should have consistent naming
+	
 	boolean isAlive;
-	boolean mafiaTarget;
-	boolean saved;
-	boolean checked;
-	boolean vigged;
+	boolean isMafiaTarget;
+	boolean wasSaved;
+	boolean wasChecked;
+	boolean wasVigged;
 	boolean wasLynched;
 	int votedFor;
 	//ID is the player's position in the list of players

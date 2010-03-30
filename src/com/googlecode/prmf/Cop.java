@@ -11,6 +11,6 @@ class Cop extends Role{
 		// this seems bad
 	}
 	public void nightAction(Player target) {
-		System.out.println(target.checked);
+		System.out.println(target.wasChecked);
 	}
 }

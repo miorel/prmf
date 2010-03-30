@@ -10,6 +10,6 @@ class Vigilante extends Role{
 		// this seems bad
 	}
 	public void nightAction(Player target) {
-		target.vigged = true;
+		target.wasVigged = true;
 	}
 }

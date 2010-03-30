@@ -10,6 +10,6 @@ class Mafia extends Role{
 		// this seems bad
 	}
 	public void nightAction(Player target) {
-		target.mafiaTarget = true;
+		target.isMafiaTarget = true;
 	}
 }
