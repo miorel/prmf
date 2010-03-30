@@ -8,12 +8,14 @@ public class Main {
 	static Connection conn;
 	static Scanner in;
 	static String channel = "#UFPT";
+	static String server = "irc.freenode.net";
+	static int port = 6667;
 	
 	public static void main(String[] arg) 
 	{
 		try
 		{
-			Connection.makeConnection("irc.freenode.net", 6667);
+			Connection.makeConnection(server, port);
 		}
 		catch(Exception e)
 		{
@@ -39,7 +41,11 @@ public class Main {
 		//System.out.println("**JOINED CHANNEL");
 		Communicator.getInstance().sendMessage(channel, "Hello, I am MafiaBot.");
 		
-		while(in.hasNextLine()) {
+		InputThread inputThread = new InputThread(server, port);
+		inputThread.start();
+		
+		while(in.hasNextLine()) 
+		{
 			String line = in.nextLine();
 			
 			String[] msg = line.split(" ",4);
@@ -54,8 +60,6 @@ public class Main {
 				Game game = new Game(user);
 				game.startGame();
 			}
-			
-			System.out.println(line);
 		}
 	}
 }
