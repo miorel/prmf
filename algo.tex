@@ -1,0 +1,1549 @@
+%
+% This be an algorithm packet!
+%
+% Prepared by:
+%     Miorel-Lucian Palii
+%
+% With contributions from:
+%     Dmitri Dranishnikov
+%     Nicholas James
+%     Joseph Thuemler
+%     ...and other members of the University of Florida Programming Team
+%
+% Made possible by:
+%     readers like you!
+%
+
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[left=0.7in,right=0.7in,top=0.7in,bottom=0.7in,nohead]{geometry}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fmtcount}
+\usepackage{datetime}
+\usepackage[pdftex]{graphicx}
+ 
+\lstset{frame=single,language=Java,tabsize=4,basicstyle=\ttfamily}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{icpc.png}\\[2cm]
+\textsc{\LARGE University of Florida}\\[0.5cm]
+\textsc{\Large Programming Team}\\[0.5cm]
+ 
+\rule{\linewidth}{0.5mm}\\[0.4cm]
+{\huge \bfseries Algorithm Packet}\\[0.2cm]
+\rule{\linewidth}{0.5mm}\\[2cm]
+
+``We know the game and we're gonna play it.''\\{\em Rick Astley}
+\\[1cm]
+``RTFP!''\\{\em Anonymous}
+
+\vfill
+{\large Last updated: \usdate\today \ \ampmtime}
+\end{center}
+
+\end{titlepage}
+
+\tableofcontents
+
+\newpage\section{Regular expressions}
+
+\subsection{Syntax summary}
+
+See the API page of \verb/java.util.regex.Pattern/ for the complete syntax.\\
+
+\noindent \begin{tabular*}{\textwidth}{|c|l|}
+\hline
+Construct & Description \\
+\hline
+\verb/x/ & The literal character \verb/x/ \\
+\verb/\\/ & The backslash character \\
+\verb/\t/ & The tab character (\verb/\u0009/) \\
+\verb/\n/ & The newline (line feed) character (\verb/\u000A/) \\
+\verb/\r/ & The carriage-return character (\verb/\u000D/) \\
+\verb/\0n/, \verb/\0nn/, \verb/\0mnn/ & The character with the specified octal value ($0 \le m \le 3$, $0 \le n \le 7$) \\
+\verb/\xhh/, \verb/\uhhhh/ & The character with the specified hexadecimal value \\
+\verb/[abc]/ & Any of the characters in brackets (here \verb/a/, \verb/b/, or \verb/c/)\\
+\verb/[^abc]/ & Any character not in the brackets \\
+\verb/[a-z]/ & Any character in the range (inclusive) \\
+\verb/[a-zA-Z]/ & Any character in the union \\
+\verb/[a-z&&[d-f]]/ & Any character in the intersection (here \verb/d/, \verb/e/, or \verb/f/) \\
+\verb/[a-z&&[^b-d]]/ & Any character in the subtraction (here \verb/a/ through \verb/z/, except for \verb/b/, \verb/c/, and \verb/d/) \\
+\verb/./ & Any character (except possibly line terminators) \\
+\verb/\d/ & A digit (\verb/[0-9]/) \\
+\verb/\D/ & A non-digit (\verb/[^0-9]/) \\
+\verb/\s/ & A whitespace character (\verb/[ \t\n\x0B\f\r]/) \\
+\verb/\S/ & A non-whitespace character (\verb/[^\s]/) \\
+\verb/\w/ & A word character (\verb/[a-zA-Z_0-9]/) \\
+\verb/\W/ & A non-word character (\verb/[^\w]/) \\
+\verb/^/ & The beginning of a line \\
+\verb/$/ & The end of a line \\
+\verb/\b/ & A word boundary \\
+\verb/\B/ & A non-word boundary \\
+\verb/X?/ & The pattern \verb/X/, once or not at all \\
+\verb/X*/ & The pattern \verb/X/, zero or more times \\
+\verb/X+/ & The pattern \verb/X/, one or more times \\
+\verb/X{n}/ & The pattern \verb/X/, exactly $n$ times \\
+\verb/X{n,}/ & The pattern \verb/X/, at least $n$ times \\
+\verb/X{n,m}/ & The pattern \verb/X/, at least $n$ but no more than $m$ times \\
+\verb/XY/ & The pattern \verb/X/ followed by the pattern \verb/Y/ \\
+\verb/X|Y/ & The pattern \verb/X/ or the pattern \verb/Y/ \\
+\verb/(X)/ & The pattern \verb/X/, as a capturing group \\
+\verb/(?:X)/ & The pattern \verb/X/, as a non-capturing group \\
+\verb/\1/, \verb/\2/, \verb/\3/, etc. & Whataver was matched by the $1$\textsuperscript{st}, $2$\textsuperscript{nd}, $3$\textsuperscript{rd} capturing group, etc. \\
+\verb/\/ & Matches nothing, but quotes the next character in the pattern \\
+\verb/\Q/ & Matches nothing, but quotes all characters until \verb/\E/ \\
+\verb/\E/ & Matches nothing, but ends quoting started by \verb/\Q/ \\
+\hline
+\end{tabular*}
+\pagebreak
+
+\subsection{How many backslashes?}
+
+One of the greatest annoyances of using regular expressions in Java is figuring out exactly how many backslashes you need. A good rule of thumb is that you need twice as many as there are in the syntax summary. That's because when you're writing code, you're not building the regular expression directly. You're building a \verb/String/ which gets compiled as a regular expression, and this adds another layer of character escaping. Therefore the following code checks if a \verb/String/ is equal to a {\em single} backslash:
+
+\begin{lstlisting}
+boolean isBackslash(String s) {
+	return s.matches("\\\\");
+}
+\end{lstlisting}
+
+\subsection{Examples}
+
+\subsubsection{Collapse whitespace}
+Tabs and newlines become single spaces. \\\verb/" Tigers   are       great!    "/ becomes \verb/"Tigers are great!"/.
+\begin{lstlisting}
+String collapseWhitespace(String text) {
+	return text.replaceAll("\\s+", " ").trim();
+}
+\end{lstlisting}
+
+\subsubsection{Find tigers!}
+The following is {\em not} an efficient way to check if ``tiger'' is a subsequence of some text, but you may find it useful for typing contests. It would even be able to find a ``tIgeR''! But there {\em is} one case when this would break. Can you spot it?
+\begin{lstlisting}
+boolean hasTiger(String text) {
+	return text.toLowerCase().matches(".*t.*i.*g.*e.*r.*");
+}
+\end{lstlisting}
+\noindent Answer: this code would break if the text spans multiple lines because the period doesn't match newlines by default. To account for that, you could just strip all whitespace.
+
+\subsubsection{Check for a valid e-mail address (not comprehensive)}
+\verb/"alice@example.com"/, \verb/"bob@subdomain.example.org"/, and \verb/"charlie_314159@example.edu"/ would all match. Note that the period has to be escaped (quoted) because it's a special character.
+\begin{lstlisting}
+boolean isValidEmail(String email) {
+	return email.matches("[a-z][a-z0-9_]*@[a-z]+(\\.[a-z]+)+");
+}
+\end{lstlisting}
+
+\subsubsection{Word count}
+This example demonstrates how to look at the capturing groups (basically, the expressions in parentheses) within a match. Capturing groups are numbered from left to right in the order of their starting parentheses. One thing to remember is that capturing groups are numbered starting at $1$. The zeroth capturing group will give you the entire pattern match. Below is a case-sensitive word count. You could do \verb/String word = m.group(1).toLowerCase();/ to make it case-insensitive.
+\begin{lstlisting}
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+Pattern wordPattern = Pattern.compile("([A-Za-z]+)");
+
+HashMap<String,Integer> wordCount(String text) {
+	HashMap<String,Integer> ret = new HashMap<String,Integer>();
+	Matcher m = wordPattern.matcher(text);
+	while(m.find()) {
+		String word = m.group(1); // grab a capturing group!
+		Integer count = ret.get(word);
+		if(count == null) count = 0;
+		ret.put(word, count + 1);
+	}
+	return ret;
+}
+\end{lstlisting}
+
+\subsubsection{Collapse duplicate characters}
+Capturing groups can be accessed within the same pattern with the \verb/\1/ syntax and within replacements with the \verb/$1/ syntax. This snippet transforms \verb/"Hello World! foo bar abbbccc"/ to \verb/"Helo World! fo bar abc"/. It also shows a nice trick for matching any character: \verb/[\s\S]/ means a whitespace character or a non-whitespace character, which is everything.
+\begin{lstlisting}
+String collapseDuplicates(String text) {
+	return text.replaceAll("([\\s\\S])\\1+", "$1");
+}
+\end{lstlisting}
+
+\subsubsection{Increment all integers in some text}
+This is a contrived example. I'm not sure why you'd ever need to do this (though programming contests ask some strange things). But this example {\em does} illustrate the \verb/appendReplacement()/ and \verb/appendTail()/ paradigm, which is used for complex replacement operations. As you might hope, this technique preserves anything that isn't matched as-is.
+\begin{lstlisting}
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+Pattern intPat = Pattern.compile("(-?\\d+)");
+
+String incrementIntegers(String text) {
+	StringBuffer buf = new StringBuffer();
+	Matcher m = intPat.matcher(text);
+	while(m.find()) {
+		int n = Integer.parseInt(m.group(1));
+		m.appendReplacement(buf, Integer.toString(n + 1));
+	}
+	m.appendTail(buf);
+	return buf.toString();
+}
+\end{lstlisting}
+
+\subsubsection{Check if an integer is even}
+You could accomplish the same by just looking at the last character. But, this code is arbitrary-precision and can handle negatives and leading zeros!
+\begin{lstlisting}
+boolean isEven(String number) {
+	return number.matches("-?\\d*[02468]");
+}
+\end{lstlisting}
+
+\subsubsection{Multiply by two}
+Behold yet another ``because I can'' example. All I need are the methods of the \verb/String/ class (though it'll be rather slow):
+\begin{lstlisting}
+String multiplyByTwo(String number) {
+	number = number.replaceAll("^0*", "0");
+	number = number.replaceAll("9", "i");
+	number = number.replaceAll("8", "g");
+	number = number.replaceAll("7", "e");
+	number = number.replaceAll("6", "c");
+	number = number.replaceAll("5", "a");
+	number = number.replaceAll("4", "8");
+	number = number.replaceAll("3", "6");
+	number = number.replaceAll("2", "4");
+	number = number.replaceAll("1", "2");
+	number = number.replaceAll("a", "z0");
+	number = number.replaceAll("c", "z2");
+	number = number.replaceAll("e", "z4");
+	number = number.replaceAll("g", "z6");
+	number = number.replaceAll("i", "z8");
+	while(number.indexOf("z") >= 0) {
+		number = number.replaceAll("0z", "1");
+		number = number.replaceAll("1z", "2");
+		number = number.replaceAll("2z", "3");
+		number = number.replaceAll("3z", "4");
+		number = number.replaceAll("4z", "5");
+		number = number.replaceAll("5z", "6");
+		number = number.replaceAll("6z", "7");
+		number = number.replaceAll("7z", "8");
+		number = number.replaceAll("8z", "9");
+		number = number.replaceAll("9z", "z0");
+	}
+	number = number.replaceAll("^0+(.)", "$1");
+	return number;
+}
+\end{lstlisting}
+
+\noindent Here's a version which makes use of the \verb/Pattern/ and \verb/Matcher/ classes, although whether or not this is better code is debatable.
+\begin{lstlisting}
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+Pattern digit08z = Pattern.compile("([0-8])z");
+Pattern digit19 = Pattern.compile("([1-9])");
+Pattern digitLet = Pattern.compile("([acegi])");
+
+String multiplyByTwo(String number) {
+	number = number.replaceAll("^0*", "0");
+	Matcher m = digit19.matcher(number);
+	StringBuffer buf = new StringBuffer();
+	while(m.find()) {
+		int dig = m.group(1).charAt(0);
+		dig = (dig - '0') * 2 + (dig < '5' ? '0' : 'a' - 10);
+		m.appendReplacement(buf, "" + (char) dig);
+	}
+	m.appendTail(buf);
+	m = digitLet.matcher(buf.toString());
+	buf.setLength(0);
+	while(m.find()) {
+		int dig = m.group(1).charAt(0);
+		m.appendReplacement(buf, "z" + (dig - 'a'));
+	}
+	m.appendTail(buf);
+	number = buf.toString();
+	while(number.indexOf("z") >= 0) {
+		m = digit08z.matcher(number);
+		buf.setLength(0);
+		while(m.find()) {
+			int dig = m.group(1).charAt(0);
+			m.appendReplacement(buf, "" + (dig - '0' + 1));
+		}
+		m.appendTail(buf);
+		number = buf.toString().replaceAll("9z", "z0");
+	}
+	number = number.replaceAll("^0+(.)", "$1");
+	return number;
+}
+\end{lstlisting}
+
+\noindent For comparison, here's the Perl equivalent:
+\begin{lstlisting}[language=Perl]
+sub multiply_by_two {
+	local $_ = shift;
+	s/^0*/0/;
+	y/123456789/2468acegi/;
+	s/([acegi])/'z'.(ord($1)-ord('a'))/eg;
+	while(/z/) {
+		s/([0-8])z/$1+1/eg;
+		s/9z/z0/g;
+	}
+	s/^0+(.)/$1/;
+	return $_;
+}
+\end{lstlisting}
+
+\subsection{Quantifiers: greedy vs. non-greedy}
+Regular expression quantifiers are {\em greedy} by default. That means that they will try to match as many characters as possible. For example, \verb/"tigers!".replaceAll("(.{3,})", "$1 ")/ returns \verb/"tigers! "/ because the \verb/{3,}/ is greedy. Sometimes this is not the desired behavior. Append a question mark to make it non-greedy: \verb/"tigers!".replaceAll("(.{3,}?)", "$1 ")/ returns \verb/"tig ers !"/. This works with other quantifiers, too, for example \verb/*?/ is a non-greedy zero or more and \verb/??/ is a non-greedy once or not at all.
+
+\newpage\section{Math}
+
+\subsection{Combinatorics}
+
+\subsubsection{Factorial}
+
+If you have $n$ distinguishable objects, there are $(n)(n-1)(n-2)\ldots(2)(1)$ ways of arranging them in a straight line. This is written $n!$ and called the {\em factorial} of $n$. As there is one way of arranging zero objects, $0! = 1$. Defined recursively, the factorial is:
+
+\[n! = \begin{cases}1 & \mathrm{if }n=0 \\ n(n-1)! & \mathrm{otherwise}\end{cases}\]
+
+If you're arranging $n$ objects in a circle, there are $(n-1)!$ possibilities (because there's no concept of beginning or end).
+
+Be careful when working with factorials: $13!$ is enough to overflow signed $32$-bit integers (Java \verb/int/s) and $21!$ is enough to overflow signed $64$-bit integers (Java \verb/long/s). You'll have to either be clever or ``cheat'' by using arbitrary precision arithmetic.
+
+Factorial calculations lend themselves nicely to memoization:
+
+\begin{lstlisting}
+import java.math.BigInteger;
+
+List<BigInteger> fact;
+	
+void initFacts() {
+	fact = new ArrayList<BigInteger>();
+	fact.add(BigInteger.ONE);
+}
+
+BigInteger fact(int n) {
+	for(int i = fact.size(); i <= n; ++i)
+		fact.add(fact.get(i - 1).multiply(BigInteger.valueOf(i)));
+	return fact.get(n);
+}
+\end{lstlisting}
+
+Prepare the global list with \verb/initFacts()/ and \verb/fact()/ will take advantage of previously computed values.
+
+\subsubsection{Permutations}
+If you don't use all the elements of a set in the arrangement, the number of possibilities becomes:
+\[P(n,k) = \frac{n!}{(n-k)!}\]
+\noindent where $k$ is the number of elements used and $n$ remains the total number of objects. That's because there are $n$ choices for the first object, $n-1$ for the second, $n-2$ for the third, etc. The $P$ stands for {\em permutation}, which is the name given to such an arrangement. As it should, the formula simplifies to $n!$ when $k=n$.
+
+If the bounds are small, you can afford to be lazy. Just use the \verb/fact()/ from before:
+\begin{lstlisting}
+BigInteger perm(int n, int k) {
+	return fact(n).divide(fact(n - k));
+}
+\end{lstlisting}
+
+\noindent Sometimes the problem will purposely ask for permutations involving larger numbers. You can calculate $P(10000,3)$ without explicitly evaluating $10000!$ by using this code instead:
+\begin{lstlisting}
+import java.math.BigInteger;
+
+BigInteger permutations(int n, int k) {
+	BigInteger ret = BigInteger.ONE;
+	for(int i = n - k + 1; i <= n; ++i)
+		ret = ret.multiply(BigInteger.valueOf(i));
+	return ret;
+}
+\end{lstlisting}
+
+\subsubsection{Combinations}
+A {\em combination} differs from a permutation in that it's unordered, so there's an extra factor in the denominator to account for the $k!$ possible orders which are now considered equivalent:
+\[C(n,k) = {n \choose k} = \frac{n!}{k!(n-k)!}\]
+\noindent ${n \choose k}$ is often read as ``$n$ choose $k$.'' It's also called a {\em binomial coefficient} because it's the coefficient of $x^k$ in the expansion of the binomial power $\left(x+1\right)^n$. The code for computing combinations is very similar to the one for computing permutations:
+
+\begin{lstlisting}
+import java.math.BigInteger;
+
+BigInteger combinations(int n, int k) {
+	k = Math.min(k, n - k);
+	BigInteger ret = BigInteger.ONE;
+	for(int i = n - k + 1; i <= n; ++i)
+		ret = ret.multiply(BigInteger.valueOf(i));
+	for(int i = 2; i <= k; ++i)
+		ret = ret.divide(BigInteger.valueOf(i));
+	return ret;
+}
+\end{lstlisting}
+
+This code keeps down the size of the product by taking advantage of the following property:
+\[{n \choose k}={n \choose {n-k}}\]
+
+Some other neat properties of combinations are:
+\[{n \choose 0}=1 \hspace{2cm} {n \choose 1}=n \hspace{2cm} \sum_{k=0}^{n}{n \choose k}=2^n\]
+
+The combination formula can be expanded to allow for repetitions:
+\[{{n + k - 1}\choose k}=\frac{(n+k-1)!}{k!(n-k)!}\]
+
+\subsubsection{Miscellaneous choosing}
+\begin{itemize}
+\item There are $\dbinom{2n}{n}$ ways to get from $(0,0)$ to $(n,n)$, moving only up and right on a grid.
+\item If you're not allowed to go above the line $y=x$, then there are $\dfrac{1}{n+1}\dbinom{2n}{n}$ ways.
+\end{itemize}
+
+\subsection{Linear algebra}
+\subsubsection{Cramer's rule}
+Given a system of linear equations:
+\[ax + by = e\]
+\[cx + dy = f\]
+\noindent If there is a unique solution, you can find it using Cramer's rule:
+
+\[
+x = \frac{\begin{vmatrix}e & b \\ f & d\end{vmatrix}}{\begin{vmatrix}a & b \\ c & d\end{vmatrix}} = \frac{ed-bf}{ad-bc}
+\hspace{2cm}
+y = \frac{\begin{vmatrix}a & e \\ c & f\end{vmatrix}}{\begin{vmatrix}a & b \\ c & d\end{vmatrix}} = \frac{af-ec}{ad-bc}
+\]
+
+\noindent Or, as code:
+
+\begin{lstlisting}
+double[] solveLinear(double a, double b, double e,
+					 double c, double d, double f) {
+	double den = a * d - b * c;
+	double x = (e * d - b * f) / den;
+	double y = (a * f - e * c) / den;
+	return new double[] {x, y};
+}
+\end{lstlisting}
+
+\noindent In the general case, given a system of linear equations $Ax=b$, where $A$ is an invertible matrix and the variables $x_0,x_1,\ldots,x_{n-1}$ are expressed as a column vector $x$, then:
+\[x_i=\frac{\det(A_i)}{\det(A)}\]
+\noindent where $A_i$ is the matrix obtained by replacing column $i$ of $A$ with the column vector $b$.
+\subsection{Geometry}
+\subsubsection{Pythagorean theorem and distance between two points}
+\noindent The Pythagorean theorem states:
+\[a^2+b^2=c^2\]
+\noindent where $a$ and $b$ are the legs of a right triangle and $c$ is the hypotenuse (the side opposite the right angle). This can be used to calculate the distance between two points by building a right triangle with legs parallel to the axes. Then, in two dimensions, given points $(x_0, y_0)$ and $(x_1, y_1)$ the formula is:
+\[ d = \sqrt{(x_1 - x_0)^2 + (y_1 - y_0)^2} \]
+
+\noindent You can do this in Java with \verb/Math.sqrt()/ or you can use an API method:
+\begin{lstlisting}
+import java.awt.geom.Point2D;
+
+double distance(double x0, double y0, double x1, double y1) {
+	return Point2D.distance(x0, y0, x1, y1);
+}
+\end{lstlisting}
+
+\noindent In three dimensions, given points $(x_0, y_0, z_0)$ and $(x_1, y_1, z_1)$. \\ Formula:
+\[ d = \sqrt{(x_1 - x_0)^2 + (y_1 - y_0)^2 + (z_1 - z_0)^2} \]
+
+\noindent Java code:
+\begin{lstlisting}
+import java.awt.geom.Point2D;
+
+double distance(double x0, double y0, double z0,
+                double x1, double y1, double z1) {
+	double d = Point2D.distance(x0, y0, x1, y1);
+	return Point2D.distance(0, z0, d, z1);
+}
+\end{lstlisting}
+
+\noindent In $n$ dimensions, given points $(v_0, v_1, \ldots, v_{n-1})$ and $(w_0, w_1, \ldots, w_{n-1})$. \\ Formula:
+\[ d = \sqrt{\sum_{i=0}^{n-1}{(w_i - v_i)^2}} \]
+
+\noindent Java code:
+\begin{lstlisting}
+import java.awt.geom.Point2D;
+
+double distance(double[] v, double[] w) {
+	int n = v.length;
+	double d = 0;
+	for(int i = 0; i < n; ++i)
+		d = Point2D.distance(0, v[i], d, w[i]);
+	return d;
+}
+\end{lstlisting}
+
+\subsubsection{Circle equation, given three points}
+\noindent The equation of a circle, which can be derived from the definition of a circle and the distance formula, is:
+\[(x-h)^2+(y-k)^2=r^2\]
+\noindent where $(h,k)$ are the coordinates of the center and $r$ is the radius.
+
+Three points uniquely define a circle, as long as they are not collinear. To find this circle, plug the points into the above equation. Then you can cancel out the radius and you're left with a system of linear equations in $h$ and $k$. The following code takes advantage of Cramer's rule to find the center of a circle, given the coordinates of the three points as arrays:
+
+\begin{lstlisting}
+double[] circleCenter(double[] x, double[] y) {
+	double a = 2 * (x[0] - x[2]);
+	double b = 2 * (y[0] - y[2]);
+	double c = 2 * (x[1] - x[2]);
+	double d = 2 * (y[1] - y[2]);
+	double e = (x[0] * x[0] - x[2] * x[2])
+	         + (y[0] * y[0] - y[2] * y[2]);
+	double f = (x[1] * x[1] - x[2] * x[2])
+	         + (y[1] * y[1] - y[2] * y[2]);
+	return solveLinear(a, b, e, c, d, f);
+}
+\end{lstlisting}
+
+Once you have the center, use the distance formula and any of the three points to get the radius.
+
+\subsubsection{Polygon area, given vertex coordinates}
+\noindent Given a set of vertices $(x_0, y_0), (x_1, y_1), \dots, (x_{n-1}, y_{n-1})$, the area of the polygon can be found with the formula:
+\[A=\frac{1}{2}\sum_{i=0}^{n-1}\left(x_i y_{i+1}-x_{i+1} y_i\right)\]
+This works for both convex and concave polygons (assuming the vertices are listed in the proper order), but it gives you the {\em signed} area, so make sure you take the absolute value. Also, observe that the summation ``wraps around'', i.e. the last term is $x_{n-1} y_0-x_0 y_{n-1}$.
+\begin{lstlisting}
+double area(double[] x, double[] y) {
+	int n = x.length;
+	double ans = 0;
+	for(int i = 0; i < len; ++i) {
+		ans += x[i] * y[(i + 1) % n];
+		ans -= x[(i + 1) % n] * y[i];
+	}
+	return Math.abs(ans / 2);
+}
+\end{lstlisting}
+
+\subsubsection{Polygon area on an integer grid (Pick's theorem)}
+\noindent If the polygon is on a grid of evenly spaced points (usually some integer latice), Pick's theorem tells us the area is:
+\[A=I+\frac{B}{2}-1\]
+where $B$ is the number of latice points on the polygon's boundary and $I$ is the number of latice points in its interior.
+
+\subsubsection{Quadrilateral area, given side lengths (Bretschneider's formula and Brahmagupta's formula)}
+Bretschneider's formula gives the area of a quadrilateral as:
+\[A=\sqrt{(s-a)(s-b)(s-c)(s-d)-\frac{1}{4}(ac+bd+pq)(ac+bd-pq)}\]
+\noindent where $a$, $b$, $c$, and $d$ are the side lengths, $p$ and $q$ are the diagonal lengths, and $s=\frac{1}{2}\left(a+b+c+d\right)$ is the semiperimeter.
+
+Brahmagupta's formula is a special case for {\em cyclic} quadrilaterals, or ones whose vertices all lie on a single circle. Such quadrilaterals have the property $ac+bd=pq$ (using the definitions from before) by Ptolemy's theorem, so the formula becomes:
+\[A=\sqrt{(s-a)(s-b)(s-c)(s-d)}\]
+
+A cyclic quadrilateral has the largest area of any quadrilateral with the given side lengths because of the absence of a non-positive term. In a cyclic quadrilateral, opposite angles are {\em  supplementary} (they sum to $180^{\circ}$), so if you're told that this is the case, you may use the simpler area formula.
+
+\subsubsection{Triangle area, given side lengths (Heron's formula)}
+A triangle can be thought of as a cyclic quadrilateral where one of the side lengths is zero. Heron's formula, which gives the area of a triangle with the specified side lengths, can therefore be called a special case of Brahmagupta's formula:
+\[A=\sqrt{s(s-a)(s-b)(s-c)}\]
+\noindent where $a$, $b$, and $c$ are the side lengths and $s=\frac{1}{2}\left(a+b+c\right)$ is the semiperimeter like before.
+
+\subsubsection{Convex hull (Graham scan)}
+The {\em convex hull} of a set of points $S$ is the smallest convex polygon that contains all points in $S$. It is typically expressed as the points in $S$ which are vertices of this polygon. One method to find the convex hull is the Graham scan:
+
+\begin{enumerate}
+\item Find the point with the smallest $y$-value. If there is a tie, choose the one with the smallest $x$-value. Call this point $X$.
+\item Sort the remaining points by the angle they form with point $X$. If two points have the same angle, the one that is closer to $X$ should come first.
+\item Using a modified stack (one that lets you peek at the top two elements), execute the following code:
+\begin{lstlisting}
+Stack<Point> GScan(Point[] p) {
+	Stack<Point> s = new Stack<Point>();
+	s.push(p[0]);
+	s.push(p[1]);
+	for(int i = 2; i < p.length; ++i) {
+		while(s.size() >= 2
+			&& cross(s.second(), s.top(), p[i]) <= 0)
+			s.pop();
+		s.push(P[i]);
+	}
+	return s;
+}
+\end{lstlisting}
+
+In the above, {\em cross} is the cross product of the vectors formed by the three given points.
+
+\end{enumerate}
+
+\subsubsection{Miscellaneous theorems}
+\begin{itemize}
+\item Given a triangle with side lengths $a$, $b$, and $c$, draw a segment such that one endpoint is on side $a$ and the other is the vertex opposite $a$. Call this segment $d$. Let $m$ and $n$ be the segments into which $d$ divides $a$. Then, Stewart's theorem states that $b^2n+c^2n = a(d^2 + mn)$.
+\item If two chords intersect in a circle, then the product of the two parts of one segment is equal to the product of the two parts of the other segment.
+\end{itemize}
+
+\subsection{Number theory}
+
+\subsubsection{Definitions}
+
+An integer $b$ {\em divides} an integer $a$ if it goes ``evenly'' into it, i.e. if there exists an integer $c$ such that $a=bc$. We say that $b$ is a {\em divisor} (or a {\em factor}) of $a$ and that $a$ is a {\em multiple} of $b$. This definition does not exclude negative divisors (even though we will usually only be interested in the positive ones). Every integer divides $0$, but $0$ doesn't divide any integer except itself.
+
+An integer $n>1$ is called {\em prime} if it has no (positive) divisors other than $1$ and itself. Otherwise, it's called {\em composite}. By definition, $0$ and $1$ are neither prime nor composite. An integer that divides both $a$ and $b$ is called a {\em common factor} of $a$ and $b$. Two integers whose only (positive) common factor is $1$ are called {\em coprime}.
+
+\subsubsection{Greatest common divisor and least common multiple}
+
+\noindent The greatest common divisor (or factor), of $a$ and $b$, abbreviated gcd or gcf, can be found using the recursively-defined Euclidean algorithm, shown below. If negative numbers are allowed, take the absolute value of the arguments, or modular arithmetic might give you some unpleasant surprises!
+
+\begin{lstlisting}
+int gcd(int a, int b) {
+	return b == 0 ? a : gcd(b, a % b);
+}
+\end{lstlisting}
+
+\noindent Rewritten iteratively, this becomes:
+
+\begin{lstlisting}
+int gcd(int a, int b) {
+	while(b != 0) {
+		int t = b;
+		b = a % b;
+		a = t;
+	}
+	return a;
+}
+\end{lstlisting}
+
+\noindent There's also a hack using the API, but watch out because it can be slow:
+
+\begin{lstlisting}
+import java.math.BigInteger;
+
+int gcd(int a, int b) {
+	BigInteger bigA = BigInteger.valueOf(a);
+	BigInteger bigB = BigInteger.valueOf(b);
+	return bigA.gcd(bigB).intValue();
+}
+\end{lstlisting}
+
+The counterpart of the gcd is the least common multiple, abbreviated lcm. As the name suggests, the lcm of $a$ and $b$ is the smallest (non-negative) number that both $a$ and $b$ divide. For example, the least common multiple of $4$ and $6$ is $12$. To calculate the lcm, use the code for gcd and this theorem:
+\[\mathrm{lcm}(a,b) = \frac{ab}{\mathrm{gcd}(a,b)}\]
+
+\subsubsection{The extended Euclidean algorithm}
+A neat theorem states that the gcd of $a$ and $b$ is the smallest positive integer that can be written in the form $ma+nb$ where $m$ and $n$ are integers. (The gcd is the smallest positive integral linear combination of $a$ and $b$.) So, from this it follows immediately that $\mathrm{gcd}(n,n-1)=1$ because you can write $1=n-(n-1)$ and in general, $\mathrm{gcd}(n,n-k)\le k$ because you can write $k=n-(n-k)$.
+
+If you need to find the $m$ and $n$ that give rise to the gcd, you can do so using the extended Euclidean algorithm:
+\begin{lstlisting}
+int[] extendedEuclidean(int a, int b) {
+	if(a % b == 0)
+		return new int[] {0, 1};
+	int[] ee = extendedEuclidean(b, a % b);
+	return new int[] {ee[1], ee[0] - ee[1] * (a / b)};
+}
+\end{lstlisting}
+
+\subsubsection{Finding primes}
+
+By definition, every composite number can be written as a product: $n=ab$, with $1 < a,b < n$. So, a straightforward way to check whether some arbitrary $n$ is prime is to go through all the integers from $2$ to $n-1$ and see if any of them divide $n$ evenly. If yes, then $n$ is composite. Otherwise, it's prime. As you might guess, this can take a while for large $n$.
+
+An immediate improvement would be to realize that we only have to check if $n$ is divisible by any primes. The {\em sieve of Eratosthenes} achieves this efficiently. This method works by ``writing out'' all the numbers from $2$ to the desired upper bound. You then examine numbers sequentially, at each point ``crossing out'' all multiples of the current number. If a number is not crossed out when you first encounter it, then it's prime. 
+
+Here's a possible Java implementation:
+
+\begin{lstlisting}
+int MAX = 10000; // don't hardcode constants!
+boolean[] sieve;
+
+void initPrimes() {
+	sieve = new boolean[MAX + 1];
+	sieve[0] = sieve[1] = true; // 0, 1: not prime by definition
+	for(int i = 2; i <= MAX; ++i) // 2 is the first prime
+		if(!sieve[i]) // i is prime! add it to a list, if desired
+			for(int j = i * 2; j <= MAX; j += i)
+				sieve[j] = true; // mark off the multiples
+}
+
+boolean isPrime(int n) {
+	return !sieve[n];
+}
+\end{lstlisting}
+
+\noindent After executing \verb/initPrimes()/, you can use \verb/isPrime()/ to simply look up if a number is prime. This works great for finding the primes up to $10$ million. Beyond that, it still works, but unless you {\em need} to know if every number in some range is prime, there are probably faster ways.
+
+The code above is not particularly optimized. Specifically, we don't actually have to check {\em every} number below $n$. If $n=ab$, then either $a$ or $b$ will be less than or equal to $\sqrt{n}$ because if both are greater, then $ab>\left(\sqrt{n}\right)^2=n$, a contradiction. So, to check if $n$ is prime, we only have to check numbers up to $\sqrt{n}$ (inclusive). The modified \verb/initPrimes()/ below incorporates this improvement by stopping the outer loop at the square root of \verb/MAX/ and starting the inner loop at \verb/i*i/ (since smaller multiples would have been ``crossed out'' by smaller primes). Use this only if you don't store the primes in a list as you go along, otherwise you'll miss the ones past the square root of the upper bound.
+
+\begin{lstlisting}
+void initPrimes() {
+	sieve = new boolean[MAX + 1];
+	sieve[0] = sieve[1] = true;
+	int sMax = (int) Math.round(Math.floor(Math.sqrt(MAX)));
+	for(int i = 2; i <= sMax; ++i)
+		if(!sieve[i])
+			for(int j = i * i; j <= MAX; j += i)
+				sieve[j] = true;
+}
+\end{lstlisting}
+
+\subsubsection{Prime factorization}
+
+According to the fundamental theorem of arithmetic, any integer $n>1$ can be written as a product of primes, or, a bit more formally, any integer $n>1$ can be written in the form $n={p_0}^{\alpha_0}{p_1}^{\alpha_1}\ldots{p_{k-1}}^{\alpha_{k-1}}$ where the $p_i$'s are distinct primes. This is called the prime factorization (or prime decomposition) of $n$.
+
+To find the prime factorization of every number in some range, you can use a modified sieve which stores a prime factor rather than a boolean flag. The code below can't use the aforementioned square root optimization, but that should be fine if your range is small or you're only running this code once.
+
+\begin{lstlisting}
+void initPrimes() {
+	sieve = new int[MAX + 1];
+	sieve[1] = 1;
+	for(int i = 2; i <= MAX; ++i)
+		if(sieve[i] == 0)
+			for(int j = i; j <= MAX; j += i)
+				sieve[j] = i;
+}
+\end{lstlisting}
+
+\noindent Now you can get the prime factors in descending order by simply dividing. Use a stack and pop while not empty to get the ascending order.
+
+\begin{lstlisting}
+Stack<Integer> getPrimeFactors(int n) {
+	Stack<Integer> st = new Stack<Integer>();
+	while(n != 1) {
+		st.push(sieve[n]);
+		n /= sieve[n];
+	}
+	return st;
+}
+\end{lstlisting}
+
+\noindent If you only need to factor {\em some} of the numbers in the range, a possible algorithm is to find all the primes less than equal to the square root of the upper bound using a sieve, or even hardcode them if they're few enough! Then iterate over them to build the factorization. The following code additionally groups the primes into powers. Since you find them in ascending order, they're returned in a queue.
+
+\begin{lstlisting}
+Queue<int[]> getPrimePowerFactors(int n) {
+	Queue<int[]> q = new LinkedList<int[]>();
+	for(int p: primes) {
+		if(p > m / p) // multiplication could overflow
+			break;
+		int pp = 0;
+		while(m % p == 0) {
+			++pp;
+			m /= p;
+		}
+		if(pp != 0)
+			q.add(new int[] {p, pp});
+	}
+	if(m != 1)
+		q.add(new int[] {m, 1});
+	return q;
+}
+\end{lstlisting}
+
+\subsubsection{Number-theoretic functions}
+
+The prime factorization can be used to calculate a variety of number-theoretic functions. It's especially useful when dealing with {\em multiplicative} functions.
+
+A function $f(n)$ is multiplicative if $f(ab)=f(a)f(b)$ for any $a$ and $b$ that are coprime. If the condition holds even for $a$ and $b$ that aren't coprime, then $f(n)$ is {\em completely multiplicative}. To compute a multiplicative function for an arbitrary integer, all you have to do is derive a formula for prime powers, and then $f(n)=f({p_0}^{\alpha_0})f({p_1}^{\alpha_1})\ldots f({p_{k-1}}^{\alpha_{k-1}})$ from the prime factorization. A neat property is that $f(1)=1$ for any multiplicative function $f(n)$. 
+
+The following are some well-known multiplicative (but not completely multiplicative) functions.
+
+The number of positive divisors $d(n)$:
+
+\[d(n) = (\alpha_0 + 1)(\alpha_1 + 1)\ldots(\alpha_{k-1} + 1) = \prod_{i=0}^{k-1}{(\alpha_i+1)} \]
+
+\noindent The code is trivial if you have the prime power factors from before:
+
+\begin{lstlisting}
+int numberOfDivisors(int n) {
+	int ret = 1;
+	for(int[] factor: getPrimePowerFactors(n))
+		ret *= factor[1] + 1;
+	return ret;
+}
+\end{lstlisting}
+
+\noindent The sum of positive divisors $\sigma(n)$:
+
+\[\sigma(n) = (1 + p_0 + {p_0}^2 + \ldots + {p_0}^{\alpha_0})\ldots(1 + p_{k-1} + {p_{k-1}}^2 + \ldots + {p_{k-1}}^{\alpha_{k-1}}) = \prod_{i=0}^{k-1}{\frac{{p_i}^{\alpha_i+1} - 1}{p_i - 1}} \]
+
+\noindent The code for this one is slightly more involved:
+
+\begin{lstlisting}
+int sumOfDivisors(int n) {
+	int ret = 1;
+	for(int[] factor: getPrimePowerFactors(n)) {
+		int mul = 1;
+		for(int i = 0; i < factor[1]; ++i)
+			mul = mul * factor[0] + 1;
+		ret *= mul;
+	}
+	return ret;
+}
+\end{lstlisting}
+
+\noindent Euler's totient function $\phi(n)$, the number of positive integers $<n$ that are coprime to $n$:
+
+\[\phi(n) = (p_0 - 1){p_0}^{\alpha_0-1}\ldots(p_{k-1} - 1){p_{k-1}}^{\alpha_{k-1}-1} = n\left(\frac{p_0-1}{p_0}\right)\ldots\left(\frac{p_{k-1}-1}{p_{k-1}}\right) = n\prod_{i=0}^{k-1}{\frac{p_i - 1}{p_i}} \]
+
+\noindent The code uses two loops to avoid overflow:
+
+\begin{lstlisting}
+int phi(int n) {
+	int ret = n;
+	Queue<int[]> q = getPrimePowerFactors(n);
+	for(int[] factor: q)
+		ret /= factor[0];
+	for(int[] factor: q)
+		ret *= factor[0] - 1;
+	return ret;
+}
+\end{lstlisting}
+
+\subsubsection{Miscellaneous formulas}
+\begin{itemize}
+\item Fermat's little theorem states that $a^p \equiv a \mod{p}$ for any integer $a$ and prime $p$. If $a$ is coprime to $p$, then you can also say $a^{p-1} \equiv 1 \mod{p}$.
+\item Euler's theorem generalizes this for non-primes: $a^{\phi(n)} \equiv 1 \mod{n}$ for any coprime positive integers $a$ and $n$. Here, $\phi(n)$ is Euler's totient function, as discussed above.
+\item Wilson's theorem states that an integer $n>1$ is prime if and only if $(n-1)!+1 \equiv 0 \mod{n}$.
+\end{itemize}
+
+\newpage\section{Dynamic programming}
+
+\subsection{Introduction}
+
+Insert some text about how dynamic programming is awesome.
+
+\subsection{The knapsack problem}
+
+This is a combinatorial optimization problem. You have to choose from a set of objects to maximizes value while keeping the total weight under a specified threshold. The problem takes its name form its usual formulation in terms of a thief who must choose which treasures to steal to maximize his profit, under the constraint of some weight he can carry in his knapsack. (In the simplest form of the problem, other parameters, such as volume for example, are not taken in consideration.)
+
+\subsubsection{Greedy solution when fractional items are allowed}
+
+A greedy algorithm would sort the items by their value to weight ratio. In general, this doesn't work. Consider the set of items with weights $41$, $25$, $20$, and values $42$, $25$, $19$, respectively. If the maximum allowed weight is $50$, the greedy solution will pick the first item, but it would be more advantageous to take the last two. The greedy solution {\em does} work when we're allowed to take only part of an item. In the example, we'd take the first item in its entirety and $36\%$ of the second item.
+
+\subsubsection{0-1 knapsack}
+
+Algorithm description not included. Solve as you would solve SPOJ problem PARTY. Here's my solution:
+\begin{lstlisting}
+import java.util.*;
+
+class Main {
+	public static void main(String[] arg) {
+		Scanner in = new Scanner(System.in);
+		for(;;) {
+			int budget = in.nextInt();
+			int n = in.nextInt();
+			if(budget == 0 && n == 0) break;
+			int[] dp = new int[budget + 1];
+			dp[0] = 1;
+			while(n-- != 0) {
+				int cost = in.nextInt();
+				int fun = in.nextInt();
+				for(int i = budget - cost; i >= 0; --i)
+					if(dp[i] != 0) {
+						int nfun = fun + dp[i];
+						int ncost = i + cost;
+						if(dp[ncost] < nfun) dp[ncost] = nfun;
+					}
+			}
+			int best = -1;
+			int spent = 0;
+			for(int i = 0; i <= budget; ++i)
+				if(dp[i] > best) {
+					best = dp[i];
+					spent = i;
+				}
+			System.out.println(spent + " " + (best - 1));
+		}
+	}
+}
+\end{lstlisting}
+
+\subsubsection{Unbounded knapsack}
+
+Algorithm description not included. Solve as you would solve SPOJ problem PARTY, except you {\em are} allowed to go to the same party more than once. You can accomplish this by just changing the direction of one loop in the above.
+
+\subsection{Longest common substring}
+
+Given a string $S$, a {\em substring} of $S$ is any string that can be formed by deleting some (possibly zero) number of elements from the beginning and the end of $S$. For example, the substrings of the character string ``CATS'' are ``CAT'', ``ATS'', ``CA'', ``AT'', ``TS'', ``C'', ``A'', ``T'', ``S'', and the empty string. Elements are therefore not only in the same order as in the original string, they are also contiguous. 
+
+The longest common substring of a set of strings is the longest string that is a substring of all the strings in the set. An efficient method of finding the longest common substring uses suffix trees, but if the time constraints allow it, use dynamic programming. This solution takes advantage of the fact that the longest common substring of two strings $A$ and $B$ is a suffix of some prefix of $A$ as well as of some prefix of $B$. But the longest common suffix can be defined recursively:
+
+\[\mathit{LCSuffix}(A[0..i], B[0..j]) =
+\begin{cases}
+\mathit{LCSuffix}(A[0..i-1], B[0..j-1]) + 1 & \mathrm{if } A[i] = B[j] \\
+0 & \mathrm{otherwise}
+\end{cases}\]
+
+So, loop over every position in each string to get all the longest common suffixes. The longest of these is the longest common substring, and the complexity of this algorithm is the product of the lengths of the strings. Here's code for two strings of characters:
+\begin{lstlisting}
+int longestCommonSubstring(char[] a, char[] b) {
+	int m = a.length;
+	int n = b.length;
+	int[][] lcs = new int[m][n];
+	int ret = 0;
+	for(int i = 0; i < m; ++i) {
+		for(int j = 0; j < n; ++j) {
+			if(a[i] == b[j]) {
+				lcs[i][j] = 1;
+				if(i > 0 && j > 0)
+					lcs[i][j] += lcs[i-1][j-1];
+				if(lcs[i][j] > ret)
+					ret = lcs[i][j];
+			}
+		}
+	}
+	return ret;
+}
+\end{lstlisting}
+
+You can get the substrings themselves by looking for the maximum values in the two-dimensional array you build. This will tell you the ending positions, and you already know the lengths. If memory usage is an issue, keep only the last and current row of the array. For more than two strings, add another dimension to the array and another loop.
+
+\subsection{Longest common subsequence}
+The longest common subsequence is very similar to the longest common substring, except the restriction of contiguity is lifted. That is, ``CS'' is a subsequence of ``CATS''. We can still solve this problem using suffixes. Compare this with the longest common substring definition:
+
+\[\mathit{LCS}(A[0..i], B[0..j]) =
+\begin{cases}
+\mathit{LCS}(A[0..i-1], B[0..j-1]) + 1 & \mathrm{if } A[i] = B[j] \\
+\mathit{max}(\mathit{LCS}(A[0..i], B[0..j-1])), \mathit{LCS}(A[0..i-1], B[0..j]))) & \mathrm{otherwise}
+\end{cases}\]
+
+The code is therefore very similar, in fact all that distinguishes the longest common subsequence is an extra \verb/else/ clause.
+
+\begin{lstlisting}
+int longestCommonSubsequence(char[] a, char[] b) {
+	int m = a.length;
+	int n = b.length;
+	int[][] lcs = new int[m][n];
+	int ret = 0;
+	for(int i = 0; i < m; ++i) {
+		for(int j = 0; j < n; ++j) {
+			if(a[i] == b[j]) {
+				lcs[i][j] = 1;
+				if(i > 0 && j > 0)
+					lcs[i][j] += lcs[i-1][j-1];
+				if(lcs[i][j] > ret)
+					ret = lcs[i][j];
+			}
+			else {
+				if(i > 0)
+					lcs[i][j] = Math.max(lcs[i][j], lcs[i-1][j]);
+				if(j > 0)
+					lcs[i][j] = Math.max(lcs[i][j], lcs[i][j-1]);
+			}
+		}
+	}
+	return ret;
+}
+\end{lstlisting}
+
+\subsection{Longest increasing subsequence}
+In this problem you are given a sequence of numbers $a_1,a_2,\dots,a_n$, and are asked to find the longest subsequence such that, $a_{n_1}\le a_{n_2}\le\dots\le a_{n_k}$ (similary you can replae the $\le$ with $<$).
+The following code not only solves this problem, it also returns an array with the desired sequence.
+
+\begin{lstlisting} 
+Vector<Integer> find_lis(int[] a)
+{
+	Vector<Integer> b= new Vector<Integer>();
+	Vector<Integer>p= new Vector<Integer>(a.length);
+	int u, v;
+ 
+	if (a.length < 1) return b;
+ 
+	b.add(0);
+ 
+	for (int i = 1; i < a.length; i++) {
+		if (a[b.get(b.size()-1)] <= a[i]) {
+			p.set(i, b.get(b.size()-1));
+			b.add(i);
+			continue;
+		}
+ 
+		for (u = 0, v = b.size()-1; u < v;) {
+			int c = (u + v) / 2;
+			if (a[b.get(c)] <= a[i]) u=c+1; else v=c;
+		}
+ 
+		if (a[i] <= a[b.get(u)]) {
+			if (u > 0) p.set(i,b.get(u-1));
+			b.set(u,i);
+		}	
+	}
+ 
+	for (u = b.size(), v = b.get(b.size()-1); u-- >0; v = p.get(v))
+		b.set(u,v);
+	return b;
+}
+\end{lstlisting}
+
+\noindent Here's some more LIS code:
+\begin{lstlisting}
+int lis(int[] array) {
+	int n = array.length;
+	int[] m = new int[n + 1];
+	int[] pred = new int[n + 1];
+	int l = 0;
+	for(int i = 0; i != n; ++i) {
+		int min = 0;
+		int max = l;
+		while(min != max) {
+			int mid = (min + max + 1) / 2;
+			if(array[m[mid]] < array[i]) min = mid;
+			else max = mid - 1;
+		}
+		pred[i] = m[max];
+		if(max == l || array[i] < array[m[max + 1]]) {
+			m[max + 1] = i;
+			l = Math.max(l, max + 1);
+		}
+	}
+	return l;
+}
+\end{lstlisting}
+
+This only gives you the length, but if you keep the arrays then the longest increasing subsequence is given by \verb/.../, \verb/array[pred[pred[m[l]]]]/, \verb/array[pred[m[l]]]/, \verb/array[m[l]]/.
+
+\subsection{Maximum subsequence sum}
+Given a sequence $A[1],A[2],\dots,A[n]$ define a query as \[Q(i,j)=\max\{A[x]+A[x+1]\dots+A[y]:i\le x\le y\le j\}\] To solve this we will assume that the sequence is in the array input, and the initial cummulative sums in the array csum. Basically $csum[i]=A[1]+A[2]+\dots+A[i]$. From this we create a binary heap as follows.
+\begin{lstlisting}
+class node
+{
+	int min,max,val;
+	node(int a){min=a}
+}
+node[] heap = new node[100000];
+void createHeap(int B,int E, int[] input,int N)
+{
+	if(B==E)
+	{
+		heap[N].min=b-1;
+		heap[N].max=b;
+		heap[N].val=input[b];
+	}
+	else{
+		createHeap(B,(B+E)/2,input,2*N);
+		createHeap((B+E)/2+1,E,input,2*N+1);
+		if(csum[heap[2*N].min]<csum[heap[2*N+1].min])
+			heap[N].min=heap[2*N].min;
+		else
+			heap[N].min=heal[2*N+1].min;
+		if(csum[heap[2*N].max]>csum[heap[2*N+1].max])
+			heap[N].max=heap[2*N].max;
+		else
+			heap[N].max=heap[2*N+1].max;
+		heap[N].val=getval(heap[2*N],heap[2*N+1])
+	}
+}
+int getval(node a, node b)
+{
+	int c=csum[b.max]-csum[a.min];
+	return Math.max(c,Math.max(a.val,b.val));
+}
+\end{lstlisting}
+Now that your heap is created it is rather easy to answer the queries.  Just use the following method:
+\begin{lstlisting}
+node Solve(int N,int b,int e,int i,int j)
+{
+	if(i>e || j<b)
+		return node(-1);
+	if(i<=b && e<=j)
+		return heap[N];
+	node p1=Solve(2*N,b,(b+e)/2,i,j);
+	node p2=Solve(2*N+1,(b+e)/2+1,i,j);
+	node ans;
+	if(p1.min == -1)
+		return p2;
+	if(p2.min == -1)
+		return p2;
+	if(csum[p1.min]<csum[p2.min])
+		ans.min=p1.min;
+	else
+		ans.min=p2.min;
+	if(csum[p1.max]>csum[p2.max])
+		ans.max=p1.max;
+	else
+		ans.max=p2.max;
+	ans.val=getval(p1,p2);
+	return ans;
+}
+
+\end{lstlisting}
+Once the method is finised running, say that you saved the result in the node \verb/result/, then the desired answer is just \verb/result.val/.
+If you use this method to solve the problem it will take $O(N\log(N))$ to create the heap, and $O(\log(N))$ to answer any query.
+\par\noindent However, if the terms don't need to be consecutive then you can solve the problem by first sorting the array in decreasing order (larger elements first) and using the following code:
+\begin{lstlisting}
+int maxSum(int[] input)
+{
+	int n=input.length;
+	int ans=input[0];
+	for(int i=1;i<n && input[i]>0;++i)
+		ans+=input[i];
+	return ans;
+}
+\end{lstlisting}
+This method only takes $O(n)$ to find the maximum sum, and $O(\log(N))$ to sort the array.
+
+\newpage\section{Graph theory}
+
+\subsection{Introduction}
+
+A {\em graph} is an abstract representation of a set of objects (called {\em nodes}, {\em vertices}, or {\em points}), in which some pairs are connected by links (or {\em edges}).
+
+\subsection{Graph Representation}
+
+For the discussion of both representations, assume that $G$ is a graph with vertices $V$ and edges $E$. Assume that $|V| = n$ and that the vertices are in some order $v_0, ..., v_{n-1}$. 
+
+\subsubsection{Adjacency Matrix}
+
+When a graph is small (a few hundred nodes) and dense (each node has edges to most other nodes), it is often convenient to use the adjacency matrix representation of a graph. Then the adjacency matrix for $G$ is defined by the matrix $A$ where 
+\[
+A_{ij} = \begin{cases}
+w & \text{if there is an edge from $v_i$ to $v_j$} \\
+0 & \text{otherwise}
+\end{cases}
+\]
+
+If $G$ is an unweighed graph, then $w = 1$ for all edges $e \in E$. If $G$ is weighted then $A_{ij}$ is the edge weight from $v_i \to v_j$. There are several useful things you can do with the graph based on the structure of this matrix. $G$ is undirected if and only if $A$ is symmetric; i.e., $A_{ij} = A_{ji} \forall i,j$.
+
+\subsubsection{Adjacency List}
+
+In general, the adjacency list representation is more practical due to better time and and space complexity. An adjacency list is a list of edges. The easiest way to implement an adjacency list representation of a graph in Java is with a \verb|Vertex| and \verb|Edge| class.
+
+\begin{lstlisting}
+class Vertex implements Iterable<Edge> {
+	List<Edge> adj;
+	public Vertex() {
+		adj = new ArrayList<Edge>();
+	}
+	public void add(Edge e) {
+		adj.add(e);
+	}
+	public Iterator<Edge> iterator() {
+		return adj.iterator();
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+class Edge {
+	public int from, to, weight;
+	public Edge(int f, int t, int w) {
+		from = f;
+		to = t;
+		weight = w;
+	}
+}
+\end{lstlisting}
+
+It is nice to make \verb|Vertex|s iterable so that you can use for-each syntax when traversing it's neighbors. 
+
+\subsection{Basic Traversal techniques}
+
+\subsubsection{Breadth First Search}
+
+Breadth first search is a method of traversing a graph with the useful property that it computes the shortest path from the source node to each other reachable node. Shortest path here means the path with the least number of edges. We will later consider how to compute the shortest path that takes edge weights into account.
+
+Suppose we have a graph $G$ in adjacency list form. The following Java code computes the shortest path from $v_0$ to each other node. 
+
+\begin{lstlisting}
+int[] bfs (Vertex[] graph, int source) {
+	int[] sp = new int[graph.length];
+	Queue<Vertex> q = new LinkedList<Vertex>();
+	Arrays.fill(sp, -1);
+	sp[source] = 0;
+	q.add(graph[0]);
+	while(!q.isEmpty()) {
+		Vertex v = q.poll();
+		for(Edge e : v) {
+			if(sp[e.to] == -1) {
+				sp[e.to] = sp[e.from] + e.weight;
+				q.add(graph[e.to]);
+			}
+		}
+	}
+	return sp;
+}
+\end{lstlisting}
+
+BFS can also be useful when you have a grid set up of some kind. In this case, just consider each point of the grid to be a vertex and each adjacent point to be an adjacent vertex. One useful application is if you have a grid with multiple ``points of interest'' and you want to know how close the nearest point of interest is to each point on the grid. The following code computes the shortest distance to any of the interesting points assuming you can only move in the cardinal directions (N,S,E,W). If you need to consider diagonal entries as adjacent also, just modify the \verb|dx| and \verb|dy| arrays.
+
+\begin{lstlisting}
+int[][] shortestDist(int width, int height, Point[] interesting) {
+	int[][] sd = new int[height][width];
+	for(int[] i : sd) Arrays.fill(i, -1);
+	int[] dx = {-1, 0, 1, 0};
+	int[] dy = {0, 1, 0, -1};
+	Queue<Point> q = new LinkedList<Point>();
+	for(Point p : interesting) {
+		q.add(p);
+		sd[p.y][p.x] = 0;
+	}
+	while(!q.isEmpty()) {
+		Point p = q.poll();
+		for(int i = 0; i < dx.length; ++i) {
+			int x = p.x + dx[i]; int y = p.y + dy[i];
+			if(x >= 0 && x < width && y >= 0 && y < height 
+			   && sd[y][x] == -1) {
+				sd[y][x] = sd[p.y][p.x] + 1;
+				q.add(new Point(x, y));
+			}
+		}
+	}
+	return sd;
+}
+\end{lstlisting} 
+
+\subsubsection{Depth First Search}
+
+Depth first search is another method of traversing a graph which just visits all the nodes in a different order. It will not give you the shortest path to each node, however. Essentially, the only change from BFS is that a Stack is used instead of a Queue. The following code generates the DFS tree from a graph $G$.
+
+\begin{lstlisting}
+int[] bfs (Vertex[] graph, int source) {
+	Stack<Integer> q = new Stack<Integer>();
+	int[] p = new int[graph.length];
+	boolean[] vis = new boolean[graph.length];
+	p[source] = -1;
+	q.add(graph[source]);
+	while(!q.isEmpty()) {
+		Integer v = q.pop();
+		vis[v] = true;
+		for(Edge e : graph[v]) {
+			if(!v[e.to]) {
+				p[e.to] = e.from;
+				q.push(e.to);
+			}
+		}
+	}
+	return p;
+}
+\end{lstlisting}
+
+\subsection{Minimum Spanning Tree}
+
+Minimum spanning tree algorithms take a graph $G = (V,E)$ and produce a subset of edges $E'$ such that $(V,E')$ is connected and the sum of the edge weights in $E'$ is as small as possible. Prim's algorithm is almost the same as Dijkstra's shortest path algorithm.
+
+\begin{lstlisting}
+class Edge implements Comparable {
+	public int from, to, weight;
+	public Edge(int f, int t, int w) {
+		from = f;
+		to = t;
+		weight = w;
+	}
+	public int compareTo(Object o) {
+		return this.weight - ((Edge)o).weight;
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+List<Edge> prim_mst (Vertex[] graph, int source) {
+	List<Edge> mst = new ArrayList<Edge>();
+	boolean[] v = new boolean[graph.length];
+	PriorityQueue<Edge> q = new PriorityQueue<Edge>();
+	v[source] = true;
+	for(Edge e : graph[source]) q.add(e);
+	while(!q.isEmpty()) {
+		Edge e = q.poll();
+		if(v[e.to]) continue;
+		v[e.to] = true;
+		mst.add(e);
+		for(Edge adj : graph[e.to]) q.add(adj);
+	}
+	return mst;
+}
+\end{lstlisting}
+
+\subsection{Shortest Path}
+
+These algorithms are used to find the shortest path in a directed, weighted graph. The difference between these and BFS is that BFS produces the path with the least number of edges to get to each node. In other words, Dijkstra et. al. on a graph where each edge has weight 1 is equivalent to a BFS.
+
+\subsubsection{Dijkstra's single source shortest path}
+
+Dijkstra's algorithm solves the single-source shortest-path problem. In other words, given a distinguished vertex $s \in G$, Dijkstra's will produce the shortest path from $s$ to each other vertex in $G$. The following implementation in Java uses a priority queue to order the edges in non-descending order. This uses the same \verb|Edge| class defined in Prim's minimum spanning tree algorithm.. Dijkstra's can only be used if there are no negative weight edges. Running time is $O(N^2\log N)$
+
+
+\begin{lstlisting}
+int[] dijkstra (Vertex[] graph, int source) {
+	int[] d = new int[graph.length];
+	boolean[] v = new boolean[graph.length];
+	PriorityQueue<Edge> q = new PriorityQueue<Edge>();
+	d[source] = 0; v[source] = true;
+	for(Edge e : graph[source]) q.add(e);
+	while(!q.isEmpty()) {
+		Edge e = q.poll();
+		if(v[e.to]) continue;
+		v[e.to] = true;
+		d[e.to] = d[e.from] + e.weight;
+		for(Edge adj : graph[e.to]) q.add(adj);
+	}
+	return d;
+}
+\end{lstlisting}
+
+\subsubsection{Floyd Warshall All pairs shortest path}
+
+Floyd Warshall can be used to find the shortest path from all nodes to all other nodes. It will also work for graphs with negative edge weights. To use Floyd Warshall, you must have your graph in adjacency matrix form. Running time is $O(N^3)$ which is not as good as Dijkstras $O(N^2\log N)$ so it is generally better to use Dijkstra's unless you know the bounds are small enough and it is more convenient to represent your graph as a matrix. You must also remember to represent non-edges in the graph with $\infty$, not 0.
+
+\begin{lstlisting}
+private static void fw(int N, int[][] graph)  {
+	for( int k = 0; k < N; ++k )
+	    for( int i = 0; i < N; ++i )
+			for( int j = 0; j < N; ++j )
+				graph[i][j] = Math.min(graph[i][j], 
+									   graph[i][k] + graph[k][j] );
+}
+\end{lstlisting}
+
+\subsection{Random graph theory stuff that doesn't fit anywhere else}
+\begin{itemize}\item Euler path: a path which uses each edge exactly one time. Exactly two vertices can have an odd number of edges, the first and last ones.
+\item Cayley's formula: for any n, there are $n^{(n-2)}$ trees with n distinct vertices.
+\end{itemize}
+
+\newpage\section{Miscellaneous}
+
+\subsection{Integer sequences}
+\subsubsection{Fibonacci numbers}
+This famous sequence is usually defined recursively as $F(n)=F(n-1)+F(n-2)$, with something like $F(0)=0$ and $F(1)=1$ as the base:
+
+\begin{center}$0$, $1$, $1$, $2$, $3$, $5$, $8$, $13$, $21$, $34$, $55$, $89$, $144$, $233$, $377$, $610$, $987$, $1597$, $2584$, $4181$, $6765$, $10946$, $17711$, $28657$, $46368$, $75025$, $121393$, $196418$, $317811$, $514229$, $832040$, $1346269$, $2178309$, $3524578$, $5702887$, $9227465$, $14930352$, $24157817$, $39088169$, $\ldots$\end{center}
+
+Fibonacci numbers appear in a lot of places, for example $F(n+1)$ is the number of ways to tile a $2 \times n$ rectangle with $2 \times 1$ dominoes. There is a closed-form formula for Fibonacci numbers:
+\[F(n)=\frac{\left(1+\sqrt{5}\right)^n-\left(1-\sqrt{5}\right)^n}{2^n\sqrt{5}}\]
+
+\subsubsection{Mersenne primes}
+These are primes of the form $2^p-1$ (where $p$ is also prime):
+
+\begin{center}$2$, $3$, $5$, $7$, $13$, $17$, $19$, $31$, $61$, $89$, $107$, $127$, $521$, $607$, $1279$, $2203$, $2281$, $3217$, $4253$, $4423$, $9689$, $9941$, $11213$, $19937$, $21701$, $23209$, $44497$, $86243$, $110503$, $132049$, $216091$, $756839$, $859433$, $1257787$, $1398269$, $2976221$, $3021377$, $6972593$, $13466917$, $\ldots$\end{center}
+
+It is not known whether the set of Mersenne primes is finite.
+
+\subsubsection{Perfect numbers}
+These are numbers that are equal to the sum of their proper divisors (for example, $6=1+2+3$ and $28=1+2+4+7+14$):
+
+\begin{center}$6$, $28$, $496$, $8128$, $33550336$, $8589869056$, $137438691328$, $2305843008139952128$, $2658455991569831744654692615953842176$, $191561942608236107294793378084303638130997321548169216$, $\ldots$\end{center}
+
+No odd perfect numbers are known (though it hasn't been proved that none can exist). The even ones are of the form $2^{p-1}(2^p-1)$ where $p$ is prime, so they have a one-to-one correspondence with Mersenne primes.
+
+\subsubsection{Triangular numbers}
+
+\begin{center}$0$, $1$, $3$, $6$, $10$, $15$, $21$, $28$, $36$, $45$, $55$, $66$, $78$, $91$, $105$, $120$, $136$, $153$, $171$, $190$, $210$, $231$, $253$, $276$, $300$, $325$, $351$, $378$, $406$, $435$, $465$, $496$, $528$, $561$, $595$, $630$, $666$, $703$, $741$, $780$, $820$, $861$, $903$, $946$, $990$, $1035$, $1081$, $1128$, $1176$, $1225$, $1275$, $1326$, $1378$, $1431$, $\ldots$\end{center}
+
+\noindent Formula:
+\[a_n={{n+1}\choose 2}=\frac{n(n+1)}{2}\]
+
+\subsubsection{Pentagonal numbers}
+
+\begin{center}$0$, $1$, $5$, $12$, $22$, $35$, $51$, $70$, $92$, $117$, $145$, $176$, $210$, $247$, $287$, $330$, $376$, $425$, $477$, $532$, $590$, $651$, $715$, $782$, $852$, $925$, $1001$, $1080$, $1162$, $1247$, $1335$, $1426$, $1520$, $1617$, $1717$, $1820$, $1926$, $2035$, $2147$, $2262$, $2380$, $2501$, $2625$, $2752$, $2882$, $3015$, $3151$, $\ldots$\end{center}
+
+\noindent Formula:
+\[a_n=\frac{n(3n-1)}{2}\]
+
+\subsubsection{Hexagonal numbers}
+
+\begin{center}$0$, $1$, $6$, $15$, $28$, $45$, $66$, $91$, $120$, $153$, $190$, $231$, $276$, $325$, $378$, $435$, $496$, $561$, $630$, $703$, $780$, $861$, $946$, $1035$, $1128$, $1225$, $1326$, $1431$, $1540$, $1653$, $1770$, $1891$, $2016$, $2145$, $2278$, $2415$, $2556$, $2701$, $2850$, $3003$, $3160$, $3321$, $3486$, $3655$, $3828$, $4005$, $4186$, $4371$, $4560$, $\ldots$\end{center}
+
+\noindent Formula:
+\[a_n=n(2n-1)\]
+
+\subsubsection{Octahedral numbers}
+
+\begin{center}$0$, $1$, $6$, $19$, $44$, $85$, $146$, $231$, $344$, $489$, $670$, $891$, $1156$, $1469$, $1834$, $2255$, $2736$, $3281$, $3894$, $4579$, $5340$, $6181$, $7106$, $8119$, $9224$, $10425$, $11726$, $13131$, $14644$, $16269$, $18010$, $19871$, $21856$, $23969$, $26214$, $28595$, $31116$, $33781$, $36594$, $39559$, $42680$, $\ldots$\end{center}
+
+\noindent Formula:
+\[a_n=\frac{2n^3 + n}{3}\]
+
+\subsubsection{Catalan numbers}
+A sequence with many applications in counting problems, the $n$-th Catalan number is the number of expressions of length $2n$ composed of correctly matched parentheses:
+
+\begin{center}$1$, $1$, $2$, $5$, $14$, $42$, $132$, $429$, $1430$, $4862$, $16796$, $58786$, $208012$, $742900$, $2674440$, $9694845$, $35357670$, $129644790$, $477638700$, $1767263190$, $6564120420$, $24466267020$, $91482563640$, $343059613650$, $1289904147324$, $\ldots$\end{center}
+
+\noindent Formula:
+\[C(n)=\frac{1}{n+1}{2n\choose n} = \frac{(2n)!}{(n+1)!n!}\]
+
+\subsubsection{Carmichael numbers}
+These are composite numbers $n$ that pass Fermat's primality test despite not being prime because for all integers $a$ relatively prime to $n$, $a^{n-1}\equiv 1 \mod{n}$:
+
+\begin{center}$561$, $1105$, $1729$, $2465$, $2821$, $6601$, $8911$, $10585$, $15841$, $29341$, $41041$, $46657$, $52633$, $62745$, $63973$, $75361$, $101101$, $115921$, $126217$, $162401$, $172081$, $188461$, $252601$, $278545$, $294409$, $314821$, $334153$, $340561$, $399001$, $410041$, $449065$, $488881$, $512461$, $\ldots$\end{center}
+
+\subsection{Strings}
+\subsubsection{Letter count (case-insensitive)}
+\begin{lstlisting}
+int[] letterCount(String s) {
+	int[] ret = new int[26];
+	s = s.toUpperCase().replaceAll("[^A-Z]+", "");
+	for(char c: s.toCharArray()) ++ret[c - 'A'];
+	return ret;
+}
+\end{lstlisting}
+
+\subsection{Arrays}
+\subsubsection{Compare two arrays}
+Returns according to the usual contract: negative if $a<b$, zero if $a=b$, positive if $a>b$.
+\begin{lstlisting}
+int compare(int[] a, int[] b) {
+	int n = Math.min(a.length, b.length);
+	int i = 0;
+	while(i < n && a[i] == b[i]) ++i;
+	return i == n ? a.length - b.length : a[i] - b[i];
+}
+\end{lstlisting}
+
+\subsubsection{Reverse (in place)}
+\begin{lstlisting}
+void reverse(int[] array) {
+	int i = -1;
+	int j = array.length;
+	while(++i < --j) {
+		int tmp = array[i];
+		array[i] = array[j];
+		array[j] = tmp;
+	}
+}
+\end{lstlisting}
+
+\subsubsection{Next permutation (in place)}
+Gives the lexicographically next permutation. Returns success value, i.e. \verb/false/ if there is no next permutation.
+\begin{lstlisting}
+boolean nextPermutation(int[] arr) {
+	int n = arr.length;
+	int i = n - 2;
+	while(i >= 0 && arr[i] >= arr[i + 1]) --i;
+	if(i < 0) return false;
+	int j = n - 1;
+	while(arr[i] >= arr[j]) --j;
+	int tmp = arr[i];
+	arr[i] = arr[j];
+	arr[j] = tmp;
+	Arrays.sort(arr, i + 1, n);
+	return true;
+}
+\end{lstlisting}
+
+\subsection{Card games}
+Programming contests often like to ask questions involving card games. A favorite representation of cards is as a letter indicating the rank and a letter indicating the suit. For example, ``TC'' would be the ten of clubs. For such problems, it may be useful to convert cards to integers when storing them. The example that follows does this.
+
+\subsubsection{Poker hand ranking}
+\noindent Here's the complete code for a \verb/Comparable/ poker hand \verb/class/. I didn't have time to comment it, but maybe you can make sense of it and/or use it for inspiration for similar problems.
+
+\begin{lstlisting}
+class PokerHand implements Comparable<PokerHand> {
+	int[] rank = new int[13];
+	int[] suit = new int[4];
+	int[] cmp;
+	
+	PokerHand(String[] hand) {
+		for(String s: hand) {
+			switch(s.charAt(0)) {
+				case 'T': ++rank[8]; break;
+				case 'J': ++rank[9]; break;
+				case 'Q': ++rank[10]; break;
+				case 'K': ++rank[11]; break;
+				case 'A': ++rank[12]; break;
+				default: ++rank[s.charAt(0) - '2']; break;
+			}
+			switch(s.charAt(1)) {
+				case 'C': ++suit[0]; break;
+				case 'D': ++suit[1]; break;
+				case 'H': ++suit[2]; break;
+				case 'S': ++suit[3]; break;
+				default: throw new RuntimeException();
+			}
+		}
+		cmp = new int[] {straightFlush(), fourOfAKind(),
+						 fullHouse(), flush(), straight(),
+						 threeOfAKind(), twoPairs(), pair(),
+						 highCard()};
+	}
+	
+	int flush() {
+		for(int s: suit) if(s == 5) return highCard();
+		return -1;
+	}
+	
+	int straight() {
+		for(int i = 12; i >= 4; --i) {
+			boolean good = true;
+			for(int j = 0; j <= 4; ++j) if(rank[i - j] != 1) {
+				good = false;
+				break;
+			}
+			if(good) return i;
+		}
+		return -1;
+	}
+	
+	int highCard() {
+		int ret = 0;
+		for(int i = 12; i >= 0; --i) if(rank[i] == 1)
+			ret = ret * 13 + i;
+		return ret;		
+	}
+	
+	int straightFlush() {
+		return flush() == -1 ? -1 : straight();
+	}
+	
+	int fourOfAKind() {
+		for(int i = 12; i >= 0; --i) if(rank[i] == 4) return i;
+		return -1;
+	}
+	
+	int threeOfAKind() {
+		for(int i = 12; i >= 0; --i) if(rank[i] == 3) return i;
+		return -1;
+	}
+
+	int pair() {
+		int ret = p(1);
+		return ret == -1 ? -1 : ret * 13 * 13 * 13 + highCard();
+	}
+
+	int twoPairs() {
+		int ret = p(2);
+		return ret == -1 ? -1 : ret * 13 + highCard();
+	}
+	
+	int fullHouse() {
+		int ret = pair();
+		return ret == -1 ? -1 : threeOfAKind();
+	}
+	
+	int p(int goal) {
+		int pc = 0;
+		int ret = 0;
+		for(int i = 12; i >= 0; --i) if(rank[i] == 2) {
+			ret = ret * 13 + i;
+			++pc;
+		}
+		return pc == goal ? ret : -1;
+	}
+
+	public int compareTo(PokerHand h) {
+		int index = 0;
+		while(index < cmp.length && cmp[index] == h.cmp[index])
+			++index;
+		return index == cmp.length ? 0 : cmp[index] - h.cmp[index];
+	}
+}
+\end{lstlisting}
+
+\newpage\section{The key to success}
+
+\subsection{The contest started. What do I do?}
+First of all, relax. If you've worked hard, you {\em will} do well. If you haven't and you know it, no use crying now. You have to make do with what you've got, and don't take that for granted. You're very talented. Find your optimal level of excitement between ``I don't really care about anything right now'' and ``AAAAHH I'm in a competition!'' Don't do anything else until you get there. 
+
+\subsection{My submission wasn't accepted}
+
+\subsubsection{Did you read the problem?}
+If you answered no, stop. Do not pass go, do not collect \$200. Go RTFP.
+
+\subsubsection{Does your code pass the examples?}
+I sure hope you tested it on the examples before you submitted. That also implies your code compiles and that you read the problem. If not, isn't it obvious what you have to do?
+
+\subsubsection{Compile error}
+I thought you said your code compiles. It does? If you're using Java, make sure your primary class is \verb/public/. Ask the judges if the class has to have a particular name. Also ask if compiler warnings are considered fatal, and if so, make sure your code doesn't trigger any.
+
+\subsubsection{Runtime error}
+This means your code crashed. Don't worry, if your algorithm is correct this should be an easy fix. Some of the most common reasons for runtime errors are:
+\begin{itemize}
+\item Reading the input incorrectly -- Are you properly identifying the end of input? Are you accounting for empty lines between test cases or other annoying formats?
+\item Index out of bounds -- Are your loop termination conditions correct? Are you checking if your stacks, queues, and other data structures are non-empty before trying to access them? If you're working with strings, do you correctly handle the empty string?
+\item Null pointers -- Have you initialized your variables? Are you clearing (or declaring) them between test cases?
+\item Stack overflow -- Are you recursing too much? Can you memoize or use an iterative approach?
+\item Out of memory error -- Are you creating some huge array or other data structure? If so, do you actually need it all or can you make do with only part?
+\end{itemize}
+
+You can minimize the number of runtime errors with defensive programming: don't make any assumptions not stated in the problem statement. (And unfortunatey, in rare cases, even those explicitly stated may not be safe to make. But only consider erroneous problem statements after you've considered everything else.)
+
+\subsubsection{Time limit exceeded}
+Donald Knuth once said that ``We should forget about small efficiencies, say about $97\%$ of the time: premature optimization is the root of all evil.'' So before you go and replace your \verb/Scanner/ with a \verb/BufferedReader/ or your \verb/ArrayList/ with a plain array, consider that it's much more likely your algorithm just isn't good enough. Your optimizations might shave a few milliseconds off your time, but they won't make $O(n^3)$ algorithms pass if the intended solution is $O(n^2)$.
+
+So, after you've made sure you don't have any infinite loops or other silly bugs, try optimizing your algorithm. If possible, use memoization or precomputation. Also, ask yourself if you're doing more work than you have to. Maybe with some insight into the problem, you can get rid of an entire loop altogether! Solve small test cases by hand and you might have an epiphany.
+
+Well-designed problems will allow all (reasonable) solutions of the proper complexity pass but reject even the most optimized solution of a higher complexity. 
+
+\subsubsection{Memory limit exceeded}
+This is a very strange and very rare response. On many judging systems, your code will crash before it ever has a chance to allocate too much memory. But if you did get this response and it's not a problem with the system itself, then you must be creating too much stuff! 
+
+\subsubsection{Excessive output}
+This response usually comes from a judge with a sense of humor. Make sure you've turned off all your debugging output.
+
+\subsubsection{Presentation error / Output format error}
+Such a response might mean that you have the right answer and it's just printed incorrectly. Or it might not. But what it almost certainly means is that you did not RTFP and/or check your answers for the example inputs.
+
+\subsubsection{Wrong answer}
+This is the catch-all of wrong submissions. Check edge cases like $0$, $1$, and the largest possible test case. Avoid floating-point arithmetic if integer arithmetic will suffice (example: if you need to sort points with integer coordinates by distances, just sort by the square of the distances, which will be an integer). Make sure you don't overflow.
+
+\subsection{Strategy}
+By now, you've honed your team into a mean contest-winning machine. With that, there's only one thing left to say, namely:\\[0.5cm]
+\begin{center}
+Good luck! Have fun! You'll do great!\\[0.5cm]
+{\em ...as long as you RTFP!}
+\end{center}
+\end{document}
+
