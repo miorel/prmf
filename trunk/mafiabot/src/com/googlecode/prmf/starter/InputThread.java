@@ -7,26 +7,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class InputThread extends Thread
-{
+//TODO rename this class since it will probably also be used for output 
+public class InputThread extends Thread {
 	private Socket soc;
-	private InputStream inputstream;
+	private InputStream inputstream; //TODO use camel case
 	private List<Listener> list;
-	private PrintStream printstream;
-	public InputThread(String server, int port)
-	{
+	private PrintStream printstream; //TODO use camel case
+
+	public InputThread(String server, int port) {
 		try {
 			soc = new Socket(server, port);
 			inputstream = soc.getInputStream();
 			printstream = new PrintStream(soc.getOutputStream());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			System.out.println("oops");
 		} 
 		list = new ArrayList<Listener>();
 		
-		printstream.println("NICK MAFFAIBOT22");
-		printstream.println("USER MAFFAIBOT22 12 * MAFFAIBOT22");
-		printstream.println("JOIN #UFPT");
+		//TODO the following should not be done done in the constructor but when the thread is started
+		printstream.println("NICK MAFFAIBOT22"); //TODO don't hardcode the nick
+		printstream.println("USER MAFFAIBOT22 12 * MAFFAIBOT22"); //TODO don't hardcode the username and real name
+		printstream.println("JOIN #UFPT"); //TODO don't hardcode the channel
 	}
 	
 	public void run()
@@ -41,8 +43,7 @@ public class InputThread extends Thread
 		}
 	}
 	
-	public void addListener(Listener listener)
-	{
+	public void addListener(Listener listener) {
 		list.add(listener);
 	}
 	
