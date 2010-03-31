@@ -48,7 +48,7 @@ public class InputThread extends Thread
 	
 	public void sendMessage(String destination, String message) 
 	{
-		printstream.println("PRIVMSG "+destination+" :"+message);
+		printstream.println("PRIVMSG "+destination+" :"+message + " ^.^");
 	}
 	
 }
