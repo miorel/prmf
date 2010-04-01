@@ -21,15 +21,15 @@ public class MafiaListener implements Listener {
 		}
 		else if(msg.length >= 4 && msg[3].toLowerCase().equalsIgnoreCase(":!join")) //TODO toLowerCase() and equalsIgnoreCase() are redundant
 		{
-			game.receiveMessage(msg[3]);
+			game.receiveMessage(in);
 		}
 		else if(msg.length >= 4 && msg[3].toLowerCase().equalsIgnoreCase(":!end")) //TODO toLowerCase() and equalsIgnoreCase() are redundant
 		{
-			game.receiveMessage(msg[3]);
+			game.receiveMessage(in);
 		}
 		else if(msg.length >= 4 && msg[3].toLowerCase().equalsIgnoreCase(":!quit")) //TODO toLowerCase() and equalsIgnoreCase() are redundant
 		{
-			game.receiveMessage(msg[3]);
+			game.receiveMessage(in);
 		}
 	}
 }
