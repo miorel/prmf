@@ -52,4 +52,16 @@ public class InputThread extends Thread {
 		printstream.println("PRIVMSG "+destination+" :"+message + " ^.^");
 	}
 	
+	public void sendPONG(String[] msg)
+	{
+		msg[0] = "PONG";
+		String concat="";
+		for(int i=0;i<msg.length;++i)
+		{
+			concat+=msg[i];
+			if(i<msg.length-1)
+				concat+=" ";
+		}
+		printstream.println(concat);
+	}
 }
