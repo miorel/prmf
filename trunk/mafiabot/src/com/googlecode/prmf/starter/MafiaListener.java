@@ -31,5 +31,9 @@ public class MafiaListener implements Listener {
 		{
 			game.receiveMessage(in);
 		}
+		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!start") && game != null)
+		{
+			game.receiveMessage(in);
+		}
 	}
 }
