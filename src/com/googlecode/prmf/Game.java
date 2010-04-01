@@ -21,7 +21,7 @@ public class Game{
 
 	public void pregameMessage(String line) 
 	{
-		receiveMessage(line);
+		pregame.receiveMessage(line);
 	}
 	
 	public void dayMessage(String line)
