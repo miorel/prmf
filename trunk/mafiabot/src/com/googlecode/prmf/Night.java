@@ -1,6 +1,5 @@
 package com.googlecode.prmf;
 
-import com.googlecode.prmf.starter.MafiaGameState;
 
 public class Night implements MafiaGameState
 {

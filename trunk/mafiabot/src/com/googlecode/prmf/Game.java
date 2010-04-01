@@ -1,7 +1,6 @@
 package com.googlecode.prmf;
 
 import com.googlecode.prmf.starter.InputThread;
-import com.googlecode.prmf.starter.MafiaGameState;
 
 public class Game{
 	private Player[] players;
@@ -37,6 +36,7 @@ public class Game{
 	{
 		night.receiveMessage(line);
 	}
+	
 	public void receiveMessage(String line)
 	{
 		if(state instanceof Pregame)
