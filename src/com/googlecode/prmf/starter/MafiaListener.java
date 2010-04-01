@@ -13,25 +13,25 @@ public class MafiaListener implements Listener {
 		if(msg[0].indexOf("!") > 1)
 			user = msg[0].substring(1,msg[0].indexOf("!"));
 
-		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!mafia") && game == null) 
+		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && game == null) 
 		{
 			game = new Game(user, inputThread);
 			inputThread.sendMessage(channel, "Mafia game started by " + user + "!");
 		}
-		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!join") && game != null) 
+		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~join") && game != null) 
 		{
 			game.receiveMessage(in);
 		}
-		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!end") && game != null) 
+		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~end") && game != null) 
 		{
 			inputThread.sendMessage(channel, "Mafia game ended!");
 			game = null;
 		}
-		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!quit") && game != null)
+		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~quit") && game != null)
 		{
 			game.receiveMessage(in);
 		}
-		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!start") && game != null)
+		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~start") && game != null)
 		{
 			game.receiveMessage(in);
 		}

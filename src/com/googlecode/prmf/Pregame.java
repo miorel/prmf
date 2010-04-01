@@ -41,7 +41,7 @@ public class Pregame {
 			
 			String destination = msg[2];
 			String command = msg[3].toLowerCase();
-			if(command.equalsIgnoreCase(":!start"))
+			if(command.equalsIgnoreCase(":~start"))
 			{
 				if(user.equals(startName))		
 				{
@@ -51,7 +51,7 @@ public class Pregame {
 				else
 					inputThread.sendMessage(destination,  "Only " + startName + " can start the game!");
 			}	
-			if(command.equalsIgnoreCase(":!join"))
+			if(command.equalsIgnoreCase(":~join"))
 			{
 				System.out.println(index);
 				if(index == -1)
@@ -63,7 +63,7 @@ public class Pregame {
 					inputThread.sendMessage(destination,  user + " has already joined the game!");
 			}
 			
-			if(command.equalsIgnoreCase(":!quit"))
+			if(command.equalsIgnoreCase(":~quit"))
 			{
 				System.out.println(index);
 				if(index == -1)
@@ -76,7 +76,7 @@ public class Pregame {
 				
 			}	
 			
-			if (command.equalsIgnoreCase(":!end"))
+			if (command.equalsIgnoreCase(":~end"))
 			{
 				if (user.equals(startName))
 				{
