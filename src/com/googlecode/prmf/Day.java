@@ -1,7 +1,6 @@
 package com.googlecode.prmf;
 
 import com.googlecode.prmf.starter.InputThread;
-import com.googlecode.prmf.starter.MafiaGameState;
 
 public class Day extends Thread implements MafiaGameState{
 		Thread input;
