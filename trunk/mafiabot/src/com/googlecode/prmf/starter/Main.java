@@ -10,8 +10,8 @@ public class Main {
 	
 	public static void main(String[] arg) {
 		InputThread inputThread = new InputThread(server, port);
-		inputThread.start(); //TODO start the thread AFTER adding the listener
 		MafiaListener mafiaListener = new MafiaListener(); //TODO declare things as what they're used, not as what they are
 		inputThread.addListener(mafiaListener);
+		inputThread.start();
 	}
 }
