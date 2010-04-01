@@ -5,8 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import com.googlecode.prmf.starter.InputThread;
+import com.googlecode.prmf.starter.MafiaGameState;
 
-public class Pregame {
+public class Pregame implements MafiaGameState{
 	
 	private InputThread inputThread;
 	private String startName;	

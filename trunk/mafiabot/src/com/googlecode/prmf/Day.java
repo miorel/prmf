@@ -1,8 +1,9 @@
 package com.googlecode.prmf;
 
 import com.googlecode.prmf.starter.InputThread;
+import com.googlecode.prmf.starter.MafiaGameState;
 
-public class Day extends Thread{
+public class Day extends Thread implements MafiaGameState{
 		Thread input;
 		TimerThread timerThread;// TimerThread will cease input thread before ending
         VoteTracker tracker;
