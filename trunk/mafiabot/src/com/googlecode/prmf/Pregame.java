@@ -92,7 +92,7 @@ public class Pregame implements MafiaGameState{
 	private void startGame()
 	{
 		//assigning roles
-		int numMafia = players.size()/3;
+		int numMafia = (int)Math.ceil(players.size()/3.0);
 		//create the Mafia team
 		for(int a = 0; a < numMafia; ++a)
 		{
@@ -106,6 +106,7 @@ public class Pregame implements MafiaGameState{
 		}
 		Collections.shuffle(mafiaRoles);
 		Collections.shuffle(townRoles);
+		
 		for(int a = 0; a < numMafia; ++a)
 		{
 			roles.add(mafiaRoles.get(a));
@@ -114,6 +115,7 @@ public class Pregame implements MafiaGameState{
 		{
 			roles.add(townRoles.get(a));
 		}
+		
 		for(int a = 0; a < players.size(); ++a)
 		{
 			players.get(a).role = roles.get(a);
