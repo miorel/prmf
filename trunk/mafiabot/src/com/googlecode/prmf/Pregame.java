@@ -46,7 +46,7 @@ public class Pregame {
 				if(user.equals(startName))		
 				{
 					inputThread.sendMessage(destination, "The game has begun!");
-					return;
+					startGame();
 				}
 				else
 					inputThread.sendMessage(destination,  "Only " + startName + " can start the game!");
@@ -87,9 +87,10 @@ public class Pregame {
 				else
 					inputThread.sendMessage(destination,  "Only " + startName + " can end the game!");
 			}
-		
+	}	
 	
-	
+	private void startGame()
+	{
 		//assigning roles
 		int numMafia = players.size()/3;
 		//create the Mafia team
