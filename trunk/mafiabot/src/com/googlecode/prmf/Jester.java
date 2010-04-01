@@ -2,7 +2,6 @@ package com.googlecode.prmf;
 // This is TWW2's favorite class.
 
 class Jester extends Role{
-	static String name;
 	static Team team;
 	public Jester(Team nteam) {
 		name = "jester";
