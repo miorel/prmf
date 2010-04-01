@@ -13,21 +13,21 @@ public class MafiaListener implements Listener {
 		if(msg[0].indexOf("!") > 1)
 			user = msg[0].substring(1,msg[0].indexOf("!"));
 
-		if(msg.length >= 4 && msg[3].toLowerCase().equalsIgnoreCase(":!mafia")) //TODO toLowerCase() and equalsIgnoreCase() are redundant
+		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!mafia")) 
 		{
-			//TODO: make it so you can't start 2 games.
 			inputThread.sendMessage(channel, "Mafia game started!");
-			game = new Game(user, inputThread);
+			if(game == null )
+				game = new Game(user, inputThread);
 		}
-		else if(msg.length >= 4 && msg[3].toLowerCase().equalsIgnoreCase(":!join")) //TODO toLowerCase() and equalsIgnoreCase() are redundant
+		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!join") && game != null) 
 		{
 			game.receiveMessage(in);
 		}
-		else if(msg.length >= 4 && msg[3].toLowerCase().equalsIgnoreCase(":!end")) //TODO toLowerCase() and equalsIgnoreCase() are redundant
+		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!end") && game != null) 
 		{
-			game.receiveMessage(in);
+			game = null;
 		}
-		else if(msg.length >= 4 && msg[3].toLowerCase().equalsIgnoreCase(":!quit")) //TODO toLowerCase() and equalsIgnoreCase() are redundant
+		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!quit") && game != null)
 		{
 			game.receiveMessage(in);
 		}
