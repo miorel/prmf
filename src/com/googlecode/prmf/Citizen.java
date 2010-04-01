@@ -1,9 +1,7 @@
 package com.googlecode.prmf;
 
-class Citizen extends Role {
-	
+class Citizen extends Role {	
 	static Team team;
-
 	public Citizen(Team nteam) {
 		name = "citizen";
 		team = nteam;

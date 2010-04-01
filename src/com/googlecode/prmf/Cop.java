@@ -1,7 +1,6 @@
 package com.googlecode.prmf;
 
 class Cop extends Role{
-	static String name;
 	static Team team;
 	public Cop(Team nteam) {
 		name = "cop";
