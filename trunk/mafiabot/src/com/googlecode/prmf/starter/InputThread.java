@@ -36,7 +36,6 @@ public class InputThread extends Thread {
 		Scanner in = new Scanner(inputstream);
 		while(in.hasNextLine())
 		{
-			Thread.yield();
 			String line = in.nextLine();
 			System.out.println(line);
 			for(Listener l : list)
