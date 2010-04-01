@@ -37,7 +37,7 @@ public class InputThread extends Thread {
 		while(in.hasNextLine())
 		{
 			String line = in.nextLine();
-			System.out.println(line);
+			System.out.println("<<<< " + line);
 			for(Listener l : list)
 				l.receiveLine(line, this);
 		}
@@ -49,7 +49,8 @@ public class InputThread extends Thread {
 	
 	public void sendMessage(String destination, String message) 
 	{
-		printstream.println("PRIVMSG "+destination+" :"+message + " ^.^");
+		printstream.println("PRIVMSG "+destination+" :"+message);
+		System.out.println(">>>> " + "PRIVMSG "+destination+" :"+message);
 	}
 	
 	public void sendPONG(String[] msg)
