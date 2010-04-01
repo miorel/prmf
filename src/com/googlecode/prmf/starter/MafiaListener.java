@@ -13,11 +13,10 @@ public class MafiaListener implements Listener {
 		if(msg[0].indexOf("!") > 1)
 			user = msg[0].substring(1,msg[0].indexOf("!"));
 
-		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!mafia")) 
+		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!mafia") && game == null) 
 		{
-			inputThread.sendMessage(channel, "Mafia game started!");
-			if(game == null )
-				game = new Game(user, inputThread);
+			game = new Game(user, inputThread);
+			inputThread.sendMessage(channel, "Mafia game started by " + user + "!");
 		}
 		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!join") && game != null) 
 		{
@@ -25,6 +24,7 @@ public class MafiaListener implements Listener {
 		}
 		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!end") && game != null) 
 		{
+			inputThread.sendMessage(channel, "Mafia game ended!");
 			game = null;
 		}
 		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":!quit") && game != null)
