@@ -64,5 +64,6 @@ public class InputThread extends Thread {
 				concat+=" ";
 		}
 		printstream.println(concat);
+		System.out.println(">>>> " + concat);
 	}
 }
