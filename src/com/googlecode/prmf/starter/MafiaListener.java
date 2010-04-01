@@ -17,6 +17,8 @@ public class MafiaListener implements Listener {
 		{
 			game = new Game(user, inputThread);
 			inputThread.sendMessage(channel, "Mafia game started by " + user + "!");
+			game.receiveMessage(":" + user + "! PRIVMSG " + channel + " :~join");
+			
 		}
 		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~join") && game != null) 
 		{
@@ -24,8 +26,13 @@ public class MafiaListener implements Listener {
 		}
 		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~end") && game != null) 
 		{
-			inputThread.sendMessage(channel, "Mafia game ended!");
-			game = null;
+			if(user.equals(game.getGameStarter()))
+			{
+				inputThread.sendMessage(channel, "Mafia game ended!");
+				game = null;
+			}
+			else
+				inputThread.sendMessage(channel, "The game can only be ended by " + game.getGameStarter());
 		}
 		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~quit") && game != null)
 		{

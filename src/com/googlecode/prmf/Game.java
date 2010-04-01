@@ -75,5 +75,9 @@ public class Game{
 			state = day;
 	}
 	
+	public String getGameStarter()
+	{
+		return gameStarter;	
+	}
 	
 }
