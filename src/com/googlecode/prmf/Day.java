@@ -3,7 +3,7 @@ package com.googlecode.prmf;
 import com.googlecode.prmf.starter.InputThread;
 
 public class Day extends Thread implements MafiaGameState{
-		Thread input;
+		//Thread input;
 		TimerThread timerThread;// TimerThread will cease input thread before ending
         VoteTracker tracker;
         Player[] players;
@@ -11,23 +11,21 @@ public class Day extends Thread implements MafiaGameState{
         String dead; // who was killed , if anyone;
         InputThread inputThread;
         
-        public Day(Player[] players)
+        public Day(Player[] players , InputThread inputThread)
         {
         		tracker = new VoteTracker(players);
             	this.players = players;
-            	this.inputThread = inputThread;
+        		timerThread = new TimerThread(inputThread);
         }
         
-        public void startDay()
-        {
-    		input = new Thread(this);
-    		timerThread = new TimerThread(input);
-			input.start(); 
-        }
         
         public boolean receiveMessage(String line, InputThread inputThread)
         {
-        //	if(line.equals)
+        	if(line.equals("TIMEUP"))
+        	{
+        		return true;
+        	}
+        	
         	boolean ret = false;
         	inputThread.sendMessage("#UFPT","Morning welcome message");
         	
@@ -85,8 +83,8 @@ public class Day extends Thread implements MafiaGameState{
         	int ret = -3;
 		    String[] instrucTokens = instruc.split(" ",5);
 		    String command = instrucTokens[3];
-		    String target;
-		    if(command.equals(":~lynch"));
+		    String target="";
+		    if(command.equals(":~lynch"))
 		    	target = instrucTokens[4];
 		    
 		    int speakerId = searchPlayers(speaker);
