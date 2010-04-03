@@ -1,7 +1,9 @@
 package com.googlecode.prmf;
 
+import com.googlecode.prmf.starter.InputThread;
+
 public interface MafiaGameState {
 	
-	public boolean readMessage(String message, InputThread inputThread);
+	public boolean receiveMessage(String message, InputThread inputThread);
 	
 }
