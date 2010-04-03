@@ -1,5 +1,7 @@
 package com.googlecode.prmf;
 
+import com.googlecode.prmf.starter.InputThread;
+
 
 public class Night implements MafiaGameState
 {
@@ -10,8 +12,8 @@ public class Night implements MafiaGameState
 		
 	}
 	
-	public void receiveMessage(String line)
+	public boolean receiveMessage(String line, InputThread inputThread)
 	{
-		
+		return false;
 	}
 }

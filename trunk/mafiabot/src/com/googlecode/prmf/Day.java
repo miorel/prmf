@@ -15,16 +15,11 @@ public class Day extends Thread implements MafiaGameState{
         {
         		tracker = new VoteTracker(players);
             	this.players = players;
-            	this.inputThread = inputThread;
         }
         
-        public void startDay(boolean killed, String dead)
+        public void startDay()
         {
-    		this.killed = killed;
-    		this.dead = dead;
-    		input = new Thread(this);
     		timerThread = new TimerThread(input);
-			input.start(); 
         }
         
         public boolean receiveMessage(String line, InputThread inputThread)
@@ -32,38 +27,35 @@ public class Day extends Thread implements MafiaGameState{
         	boolean ret = false;
         	inputThread.sendMessage("#UFPT","Morning welcome message");
         	
-        	if(killed)
-        		inputThread.sendMessage("#UFPT",dead+ " was found dead in his/her home this morning!!");
-        	
-        		String speaker = "testPlayer"; // HOW TO GET SPEAKER? .. must read up on..
-        		String instruc = line;
-        		int returnCode;
-        		if( (returnCode = parseMessage(instruc, speaker)) >= 0)
-        		{
-        			inputThread.sendMessage("#UFPT",players[returnCode] + " was lynched :(");
-        			ret = true;
-        		}
-        		else if(returnCode == -2)
-        		{
-        			inputThread.sendMessage("#UFPT","the majority has voted for no lynching today!");
-        			ret = true;
-        		}
-        		else if(returnCode == -1)
-        		{
-        			inputThread.sendMessage("#UFPT", "The town was not able to reach a concensus.");
-        			ret = false;
-        		}
-        		else if(returnCode == -3)
-        		{
-        			ret = false;
-        		}
-        		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
-        		
-        		// TODO actually, it would be better to use enums
-        		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
-        		
-        		return ret;
-        	}
+    		String speaker = line.substring(1,line.indexOf("!")); // HOW TO GET SPEAKER? .. must read up on..
+    		String instruc = line;
+    		int returnCode;
+    		if( (returnCode = parseMessage(instruc, speaker)) >= 0)
+    		{
+    			inputThread.sendMessage("#UFPT",players[returnCode] + " was lynched :(");
+    			ret = true;
+    		}
+    		else if(returnCode == -2)
+    		{
+    			inputThread.sendMessage("#UFPT","the majority has voted for no lynching today!");
+    			ret = true;
+    		}
+    		else if(returnCode == -1)
+    		{
+    			inputThread.sendMessage("#UFPT", "The town was not able to reach a concensus.");
+    			ret = false;
+    		}
+    		else if(returnCode == -3)
+    		{
+    			ret = false;
+    		}
+    		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
+    		
+    		// TODO actually, it would be better to use enums
+    		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
+    		
+    		return ret;
+    	}
 
         
         
