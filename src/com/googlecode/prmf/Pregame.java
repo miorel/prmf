@@ -28,7 +28,7 @@ public class Pregame implements MafiaGameState{
 	{
 			boolean ret = false;
 			String[] msg = line.split(" ", 4);
-			String user = "#UFPT";
+			String user = "#UFPT"; //TODO don't hardcode this
 
 			//this is kind of a nasty solution...
 

@@ -15,6 +15,8 @@ public class TimerThread  implements Runnable{
 	{
 		this.daytime = daytime;
 		this.inputThread = inputThread;
+		
+		// TODO NO NO NO DO NOT START A THREAD FROM THE CONSTRUCTOR!!!
 		timer = new Thread(this);
 		timer.start(); 
 	}
@@ -32,8 +34,12 @@ public class TimerThread  implements Runnable{
 			e.printStackTrace();
 		}
 
+		// TODO why is the channel name hardcoded?
+		
 		//This sends a message "TIMEUP" to mafiaListener to end SWAPSTATES.
 		((InputThread)inputThread).sendMessage("#UFPT", "TIME IS UP!");
 		((InputThread)inputThread).ceaseTimer();
+		
+		// TODO why don't you change the type of inputThread to InputThread so you don't have to cast?
 	}
 }
