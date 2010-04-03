@@ -1,6 +1,8 @@
 package com.googlecode.prmf;
-// This is TWW2's favorite class.
 
+//this class is poorly implemented
+//it's a bad idea to write code relying on it until it gets fixed
+@Deprecated
 class Jester extends Role{
 	static Team team;
 	public Jester(Team nteam) {

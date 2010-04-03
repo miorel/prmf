@@ -2,6 +2,7 @@ package com.googlecode.prmf;
 
 import com.googlecode.prmf.starter.InputThread;
 
+// TODO there doesn't seem to be any reason for this class to extend Thread
 public class Day extends Thread implements MafiaGameState{
 		//Thread input;
 		TimerThread timerThread;// TimerThread will cease input thread before ending
@@ -27,7 +28,7 @@ public class Day extends Thread implements MafiaGameState{
         	}
         	
         	boolean ret = false;
-        	inputThread.sendMessage("#UFPT","Morning welcome message");
+        	inputThread.sendMessage("#UFPT","Morning welcome message"); // TODO why is the channel still hardcoded?
         	
         		String speaker = line.substring(1,line.indexOf("!")); // HOW TO GET SPEAKER? .. must read up on..
         		String instruc = line;
@@ -44,6 +45,7 @@ public class Day extends Thread implements MafiaGameState{
         		}
         		else if(returnCode == -1)
         		{
+        			// TODO "concensus" is not the word you're looking for
         			inputThread.sendMessage("#UFPT", "The town was not able to reach a concensus.");
         			ret = false;
         		}
@@ -96,6 +98,7 @@ public class Day extends Thread implements MafiaGameState{
 		    
 		    System.err.println(command + " " + target);
 		    
+		    // TODO I hope you realize there are better ways to do this than a bunch of if/else statements.
 		    if( command.equals(":~lynch") )
 		    {
 		    	ret = processVote(speakerId, targetId, inputThread);
@@ -141,6 +144,3 @@ public class Day extends Thread implements MafiaGameState{
 				 */
         }
 }
-
-
-

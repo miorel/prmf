@@ -14,6 +14,7 @@ public class Night implements MafiaGameState
 	
 	public boolean receiveMessage(String line, InputThread inputThread)
 	{
+		// TODO why is the channel hardcoded?
 		inputThread.sendMessage("#UFPT" , " WE ARE IN NIGHT");
 		return false;
 	}
