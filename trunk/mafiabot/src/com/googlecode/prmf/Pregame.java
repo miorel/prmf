@@ -104,6 +104,7 @@ public class Pregame implements MafiaGameState{
 		{
 			roles.add(townRoles.get(a));
 		}
+		Collections.shuffle(roles);
 		
 		for(int a = 0; a < players.size(); ++a)
 		{

@@ -14,6 +14,7 @@ public class Night implements MafiaGameState
 	
 	public boolean receiveMessage(String line, InputThread inputThread)
 	{
+		inputThread.sendMessage("#UFPT" , " WE ARE IN NIGHT");
 		return false;
 	}
 }

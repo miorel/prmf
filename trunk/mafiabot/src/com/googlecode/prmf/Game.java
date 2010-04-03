@@ -42,7 +42,7 @@ public class Game{
 		if(state instanceof Pregame)
 		{
 			players = pregame.getPlayerList();
-			day = new Day(players);
+			day = new Day(players, inputThread);
 			night = new Night(players);
 			if(dayStart)
 				state = day;

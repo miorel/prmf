@@ -33,6 +33,7 @@ public class TimerThread  implements Runnable{
 		}
 
 		//This sends a message "TIMEUP" to mafiaListener to end SWAPSTATES.
+		((InputThread)inputThread).sendMessage("#UFPT", "TIME IS UP!");
 		((InputThread)inputThread).ceaseTimer();
 	}
 }

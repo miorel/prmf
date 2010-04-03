@@ -20,6 +20,7 @@ public class VoteTracker {
 	
 	public void status(InputThread inputThread) {
 		String toPrint = "";
+	
 		for (int i=0;i<numberOfPlayers;++i)
 		{
 			String toAdd = "";

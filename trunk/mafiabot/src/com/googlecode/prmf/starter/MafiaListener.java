@@ -53,6 +53,10 @@ public class MafiaListener implements Listener {
 		{
 			game.receiveMessage(in);
 		}
+		else if(msg.length >= 4 && msg[3].startsWith(":~unvote") && game != null)
+		{
+			game.receiveMessage(in);
+		}
 	}
 	
 	public void timerMessage()
