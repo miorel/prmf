@@ -43,6 +43,16 @@ public class InputThread extends Thread {
 		}
 	}
 	
+	public void ceaseTimer()
+	{
+		for(Listener l : list)
+			if(l instanceof MafiaListener)
+			{
+				((MafiaListener)l).timerMessage();
+				break;
+			}
+	}
+	
 	public void addListener(Listener listener) {
 		list.add(listener);
 	}

@@ -19,7 +19,6 @@ public class Game{
 		this.inputThread = inputThread;
 		pregame = new Pregame(gameStarter);
 		state = pregame;
-		// TODO: add day and night constructors
 	}
 
 
@@ -42,15 +41,24 @@ public class Game{
 	{
 		if(state instanceof Pregame)
 		{
+			players = pregame.getPlayerList();
+			day = new Day(players);
+			night = new Night(players);
 			if(dayStart)
 				state = day;
 			else 
+			{
 				state = night;
+			}
 		}
 		else if(state instanceof Day)
+		{
 			state = night;
+		}
 		else
+		{
 			state = day;
+		}
 	}
 	
 	public String getGameStarter()

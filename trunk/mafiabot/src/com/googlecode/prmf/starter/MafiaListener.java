@@ -7,12 +7,15 @@ public class MafiaListener implements Listener {
 	private Game game;
 	public void receiveLine(String in, InputThread inputThread) 
 	{
+		
 		String[] msg = in.split(" ",4);
 		String user = channel;
 		
 		if(msg[0].indexOf("!") > 1)
 			user = msg[0].substring(1,msg[0].indexOf("!"));
 
+		if(msg.length >= 4)
+			msg[3] = msg[3].toLowerCase();
 		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && game == null) 
 		{
 			game = new Game(user, inputThread);
@@ -20,11 +23,11 @@ public class MafiaListener implements Listener {
 			game.receiveMessage(":" + user + "! PRIVMSG " + channel + " :~join");
 			
 		}
-		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~join") && game != null) 
+		else if(msg.length >= 4 && msg[3].equals(":~join") && game != null) 
 		{
 			game.receiveMessage(in);
 		}
-		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~end") && game != null) 
+		else if(msg.length >= 4 && msg[3].equals(":~end") && game != null) 
 		{
 			if(user.equals(game.getGameStarter()))
 			{
@@ -34,13 +37,27 @@ public class MafiaListener implements Listener {
 			else
 				inputThread.sendMessage(channel, "The game can only be ended by " + game.getGameStarter());
 		}
-		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~quit") && game != null)
+		else if(msg.length >= 4 && msg[3].equals(":~quit") && game != null)
 		{
 			game.receiveMessage(in);
 		}
-		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~start") && game != null)
+		else if(msg.length >= 4 && msg[3].equals(":~start") && game != null)
+		{
+			game.receiveMessage(in);
+		}
+		else if(msg.length >= 4 && msg[3].startsWith(":~lynch") && game != null)
+		{
+			game.receiveMessage(in);
+		}
+		else if(msg.length >= 4 && msg[3].startsWith(":~nolynch") && game != null)
 		{
 			game.receiveMessage(in);
 		}
 	}
+	
+	public void timerMessage()
+	{
+		game.receiveMessage("TIMEUP");
+	}
+	
 }
