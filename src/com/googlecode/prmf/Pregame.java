@@ -24,8 +24,9 @@ public class Pregame implements MafiaGameState{
 	}
 
 	//TODO change return type to ENUM for day-start, night-start
-	public void receiveMessage(String line, InputThread inputThread)
+	public boolean receiveMessage(String line, InputThread inputThread)
 	{
+			boolean ret = false;
 			String[] msg = line.split(" ", 4);
 			String user = "#UFPT";
 
@@ -44,7 +45,8 @@ public class Pregame implements MafiaGameState{
 				if(user.equals(startName))		
 				{
 					inputThread.sendMessage(destination, "The game has begun!");
-					startGame();
+					startGame(inputThread);
+					ret = true;
 				}
 				else
 					inputThread.sendMessage(destination,  "Only " + startName + " can start the game!");
@@ -73,9 +75,10 @@ public class Pregame implements MafiaGameState{
 				}
 				
 			}	
+			return ret;
 	}	
 	
-	private void startGame()
+	private void startGame(InputThread inputThread)
 	{
 		//assigning roles
 		int numMafia = (int)Math.ceil(players.size()/3.0);
