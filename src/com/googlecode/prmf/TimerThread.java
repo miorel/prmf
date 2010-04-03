@@ -1,5 +1,7 @@
 package com.googlecode.prmf;
 
+import com.googlecode.prmf.starter.InputThread;
+
 /**
  * This class 'should' create a thread that will sleep for some time,
  * then before ending, it will interrupt the inputThread!!
@@ -7,7 +9,7 @@ package com.googlecode.prmf;
 
 public class TimerThread  implements Runnable{
 	Thread timer, inputThread;
-	final int daytime; // 3 minutes
+	final int daytime;
 
 	public TimerThread(Thread inputThread, int daytime)
 	{
@@ -19,7 +21,7 @@ public class TimerThread  implements Runnable{
 	
 	public TimerThread(Thread inputThread)
 	{
-		this(inputThread, 3*60000);
+		this(inputThread, 6*60000);
 	}
 	
 	public void run()
@@ -30,6 +32,7 @@ public class TimerThread  implements Runnable{
 			e.printStackTrace();
 		}
 
-		inputThread.interrupt();
+		//This sends a message "TIMEUP" to mafiaListener to end SWAPSTATES.
+		((InputThread)inputThread).ceaseTimer();
 	}
 }

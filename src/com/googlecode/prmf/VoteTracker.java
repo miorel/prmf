@@ -1,5 +1,7 @@
 package com.googlecode.prmf;
 
+import com.googlecode.prmf.starter.InputThread;
+
 public class VoteTracker {
 	//TODO default visibility is almost as bad as public
 	int[] votes;
@@ -13,9 +15,10 @@ public class VoteTracker {
 		notVoting = players.length;
 		numberOfPlayers = players.length;
 		noLynchVotes = 0;
+		votes = new int[players.length];
 	}
 	
-	public void status() {
+	public void status(InputThread inputThread) {
 		String toPrint = "";
 		for (int i=0;i<numberOfPlayers;++i)
 		{
@@ -26,7 +29,7 @@ public class VoteTracker {
 				toAdd += ", ";
 			toAdd += players[i].name;
 			toAdd += " has ";
-			toAdd += i;
+			toAdd += votes[i];
 			toAdd += " votes";
 			toPrint += toAdd;
 		}
@@ -37,10 +40,11 @@ public class VoteTracker {
 			toAdd += noLynchVotes;
 		}
 		toPrint += ".";
+		inputThread.sendMessage("#UFPT", toPrint);
 	}
 	
 	// TODO probably better (i.e. OOP-ish) to pass in a Player object rather than an int voter 
-	public int newVote(int voter, int voted)
+	public int newVote(int voter, int voted , InputThread inputThread)
 	{
 		/*in Player, votes for -1 is no vote
 		 * -2 is no lynch
@@ -52,6 +56,7 @@ public class VoteTracker {
 
 		//day.processVote(..) takes care of whether voted is valid player
 		
+		System.err.println(voter + " " + voted);
 		if ( voted >= 0)
 		{
 			if( players[voter].votedFor >= 0)
@@ -64,6 +69,7 @@ public class VoteTracker {
 			}
 			players[voter].votedFor = voted;
 			++votes[voted];
+			System.err.println(voted + " has " + votes[voted]+ " votes");
 		}
 		else if( voted == -1)
 		{
@@ -96,8 +102,8 @@ public class VoteTracker {
 			
 			players[voter].votedFor = -2;
 		}
-
-		status();
+		
+		status(inputThread);
 		return checkMaj();
 	}
 	
