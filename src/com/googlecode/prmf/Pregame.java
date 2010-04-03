@@ -8,25 +8,23 @@ import com.googlecode.prmf.starter.InputThread;
 
 public class Pregame implements MafiaGameState{
 	
-	private InputThread inputThread;
 	private String startName;	
 	private List<Player> players;
 	private List<Role> townRoles;
 	private List<Role> mafiaRoles;
 	private List<Role> roles; 
 	
-	public Pregame(String startName, InputThread inputThread)
+	public Pregame(String startName)
 	{
 		this.startName = startName;
 		players = new ArrayList<Player>();
 		townRoles = new ArrayList<Role>();
 		mafiaRoles = new ArrayList<Role>();
 		roles = new ArrayList<Role>();
-		this.inputThread = inputThread;
 	}
 
 	//TODO change return type to ENUM for day-start, night-start
-	public void receiveMessage(String line)
+	public void receiveMessage(String line, InputThread inputThread)
 	{
 			String[] msg = line.split(" ", 4);
 			String user = "#UFPT";
@@ -75,18 +73,6 @@ public class Pregame implements MafiaGameState{
 				}
 				
 			}	
-			
-			if (command.equalsIgnoreCase(":~end"))
-			{
-				if (user.equals(startName))
-				{
-					inputThread.sendMessage(destination,  user + " has ended the game. Aww :(");
-					return;
-					//does this acceptably end the game? I think so but not positive
-				}
-				else
-					inputThread.sendMessage(destination,  "Only " + startName + " can end the game!");
-			}
 	}	
 	
 	private void startGame()
