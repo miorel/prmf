@@ -17,39 +17,17 @@ public class Game{
 	public Game(String gameStarter, InputThread inputThread)	{
 		this.gameStarter = gameStarter;
 		this.inputThread = inputThread;
-		pregame = new Pregame(gameStarter , inputThread);
+		pregame = new Pregame(gameStarter);
 		state = pregame;
 		// TODO: add day and night constructors
 	}
 
-	public void pregameMessage(String line) 
-	{
-		pregame.receiveMessage(line);
-	}
-	
-	public void dayMessage(String line)
-	{
-		day.receiveMessage(line);
-	}
-	
-	public void nightMessage(String line)
-	{
-		night.receiveMessage(line);
-	}
-	
+
 	public void receiveMessage(String line)
 	{
-		if(state instanceof Pregame)
+		if(state.receiveMessage(line, inputThread))
 		{
-			pregameMessage(line);
-		}
-		else if(state instanceof Day)
-		{
-			dayMessage(line);
-		}
-		else if(state instanceof Night)
-		{
-			nightMessage(line);
+			swapState();
 		}
 	}
 	

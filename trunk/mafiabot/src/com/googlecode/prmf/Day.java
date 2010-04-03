@@ -11,7 +11,7 @@ public class Day extends Thread implements MafiaGameState{
         String dead; // who was killed , if anyone;
         InputThread inputThread;
         
-        public Day(Player[] players, InputThread inputThread)
+        public Day(Player[] players)
         {
         		tracker = new VoteTracker(players);
             	this.players = players;
@@ -27,8 +27,9 @@ public class Day extends Thread implements MafiaGameState{
 			input.start(); 
         }
         
-        public void receiveMessage(String line)
+        public boolean receiveMessage(String line, InputThread inputThread)
         {
+        	boolean ret = false;
         	inputThread.sendMessage("#UFPT","Morning welcome message");
         	
         	if(killed)
@@ -40,23 +41,28 @@ public class Day extends Thread implements MafiaGameState{
         		if( (returnCode = parseMessage(instruc, speaker)) >= 0)
         		{
         			inputThread.sendMessage("#UFPT",players[returnCode] + " was lynched :(");
-        			return;
+        			ret = true;
         		}
         		else if(returnCode == -2)
         		{
         			inputThread.sendMessage("#UFPT","the majority has voted for no lynching today!");
-        			return;
+        			ret = true;
         		}
         		else if(returnCode == -1)
         		{
         			inputThread.sendMessage("#UFPT", "The town was not able to reach a concensus.");
-        			return;
+        			ret = false;
+        		}
+        		else if(returnCode == -3)
+        		{
+        			ret = false;
         		}
         		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
         		
         		// TODO actually, it would be better to use enums
         		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
         		
+        		return ret;
         	}
 
         
