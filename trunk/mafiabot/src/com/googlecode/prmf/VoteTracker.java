@@ -1,6 +1,6 @@
 package com.googlecode.prmf;
 
-import com.googlecode.prmf.starter.InputThread;
+import com.googlecode.prmf.starter.IOThread;
 
 public class VoteTracker {
 	//TODO default visibility is almost as bad as public
@@ -18,7 +18,7 @@ public class VoteTracker {
 		votes = new int[players.length];
 	}
 	
-	public void status(InputThread inputThread) {
+	public void status(IOThread inputThread) {
 		String toPrint = "";
 	
 		for (int i=0;i<numberOfPlayers;++i)
@@ -45,7 +45,7 @@ public class VoteTracker {
 	}
 	
 	// TODO probably better (i.e. OOP-ish) to pass in a Player object rather than an int voter 
-	public int newVote(int voter, int voted , InputThread inputThread)
+	public int newVote(int voter, int voted , IOThread inputThread)
 	{
 		/*in Player, votes for -1 is no vote
 		 * -2 is no lynch
@@ -105,16 +105,16 @@ public class VoteTracker {
 		}
 		
 		status(inputThread);
-		return checkMaj();
+		return checkMajority();
 	}
 	
-	public int checkMaj() //TODO how about a longer method name?
+	public int checkMajority() 
 	{
 		int needed = numberOfPlayers/2 + 1;
-		if (noLynchVotes > needed)
+		if (noLynchVotes >= needed)
 			return -2;
 		for (int i=0;i<numberOfPlayers;++i)
-			if(votes[i] > needed)
+			if(votes[i] >= needed)
 				return i;	
 		return -1;
 	}

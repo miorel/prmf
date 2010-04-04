@@ -1,6 +1,6 @@
 package com.googlecode.prmf;
 
-import com.googlecode.prmf.starter.InputThread;
+import com.googlecode.prmf.starter.IOThread;
 
 /**
  * This class 'should' create a thread that will sleep for some time,
@@ -8,20 +8,19 @@ import com.googlecode.prmf.starter.InputThread;
  */
 
 public class TimerThread  implements Runnable{
-	Thread timer, inputThread;
+	Thread timer;
+	IOThread inputThread;
 	final int daytime;
 
-	public TimerThread(Thread inputThread, int daytime)
+	public TimerThread(IOThread inputThread, int daytime)
 	{
 		this.daytime = daytime;
 		this.inputThread = inputThread;
-		
-		// TODO NO NO NO DO NOT START A THREAD FROM THE CONSTRUCTOR!!!
 		timer = new Thread(this);
-		timer.start(); 
+	 
 	}
 	
-	public TimerThread(Thread inputThread)
+	public TimerThread(IOThread inputThread)
 	{
 		this(inputThread, 6*60000);
 	}
@@ -33,12 +32,11 @@ public class TimerThread  implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		if(Thread.interrupted())
+			return;
+		inputThread.sendMessage("#UFPT", "The town was not able to reach a consensus.");
+		inputThread.ceaseTimer();
 
-		// TODO why is the channel name hardcoded?
-		
-		//This sends a message "TIMEUP" to mafiaListener to end SWAPSTATES.
-		((InputThread)inputThread).sendMessage("#UFPT", "TIME IS UP!");
-		((InputThread)inputThread).ceaseTimer();
 		
 		// TODO why don't you change the type of inputThread to InputThread so you don't have to cast?
 	}

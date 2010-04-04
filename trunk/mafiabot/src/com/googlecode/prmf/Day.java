@@ -1,65 +1,56 @@
 package com.googlecode.prmf;
 
-import com.googlecode.prmf.starter.InputThread;
+import com.googlecode.prmf.starter.IOThread;
 
-// TODO there doesn't seem to be any reason for this class to extend Thread
-public class Day extends Thread implements MafiaGameState{
+public class Day implements MafiaGameState{
 		//Thread input;
-		TimerThread timerThread;// TimerThread will cease input thread before ending
+		// TimerThread will cease input thread before ending
         VoteTracker tracker;
         Player[] players;
         boolean killed; //if anyone was killed the previous night
         String dead; // who was killed , if anyone;
-        InputThread inputThread;
+        IOThread inputThread;
         
-        public Day(Player[] players , InputThread inputThread)
+        public Day(Player[] players , IOThread inputThread)
         {
         		tracker = new VoteTracker(players);
             	this.players = players;
-        		timerThread = new TimerThread(inputThread);
+        		
         }
         
         
-        public boolean receiveMessage(String line, InputThread inputThread)
+        public boolean receiveMessage(String line, IOThread inputThread)
         {
-        	if(line.equals("TIMEUP"))
-        	{
-        		return true;
-        	}
-        	
-        	boolean ret = false;
-        	inputThread.sendMessage("#UFPT","Morning welcome message"); // TODO why is the channel still hardcoded?
-        	
-        		String speaker = line.substring(1,line.indexOf("!")); // HOW TO GET SPEAKER? .. must read up on..
-        		String instruc = line;
-        		int returnCode;
-        		if( (returnCode = parseMessage(instruc, speaker , inputThread)) >= 0)
-        		{
-        			inputThread.sendMessage("#UFPT",players[returnCode] + " was lynched :(");
-        			ret = true;
-        		}
-        		else if(returnCode == -2)
-        		{
-        			inputThread.sendMessage("#UFPT","the majority has voted for no lynching today!");
-        			ret = true;
-        		}
-        		else if(returnCode == -1)
-        		{
-        			// TODO "concensus" is not the word you're looking for
-        			inputThread.sendMessage("#UFPT", "The town was not able to reach a concensus.");
-        			ret = false;
-        		}
-        		else if(returnCode == -3)
-        		{
-        			ret = false;
-        		}
-        		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
-        		
-        		// TODO actually, it would be better to use enums
-        		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
-        		
-        		return ret;
-        	}
+    		boolean ret = false;
+    	
+    		String speaker = line.substring(1,line.indexOf("!"));
+    		int returnCode;
+    		if( (returnCode = parseMessage(line, speaker , inputThread)) >= 0)
+    		{
+    			inputThread.sendMessage("#UFPT",players[returnCode] + " was lynched :(");
+    			players[returnCode].isAlive = false;
+    			ret = true;
+    		}
+    		else if(returnCode == -2)
+    		{
+    			inputThread.sendMessage("#UFPT","the majority has voted for no lynching today!");
+    			ret = true;
+    		}
+    		else if(returnCode == -1)
+    		{
+    			ret = false;
+    		}
+    		else if(returnCode == -3)
+    		{
+    			ret = false;
+    		}
+    		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
+    		
+    		// TODO actually, it would be better to use enums
+    		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
+    		
+    		return ret;
+    	}
 
         
         
@@ -78,7 +69,7 @@ public class Day extends Thread implements MafiaGameState{
 		}
 	 
 
-        public int parseMessage(String instruc, String speaker, InputThread inputThread)
+        public int parseMessage(String instruc, String speaker, IOThread inputThread)
         {
         	System.err.println("Entering parse message :" + instruc);
         	// TODO this method looks like a perfect application of Java enums
@@ -123,7 +114,7 @@ public class Day extends Thread implements MafiaGameState{
 		    return ret;
         }
        
-        public int processVote(int voter, int voted, InputThread inputThread)
+        public int processVote(int voter, int voted, IOThread inputThread)
         {
         	/** int voted values:
         	 *  -3 , voted player does not exist
