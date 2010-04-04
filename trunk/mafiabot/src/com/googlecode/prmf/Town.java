@@ -13,6 +13,7 @@ class Town extends Team{
 	{
 		for (Player p : players)
 		{
+			// TODO bad way of checking role
 			if (p.role.team.name.equals("MafiaTeam"))
 				return false;
 		}

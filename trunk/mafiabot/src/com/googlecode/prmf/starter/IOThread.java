@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-//TODO rename this class since it will probably also be used for output 
 public class IOThread extends Thread {
 	private Socket soc;
 	private InputStream inputstream; //TODO use camel case

@@ -34,10 +34,8 @@ public class TimerThread  implements Runnable{
 		}
 		if(Thread.interrupted())
 			return;
+		// TODO why is the channel name hardcoded?
 		inputThread.sendMessage("#UFPT", "The town was not able to reach a consensus.");
 		inputThread.ceaseTimer();
-
-		
-		// TODO why don't you change the type of inputThread to InputThread so you don't have to cast?
 	}
 }

@@ -27,12 +27,14 @@ public class Day implements MafiaGameState{
     		int returnCode;
     		if( (returnCode = parseMessage(line, speaker , inputThread)) >= 0)
     		{
+    			// TODO why is the channel name hardcoded?
     			inputThread.sendMessage("#UFPT",players[returnCode] + " was lynched :(");
     			players[returnCode].isAlive = false;
     			ret = true;
     		}
     		else if(returnCode == -2)
     		{
+    			// TODO why is the channel name hardcoded?
     			inputThread.sendMessage("#UFPT","the majority has voted for no lynching today!");
     			ret = true;
     		}

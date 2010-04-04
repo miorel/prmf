@@ -23,12 +23,12 @@ public class Pregame implements MafiaGameState{
 		roles = new ArrayList<Role>();
 	}
 
-	//TODO change return type to ENUM for day-start, night-start
+	//TODO change return type to enum for day-start, night-start
 	public boolean receiveMessage(String line, IOThread inputThread)
 	{
 			boolean ret = false;
 			String[] msg = line.split(" ", 4);
-			String user = "#UFPT"; //TODO don't hardcode this
+			String user = "#UFPT"; // TODO why is the channel name hardcoded?
 
 			//this is kind of a nasty solution...
 
@@ -93,9 +93,11 @@ public class Pregame implements MafiaGameState{
 		{
 			townRoles.add(new Citizen(new Town()));
 		}
+		// TODO it's pointless to shuffle here if you're going to shuffle later
 		Collections.shuffle(mafiaRoles);
 		Collections.shuffle(townRoles);
 		
+		// TODO look up the addAll() method
 		for(int a = 0; a < numMafia; ++a)
 		{
 			roles.add(mafiaRoles.get(a));
