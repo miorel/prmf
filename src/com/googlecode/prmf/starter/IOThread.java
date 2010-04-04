@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Scanner;
 
 //TODO rename this class since it will probably also be used for output 
-public class InputThread extends Thread {
+public class IOThread extends Thread {
 	private Socket soc;
 	private InputStream inputstream; //TODO use camel case
 	private List<Listener> list;
 	private PrintStream printstream; //TODO use camel case
 
-	public InputThread(String server, int port) {
+	public IOThread(String server, int port) {
 		try {
 			soc = new Socket(server, port);
 			inputstream = soc.getInputStream();

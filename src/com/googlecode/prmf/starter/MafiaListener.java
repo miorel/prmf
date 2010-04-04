@@ -5,7 +5,7 @@ import com.googlecode.prmf.Game;
 public class MafiaListener implements Listener {
 	String channel = "#UFPT"; //TODO why is the channel listed in so many places? and why is it uppercase?
 	private Game game;
-	public void receiveLine(String in, InputThread inputThread) 
+	public void receiveLine(String in, IOThread inputThread) 
 	{
 		
 		String[] msg = in.split(" ",4);
@@ -32,6 +32,7 @@ public class MafiaListener implements Listener {
 			if(user.equals(game.getGameStarter()))
 			{
 				inputThread.sendMessage(channel, "Mafia game ended!");
+				game.stopTimer();
 				game = null;
 			}
 			else
@@ -61,7 +62,7 @@ public class MafiaListener implements Listener {
 	
 	public void timerMessage()
 	{
-		game.receiveMessage("TIMEUP");
+		game.stopTimer();
 	}
 	
 }

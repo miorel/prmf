@@ -9,7 +9,7 @@ public class Main {
 	static int port = 6667;
 	
 	public static void main(String[] arg) {
-		InputThread inputThread = new InputThread(server, port);
+		IOThread inputThread = new IOThread(server, port);
 		MafiaListener mafiaListener = new MafiaListener(); //TODO declare things as what they're used, not as what they are
 		PingListener pingListener = new PingListener();
 		inputThread.addListener(mafiaListener);
