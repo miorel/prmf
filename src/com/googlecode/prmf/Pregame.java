@@ -108,7 +108,7 @@ public class Pregame implements MafiaGameState{
 		for(int a = 0; a < players.size(); ++a)
 		{
 			players.get(a).role = roles.get(a);
-			inputThread.sendMessage(players.get(a).name, "your role is " + roles.get(a).name);
+			inputThread.sendMessage(players.get(a).name, "your role is " + roles.get(a).getName());
 		}
 		
 		//TODO tell game that a day or night needs to start? should this method have a return type?

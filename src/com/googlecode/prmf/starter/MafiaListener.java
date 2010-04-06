@@ -13,7 +13,10 @@ public class MafiaListener implements Listener {
 		
 		if(msg[0].indexOf("!") > 1)
 			user = msg[0].substring(1,msg[0].indexOf("!"));
-
+		if (msg.length >= 2 && !msg[1].equals("PRIVMSG"))
+			return;
+		if (msg.length >= 4 && msg[2].equals("MAFIABOT22") && msg[3].startsWith(":~"))
+			game.receiveMessage(in);
 		if(msg.length >= 4)
 			msg[3] = msg[3].toLowerCase();
 		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && game == null) 

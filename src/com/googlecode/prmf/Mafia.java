@@ -12,12 +12,17 @@ class Mafia extends Role{
 		team = nteam;
 		target = null;
 	}
-	public void nightAction(Player target) {
-		this.target = target;
+	
+	boolean checkNightAction(String message)
+	{
+		String[] splitMessage = message.split(" ");
+		if(splitMessage.length >= 2 && splitMessage[0].equals(":~kill"))
+			return true;
+		return false;
 	}
 	
-	public String getName()
+	public void resolveNightAction()
 	{
-		return name;
+		//TODO kill the target~!
 	}
 }
