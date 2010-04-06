@@ -35,6 +35,11 @@ class Player
 		}
 		return ret;	
 	}
+	
+	public String getName()
+	{
+		return name;
+	}
 
 	
 	public int hashCode()
