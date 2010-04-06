@@ -16,6 +16,15 @@ public class VoteTracker {
 		numberOfPlayers = players.length;
 		noLynchVotes = 0;
 		votes = new int[players.length];
+		clearAllVotes();
+	}
+	
+	private void clearAllVotes()
+	{
+		for(int i=0;i<players.length;++i)
+		{
+			players[i].votedFor = -1;
+		}
 	}
 	
 	public void status(IOThread inputThread) {
