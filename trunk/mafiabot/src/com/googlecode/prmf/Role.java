@@ -26,7 +26,17 @@ public abstract class Role {
 	
 	public String getName()
 	{
-		return name;
+		return this.name;
+	}
+	
+	public Team getTeam()
+	{
+		return this.team;
+	}
+	
+	public Player getTarget()
+	{
+		return this.target;
 	}
 	
 	boolean checkNightAction(String message)

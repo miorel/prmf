@@ -75,6 +75,7 @@ public class Game{
 		else
 		{
 			day = new Day(players, inputThread);
+			//TODO: make sure timer isn't already started~
 			timerThread.timer.start();
 			state = day;
 		}
