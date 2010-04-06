@@ -6,7 +6,7 @@ package com.googlecode.prmf;
 class Jester extends Role{
 	static Team team;
 	public Jester(Team nteam) {
-		name = "jester";
+		name = "jester"; //TODO: Jester not capital.
 		team = nteam;
 		// TODO team is a class (i.e. static) variable
 		// whereas nteam is an instance variable
