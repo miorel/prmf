@@ -3,12 +3,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 class JesterTeam extends Team {
-	String name; //TODO default visibility is almost as bad as public
-	List<Player> list;
+	private String name; //TODO default visibility is almost as bad as public
+	private List<Player> list;
 
 	public JesterTeam() {
 		name = "JesterTeam";
 		list = new LinkedList<Player>();
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 	
 	public boolean hasWon(Player[] players)

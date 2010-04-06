@@ -3,18 +3,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 class Town extends Team{
-	String name; //TODO default visibility is almost as bad as public
-	List<Player> list; 
+	private String name;
+	private List<Player> list; 
 	public Town (){
 		name = "Town";
 		list = new LinkedList<Player>();
 	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
 	public boolean hasWon(Player[] players)
 	{
 		for (Player p : players)
 		{
-			// TODO bad way of checking role
-			if (p.role.team.name.equals("MafiaTeam"))
+			if (p.role.getTeam() instanceof MafiaTeam)
 				return false;
 		}
 		return true;

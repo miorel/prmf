@@ -18,6 +18,16 @@ class Mafia extends Role{
 		return this.name;
 	}
 	
+	public Team getTeam()
+	{
+		return this.team;
+	}
+	
+	public Player getTarget()
+	{
+		return this.target;
+	}
+	
 	boolean checkNightAction(String message)
 	{
 		String[] splitMessage = message.split(" ");
