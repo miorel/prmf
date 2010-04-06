@@ -13,6 +13,11 @@ class Mafia extends Role{
 		target = null;
 	}
 	
+	public String getName()
+	{
+		return this.name;
+	}
+	
 	boolean checkNightAction(String message)
 	{
 		String[] splitMessage = message.split(" ");

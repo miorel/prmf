@@ -47,7 +47,16 @@ public class Night implements MafiaGameState
 		if (speaking.role.hasNightAction())
 		{
 			speaking.role.nightAction(action + " " + target, players);
+			
 			inputThread.sendMessage("#ufpt", "oh god you did a night action~");
+		}
+		
+		for (int i=0;i<players.length;i++)
+		{
+			if (players[i].equals(speaking))
+			{
+				actionComplete[i] = true;
+			}
 		}
 		
 		
