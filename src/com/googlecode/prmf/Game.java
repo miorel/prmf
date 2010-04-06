@@ -51,6 +51,7 @@ public class Game{
 	 * better yet, make the states change the state from within their receiveMessage
 	 * implementation
 	 */
+	
 	public void swapState()
 	{
 		if(state instanceof Pregame)

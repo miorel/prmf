@@ -93,9 +93,6 @@ public class Pregame implements MafiaGameState{
 		{
 			townRoles.add(new Citizen(new Town()));
 		}
-		// TODO it's pointless to shuffle here if you're going to shuffle later
-		Collections.shuffle(mafiaRoles);
-		Collections.shuffle(townRoles);
 		
 		// TODO look up the addAll() method
 		for(int a = 0; a < numMafia; ++a)

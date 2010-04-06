@@ -44,7 +44,12 @@ public class Day implements MafiaGameState{
     		}
     		else if(returnCode == -3)
     		{
+    			inputThread.sendMessage("#UFPT","What?");
     			ret = false;
+    		}
+    		else if(returnCode == -4)
+    		{
+    			inputThread.sendMessage("#UFPT",speaker + " has been removed from the game!");
     		}
     		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
     		
@@ -64,14 +69,14 @@ public class Day implements MafiaGameState{
 				if(players[i].name.equals(name))
 				{
 				    ret = i;
-				    // TODO you don't want to keep searching if you've found the correct one  
+				    break;
 				}
 		    }
 		    return ret;
 		}
 	 
 
-        public int parseMessage(String instruc, String speaker, IOThread inputThread)
+        private int parseMessage(String instruc, String speaker, IOThread inputThread)
         {
         	System.err.println("Entering parse message :" + instruc);
         	// TODO this method looks like a perfect application of Java enums
@@ -80,8 +85,12 @@ public class Day implements MafiaGameState{
 		    String command = instrucTokens[3];
 		    String target="";
 		    if(command.equals(":~lynch"))
-		    	target = instrucTokens[4];
-		    
+		    {
+		    	if(instrucTokens.length >= 5)
+		    		target = instrucTokens[4];
+		    	else
+		    		return -3;
+		    }
 		    int speakerId = searchPlayers(speaker);
 		    int targetId = searchPlayers(target);
 		    
@@ -110,15 +119,16 @@ public class Day implements MafiaGameState{
 		    	//kill speaker
 		    	players[speakerId].isAlive = false;
 		    	tracker.status(inputThread);
-		    	ret = -3;
+		    	ret = -4;
 		    }
 		    
 		    return ret;
         }
        
-        public int processVote(int voter, int voted, IOThread inputThread)
+        private int processVote(int voter, int voted, IOThread inputThread)
         {
         	/** int voted values:
+        	 *  -4 , player quit command ..
         	 *  -3 , voted player does not exist
         	 *  -2 , vote to nolynch
         	 *  -1 , command to retract vote

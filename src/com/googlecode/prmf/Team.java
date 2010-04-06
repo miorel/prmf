@@ -2,8 +2,7 @@ package com.googlecode.prmf;
 
 import java.util.List;
 
-//TODO why not make this public?
-abstract class Team {
+public abstract class Team {
 	String name; //TODO default visibility is almost as bad as public
 	List<Player> list;
 	
