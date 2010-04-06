@@ -15,6 +15,7 @@ class Jester extends Role{
 
 	public void nightAction(Player target) {
 	}
+	
 	public String getName()
 	{
 		return this.name;
