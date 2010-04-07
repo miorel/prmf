@@ -15,6 +15,7 @@ public class IOThread extends Thread {
 
 	public IOThread(String server, int port) {
 		try {
+			this.setName("I/O");
 			soc = new Socket(server, port);
 			inputstream = soc.getInputStream();
 			printstream = new PrintStream(soc.getOutputStream());

@@ -17,6 +17,7 @@ public class TimerThread  implements Runnable{
 		this.daytime = daytime;
 		this.inputThread = inputThread;
 		timer = new Thread(this);
+		timer.setName("Timer");
 	 
 	}
 	
