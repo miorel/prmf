@@ -1,5 +1,6 @@
 package com.googlecode.prmf;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +19,6 @@ class MafiaTeam extends Team{
 	
 	public boolean hasWon(Player[] players)
 	{
-		System.err.println("working");
 		//itt we check for victory
 		//if mafia make up at least 50% of the living players return true
 		int nonMafia = 0, mafia = 0;
@@ -26,7 +26,7 @@ class MafiaTeam extends Team{
 		{
 			if (!p.isAlive)
 				continue;
-			if (this.contains(p))
+			if (p.getRole().getTeam().equals(this))
 				++mafia;
 			else
 				++nonMafia;
