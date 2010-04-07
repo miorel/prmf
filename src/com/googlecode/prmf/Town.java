@@ -19,7 +19,7 @@ class Town extends Team{
 	{
 		for (Player p : players)
 		{
-			if (p.role.getTeam() instanceof MafiaTeam)
+			if (p.role.getTeam() instanceof MafiaTeam && p.isAlive)
 				return false;
 		}
 		return true;

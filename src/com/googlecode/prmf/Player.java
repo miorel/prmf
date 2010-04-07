@@ -40,6 +40,10 @@ class Player
 	{
 		return name;
 	}
+	
+	public Role getRole(){
+		return role;
+	}
 
 	
 	public int hashCode()

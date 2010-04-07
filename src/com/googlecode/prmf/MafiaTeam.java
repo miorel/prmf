@@ -18,11 +18,14 @@ class MafiaTeam extends Team{
 	
 	public boolean hasWon(Player[] players)
 	{
+		System.err.println("working");
 		//itt we check for victory
 		//if mafia make up at least 50% of the living players return true
 		int nonMafia = 0, mafia = 0;
 		for (Player p : players)
 		{
+			if (!p.isAlive)
+				continue;
 			if (this.contains(p))
 				++mafia;
 			else

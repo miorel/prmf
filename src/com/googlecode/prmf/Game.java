@@ -79,6 +79,22 @@ public class Game{
 			timerThread.timer.start();
 			state = day;
 		}
+		if (isGameOver())
+		{
+			//TODO: make game actually end
+			//TODO: differentiate between people winning, here or in hasWon
+			inputThread.sendMessage("#ufpt", "The game is over! Someone won!");
+		}
+	}
+	
+	public boolean isGameOver()
+	{
+		for (Player player : players)
+		{
+			if (player.getRole().getTeam().hasWon(players))
+				return true;
+		}
+		return false;
 	}
 	
 	public String getGameStarter()
