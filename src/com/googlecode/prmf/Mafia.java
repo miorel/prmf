@@ -38,6 +38,6 @@ class Mafia extends Role{
 	
 	public void resolveNightAction()
 	{
-		//TODO kill the target~!
+		target.isAlive = false;
 	}
 }

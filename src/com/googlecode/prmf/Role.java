@@ -48,4 +48,9 @@ public abstract class Role {
 	{
 		return "You are a " + getName() + "!\n";
 	}
+	
+	void resolveNightAction()
+	{
+		
+	}
 }

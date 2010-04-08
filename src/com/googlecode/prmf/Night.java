@@ -21,7 +21,7 @@ public class Night implements MafiaGameState
 	public boolean receiveMessage(String line, IOThread inputThread)
 	{
 		// TODO why is the channel name hardcoded?
-		inputThread.sendMessage("#UFPT" , " WE ARE IN NIGHT");
+		//inputThread.sendMessage("#UFPT" , " WE ARE IN NIGHT");
 		
 		//temporary bad solution until we get around to overhauling the command system
 		String[] splitLine = line.split(" ");
@@ -80,14 +80,20 @@ public class Night implements MafiaGameState
 	public boolean isNightOver()
 	{
 		for (int i=0;i<players.length;i++)
-			if(!actionComplete[i] && players[i].role.hasNightAction())
+			if(players[i].isAlive && !actionComplete[i] && players[i].role.hasNightAction())
 				return false;
 		return true;
 	}
 	
 	public void resolveNightActions()
 	{
-		//TODO resolve night actions, ldo
+		for (Player p : players)
+		{
+			if (p.getRole().hasNightAction())
+			{
+				p.getRole().resolveNightAction();
+			}
+		}
 	}
 	
 	

@@ -69,6 +69,8 @@ public class VoteTracker {
 		System.err.println(voter + " " + voted);
 		if ( voted >= 0)
 		{
+			if (!players[voter].isAlive)
+				return -1;
 			if( players[voter].votedFor >= 0)
 			{
 				--votes[players[voter].votedFor];
