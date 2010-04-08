@@ -20,6 +20,8 @@ public class Night implements MafiaGameState
 	
 	public boolean receiveMessage(String line, IOThread inputThread)
 	{
+		if (isNightOver())
+			return true;
 		// TODO why is the channel name hardcoded?
 		//inputThread.sendMessage("#UFPT" , " WE ARE IN NIGHT");
 		
