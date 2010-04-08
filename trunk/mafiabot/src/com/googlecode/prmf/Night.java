@@ -49,20 +49,18 @@ public class Night implements MafiaGameState
 			speaking.role.nightAction(action + " " + target, players);
 			
 			inputThread.sendMessage("#ufpt", "oh god you did a night action~");
+			// TODO thanks for not capitalizing the channel name, but it still needs to not be hardcoded
 		}
 		
-		for (int i=0;i<players.length;i++)
-		{
-			if (players[i].equals(speaking))
-			{
+		// TODO ++i :D (or better yet replace with sexier for-each syntax)
+		for(int i = 0; i < players.length; i++) {
+			if(players[i].equals(speaking)) {
+				// TODO will more than one player ever "equal" speaking? if not,
+				// then why keep searching after you've found one?
 				actionComplete[i] = true;
 			}
 		}
-		
-		
-		
-		
-		
+
 		return isNightOver(); //is this right? maybe should resolve actions after isNightOver returns true,
 	}
 	
@@ -81,7 +79,7 @@ public class Night implements MafiaGameState
 	{
 		for (int i=0;i<players.length;i++)
 			if(players[i].isAlive && !actionComplete[i] && players[i].role.hasNightAction())
-				return false;
+				return false; 
 		return true;
 	}
 	
@@ -89,6 +87,9 @@ public class Night implements MafiaGameState
 	{
 		for (Player p : players)
 		{
+			// TODO I encourage you to read http://www.pragprog.com/articles/tell-dont-ask
+			// but basically what you want to do here is to tell EVERY role to resolveNightAction()
+			// if one of them doesn't have one, it will simply do nothing 
 			if (p.getRole().hasNightAction())
 			{
 				p.getRole().resolveNightAction();

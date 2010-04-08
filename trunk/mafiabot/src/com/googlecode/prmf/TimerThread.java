@@ -8,22 +8,20 @@ import com.googlecode.prmf.starter.IOThread;
  */
 
 public class TimerThread  implements Runnable{
+	// TODO default visibility is evil
 	Thread timer;
 	IOThread inputThread;
 	final int daytime;
 
-	public TimerThread(IOThread inputThread, int daytime)
-	{
+	public TimerThread(IOThread inputThread, int daytime) {
 		this.daytime = daytime;
 		this.inputThread = inputThread;
 		timer = new Thread(this);
-		timer.setName("Timer");
-	 
+		timer.setName("Timer"); // TODO you know you can set the name from the constructor, right?
 	}
 	
-	public TimerThread(IOThread inputThread)
-	{
-		this(inputThread, 6*60000);
+	public TimerThread(IOThread inputThread) {
+		this(inputThread, 6 * 60000);
 	}
 	
 	public void run()
@@ -33,8 +31,13 @@ public class TimerThread  implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
+		// TODO instead of returning if the thread is interrupted why not just
+		// say to send the message and cease the timer if the thread is NOT
+		// interrupted
 		if(Thread.interrupted())
 			return;
+
 		// TODO why is the channel name hardcoded?
 		inputThread.sendMessage("#UFPT", "The town was not able to reach a consensus.");
 		inputThread.ceaseTimer();

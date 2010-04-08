@@ -18,17 +18,18 @@ public class VoteTracker {
 		votes = new int[players.length];
 		clearAllVotes();
 	}
-	
-	private void clearAllVotes()
-	{
-		for(int i=0;i<players.length;++i)
-		{
+
+	private void clearAllVotes() {
+		// TODO change this to the sexier for-each syntax
+		for(int i = 0; i < players.length; ++i) {
 			players[i].votedFor = -1;
 		}
 	}
 	
 	public void status(IOThread inputThread) {
-		String toPrint = "";
+		String toPrint = ""; // TODO use a StringBuilder instead of a String
+								// here for better performance so you don't
+								// create a bunch of objects
 	
 		for (int i=0;i<numberOfPlayers;++i)
 		{

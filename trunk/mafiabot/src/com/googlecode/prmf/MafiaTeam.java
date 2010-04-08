@@ -1,19 +1,17 @@
 package com.googlecode.prmf;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-class MafiaTeam extends Team{
-	private String name; //TODO default visibility is almost as bad as public
+class MafiaTeam extends Team {
+	private String name; // TODO default visibility is almost as bad as public
 	private List<Player> list; 
 	public MafiaTeam() {
 		name = "MafiaTeam";
 		list = new LinkedList<Player>();
 	}
-	
-	public String getName()
-	{
+
+	public String getName() {
 		return name;
 	}
 	
@@ -26,7 +24,7 @@ class MafiaTeam extends Team{
 		{
 			if (!p.isAlive)
 				continue;
-			if (p.getRole().getTeam().equals(this))
+			if (p.getRole().getTeam().equals(this)) // TODO this looks like a bug to me
 				++mafia;
 			else
 				++nonMafia;
