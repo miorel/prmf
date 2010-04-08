@@ -20,9 +20,9 @@ public class VoteTracker {
 	}
 
 	private void clearAllVotes() {
-		// TODO change this to the sexier for-each syntax
-		for(int i = 0; i < players.length; ++i) {
-			players[i].votedFor = -1;
+		for (Player p : players)
+		{
+			p.votedFor = -1;
 		}
 	}
 	
@@ -47,8 +47,12 @@ public class VoteTracker {
 		if (noLynchVotes > 0)
 		{
 			String toAdd = "";
+			if (toPrint.length() > 0)
+				toAdd += ", ";
 			toAdd += "No Lynch has ";
 			toAdd += noLynchVotes;
+			toAdd += " votes";
+			toPrint += toAdd;
 		}
 		toPrint += ".";
 		inputThread.sendMessage("#UFPT", toPrint);
@@ -122,13 +126,14 @@ public class VoteTracker {
 	
 	public int checkMajority() 
 	{
+		int result = -1;
 		int needed = numberOfPlayers/2 + 1;
 		if (noLynchVotes >= needed)
-			return -2;
+			result = 2;
 		for (int i=0;i<numberOfPlayers;++i)
 			if(votes[i] >= needed)
-				return i;	
-		return -1;
+				result = i;	
+		return result;
 	}
 	
 }
