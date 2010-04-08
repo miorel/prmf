@@ -12,8 +12,9 @@ public class IOThread extends Thread {
 	private InputStream inputstream; //TODO use camel case
 	private List<Listener> list;
 	private PrintStream printstream; //TODO use camel case
+	private String channel;
 
-	public IOThread(String server, int port) {
+	public IOThread(String server, int port, String channel) {
 		try {
 			this.setName("I/O");
 			soc = new Socket(server, port);
@@ -24,11 +25,12 @@ public class IOThread extends Thread {
 			System.out.println("oops");
 		} 
 		list = new ArrayList<Listener>();
+		this.channel = channel;
 		
 		//TODO the following should not be done done in the constructor but when the thread is started
 		printstream.println("NICK MAFIABOT22"); //TODO don't hardcode the nick
 		printstream.println("USER MAFIABOT22 12 * MAFIABOT22"); //TODO don't hardcode the username and real name
-		printstream.println("JOIN #UFPT"); //TODO don't hardcode the channel
+		printstream.println("JOIN " + channel); //TODO don't hardcode the channel
 	}
 	
 	public void run()
@@ -77,5 +79,10 @@ public class IOThread extends Thread {
 		}
 		printstream.println(concat);
 		System.out.println(">>>> " + concat);
+	}
+	
+	public String getChannel()
+	{
+		return channel;
 	}
 }

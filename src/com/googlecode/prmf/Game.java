@@ -84,7 +84,7 @@ public class Game{
 		{
 			//TODO make game actually end
 			//TODO differentiate between people winning, here or in hasWon
-			inputThread.sendMessage("#ufpt", "The game is over! Someone won!");
+			inputThread.sendMessage(inputThread.getChannel(), "The game is over! Someone won!");
 		}
 	}
 

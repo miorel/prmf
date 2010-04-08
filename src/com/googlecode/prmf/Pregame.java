@@ -23,6 +23,7 @@ public class Pregame implements MafiaGameState {
 
 	// TODO change return type to enum for day-start, night-start
 	// REBUTTAL that sounds like a hack to me
+	//we wont need this to-do if the swapState() i'm thinking of is the one we implement
 	public boolean receiveMessage(String line, IOThread inputThread)
 	{
 			boolean ret = false;
@@ -111,5 +112,10 @@ public class Pregame implements MafiaGameState {
 	public Player[] getPlayerList() // TODO not exactly a player LIST, is it? :P
 	{
 		return players.toArray(new Player[0]);
+	}
+	
+	public void swapState(Game game)
+	{
+		//TODO: send game a message telling it which state to start on
 	}
 }

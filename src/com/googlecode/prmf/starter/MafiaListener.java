@@ -3,13 +3,12 @@ package com.googlecode.prmf.starter;
 import com.googlecode.prmf.Game;
 
 public class MafiaListener implements Listener {
-	String channel = "#UFPT"; //TODO why is the channel listed in so many places? and why is it uppercase?
 	private Game game;
 	public void receiveLine(String in, IOThread inputThread) 
 	{
 		
 		String[] msg = in.split(" ",4);
-		String user = channel;
+		String user = "";
 		
 		if(msg[0].indexOf("!") > 1)
 			user = msg[0].substring(1,msg[0].indexOf("!"));
@@ -23,8 +22,8 @@ public class MafiaListener implements Listener {
 		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && game == null) 
 		{
 			game = new Game(user, inputThread);
-			inputThread.sendMessage(channel, "Mafia game started by " + user + "!");
-			game.receiveMessage(":" + user + "! PRIVMSG " + channel + " :~join"); // TODO H4X is bad
+			inputThread.sendMessage(inputThread.getChannel(), "Mafia game started by " + user + "!");
+			game.receiveMessage(":" + user + "! PRIVMSG " + inputThread.getChannel() + " :~join"); // TODO H4X is bad
 			
 		}
 		else if(msg.length >= 4 && msg[3].equals(":~join") && game != null) 
@@ -35,12 +34,12 @@ public class MafiaListener implements Listener {
 		{
 			if(user.equals(game.getGameStarter()))
 			{
-				inputThread.sendMessage(channel, "Mafia game ended!");
+				inputThread.sendMessage(inputThread.getChannel(), "Mafia game ended!");
 				game.stopTimer();
 				game = null;
 			}
 			else
-				inputThread.sendMessage(channel, "The game can only be ended by " + game.getGameStarter());
+				inputThread.sendMessage(inputThread.getChannel(), "The game can only be ended by " + game.getGameStarter());
 		}
 		else if(msg.length >= 4 && msg[3].equals(":~quit") && game != null)
 		{
