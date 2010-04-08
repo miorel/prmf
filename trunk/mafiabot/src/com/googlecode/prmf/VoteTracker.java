@@ -129,7 +129,7 @@ public class VoteTracker {
 		int result = -1;
 		int needed = numberOfPlayers/2 + 1;
 		if (noLynchVotes >= needed)
-			result = 2;
+			result = -2;
 		for (int i=0;i<numberOfPlayers;++i)
 			if(votes[i] >= needed)
 				result = i;	

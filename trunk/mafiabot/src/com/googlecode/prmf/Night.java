@@ -22,8 +22,6 @@ public class Night implements MafiaGameState
 	{
 		if (isNightOver())
 			return true;
-		// TODO why is the channel name hardcoded?
-		//inputThread.sendMessage("#UFPT" , " WE ARE IN NIGHT");
 		
 		//temporary bad solution until we get around to overhauling the command system
 		String[] splitLine = line.split(" ");
@@ -50,8 +48,7 @@ public class Night implements MafiaGameState
 		{
 			speaking.role.nightAction(action + " " + target, players);
 			
-			inputThread.sendMessage("#ufpt", "oh god you did a night action~");
-			// TODO thanks for not capitalizing the channel name, but it still needs to not be hardcoded
+			inputThread.sendMessage(inputThread.getChannel(), "oh god you did a night action~");
 		}
 		
 		// TODO ++i :D (or better yet replace with sexier for-each syntax)
@@ -97,6 +94,11 @@ public class Night implements MafiaGameState
 				p.getRole().resolveNightAction();
 			}
 		}
+	}
+	
+	public void swapState(Game game)
+	{
+		//TODO: send a message to game telling it to switch to day
 	}
 	
 	

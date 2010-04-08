@@ -38,8 +38,7 @@ public class TimerThread  implements Runnable{
 		if(Thread.interrupted())
 			return;
 
-		// TODO why is the channel name hardcoded?
-		inputThread.sendMessage("#UFPT", "The town was not able to reach a consensus.");
+		inputThread.sendMessage(inputThread.getChannel(), "The town was not able to reach a consensus.");
 		inputThread.ceaseTimer();
 	}
 }
