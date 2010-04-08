@@ -2,79 +2,71 @@ package com.googlecode.prmf;
 
 import com.googlecode.prmf.starter.IOThread;
 
-public class Day implements MafiaGameState{
-		//Thread input;
-		// TimerThread will cease input thread before ending
-        VoteTracker tracker;
-        Player[] players;
-        boolean killed; //if anyone was killed the previous night
-        String dead; // who was killed , if anyone;
-        IOThread inputThread;
-        
-        public Day(Player[] players , IOThread inputThread)
-        {
-        		tracker = new VoteTracker(players);
-            	this.players = players;
-        		
-        }
-        
-        
-        public boolean receiveMessage(String line, IOThread inputThread)
-        {
-    		boolean ret = false;
-    	
-    		String speaker = line.substring(1,line.indexOf("!"));
-    		int returnCode;
-    		if( (returnCode = parseMessage(line, speaker , inputThread)) >= 0)
-    		{
-    			// TODO why is the channel name hardcoded?
-    			inputThread.sendMessage("#UFPT",players[returnCode] + " was lynched :(");
-    			players[returnCode].isAlive = false;
-    			ret = true;
-    		}
-    		else if(returnCode == -2)
-    		{
-    			// TODO why is the channel name hardcoded?
-    			inputThread.sendMessage("#UFPT","the majority has voted for no lynching today!");
-    			ret = true;
-    		}
-    		else if(returnCode == -1)
-    		{
-    			ret = false;
-    		}
-    		else if(returnCode == -3)
-    		{
-    			inputThread.sendMessage("#UFPT","What?");
-    			ret = false;
-    		}
-    		else if(returnCode == -4)
-    		{
-    			inputThread.sendMessage("#UFPT",speaker + " has been removed from the game!");
-    		}
-    		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
-    		
-    		// TODO actually, it would be better to use enums
-    		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
-    		
-    		return ret;
-    	}
+public class Day implements MafiaGameState {
+	// Thread input; // TODO delete this line
+	// TimerThread will cease input thread before ending
+	VoteTracker tracker;
+	Player[] players;
+	boolean killed; // if anyone was killed the previous night
+	String dead; // who was killed , if anyone;
+	IOThread inputThread; // TODO rename this field in light of its updated class name
 
-        
-        
-		private int searchPlayers(String name)
-		{
-		    int ret = -3;
-		    for(int i=0;i<players.length; ++i)
-		    { 
-				if(players[i].name.equals(name))
-				{
-				    ret = i;
-				    break;
-				}
-		    }
-		    return ret;
+	public Day(Player[] players, IOThread inputThread) {
+		tracker = new VoteTracker(players);
+		this.players = players;
+	}
+
+	// TODO why the <four-letter-word> is the <four-letter-word>ing channel name hardcoded?
+	// I'm deprecating this <four-letter-word> until you fix it
+	@Deprecated
+	public boolean receiveMessage(String line, IOThread inputThread) {
+		boolean ret = false;
+
+		String speaker = line.substring(1, line.indexOf("!"));
+		int returnCode;
+		if((returnCode = parseMessage(line, speaker, inputThread)) >= 0) {
+			// TODO why is the channel name hardcoded?
+			inputThread.sendMessage("#UFPT", players[returnCode] + " was lynched :(");
+			players[returnCode].isAlive = false;
+			ret = true;
 		}
-	 
+		else if(returnCode == -2) {
+			// TODO why is the channel name hardcoded?
+			inputThread.sendMessage("#UFPT", "the majority has voted for no lynching today!");
+			ret = true;
+		}
+		else if(returnCode == -1) {
+			ret = false;
+		}
+		else if(returnCode == -3) {
+			// TODO why is the channel name hardcoded?
+			inputThread.sendMessage("#UFPT", "What?");
+			ret = false;
+		}
+		else if(returnCode == -4) {
+			// TODO why is the channel name hardcoded?
+			inputThread.sendMessage("#UFPT", speaker + " has been removed from the game!");
+		}
+		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
+
+		// TODO actually, it would be better to use enums
+		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
+
+		return ret;
+	}
+        
+	private int searchPlayers(String name) {
+		int ret = -3;
+		
+		// TODO replace with the sexier for-each syntax
+		for(int i = 0; i < players.length; ++i) {
+			if(players[i].name.equals(name)) { // TODO ...and this is why you should make fields private
+				ret = i;
+				break;
+			}
+		}
+		return ret;
+	}
 
         private int parseMessage(String instruc, String speaker, IOThread inputThread)
         {

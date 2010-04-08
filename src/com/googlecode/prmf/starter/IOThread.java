@@ -48,6 +48,7 @@ public class IOThread extends Thread {
 		for(Listener l : list)
 			if(l instanceof MafiaListener)
 			{
+				// TODO if you find yourself needing a cast chances are you're doing something wrong
 				((MafiaListener)l).timerMessage();
 				break;
 			}
@@ -66,6 +67,7 @@ public class IOThread extends Thread {
 	public void sendPONG(String[] msg)
 	{
 		msg[0] = "PONG";
+		// TODO use a StringBuilder instead for better performance; doing += on Strings creates lots of new objects
 		String concat="";
 		for(int i=0;i<msg.length;++i)
 		{

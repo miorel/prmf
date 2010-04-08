@@ -15,6 +15,7 @@ public class MafiaListener implements Listener {
 			user = msg[0].substring(1,msg[0].indexOf("!"));
 		if (msg.length >= 2 && !msg[1].equals("PRIVMSG"))
 			return;
+		// TODO the next line will instantly break when you change the name of the bot
 		if (msg.length >= 4 && msg[2].equals("MAFIABOT22") && msg[3].startsWith(":~"))
 			game.receiveMessage(in);
 		if(msg.length >= 4)
@@ -23,7 +24,7 @@ public class MafiaListener implements Listener {
 		{
 			game = new Game(user, inputThread);
 			inputThread.sendMessage(channel, "Mafia game started by " + user + "!");
-			game.receiveMessage(":" + user + "! PRIVMSG " + channel + " :~join");
+			game.receiveMessage(":" + user + "! PRIVMSG " + channel + " :~join"); // TODO H4X is bad
 			
 		}
 		else if(msg.length >= 4 && msg[3].equals(":~join") && game != null) 

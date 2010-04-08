@@ -15,19 +15,17 @@ class Town extends Team{
 		return name;
 	}
 	
-	public boolean hasWon(Player[] players)
-	{
-		for (Player p : players)
-		{
-			if (p.role.getTeam() instanceof MafiaTeam && p.isAlive)
+	public boolean hasWon(Player[] players) {
+		for(Player p: players) {
+			// TODO instanceof is evil, try to avoid it
+			if(p.role.getTeam() instanceof MafiaTeam && p.isAlive)
 				return false;
 		}
 		return true;
-	
+
 	}
-	
-	public boolean contains(Player player)
-	{
+
+	public boolean contains(Player player) {
 		return list.contains(player);
 	}
 }

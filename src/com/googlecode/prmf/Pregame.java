@@ -6,16 +6,14 @@ import java.util.List;
 
 import com.googlecode.prmf.starter.IOThread;
 
-public class Pregame implements MafiaGameState{
-	
-	private String startName;	
+public class Pregame implements MafiaGameState {
+	private String startName;
 	private List<Player> players;
 	private List<Role> townRoles;
 	private List<Role> mafiaRoles;
-	private List<Role> roles; 
-	
-	public Pregame(String startName)
-	{
+	private List<Role> roles;
+
+	public Pregame(String startName) {
 		this.startName = startName;
 		players = new ArrayList<Player>();
 		townRoles = new ArrayList<Role>();
@@ -23,7 +21,8 @@ public class Pregame implements MafiaGameState{
 		roles = new ArrayList<Role>();
 	}
 
-	//TODO change return type to enum for day-start, night-start
+	// TODO change return type to enum for day-start, night-start
+	// REBUTTAL that sounds like a hack to me
 	public boolean receiveMessage(String line, IOThread inputThread)
 	{
 			boolean ret = false;
@@ -106,10 +105,10 @@ public class Pregame implements MafiaGameState{
 		}
 		
 		//TODO tell game that a day or night needs to start? should this method have a return type?
-		
+		// I don't think it should. Just have this class set the next state itself. --melic
 	}
 
-	public Player[] getPlayerList()
+	public Player[] getPlayerList() // TODO not exactly a player LIST, is it? :P
 	{
 		return players.toArray(new Player[0]);
 	}

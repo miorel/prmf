@@ -51,7 +51,7 @@ public class Game{
 	 * better yet, make the states change the state from within their receiveMessage
 	 * implementation
 	 */
-	
+	@Deprecated
 	public void swapState()
 	{
 		if(state instanceof Pregame)
@@ -82,30 +82,27 @@ public class Game{
 		}
 		if (isGameOver())
 		{
-			//TODO: make game actually end
-			//TODO: differentiate between people winning, here or in hasWon
+			//TODO make game actually end
+			//TODO differentiate between people winning, here or in hasWon
 			inputThread.sendMessage("#ufpt", "The game is over! Someone won!");
 		}
 	}
-	
-	public boolean isGameOver()
-	{
-		for (Player player : players)
-		{
-			if (player.getRole().getTeam().hasWon(players))
-				return true;
+
+	// TODO this method could simply be renamed to isOver() since it's in the Game class 
+	public boolean isGameOver() {
+		for(Player player: players) {
+			if(player.getRole().getTeam().hasWon(players))
+				return true; // TODO listen to Dr. Doug D. Dankel da Deuce, multiple return statements are bad style
 		}
 		return false;
 	}
-	
-	public String getGameStarter()
-	{
-		return gameStarter;	
+
+	public String getGameStarter() {
+		return gameStarter;
 	}
-	
-	public void stopTimer()
-	{
-		timerThread.timer.interrupt();
+
+	public void stopTimer() {
+		timerThread.timer.interrupt(); // TODO don't access fields directly, use getters
 	}
 	
 }

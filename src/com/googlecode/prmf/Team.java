@@ -3,6 +3,7 @@ package com.googlecode.prmf;
 import java.util.List;
 
 public abstract class Team {
+	// TODO remove TODOs which have been fixed, like the one on the next line
 	private String name; //TODO default visibility is almost as bad as public
 	private List<Player> list;
 	
@@ -11,18 +12,16 @@ public abstract class Team {
 		//TODO functionality
 		return false;
 	}
-	
-	public void addPlayer(Player p)
-	{
+
+	public void addPlayer(Player p) {
 		list.add(p);
 	}
-	
+
 	public boolean contains(Player player) {
 		return list.contains(player);
 	}
-	
-	public String getName()
-	{
+
+	public String getName() {
 		return name;
 	}
 }

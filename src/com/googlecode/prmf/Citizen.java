@@ -1,11 +1,11 @@
 package com.googlecode.prmf;
 
-//this class is poorly implemented
-//it's a bad idea to write code relying on it until it gets fixed
-class Citizen extends Role {	
+class Citizen extends Role {
+	// TODO mark as final any fields you don't plan on changing
 	private Team team;
 	private String name;
 	private Player target;
+
 	public Citizen(Team nteam) {
 		name = "citizen";
 		team = nteam;
@@ -13,19 +13,16 @@ class Citizen extends Role {
 
 	public void nightAction(Player target) {
 	}
-	
-	public String getName()
-	{
+
+	public String getName() {
 		return this.name;
 	}
-	
-	public Team getTeam()
-	{
+
+	public Team getTeam() {
 		return this.team;
 	}
-	
-	public Player getTarget()
-	{
+
+	public Player getTarget() {
 		return this.target;
 	}
 }

@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 class JesterTeam extends Team {
+	// TODO remove TODOs which have been fixed, like the one on the next line
 	private String name; //TODO default visibility is almost as bad as public
 	private List<Player> list;
 
@@ -19,16 +20,14 @@ class JesterTeam extends Team {
 	public boolean hasWon(Player[] players)
 	{
 		// TODO the argument passed to this method is never actually used... 
-		for (Player p : list)
-		{
-			if (p.wasLynched)
+		for(Player p : list) {
+			if(p.wasLynched)
 				return true;
 		}
 		return false;
 	}
 	
-	public boolean contains(Player player)
-	{
+	public boolean contains(Player player) {
 		return list.contains(player);
 	}
 }
