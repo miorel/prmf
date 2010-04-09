@@ -7,7 +7,7 @@ class Jester extends Role {
 	private Player target;
 
 	public Jester(Team nteam) {
-		name = "Jester";
+		name = "jester";
 		team = nteam;
 	}
 
@@ -24,5 +24,13 @@ class Jester extends Role {
 
 	public Player getTarget() {
 		return this.target;
+	}
+	
+	public String description()
+	{
+		StringBuilder toReturn = new StringBuilder();
+		toReturn.append("You are a ").append(getName()).append("! ");
+		toReturn.append("As a ").append(getName()).append(", you have no special powers. You win if and only if you are lynched by the town.");
+		return toReturn.toString();
 	}
 }
