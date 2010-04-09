@@ -18,7 +18,7 @@ public class Game{
 	public Game(String gameStarter, IOThread inputThread)	{
 		this.gameStarter = gameStarter;
 		this.inputThread = inputThread;
-		pregame = new Pregame(gameStarter);
+		pregame = new Pregame(gameStarter, inputThread);
 		state = pregame;
 		timerThread = new TimerThread(inputThread);
 	}

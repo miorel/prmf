@@ -12,15 +12,17 @@ public class Pregame implements MafiaGameState {
 	private List<Role> townRoles;
 	private List<Role> mafiaRoles;
 	private List<Role> roles;
+	IOThread inputThread;
 	boolean dayStart;
 
-	public Pregame(String startName) {
+	public Pregame(String startName, IOThread inputThread) {
 		this.startName = startName;
 		players = new ArrayList<Player>();
 		townRoles = new ArrayList<Role>();
 		mafiaRoles = new ArrayList<Role>();
 		roles = new ArrayList<Role>();
 		dayStart = true;
+		this.inputThread = inputThread;
 	}
 
 	// TODO change return type to enum for day-start, night-start
@@ -109,7 +111,7 @@ public class Pregame implements MafiaGameState {
 			
 			p.setRole(roles.get(a));
 			p.getRole().getTeam().addPlayer(p); //this seems kinda sloppy, any better way of doing this?
-			inputThread.sendMessage(players.get(a).getName(), "your role is " + roles.get(a).getName());
+			inputThread.sendMessage(players.get(a).getName(), p.getRole().description());
 		}
 		
 		//TODO tell game that a day or night needs to start? should this method have a return type?
@@ -141,6 +143,18 @@ public class Pregame implements MafiaGameState {
 	
 	public void status()
 	{
-		
+		inputThread.sendMessage(inputThread.getChannel(), "The following players are currently in:");
+		StringBuilder playersIn = new StringBuilder();
+		for (Player p : players)
+		{
+			if(playersIn.length() > 0)
+				playersIn.append(", ");
+			playersIn.append(p);
+		}
+		inputThread.sendMessage(inputThread.getChannel(), playersIn.toString());
+		if(dayStart)
+			inputThread.sendMessage(inputThread.getChannel(), "This game is currently set to day start");
+		else
+			inputThread.sendMessage(inputThread.getChannel(), "This game is currently set to night start");
 	}
 }

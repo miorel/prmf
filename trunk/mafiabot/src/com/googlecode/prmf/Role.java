@@ -46,9 +46,7 @@ public abstract class Role {
 		return true;
 	}
 
-	String description() {
-		return "You are a " + getName() + "!\n";
-	}
+	public abstract String description();
 
 	void resolveNightAction() {
 		if(!hasNightAction()) 
