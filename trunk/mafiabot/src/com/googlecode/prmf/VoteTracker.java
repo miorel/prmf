@@ -70,12 +70,11 @@ public class VoteTracker {
 		 */
 
 		//day.processVote(..) takes care of whether voted is valid player
-		
+		if (!players[voter].isAlive)
+			return -1;
 		System.err.println(voter + " " + voted);
 		if ( voted >= 0)
 		{
-			if (!players[voter].isAlive)
-				return -1;
 			if( players[voter].votedFor >= 0)
 			{
 				--votes[players[voter].votedFor];

@@ -59,8 +59,10 @@ public class Night implements MafiaGameState
 				actionComplete[i] = true;
 			}
 		}
-
-		return isNightOver(); //is this right? maybe should resolve actions after isNightOver returns true,
+		boolean isOver = isNightOver();
+		if (isOver)
+			resolveNightActions();
+		return isOver; //is this right? maybe should resolve actions after isNightOver returns true,
 	}
 	
 	public void introduction(IOThread inputThread)
