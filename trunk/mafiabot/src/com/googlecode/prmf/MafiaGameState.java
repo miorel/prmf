@@ -6,4 +6,5 @@ public interface MafiaGameState {
 	public boolean receiveMessage(String message, IOThread inputThread);
 	
 	public void swapState(Game game);
+	public void status();
 }

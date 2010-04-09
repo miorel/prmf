@@ -99,7 +99,15 @@ public class Night implements MafiaGameState
 	
 	public void swapState(Game game)
 	{
-		//TODO: send a message to game telling it to switch to day
+		if (game.getDay() == null)
+			game.makeDay();
+		game.setState(game.getDay());
+		game.getState().status();
+	}
+	
+	public void status()
+	{
+		inputThread.sendMessage(inputThread.getChannel(), "It is now night!");
 	}
 	
 	

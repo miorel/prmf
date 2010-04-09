@@ -12,6 +12,7 @@ public class Day implements MafiaGameState {
 	public Day(Player[] players, IOThread inputThread) {
 		tracker = new VoteTracker(players);
 		this.players = players;
+		this.inputThread = inputThread;
 	}
 
 	public boolean receiveMessage(String line, IOThread inputThread) {
@@ -151,6 +152,9 @@ public class Day implements MafiaGameState {
     
     public void swapState(Game game)
 	{
-		//TODO: send a message to game telling it to switch to night
+    	if (game.getNight() == null)
+			game.makeNight();
+		game.setState(game.getNight());
+		game.getState().status();
 	}
 }
