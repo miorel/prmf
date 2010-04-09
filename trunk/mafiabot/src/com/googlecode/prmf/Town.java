@@ -1,13 +1,11 @@
 package com.googlecode.prmf;
-import java.util.LinkedList;
-import java.util.List;
 
 class Town extends Team{
 	private String name;
-	private List<Player> list; 
+	 
 	public Town (){
 		name = "Town";
-		list = new LinkedList<Player>();
+		super.createList();
 	}
 	
 	public String getName()
@@ -27,6 +25,6 @@ class Town extends Team{
 	}
 
 	public boolean contains(Player player) {
-		return list.contains(player);
+		return getList().contains(player);
 	}
 }
