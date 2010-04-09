@@ -27,35 +27,39 @@ public class VoteTracker {
 	}
 	
 	public void status(IOThread inputThread) {
-		String toPrint = ""; // TODO use a StringBuilder instead of a String
-								// here for better performance so you don't
-								// create a bunch of objects
+		StringBuilder toPrint = new StringBuilder();
 	
 		for (int i=0;i<numberOfPlayers;++i)
 		{
-			String toAdd = "";
+			StringBuilder toAdd = new StringBuilder();
+			
 			//must check if player is alive because player can !quit is set to dead.
 			if (votes[i] == 0 && players[i].isAlive()) continue;
 			if (toPrint.length() > 0)
-				toAdd += ", ";
-			toAdd += players[i].getName();
-			toAdd += " has ";
-			toAdd += votes[i];
-			toAdd += " votes";
-			toPrint += toAdd;
+				toAdd.append(", ");
+			toAdd.append(players[i].getName());
+			toAdd.append(" has ");
+			toAdd.append(votes[i]);
+			toAdd.append(" votes");
+			toPrint.append(toAdd);
 		}
 		if (noLynchVotes > 0)
 		{
-			String toAdd = "";
+			StringBuilder toAdd = new StringBuilder();
 			if (toPrint.length() > 0)
-				toAdd += ", ";
-			toAdd += "No Lynch has ";
-			toAdd += noLynchVotes;
-			toAdd += " votes";
-			toPrint += toAdd;
+				toAdd.append(", ");
+			toAdd.append("No Lynch has ");
+			toAdd.append(noLynchVotes);
+			toAdd.append(" votes");
+			toPrint.append(toAdd);
 		}
-		toPrint += ".";
-		inputThread.sendMessage("#UFPT", toPrint);
+		if(toPrint.length() == 0)
+		{
+			toPrint.append("There are currently no votes");
+			
+		}
+		toPrint.append(".");
+		inputThread.sendMessage("#UFPT", toPrint.toString());
 	}
 	
 	// TODO probably better (i.e. OOP-ish) to pass in a Player object rather than an int voter 
