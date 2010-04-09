@@ -130,6 +130,25 @@ public class Day implements MafiaGameState {
 			 */
     }
     
+    //
+    public void status()
+    {
+    	inputThread.sendMessage(inputThread.getChannel(), "It is now day!");
+    	inputThread.sendMessage(inputThread.getChannel(), "The following people are still alive:");
+    	StringBuilder livingPeople = new StringBuilder();
+    	for (Player p : players)
+    	{
+    		if (p.isAlive())
+    		{
+    			if(livingPeople.length() > 0)
+    				livingPeople.append(", ");
+    			livingPeople.append(p);
+    		}
+    	}
+    	inputThread.sendMessage(inputThread.getChannel(), livingPeople.toString());
+    	
+    }
+    
     public void swapState(Game game)
 	{
 		//TODO: send a message to game telling it to switch to night
