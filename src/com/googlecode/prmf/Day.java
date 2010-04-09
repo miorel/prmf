@@ -15,7 +15,7 @@ public class Day implements MafiaGameState {
 		this.inputOutputThread = inputThread;
 	}
 
-	public boolean receiveMessage(String line, IOThread inputThread) {
+	public boolean receiveMessage(Game game, String line, IOThread inputThread) {
 		boolean ret = false;
 		String speaker = line.substring(1, line.indexOf("!"));
 		int returnCode;
@@ -43,7 +43,9 @@ public class Day implements MafiaGameState {
 
 		// TODO actually, it would be better to use enums
 		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
-
+		System.err.println(ret);
+		if (ret)
+			game.swapState();
 		return ret;
 	}
         
@@ -152,6 +154,7 @@ public class Day implements MafiaGameState {
     
     public void swapState(Game game)
 	{
+    	System.err.println("swappin");
     	if (game.getNight() == null)
 			game.makeNight();
 		game.setState(game.getNight());

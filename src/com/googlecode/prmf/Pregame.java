@@ -28,7 +28,7 @@ public class Pregame implements MafiaGameState {
 	// TODO change return type to enum for day-start, night-start
 	// REBUTTAL that sounds like a hack to me
 	//we wont need this to-do if the swapState() i'm thinking of is the one we implement
-	public boolean receiveMessage(String line, IOThread inputThread)
+	public boolean receiveMessage(Game game, String line, IOThread inputThread)
 	{
 			boolean ret = false;
 			String[] msg = line.split(" ", 4);
@@ -49,7 +49,7 @@ public class Pregame implements MafiaGameState {
 				if(user.equals(startName))		
 				{
 					inputThread.sendMessage(destination, "The game has begun!");
-					startGame(inputThread);
+					startGame(game, inputThread);
 					ret = true;
 				}
 				else
@@ -79,10 +79,14 @@ public class Pregame implements MafiaGameState {
 				}
 				
 			}	
+			if (ret)
+			{
+				game.swapState();
+			}
 			return ret;
 	}	
 	
-	private void startGame(IOThread inputThread)
+	private void startGame(Game game, IOThread inputThread)
 	{
 		MafiaTeam mt = new MafiaTeam();
 		Town t = new Town();
@@ -125,6 +129,7 @@ public class Pregame implements MafiaGameState {
 	
 	public void swapState(Game game)
 	{
+		
 		//TODO: send game a message telling it which state to start on
 		if(dayStart)
 		{
