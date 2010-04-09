@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 class MafiaTeam extends Team {
-	private String name; // TODO default visibility is almost as bad as public
+	private String name;
 	private List<Player> list; 
 	public MafiaTeam() {
 		name = "MafiaTeam";

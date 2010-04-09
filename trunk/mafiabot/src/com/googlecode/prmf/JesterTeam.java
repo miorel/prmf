@@ -3,8 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 class JesterTeam extends Team {
-	// TODO remove TODOs which have been fixed, like the one on the next line
-	private String name; //TODO default visibility is almost as bad as public
+	private String name;
 	private List<Player> list;
 
 	public JesterTeam() {

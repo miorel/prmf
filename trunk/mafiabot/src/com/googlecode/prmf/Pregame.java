@@ -28,7 +28,7 @@ public class Pregame implements MafiaGameState {
 	{
 			boolean ret = false;
 			String[] msg = line.split(" ", 4);
-			String user = "#UFPT"; // TODO why is the channel name hardcoded?
+			String user = "";
 
 			//this is kind of a nasty solution...
 
