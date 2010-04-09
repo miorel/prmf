@@ -1,14 +1,11 @@
 package com.googlecode.prmf;
 
-import java.util.LinkedList;
-import java.util.List;
-
 class MafiaTeam extends Team {
 	private String name;
-	private List<Player> list; 
+		
 	public MafiaTeam() {
 		name = "MafiaTeam";
-		list = new LinkedList<Player>();
+		super.createList();
 	}
 
 	public String getName() {
@@ -33,6 +30,7 @@ class MafiaTeam extends Team {
 	}
 	
 	public boolean contains(Player player) {
-		return list.contains(player);
+		return getList().contains(player);
 	}
+	
 }

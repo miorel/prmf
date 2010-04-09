@@ -1,5 +1,6 @@
 package com.googlecode.prmf;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Team {
@@ -12,9 +13,11 @@ public abstract class Team {
 		return false;
 	}
 
+	
 	public void addPlayer(Player p) {
-		list.add(p);
+		getList().add(p);
 	}
+	
 
 	public boolean contains(Player player) {
 		return list.contains(player);
@@ -22,5 +25,16 @@ public abstract class Team {
 
 	public String getName() {
 		return name;
+	}
+	
+	public List<Player> getList()
+	{
+		System.out.println(list);
+		return list;
+	}
+	
+	public void createList()
+	{
+		list = new LinkedList<Player>();
 	}
 }

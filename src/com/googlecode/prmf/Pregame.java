@@ -103,7 +103,10 @@ public class Pregame implements MafiaGameState {
 		
 		for(int a = 0; a < players.size(); ++a)
 		{
-			players.get(a).setRole(roles.get(a));
+			Player p = players.get(a);
+			
+			p.setRole(roles.get(a));
+			p.getRole().getTeam().addPlayer(p); //this seems kinda sloppy, any better way of doing this?
 			inputThread.sendMessage(players.get(a).getName(), "your role is " + roles.get(a).getName());
 		}
 		
