@@ -12,6 +12,7 @@ public class Pregame implements MafiaGameState {
 	private List<Role> townRoles;
 	private List<Role> mafiaRoles;
 	private List<Role> roles;
+	boolean dayStart;
 
 	public Pregame(String startName) {
 		this.startName = startName;
@@ -19,6 +20,7 @@ public class Pregame implements MafiaGameState {
 		townRoles = new ArrayList<Role>();
 		mafiaRoles = new ArrayList<Role>();
 		roles = new ArrayList<Role>();
+		dayStart = true;
 	}
 
 	// TODO change return type to enum for day-start, night-start
@@ -122,5 +124,23 @@ public class Pregame implements MafiaGameState {
 	public void swapState(Game game)
 	{
 		//TODO: send game a message telling it which state to start on
+		if(dayStart)
+		{
+			if (game.getDay() == null)
+				game.makeDay();
+			game.setState(game.getDay());
+		}
+		else
+		{
+			if (game.getNight() == null)
+				game.makeNight();
+			game.setState(game.getNight());
+		}
+		game.getState().status();
+	}
+	
+	public void status()
+	{
+		
 	}
 }

@@ -7,7 +7,7 @@ public class Game{
 	private TimerThread timerThread;
 	private String gameStarter;
 	private int numMafia =1; // TODO this field is never used
-	private boolean dayStart = true;
+	private boolean dayStart; //TODO this is never used
 	private IOThread inputThread;
 	private MafiaGameState state;
 	
@@ -51,8 +51,13 @@ public class Game{
 	 * better yet, make the states change the state from within their receiveMessage
 	 * implementation
 	 */
-	@Deprecated
+
 	public void swapState()
+	{
+		state.swapState(this);
+	}
+
+	/*public void swapState()
 	{
 		if(state instanceof Pregame)
 		{
@@ -86,7 +91,7 @@ public class Game{
 			//TODO differentiate between people winning, here or in hasWon
 			inputThread.sendMessage(inputThread.getChannel(), "The game is over! Someone won!");
 		}
-	}
+	}*/
 
 	// TODO this method could simply be renamed to isOver() since it's in the Game class 
 	public boolean isGameOver() {
@@ -109,6 +114,50 @@ public class Game{
 
 	public void stopTimer() {
 		getTimerThread().timer.interrupt();
+	}
+	
+	public MafiaGameState getState()
+	{
+		return state;
+	}
+	
+	public void setState(MafiaGameState state)
+	{
+		this.state = state;
+	}
+	
+	public MafiaGameState getDay()
+	{
+		return day;
+	}
+	
+	public MafiaGameState getNight()
+	{
+		return night;
+	}
+	
+	public Player[] getPlayerList()
+	{
+		if(players == null)
+			players = pregame.getPlayerList();
+		return players;
+			
+	}
+	
+	public void makeDay()
+	{
+		day = new Day(getPlayerList(), inputThread);
+	}
+	
+	public void makeNight()
+	{
+		night = new Night(getPlayerList(), inputThread);
+	}
+	
+	public void startTimer()
+	{
+		timerThread = new TimerThread(inputThread);
+		getTimerThread().timer.start();
 	}
 	
 }
