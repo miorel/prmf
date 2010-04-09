@@ -12,7 +12,7 @@ class Doctor extends Role {
 	}
 
 	public void nightAction(Player target) {
-		target.wasSaved = true;
+		System.out.println("i save u");
 	}
 
 	public String getName() {

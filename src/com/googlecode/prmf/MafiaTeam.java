@@ -22,7 +22,7 @@ class MafiaTeam extends Team {
 		int nonMafia = 0, mafia = 0;
 		for (Player p : players)
 		{
-			if (!p.isAlive)
+			if (!p.isAlive())
 				continue;
 			if (p.getRole().getTeam().equals(this)) // TODO this looks like a bug to me
 				++mafia;

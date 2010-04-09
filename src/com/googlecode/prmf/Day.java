@@ -21,7 +21,7 @@ public class Day implements MafiaGameState {
 		if((returnCode = parseMessage(line, speaker, inputThread)) >= 0) {
 			System.err.println(returnCode + " return code");
 			inputThread.sendMessage(inputThread.getChannel(), players[returnCode] + " was lynched :(");
-			players[returnCode].isAlive = false;
+			players[returnCode].setAlive(false);
 			ret = true;
 		}
 		else if(returnCode == -2) {
@@ -51,7 +51,7 @@ public class Day implements MafiaGameState {
 		
 		// TODO replace with the sexier for-each syntax
 		for(int i = 0; i < players.length; ++i) {
-			if(players[i].name.equals(name)) { // TODO ...and this is why you should make fields private
+			if(players[i].getName().equals(name)) { // TODO ...and this is why you should make fields private
 				ret = i;
 				break;
 			}
@@ -100,7 +100,7 @@ public class Day implements MafiaGameState {
 	    else if( command.equals(":~quit") )
 	    {
 	    	//kill speaker
-	    	players[speakerId].isAlive = false;
+	    	players[speakerId].setAlive(false);
 	    	tracker.status(inputThread);
 	    	ret = -4;
 	    }
