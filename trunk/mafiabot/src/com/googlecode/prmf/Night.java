@@ -18,7 +18,7 @@ public class Night implements MafiaGameState
 	
 //	TODO add a timer to night
 	
-	public boolean receiveMessage(String line, IOThread inputThread)
+	public boolean receiveMessage(Game game, String line, IOThread inputThread)
 	{
 		if (isNightOver())
 			return true;
@@ -59,7 +59,10 @@ public class Night implements MafiaGameState
 		}
 		boolean isOver = isNightOver();
 		if (isOver)
+		{
 			resolveNightActions();
+			game.swapState();
+		}
 		return isOver;
 	}
 	

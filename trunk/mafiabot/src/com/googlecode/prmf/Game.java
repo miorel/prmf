@@ -24,9 +24,10 @@ public class Game{
 
 	public void receiveMessage(String line)
 	{
-		if(state.receiveMessage(line, inputThread))
+		if(state.receiveMessage(this, line, inputThread))
 		{
-			swapState();
+			//swapState();
+			;
 		}
 	}
 	
