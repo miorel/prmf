@@ -3,8 +3,6 @@ package com.googlecode.prmf;
 import com.googlecode.prmf.starter.IOThread;
 
 public class Day implements MafiaGameState {
-	// Thread input; // TODO delete this line
-	// TimerThread will cease input thread before ending
 	VoteTracker tracker;
 	Player[] players;
 	boolean killed; // if anyone was killed the previous night

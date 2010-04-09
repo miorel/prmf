@@ -30,7 +30,7 @@ public class IOThread extends Thread {
 		//TODO the following should not be done done in the constructor but when the thread is started
 		printstream.println("NICK MAFIABOT22"); //TODO don't hardcode the nick
 		printstream.println("USER MAFIABOT22 12 * MAFIABOT22"); //TODO don't hardcode the username and real name
-		printstream.println("JOIN " + channel); //TODO don't hardcode the channel
+		printstream.println("JOIN " + channel);
 	}
 	
 	public void run()

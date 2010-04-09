@@ -3,8 +3,7 @@ package com.googlecode.prmf.starter;
 import java.util.Scanner;
 
 public class Main {
-	static Scanner in; //TODO remove this variable
-	static String channel = "#UFPT"; //TODO make this lowercase
+	static String channel = "#ufpt";
 	static String server = "irc.freenode.net";
 	static int port = 6667;
 	

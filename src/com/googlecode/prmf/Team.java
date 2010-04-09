@@ -3,8 +3,7 @@ package com.googlecode.prmf;
 import java.util.List;
 
 public abstract class Team {
-	// TODO remove TODOs which have been fixed, like the one on the next line
-	private String name; //TODO default visibility is almost as bad as public
+	private String name; 
 	private List<Player> list;
 	
 	// TODO why is an array of players passed as an argument?

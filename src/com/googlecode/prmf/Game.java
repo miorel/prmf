@@ -90,19 +90,25 @@ public class Game{
 
 	// TODO this method could simply be renamed to isOver() since it's in the Game class 
 	public boolean isGameOver() {
+		boolean result = false;
 		for(Player player: players) {
 			if(player.getRole().getTeam().hasWon(players))
-				return true; // TODO listen to Dr. Doug D. Dankel da Deuce, multiple return statements are bad style
+				result = true;
 		}
-		return false;
+		return result;
 	}
 
 	public String getGameStarter() {
 		return gameStarter;
 	}
+	
+	public TimerThread getTimerThread()
+	{
+		return timerThread;
+	}
 
 	public void stopTimer() {
-		timerThread.timer.interrupt(); // TODO don't access fields directly, use getters
+		getTimerThread().timer.interrupt();
 	}
 	
 }
