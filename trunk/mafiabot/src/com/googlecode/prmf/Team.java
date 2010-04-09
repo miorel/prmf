@@ -37,4 +37,5 @@ public abstract class Team {
 	{
 		list = new LinkedList<Player>();
 	}
+	
 }

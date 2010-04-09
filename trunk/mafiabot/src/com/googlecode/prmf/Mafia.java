@@ -31,7 +31,15 @@ class Mafia extends Role {
 	}
 
 	public void resolveNightAction() {
-		System.err.println(getTarget() + " is the target");
-		getTarget().setAlive(false);
+		
+		Player target;
+		if(((MafiaTeam)team).agreeOnTarget())
+		{
+			target = getTarget();
+			System.err.println(getTarget() + " is the target");
+			getTarget().setAlive(false);
+		}
+		else
+			System.err.println("No target was selected.");
 	}
 }
