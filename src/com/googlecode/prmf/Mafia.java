@@ -39,4 +39,13 @@ class Mafia extends Role {
 		else
 			System.err.println("No target was selected.");
 	}
+	
+	public String description()
+	{
+		StringBuilder toReturn = new StringBuilder();
+		toReturn.append("You are a " + getName() + "! ");
+		toReturn.append("As a " + getName() + ", you get to kill someone every night. You win when the mafia achieve parity with non-mafia");
+		System.err.println(toReturn);
+		return toReturn.toString();
+	}
 }
