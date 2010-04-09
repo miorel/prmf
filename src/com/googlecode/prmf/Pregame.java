@@ -80,18 +80,20 @@ public class Pregame implements MafiaGameState {
 	
 	private void startGame(IOThread inputThread)
 	{
+		MafiaTeam mt = new MafiaTeam();
+		Town t = new Town();
 		//assigning roles
 		int numMafia = (int)Math.ceil(players.size()/3.0);
 		//create the Mafia team
 		for(int a = 0; a < numMafia; ++a)
 		{
-			mafiaRoles.add(new Mafia(new MafiaTeam()));
+			mafiaRoles.add(new Mafia(mt));
 		}
 		
 		//create the Town team
 		for(int a = 0; a < (players.size() - numMafia); ++a)
 		{
-			townRoles.add(new Citizen(new Town()));
+			townRoles.add(new Citizen(t));
 		}
 		
 		roles.addAll(mafiaRoles);
