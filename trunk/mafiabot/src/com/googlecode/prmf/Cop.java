@@ -12,7 +12,7 @@ class Cop extends Role {
 	}
 
 	public void nightAction(Player target) {
-		System.out.println(target.wasChecked);
+		System.out.println("i chek u");
 	}
 
 	public String getName() {

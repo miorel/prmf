@@ -44,44 +44,43 @@ public class Night implements MafiaGameState
 				return false;
 		}
 		
-		if (speaking.role.hasNightAction())
+		if (speaking.getRole().hasNightAction())
 		{
-			speaking.role.nightAction(action + " " + target, players);
+			speaking.getRole().nightAction(action + " " + target, players);
 			
 			inputThread.sendMessage(inputThread.getChannel(), "oh god you did a night action~");
 		}
 		
-		// TODO ++i :D (or better yet replace with sexier for-each syntax)
-		for(int i = 0; i < players.length; i++) {
+		for(int i = 0; i < players.length; ++i) {
 			if(players[i].equals(speaking)) {
-				// TODO will more than one player ever "equal" speaking? if not,
-				// then why keep searching after you've found one?
 				actionComplete[i] = true;
+				break;
 			}
 		}
 		boolean isOver = isNightOver();
 		if (isOver)
 			resolveNightActions();
-		return isOver; //is this right? maybe should resolve actions after isNightOver returns true,
+		return isOver;
 	}
 	
 	public void introduction(IOThread inputThread)
 	{
 		for (Player player : players)
 		{
-			if (player.isAlive)
+			if (player.isAlive())
 			{
-				inputThread.sendMessage(player.name, player.role.description());
+				inputThread.sendMessage(player.getName(), player.getRole().description());
 			}
 		}
 	}
 	
 	public boolean isNightOver()
 	{
+		boolean result = true;
 		for (int i=0;i<players.length;i++)
-			if(players[i].isAlive && !actionComplete[i] && players[i].role.hasNightAction())
-				return false; 
-		return true;
+			if(players[i].isAlive() && !actionComplete[i] && players[i].getRole().hasNightAction())
+				result = false; 
+		return result;
 	}
 	
 	public void resolveNightActions()

@@ -18,11 +18,7 @@ class JesterTeam extends Team {
 	
 	public boolean hasWon(Player[] players)
 	{
-		// TODO the argument passed to this method is never actually used... 
-		for(Player p : list) {
-			if(p.wasLynched)
-				return true;
-		}
+		// TODO after each lynch, check if it's a jester who just got lynched~
 		return false;
 	}
 	

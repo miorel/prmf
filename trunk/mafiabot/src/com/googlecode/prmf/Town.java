@@ -19,7 +19,7 @@ class Town extends Team{
 		boolean result = true;
 		for(Player p: players) {
 			// TODO instanceof is evil, try to avoid it
-			if(p.role.getTeam() instanceof MafiaTeam && p.isAlive)
+			if(p.getRole().getTeam() instanceof MafiaTeam && p.isAlive())
 				result = false;
 		}
 		return result;

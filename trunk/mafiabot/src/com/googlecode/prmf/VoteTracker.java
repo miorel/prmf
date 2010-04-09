@@ -22,7 +22,7 @@ public class VoteTracker {
 	private void clearAllVotes() {
 		for (Player p : players)
 		{
-			p.votedFor = -1;
+			p.setVote(-1);
 		}
 	}
 	
@@ -35,10 +35,10 @@ public class VoteTracker {
 		{
 			String toAdd = "";
 			//must check if player is alive because player can !quit is set to dead.
-			if (votes[i] == 0 && players[i].isAlive) continue;
+			if (votes[i] == 0 && players[i].isAlive()) continue;
 			if (toPrint.length() > 0)
 				toAdd += ", ";
-			toAdd += players[i].name;
+			toAdd += players[i].getName();
 			toAdd += " has ";
 			toAdd += votes[i];
 			toAdd += " votes";
@@ -70,35 +70,35 @@ public class VoteTracker {
 		 */
 
 		//day.processVote(..) takes care of whether voted is valid player
-		if (!players[voter].isAlive)
+		if (!players[voter].isAlive())
 			return -1;
 		System.err.println(voter + " " + voted);
 		if ( voted >= 0)
 		{
-			if( players[voter].votedFor >= 0)
+			if( players[voter].getVote() >= 0)
 			{
-				--votes[players[voter].votedFor];
+				--votes[players[voter].getVote()];
 			}
-			else if( players[voter].votedFor == -2)
+			else if( players[voter].getVote() == -2)
 			{
 				--noLynchVotes;
 			}
-			players[voter].votedFor = voted;
+			players[voter].setVote(voted);
 			++votes[voted];
 			System.err.println(voted + " has " + votes[voted]+ " votes");
 		}
 		else if( voted == -1)
 		{
-			if(players[voter].votedFor >= 0)
+			if(players[voter].getVote() >= 0)
 			{
 				//uncount his previous vote
-				--votes[players[voter].votedFor];
-				players[voter].votedFor = -1;
+				--votes[players[voter].getVote()];
+				players[voter].setVote(-1);
 			}
-			else if( players[voter].votedFor == -2)
+			else if( players[voter].getVote() == -2)
 			{
 				--noLynchVotes;
-				players[voter].votedFor = -1;
+				players[voter].setVote(-1);
 			}
 			else
 			{
@@ -109,14 +109,14 @@ public class VoteTracker {
 		}
 		else if( voted == -2)
 		{
-			if(players[voter].votedFor >= 0 )
+			if(players[voter].getVote() >= 0 )
 			{
-				--votes[players[voter].votedFor];
+				--votes[players[voter].getVote()];
 			}
-			if( players[voter].votedFor != -2)
+			if( players[voter].getVote() != -2)
 				++noLynchVotes;
 			
-			players[voter].votedFor = -2;
+			players[voter].setVote(-2);
 		}
 		
 		status(inputThread);

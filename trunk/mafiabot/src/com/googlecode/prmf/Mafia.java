@@ -32,6 +32,6 @@ class Mafia extends Role {
 
 	public void resolveNightAction() {
 		System.err.println(getTarget() + " is the target");
-		getTarget().isAlive = false;
+		getTarget().setAlive(false);
 	}
 }
