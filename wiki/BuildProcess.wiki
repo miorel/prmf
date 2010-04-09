@@ -2,7 +2,7 @@
 #labels Featured,Phase-Deploy
 
 = The Basics =
-Packaged with all of the source code is lovely file entitled "Build.xml"; it is the one that will be doing all of the hard work for you. 
+Packaged with all of the source code is lovely file entitled "build.xml"; it is the one that will be doing all of the hard work for you. 
 
 Assuming you are on the CISE computers, you should already have Ant installed. 
 
@@ -25,4 +25,3 @@ From here type "*ant run*". This will compile all of the source code, create the
  * In the event that you change you code, and running the bot doesn't seem to reflect it, you may need to clean out the class files.
  This can be done by typing "ant clean". (For extra fanciness you can use the command "*ant clean run*" (which of course can be couple with *-e* for _extreme_ fancy:
  "*ant clean -e run*"))
-
