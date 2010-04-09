@@ -1,0 +1,27 @@
+#summary How to create and run the MafiaBot
+#labels Featured,Phase-Deploy
+
+= The Basics =
+Packaged with all of the source code is a lovely file entitled "build.xml"; it is the one that will be doing all of the hard work for you. 
+
+Assuming you are on the CISE computers, you should already have Ant installed. 
+
+In the terminal, navigate to the directory in which the bot files are stored.
+(If you used the default workspace directory in Eclipse this should just be:<br>
+/YOUR HOME FOLDER/workspace/mafiabot/
+
+From here type "*ant run*". This will compile all of the source code, create the jar, and then execute it. Congratulations, you are finished! (Unless you want...*Fancier Stuff*)
+
+== Fancier Stuff ==
+
+
+ * You'll notice that whenever you run the code each line looks something like the following:
+     `[`java`]` <<<< :jordan.freenode.net NOTICE `*` :`***` Looking up your hostname...<br>
+     `[`java`]` <<<< :jordan.freenode.net NOTICE `*` :`***` Checking Ident
+
+ That extra space at the front and the `[`java`]` bits can be removed by using the -e option when running ant (i.e. "*ant -e run*")
+
+
+ * In the event that you change you code, and running the bot doesn't seem to reflect it, you may need to clean out the class files.
+ This can be done by typing "ant clean". (For extra fanciness you can use the command "*ant clean run*" (which of course can be couple with *-e* for _extreme_ fancy:
+ "*ant clean -e run*"))
