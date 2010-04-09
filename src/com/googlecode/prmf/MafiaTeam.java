@@ -33,4 +33,22 @@ class MafiaTeam extends Team {
 		return getList().contains(player);
 	}
 	
+	public boolean agreeOnTarget()
+	{
+		Player target = null;
+		boolean agree = true;
+		for(Player p : getList())
+		{
+			if(target == null)
+				target = p.getRole().getTarget();
+			
+			agree = (target.equals(p.getRole().getTarget()));
+			if(!agree)
+				break;
+		}
+			
+		return agree;
+	
+	}
+	
 }
