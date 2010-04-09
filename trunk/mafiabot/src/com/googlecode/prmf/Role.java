@@ -51,6 +51,8 @@ public abstract class Role {
 	}
 
 	void resolveNightAction() {
+		if(!hasNightAction()) 
+			return;
 
 	}
 }

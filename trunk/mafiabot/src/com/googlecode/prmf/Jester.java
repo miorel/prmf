@@ -7,7 +7,7 @@ class Jester extends Role {
 	private Player target;
 
 	public Jester(Team nteam) {
-		name = "jester"; // TODO Jester not capital.
+		name = "Jester";
 		team = nteam;
 	}
 

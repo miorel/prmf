@@ -16,8 +16,7 @@ public class TimerThread  implements Runnable{
 	public TimerThread(IOThread inputThread, int daytime) {
 		this.daytime = daytime;
 		this.inputThread = inputThread;
-		timer = new Thread(this);
-		timer.setName("Timer"); // TODO you know you can set the name from the constructor, right?
+		timer = new Thread(this, "Timer");
 	}
 	
 	public TimerThread(IOThread inputThread) {

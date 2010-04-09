@@ -1,7 +1,6 @@
 package com.googlecode.prmf;
 
 class Player {
-	// TODO default visibility is almost as bad as public
 	private String name;
 	private Role role;
 
@@ -13,7 +12,7 @@ class Player {
 		setName(name);
 		isAlive = true;
 		role = null;
-		votedFor = -1; // TODO what does this mean?
+		votedFor = -1;
 	}
 	
 	public boolean equals(Object obj) {

@@ -9,17 +9,17 @@ import java.util.Scanner;
 
 public class IOThread extends Thread {
 	private Socket soc;
-	private InputStream inputstream; //TODO use camel case
+	private InputStream inputStream; 
 	private List<Listener> list;
-	private PrintStream printstream; //TODO use camel case
+	private PrintStream printStream; 
 	private String channel;
 
 	public IOThread(String server, int port, String channel) {
 		try {
 			this.setName("I/O");
 			soc = new Socket(server, port);
-			inputstream = soc.getInputStream();
-			printstream = new PrintStream(soc.getOutputStream());
+			inputStream = soc.getInputStream();
+			printStream = new PrintStream(soc.getOutputStream());
 		}
 		catch (Exception e) {
 			System.out.println("oops");
@@ -28,14 +28,14 @@ public class IOThread extends Thread {
 		this.channel = channel;
 		
 		//TODO the following should not be done done in the constructor but when the thread is started
-		printstream.println("NICK MAFIABOT22"); //TODO don't hardcode the nick
-		printstream.println("USER MAFIABOT22 12 * MAFIABOT22"); //TODO don't hardcode the username and real name
-		printstream.println("JOIN " + channel);
+		printStream.println("NICK MAFIABOT22"); //TODO don't hardcode the nick
+		printStream.println("USER MAFIABOT22 12 * MAFIABOT22"); //TODO don't hardcode the username and real name
+		printStream.println("JOIN " + channel);
 	}
 	
 	public void run()
 	{
-		Scanner in = new Scanner(inputstream);
+		Scanner in = new Scanner(inputStream);
 		while(in.hasNextLine())
 		{
 			String line = in.nextLine();
@@ -62,22 +62,22 @@ public class IOThread extends Thread {
 	
 	public void sendMessage(String destination, String message) 
 	{
-		printstream.println("PRIVMSG "+destination+" :"+message);
+		printStream.println("PRIVMSG "+destination+" :"+message);
 		System.out.println(">>>> " + "PRIVMSG "+destination+" :"+message);
 	}
 	
 	public void sendPONG(String[] msg)
 	{
 		msg[0] = "PONG";
-		// TODO use a StringBuilder instead for better performance; doing += on Strings creates lots of new objects
-		String concat="";
+		
+		StringBuilder concat = new StringBuilder();
 		for(int i=0;i<msg.length;++i)
 		{
-			concat+=msg[i];
+			concat.append(msg[i]);
 			if(i<msg.length-1)
-				concat+=" ";
+				concat.append(" ");
 		}
-		printstream.println(concat);
+		printStream.println(concat);
 		System.out.println(">>>> " + concat);
 	}
 	
