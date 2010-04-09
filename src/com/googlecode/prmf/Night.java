@@ -86,15 +86,7 @@ public class Night implements MafiaGameState
 	public void resolveNightActions()
 	{
 		for (Player p : players)
-		{
-			// TODO I encourage you to read http://www.pragprog.com/articles/tell-dont-ask
-			// but basically what you want to do here is to tell EVERY role to resolveNightAction()
-			// if one of them doesn't have one, it will simply do nothing 
-			if (p.getRole().hasNightAction())
-			{
-				p.getRole().resolveNightAction();
-			}
-		}
+			p.getRole().resolveNightAction();	
 	}
 	
 	public void swapState(Game game)

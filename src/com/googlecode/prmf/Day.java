@@ -7,12 +7,12 @@ public class Day implements MafiaGameState {
 	Player[] players;
 	boolean killed; // if anyone was killed the previous night
 	String dead; // who was killed , if anyone;
-	IOThread inputThread; // TODO rename this field in light of its updated class name
+	IOThread inputOutputThread; 
 
 	public Day(Player[] players, IOThread inputThread) {
 		tracker = new VoteTracker(players);
 		this.players = players;
-		this.inputThread = inputThread;
+		this.inputOutputThread = inputThread;
 	}
 
 	public boolean receiveMessage(String line, IOThread inputThread) {
@@ -52,7 +52,7 @@ public class Day implements MafiaGameState {
 		
 		// TODO replace with the sexier for-each syntax
 		for(int i = 0; i < players.length; ++i) {
-			if(players[i].getName().equals(name)) { // TODO ...and this is why you should make fields private
+			if(players[i].getName().equals(name)) { 
 				ret = i;
 				break;
 			}
@@ -134,8 +134,8 @@ public class Day implements MafiaGameState {
     //
     public void status()
     {
-    	inputThread.sendMessage(inputThread.getChannel(), "It is now day!");
-    	inputThread.sendMessage(inputThread.getChannel(), "The following people are still alive:");
+    	inputOutputThread.sendMessage(inputOutputThread.getChannel(), "It is now day!");
+    	inputOutputThread.sendMessage(inputOutputThread.getChannel(), "The following people are still alive:");
     	StringBuilder livingPeople = new StringBuilder();
     	for (Player p : players)
     	{
@@ -146,7 +146,7 @@ public class Day implements MafiaGameState {
     			livingPeople.append(p);
     		}
     	}
-    	inputThread.sendMessage(inputThread.getChannel(), livingPeople.toString());
+    	inputOutputThread.sendMessage(inputOutputThread.getChannel(), livingPeople.toString());
     	
     }
     

@@ -3,16 +3,14 @@ package com.googlecode.prmf;
 import com.googlecode.prmf.starter.IOThread;
 
 public class VoteTracker {
-	//TODO default visibility is almost as bad as public
-	int[] votes;
-	int noLynchVotes;
-	int notVoting;
-	int numberOfPlayers;
-	Player[] players;
+	
+	private int[] votes;
+	private int noLynchVotes;
+	private int numberOfPlayers;
+	private Player[] players;
 	
 	public VoteTracker(Player[] players) {
 		this.players = players;
-		notVoting = players.length;
 		numberOfPlayers = players.length;
 		noLynchVotes = 0;
 		votes = new int[players.length];

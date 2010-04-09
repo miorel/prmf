@@ -30,7 +30,7 @@ class Mafia extends Role {
 		return false;
 	}
 
-	public void resolveNightAction()	{
+	public void resolveNightAction() {
 		if(((MafiaTeam)team).agreeOnTarget())
 		{
 			System.err.println(getTarget() + " is the target");
