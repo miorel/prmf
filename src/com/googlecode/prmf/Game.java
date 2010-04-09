@@ -6,8 +6,6 @@ public class Game{
 	private Player[] players;
 	private TimerThread timerThread;
 	private String gameStarter;
-	private int numMafia =1; // TODO this field is never used
-	private boolean dayStart; //TODO this is never used
 	private IOThread inputThread;
 	private MafiaGameState state;
 	
@@ -35,66 +33,14 @@ public class Game{
 	public Game(String gameStarter, IOThread inputThread, boolean dayStart, int numMafia)
 	{
 		this(gameStarter, inputThread);
-		this.dayStart = dayStart;
-		this.numMafia = numMafia;
 	}
-	
-	// TODO this method is idiotic
-	/*
-	 * why don't you add a swapState() method to the state class and then this
-	 * entire ugly thing can become
-	 * 
-	 * public void swapState() {
-	 *     state.swapState()
-	 * }
-	 * 
-	 * better yet, make the states change the state from within their receiveMessage
-	 * implementation
-	 */
 
 	public void swapState()
 	{
 		state.swapState(this);
 	}
-
-	/*public void swapState()
-	{
-		if(state instanceof Pregame)
-		{
-			players = pregame.getPlayerList();
-			day = new Day(players, inputThread);
-			timerThread.timer.start();
-			night = new Night(players, inputThread);
-			if(dayStart)
-				state = day;
-			else 
-			{
-				state = night;
-			}
-		}
-		else if(state instanceof Day)
-		{
-			night = new Night(players, inputThread);
-			state = night;
-		}
-		else
-		{
-			day = new Day(players, inputThread);
-			//TODO: make sure timer isn't already started~
-			timerThread = new TimerThread(inputThread);
-			timerThread.timer.start();
-			state = day;
-		}
-		if (isGameOver())
-		{
-			//TODO make game actually end
-			//TODO differentiate between people winning, here or in hasWon
-			inputThread.sendMessage(inputThread.getChannel(), "The game is over! Someone won!");
-		}
-	}*/
-
-	// TODO this method could simply be renamed to isOver() since it's in the Game class 
-	public boolean isGameOver() {
+ 
+	public boolean isOver() {
 		boolean result = false;
 		for(Player player: players) {
 			if(player.getRole().getTeam().hasWon(players))
