@@ -16,7 +16,6 @@ public class Day implements MafiaGameState {
 
 	public boolean receiveMessage(String line, IOThread inputThread) {
 		boolean ret = false;
-
 		String speaker = line.substring(1, line.indexOf("!"));
 		int returnCode;
 		if((returnCode = parseMessage(line, speaker, inputThread)) >= 0) {

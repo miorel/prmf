@@ -36,6 +36,11 @@ public abstract class Role {
 	public Player getTarget() {
 		return this.target;
 	}
+	
+	public void setTarget(Player p)
+	{
+		this.target = p;
+	}
 
 	boolean checkNightAction(String message) {
 		return true;

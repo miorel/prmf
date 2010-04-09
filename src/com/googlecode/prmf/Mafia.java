@@ -1,15 +1,14 @@
 package com.googlecode.prmf;
 
 class Mafia extends Role {
-	// TODO mark as final any fields you don't plan on changing
 	private Team team;
-	private String name;
-	private Player target;
+	final private String name;
+	//private Player target;
 
 	public Mafia(Team nteam) {
 		name = "mafia";
 		team = nteam;
-		target = null;
+		super.setTarget(null);
 	}
 
 	public String getName() {
@@ -21,7 +20,7 @@ class Mafia extends Role {
 	}
 
 	public Player getTarget() {
-		return this.target;
+		return super.getTarget();
 	}
 
 	boolean checkNightAction(String message) {
@@ -32,6 +31,7 @@ class Mafia extends Role {
 	}
 
 	public void resolveNightAction() {
-		target.isAlive = false;
+		System.err.println(getTarget() + " is the target");
+		getTarget().isAlive = false;
 	}
 }
