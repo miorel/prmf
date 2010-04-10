@@ -13,6 +13,11 @@ class Citizen extends Role {
 
 	public void nightAction(Player target) {
 	}
+	
+	public boolean hasNightAction()
+	{
+		return false;
+	}
 
 	public String getName() {
 		return this.name;

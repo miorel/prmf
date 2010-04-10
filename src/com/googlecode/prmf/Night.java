@@ -44,16 +44,20 @@ public class Night implements MafiaGameState
 				return false;
 		}
 		
+		boolean nightActionSuccessful = false;
 		if (speaking.getRole().hasNightAction())
 		{
-			speaking.getRole().nightAction(action + " " + target, players);
+			nightActionSuccessful = speaking.getRole().nightAction(action + " " + target, players);
 			
 			inputThread.sendMessage(inputThread.getChannel(), "oh god you did a night action~");
 		}
 		
 		for(int i = 0; i < players.length; ++i) {
 			if(players[i].equals(speaking)) {
-				actionComplete[i] = true;
+				if (nightActionSuccessful)
+				{
+					actionComplete[i] = true;
+				}
 				break;
 			}
 		}
