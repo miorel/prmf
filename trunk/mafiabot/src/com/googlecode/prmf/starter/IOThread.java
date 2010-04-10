@@ -29,9 +29,8 @@ public class IOThread extends Thread {
 		this.channel = channel;
 		this.botName = botName;
 		
-		//TODO the following should not be done done in the constructor but when the thread is started
-		printStream.println("NICK " + botName); //TODO don't hardcode the nick
-		printStream.println("USER " + botName + " 12 * " + botName); //TODO don't hardcode the username and real name
+		printStream.println("NICK " + this.botName); 
+		printStream.println("USER " + this.botName + " 12 * " + this.botName);
 		printStream.println("JOIN " + channel);
 	}
 	
