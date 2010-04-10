@@ -156,6 +156,7 @@ public class Day implements MafiaGameState {
 	{
     	System.err.println("swappin");
 		game.setState(newState);
+		game.isOver();
 		game.getState().status();
 	}
 }
