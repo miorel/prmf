@@ -25,7 +25,7 @@ class Jester extends Role {
 	public Player getTarget() {
 		return this.target;
 	}
-	
+
 	public String description()
 	{
 		StringBuilder toReturn = new StringBuilder();

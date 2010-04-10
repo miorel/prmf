@@ -21,7 +21,7 @@ class MafiaTeam extends Team {
 		{
 			if (!p.isAlive())
 				continue;
-			if (p.getRole().getTeam().equals(this)) // TODO this looks like a bug to me
+			if (p.getRole().getTeam().equals(this)) // TODO this looks like a bug to me // why is that a bug?
 				++mafia;
 			else
 				++nonMafia;

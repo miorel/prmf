@@ -26,7 +26,7 @@ class Doctor extends Role {
 	public Player getTarget() {
 		return this.target;
 	}
-	
+
 	public String description()
 	{
 		StringBuilder toReturn = new StringBuilder();
@@ -34,4 +34,5 @@ class Doctor extends Role {
 		toReturn.append("As a ").append(getName()).append(", you have the ability to heal a player every night. Note that you cannot heal yourself. You win when all threats to the town are eliminated");
 		return toReturn.toString();
 	}
+
 }

@@ -24,11 +24,7 @@ public class Game{
 
 	public void receiveMessage(String line)
 	{
-		if(state.receiveMessage(this, line, inputThread))
-		{
-			//swapState();
-			;
-		}
+		state.receiveMessage(this, line, inputThread);
 	}
 	
 	public Game(String gameStarter, IOThread inputThread, boolean dayStart, int numMafia)
@@ -86,7 +82,7 @@ public class Game{
 	public Player[] getPlayerList()
 	{
 		if(players == null)
-			players = pregame.getPlayerList();
+			players = pregame.getPlayerArray();
 		return players;
 			
 	}
