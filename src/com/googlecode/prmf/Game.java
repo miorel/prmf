@@ -39,15 +39,16 @@ public class Game{
 	}
  
 	public boolean isOver() {
+		System.err.println("checking if game is over");
 		boolean result = false;
 		for(Player player: players) {
 			if(player.getRole().getTeam().hasWon(players))
 				result = true;
 		}
 		if(result){
+			System.err.println("going to postgame");
 			postgame = new PostGame(inputThread);
-			swapState(postgame);
-			state.status();
+			setState(postgame);
 		}
 		return result;
 	}

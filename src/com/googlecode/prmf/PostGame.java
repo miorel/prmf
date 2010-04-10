@@ -11,7 +11,7 @@ public class PostGame implements MafiaGameState {
 
 	public boolean receiveMessage(Game game, String line, IOThread inputThread)
 	{
-			return true;
+		return true;
 	}	
 	
 	public void swapState(Game game, MafiaGameState newState)

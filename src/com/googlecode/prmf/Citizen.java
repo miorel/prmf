@@ -4,7 +4,6 @@ class Citizen extends Role {
 	// TODO mark as final any fields you don't plan on changing
 	private Team team;
 	private String name;
-	private Player target;
 
 	public Citizen(Team nteam) {
 		name = "citizen";
@@ -28,7 +27,7 @@ class Citizen extends Role {
 	}
 
 	public Player getTarget() {
-		return this.target;
+		return super.getTarget();
 	}
 	
 	public String description()
