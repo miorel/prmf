@@ -117,20 +117,15 @@ public class Pregame implements MafiaGameState {
 			p.getRole().getTeam().addPlayer(p); //this seems kinda sloppy, any better way of doing this?
 			inputThread.sendMessage(players.get(a).getName(), p.getRole().description());
 		}
-		
-		//TODO tell game that a day or night needs to start? should this method have a return type?
-		// I don't think it should. Just have this class set the next state itself. --melic
 	}
 
-	public Player[] getPlayerList() // TODO not exactly a player LIST, is it? :P
+	public Player[] getPlayerArray() // it's a player array now, hope you're happy ;p
 	{
 		return players.toArray(new Player[0]);
 	}
 	
 	public void swapState(Game game)
 	{
-		
-		//TODO: send game a message telling it which state to start on
 		if(dayStart)
 		{
 			if (game.getDay() == null)
