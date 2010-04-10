@@ -13,8 +13,9 @@ public class IOThread extends Thread {
 	private List<Listener> list;
 	private PrintStream printStream; 
 	private String channel;
+	private String botName;
 
-	public IOThread(String server, int port, String channel) {
+	public IOThread(String server, int port, String channel, String botName) {
 		try {
 			this.setName("I/O");
 			soc = new Socket(server, port);
@@ -26,10 +27,11 @@ public class IOThread extends Thread {
 		} 
 		list = new ArrayList<Listener>();
 		this.channel = channel;
+		this.botName = botName;
 		
 		//TODO the following should not be done done in the constructor but when the thread is started
-		printStream.println("NICK MAFIABOT22"); //TODO don't hardcode the nick
-		printStream.println("USER MAFIABOT22 12 * MAFIABOT22"); //TODO don't hardcode the username and real name
+		printStream.println("NICK " + botName); //TODO don't hardcode the nick
+		printStream.println("USER " + botName + " 12 * " + botName); //TODO don't hardcode the username and real name
 		printStream.println("JOIN " + channel);
 	}
 	
