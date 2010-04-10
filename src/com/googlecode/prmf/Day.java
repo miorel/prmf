@@ -45,7 +45,7 @@ public class Day implements MafiaGameState {
 		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
 		System.err.println(ret);
 		if (ret)
-			game.swapState();
+			game.swapState(game.getNight());
 		return ret;
 	}
         
@@ -152,12 +152,10 @@ public class Day implements MafiaGameState {
     	
     }
     
-    public void swapState(Game game)
+    public void swapState(Game game, MafiaGameState newState)
 	{
     	System.err.println("swappin");
-    	if (game.getNight() == null)
-			game.makeNight();
-		game.setState(game.getNight());
+		game.setState(newState);
 		game.getState().status();
 	}
 }
