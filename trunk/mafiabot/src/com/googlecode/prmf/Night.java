@@ -61,7 +61,7 @@ public class Night implements MafiaGameState
 		if (isOver)
 		{
 			resolveNightActions();
-			game.swapState();
+			game.swapState(game.getDay());
 		}
 		return isOver;
 	}
@@ -92,11 +92,9 @@ public class Night implements MafiaGameState
 			p.getRole().resolveNightAction();	
 	}
 	
-	public void swapState(Game game)
+	public void swapState(Game game, MafiaGameState newState)
 	{
-		if (game.getDay() == null)
-			game.makeDay();
-		game.setState(game.getDay());
+		game.setState(newState);
 		game.getState().status();
 	}
 	

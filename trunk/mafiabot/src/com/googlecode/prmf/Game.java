@@ -32,9 +32,9 @@ public class Game{
 		this(gameStarter, inputThread);
 	}
 
-	public void swapState()
+	public void swapState(MafiaGameState newState)
 	{
-		state.swapState(this);
+		state.swapState(this, newState);
 	}
  
 	public boolean isOver() {
@@ -71,11 +71,15 @@ public class Game{
 	
 	public MafiaGameState getDay()
 	{
+		if (day == null)
+			day = new Day(getPlayerList(), inputThread);
 		return day;
 	}
 	
 	public MafiaGameState getNight()
 	{
+		if (night == null)
+			night = new Night(getPlayerList(), inputThread);
 		return night;
 	}
 	
@@ -86,17 +90,6 @@ public class Game{
 		return players;
 			
 	}
-	
-	public void makeDay()
-	{
-		day = new Day(getPlayerList(), inputThread);
-	}
-	
-	public void makeNight()
-	{
-		night = new Night(getPlayerList(), inputThread);
-	}
-	
 	public void startTimer()
 	{
 		timerThread = new TimerThread(inputThread);
