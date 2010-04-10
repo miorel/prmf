@@ -12,6 +12,7 @@ public class Game{
 	Pregame pregame;
 	Day day;
 	Night night;
+	public PostGame postgame;
 	
 	public Game(String gameStarter, IOThread inputThread)	{
 		this.gameStarter = gameStarter;
@@ -42,6 +43,11 @@ public class Game{
 		for(Player player: players) {
 			if(player.getRole().getTeam().hasWon(players))
 				result = true;
+		}
+		if(result){
+			postgame = new PostGame(inputThread);
+			swapState(postgame);
+			state.status();
 		}
 		return result;
 	}

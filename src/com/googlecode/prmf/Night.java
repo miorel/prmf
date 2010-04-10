@@ -95,6 +95,7 @@ public class Night implements MafiaGameState
 	public void swapState(Game game, MafiaGameState newState)
 	{
 		game.setState(newState);
+		game.isOver();
 		game.getState().status();
 	}
 	
