@@ -26,6 +26,8 @@ class MafiaTeam extends Team {
 			else
 				++nonMafia;
 		}
+		System.err.println("mafia: " + mafia);
+		System.err.println("notmafia: " + nonMafia);
 		return nonMafia <= mafia;
 	}
 	
