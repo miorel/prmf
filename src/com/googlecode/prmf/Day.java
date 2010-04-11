@@ -20,7 +20,6 @@ public class Day implements MafiaGameState {
 		String speaker = line.substring(1, line.indexOf("!"));
 		int returnCode;
 		if((returnCode = parseMessage(line, speaker, inputThread)) >= 0) {
-			System.err.println(returnCode + " return code");
 			inputThread.sendMessage(inputThread.getChannel(), players[returnCode] + " was lynched :(");
 			players[returnCode].setAlive(false);
 			ret = true;
@@ -64,7 +63,6 @@ public class Day implements MafiaGameState {
 
     private int parseMessage(String instruc, String speaker, IOThread inputThread)
     {
-    	System.err.println("Entering parse message :" + instruc);
     	// TODO this method looks like a perfect application of Java enums
     	int ret = -3;
 	    String[] instrucTokens = instruc.split(" ",5);
@@ -154,7 +152,6 @@ public class Day implements MafiaGameState {
     
     public void swapState(Game game, MafiaGameState newState)
 	{
-    	System.err.println("swappin");
 		game.setState(newState);
 		game.isOver();
 		game.getState().status();
