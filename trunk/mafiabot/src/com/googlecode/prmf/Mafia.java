@@ -41,14 +41,16 @@ class Mafia extends Role {
 		return false;
 	}
 
-	public void resolveNightAction() {
+	public String resolveNightAction() {
+		StringBuilder toReturn = new StringBuilder();
 		if(((MafiaTeam)team).agreeOnTarget())
 		{
-			System.err.println(getTarget() + " is the target");
+			toReturn.append(getTarget()).append(" is the target");
 			getTarget().setAlive(false);
 		}
 		else
-			System.err.println("No target was selected.");
+			toReturn.append("No target was selected.");
+		return toReturn.toString();
 	}
 	
 	public String description()

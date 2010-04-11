@@ -4,7 +4,6 @@ class Cop extends Role {
 	// TODO mark as final any fields you don't plan on changing
 	private Team team;
 	private String name;
-	private Player target;
 
 	public Cop(Team nteam) {
 		name = "cop";
@@ -22,9 +21,11 @@ class Cop extends Role {
 	public Team getTeam() {
 		return this.team;
 	}
-
-	public Player getTarget() {
-		return this.target;
+	
+	public String resolveNightAction() {
+		StringBuilder toReturn = new StringBuilder();
+		toReturn.append(getTarget()).append(" is a ").append(getTarget().getRole().getName());
+		return toReturn.toString();
 	}
 
 	public String description() {

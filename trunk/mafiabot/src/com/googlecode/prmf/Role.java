@@ -19,6 +19,7 @@ public abstract class Role {
 			{
 				this.target = p;
 				toReturn = true;
+				setNightAction(true);
 				break;
 			}
 		return toReturn;
@@ -57,9 +58,8 @@ public abstract class Role {
 
 	public abstract String description();
 
-	void resolveNightAction() {
-		if(!hasNightAction()) 
-			return;
+	String resolveNightAction() {
+		return "";
 	}
 	
 	public void setNightAction(boolean done)

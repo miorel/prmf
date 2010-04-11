@@ -145,7 +145,6 @@ public class Day implements MafiaGameState {
     		}
     	}
     	inputOutputThread.sendMessage(inputOutputThread.getChannel(), livingPeople.toString());
-    	
     }
     
     public void swapState(Game game, MafiaGameState newState)
