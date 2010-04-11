@@ -7,13 +7,11 @@ public class Night implements MafiaGameState
 {
 	private Player[] players;
 	private IOThread inputThread;
-	private boolean[] actionComplete;
 	
 	public Night(Player[] players, IOThread inputThread)
 	{
 		this.players = players;
 		this.inputThread = inputThread;
-		actionComplete = new boolean[players.length];
 	}
 	
 //	TODO add a timer to night
@@ -44,22 +42,10 @@ public class Night implements MafiaGameState
 				return false;
 		}
 		
-		boolean nightActionSuccessful = false;
 		if (speaking.getRole().hasNightAction())
 		{
-			nightActionSuccessful = speaking.getRole().nightAction(action + " " + target, players);
-			
+			speaking.getRole().nightAction(action + " " + target, players);
 			inputThread.sendMessage(inputThread.getChannel(), "oh god you did a night action~");
-		}
-		
-		for(int i = 0; i < players.length; ++i) {
-			if(players[i].equals(speaking)) {
-				if (nightActionSuccessful)
-				{
-					actionComplete[i] = true;
-				}
-				break;
-			}
 		}
 		boolean isOver = isNightOver();
 		if (isOver)
@@ -81,11 +67,12 @@ public class Night implements MafiaGameState
 		}
 	}
 	
+	//changed to sexier enhanced for loop ;p
 	public boolean isNightOver()
 	{
 		boolean result = true;
-		for (int i=0;i<players.length;i++)
-			if(players[i].isAlive() && !actionComplete[i] && players[i].getRole().hasNightAction())
+		for (Player p : players)
+			if(p.isAlive() && !p.getRole().didNightAction())
 				result = false; 
 		return result;
 	}

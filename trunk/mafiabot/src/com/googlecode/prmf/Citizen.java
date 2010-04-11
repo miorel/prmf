@@ -8,6 +8,7 @@ class Citizen extends Role {
 	public Citizen(Team nteam) {
 		name = "citizen";
 		team = nteam;
+		super.setNightAction(true);
 	}
 
 	public void nightAction(Player target) {

@@ -74,7 +74,6 @@ public class VoteTracker {
 		//day.processVote(..) takes care of whether voted is valid player
 		if (!players[voter].isAlive())
 			return -1;
-		System.err.println(voter + " " + voted);
 		if ( voted >= 0)
 		{
 			if( players[voter].getVote() >= 0)
@@ -87,7 +86,6 @@ public class VoteTracker {
 			}
 			players[voter].setVote(voted);
 			++votes[voted];
-			System.err.println(voted + " has " + votes[voted]+ " votes");
 		}
 		else if( voted == -1)
 		{
