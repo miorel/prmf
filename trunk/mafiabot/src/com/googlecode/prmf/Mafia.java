@@ -43,10 +43,10 @@ class Mafia extends Role {
 
 	public String resolveNightAction() {
 		StringBuilder toReturn = new StringBuilder();
-		if(((MafiaTeam)team).agreeOnTarget())
+		if(getTeam().agreeOnTarget())
 		{
 			toReturn.append(getTarget()).append(" is the target");
-			getTarget().setAlive(false);
+			getTarget().setNightLives(getTarget().getNightLives()-1);
 		}
 		else
 			toReturn.append("No target was selected.");

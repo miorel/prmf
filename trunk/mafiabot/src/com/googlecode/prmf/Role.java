@@ -5,6 +5,7 @@ public abstract class Role {
 	private String name;
 	private Player target;
 	private boolean didNightAction;
+
 	//TODO implement some sort of priority system, so the bot knows which roles' night actions come first
 	//REBUTTAL aren't they technically simultaneous?
 	//eh i dont think so... if agent alters someone, that needs to happen before cop checks right?
@@ -71,4 +72,5 @@ public abstract class Role {
 	{
 		return didNightAction;
 	}
+
 }

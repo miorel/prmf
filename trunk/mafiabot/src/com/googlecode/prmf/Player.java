@@ -6,7 +6,7 @@ public class Player {
 
 	private boolean isAlive;
 	private int votedFor;
-
+	private int nightLives;
 
 	public Player(String name) {
 		setName(name);
@@ -22,6 +22,13 @@ public class Player {
 			ret = this.getName().equals(temp.getName());
 		}
 		return ret;
+	}
+	
+	public void endNight()
+	{
+		if (getNightLives() < 0)
+			setAlive(false);
+		setNightLives(0);
 	}
 
 	public String getName() {
@@ -68,5 +75,20 @@ public class Player {
 	public void setVote(int vote)
 	{
 		this.votedFor = vote;
+	}
+	
+	public void resetNightLives()
+	{
+		setNightLives(0);
+	}
+	
+	public void setNightLives(int setTo)
+	{
+		nightLives = setTo;
+	}
+	
+	public int getNightLives()
+	{
+		return nightLives;
 	}
 }
