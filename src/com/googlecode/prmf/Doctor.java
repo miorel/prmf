@@ -1,10 +1,10 @@
 package com.googlecode.prmf;
 
 class Doctor extends Role {
-	final private Team team;
+	final private Town team;
 	final private String name;
 
-	public Doctor(Team nteam) {
+	public Doctor(Town nteam) {
 		name = "doctor";
 		team = nteam;
 	}
@@ -18,7 +18,7 @@ class Doctor extends Role {
 		return this.name;
 	}
 
-	public Team getTeam() {
+	public Town getTeam() {
 		return this.team;
 	}
 	
