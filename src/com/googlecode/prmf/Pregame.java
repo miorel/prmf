@@ -94,7 +94,7 @@ public class Pregame implements MafiaGameState {
 		MafiaTeam mt = new MafiaTeam();
 		Town t = new Town();
 		//assigning roles
-		int numMafia = (int)Math.ceil(players.size()/3.0);
+		int numMafia = (int)Math.ceil(players.size()/4.0);
 		//create the Mafia team
 		for(int a = 0; a < numMafia; ++a)
 		{

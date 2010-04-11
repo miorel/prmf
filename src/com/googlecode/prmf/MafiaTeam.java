@@ -26,8 +26,6 @@ class MafiaTeam extends Team {
 			else
 				++nonMafia;
 		}
-		System.err.println("mafia: " + mafia);
-		System.err.println("notmafia: " + nonMafia);
 		return nonMafia <= mafia;
 	}
 	
@@ -41,27 +39,30 @@ class MafiaTeam extends Team {
 		boolean agree = true;
 		for(Player p : getList())
 		{
-			System.err.println(p);
-			System.err.println("target: " + target);
 			if(target == null)
 			{
 				target = p.getRole().getTarget();
-				System.err.println(p.getRole().getName());
-				System.err.println("target is now: " + target);
+				if (target == null)
+				{
+					agree = false;
+					break;
+				}
 			}
 			try
 			{
-			agree = (target.equals(p.getRole().getTarget()));
+				agree = (target.equals(p.getRole().getTarget()));
 			}
 			catch (Exception e)
 			{
 				System.out.println("still sucks");
 			}
-			System.err.println("agree is: " + agree);
+			
 			if(!agree)
 				break;
 		}
-			
+		if(agree)
+			for (Player p : getList())
+				p.getRole().setNightAction(true);
 		return agree;
 	
 	}

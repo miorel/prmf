@@ -4,22 +4,20 @@ public abstract class Role {
 	private Team team;
 	private String name;
 	private Player target;
+	private boolean didNightAction;
 	//TODO implement some sort of priority system, so the bot knows which roles' night actions come first
 	//REBUTTAL aren't they technically simultaneous?
 	//eh i dont think so... if agent alters someone, that needs to happen before cop checks right?
 	boolean nightAction(String message, Player[] players) {
 		//TODO check night action for validity here instead of before?
-		System.err.println("entering night action");
 		boolean toReturn = false;
 		if (!checkNightAction(message))
 			return toReturn;
 		String[] splitMessage = message.split(" ");
 		String targetName = splitMessage[1];
-		System.err.println(targetName);
 		for (Player p : players)
 			if (p.getName().equals(targetName))
 			{
-				System.err.println("there should be a target now");
 				this.target = p;
 				toReturn = true;
 				break;
@@ -41,7 +39,6 @@ public abstract class Role {
 	}
 
 	public Player getTarget() {
-		System.err.println("TARGET SHOULD BE: " + target);
 		return this.target;
 	}
 	
@@ -59,6 +56,15 @@ public abstract class Role {
 	void resolveNightAction() {
 		if(!hasNightAction()) 
 			return;
-
+	}
+	
+	public void setNightAction(boolean done)
+	{
+		didNightAction = done;
+	}
+	
+	public boolean didNightAction()
+	{
+		return didNightAction;
 	}
 }
