@@ -81,7 +81,10 @@ public class Night implements MafiaGameState
 	public void resolveNightActions()
 	{
 		for (Player p : players)
-			p.getRole().resolveNightAction();	
+		{
+			String result = p.getRole().resolveNightAction();
+			inputThread.sendMessage(p.toString(), result);
+		}
 	}
 	
 	public void swapState(Game game, MafiaGameState newState)

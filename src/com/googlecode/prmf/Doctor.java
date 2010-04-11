@@ -26,6 +26,12 @@ class Doctor extends Role {
 	public Player getTarget() {
 		return this.target;
 	}
+	
+	public String resolveNightAction()
+	{
+		StringBuilder toReturn = new StringBuilder();
+		return toReturn.toString();
+	}
 
 	public String description()
 	{

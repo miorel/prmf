@@ -126,7 +126,11 @@ public class VoteTracker {
 	public int checkMajority() 
 	{
 		int result = -1;
-		int needed = numberOfPlayers/2 + 1;
+		int needed = 0;
+		for (Player p : players)
+			if (p.isAlive())
+				++needed;
+		needed = needed/2 + 1;
 		if (noLynchVotes >= needed)
 			result = -2;
 		for (int i=0;i<numberOfPlayers;++i)
