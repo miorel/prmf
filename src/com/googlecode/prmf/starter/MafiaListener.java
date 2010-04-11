@@ -22,7 +22,7 @@ public class MafiaListener implements Listener {
 			game.receiveMessage(in);
 		if(msg.length >= 4)
 			msg[3] = msg[3].toLowerCase();
-		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && (game == null || game.postgame != null)) 
+		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && (game == null || game.getPostgame() != null)) 
 		{
 			game = new Game(user, inputThread);
 			inputThread.sendMessage(inputThread.getChannel(), "Mafia game started by " + user + "!");
@@ -31,7 +31,7 @@ public class MafiaListener implements Listener {
 		}
 		else if(msg.length >= 4 && msg[3].equals(":~stats") && game != null)
 		{
-			if(game.postgame != null)
+			if(game.getPostgame() != null)
 				inputThread.sendMessage(inputThread.getChannel(), "Game over");
 			else{
 				inputThread.sendMessage(inputThread.getChannel(), "The following people are still alive:");

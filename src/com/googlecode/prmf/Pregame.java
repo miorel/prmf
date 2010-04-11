@@ -13,7 +13,7 @@ public class Pregame implements MafiaGameState {
 	private List<Role> mafiaRoles;
 	private List<Role> roles;
 	IOThread inputThread;
-	boolean dayStart;
+	private boolean dayStart;
 
 	public Pregame(String startName, IOThread inputThread) {
 		this.startName = startName;
@@ -140,6 +140,16 @@ public class Pregame implements MafiaGameState {
 			game.setState(game.getNight());
 		}*/
 		game.getState().status();
+	}
+	
+	public boolean getDayStart()
+	{
+		return dayStart;
+	}
+	
+	public void setDayStart(boolean day)
+	{
+		dayStart = day;
 	}
 	
 	public void status()

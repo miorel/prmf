@@ -2,10 +2,10 @@ package com.googlecode.prmf;
 
 import com.googlecode.prmf.starter.IOThread;
 
-public class PostGame implements MafiaGameState {
+public class Postgame implements MafiaGameState {
 	IOThread inputThread;
 
-	public PostGame(IOThread inputThread) {
+	public Postgame(IOThread inputThread) {
 		this.inputThread = inputThread;
 	}
 
