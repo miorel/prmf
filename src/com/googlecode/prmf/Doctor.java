@@ -4,7 +4,6 @@ class Doctor extends Role {
 	// TODO mark as final any fields you don't plan on changing
 	private Team team;
 	private String name;
-	private Player target;
 
 	public Doctor(Team nteam) {
 		name = "doctor";
@@ -12,6 +11,7 @@ class Doctor extends Role {
 	}
 
 	public void nightAction(Player target) {
+		setNightAction(true);
 		System.out.println("i save u");
 	}
 
@@ -22,14 +22,11 @@ class Doctor extends Role {
 	public Team getTeam() {
 		return this.team;
 	}
-
-	public Player getTarget() {
-		return this.target;
-	}
 	
 	public String resolveNightAction()
 	{
 		StringBuilder toReturn = new StringBuilder();
+		getTarget().setNightLives(getTarget().getNightLives()+1);
 		return toReturn.toString();
 	}
 
