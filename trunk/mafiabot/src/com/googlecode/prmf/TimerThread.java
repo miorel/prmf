@@ -8,10 +8,9 @@ import com.googlecode.prmf.starter.IOThread;
  */
 
 public class TimerThread  implements Runnable{
-	// TODO default visibility is evil
-	Thread timer;
-	IOThread inputThread;
-	final int daytime;
+	private Thread timer;
+	private IOThread inputThread;
+	private final int daytime;
 
 	public TimerThread(IOThread inputThread, int daytime) {
 		this.daytime = daytime;
@@ -39,5 +38,10 @@ public class TimerThread  implements Runnable{
 
 		inputThread.sendMessage(inputThread.getChannel(), "The town was not able to reach a consensus.");
 		inputThread.ceaseTimer();
+	}
+	
+	public Thread getTimer()
+	{
+		return timer;
 	}
 }
