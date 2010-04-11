@@ -11,8 +11,8 @@ public class Game{
 	private MafiaGameState state;
 	
 	Pregame pregame;
-	Day day;
-	Night night;
+	//Day day;
+	//Night night;
 	public PostGame postgame;
 	
 	public Game(String gameStarter, IOThread inputThread)	{
@@ -40,7 +40,6 @@ public class Game{
 	}
  
 	public boolean isOver() {
-		System.err.println("checking if game is over");
 		boolean result = false;
 		LinkedList<String> teamsWon = new LinkedList<String>();
 		for(Player player : getPlayerList()) {
@@ -52,13 +51,12 @@ public class Game{
 			}
 		}
 		if(result){
-			System.err.println("going to postgame");
 			postgame = new PostGame(inputThread);
 			setState(postgame);
 			StringBuilder ret = new StringBuilder();
 			ret.append("Team:");
-			for(int x = 0; x < teamsWon.size(); x++)
-					ret.append(" "+teamsWon.get(x));
+			for(String teamName : teamsWon)
+					ret.append(" " + teamName);
 			ret.append(" has won");
 			inputThread.sendMessage(inputThread.getChannel(),ret.toString());
 		}
@@ -88,6 +86,7 @@ public class Game{
 		this.state = state;
 	}
 	
+	/*
 	public MafiaGameState getDay()
 	{
 		if (day == null)
@@ -100,7 +99,7 @@ public class Game{
 		if (night == null)
 			night = new Night(getPlayerList(), inputThread);
 		return night;
-	}
+	}*/
 	
 	public Player[] getPlayerList()
 	{
