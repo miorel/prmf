@@ -12,6 +12,7 @@ public class Night implements MafiaGameState
 	{
 		this.players = players;
 		this.inputThread = inputThread;
+		resetActions();
 	}
 	
 //	TODO add a timer to night
@@ -51,7 +52,7 @@ public class Night implements MafiaGameState
 		if (isOver)
 		{
 			resolveNightActions();
-			game.swapState(game.getDay());
+			game.swapState(new Day(players, inputThread));
 		}
 		return isOver;
 	}
@@ -88,6 +89,12 @@ public class Night implements MafiaGameState
 		game.setState(newState);
 		game.isOver();
 		game.getState().status();
+	}
+	
+	public void resetActions()
+	{
+		for (Player p : players)
+			p.getRole().resetNightAction();
 	}
 	
 	public void status()

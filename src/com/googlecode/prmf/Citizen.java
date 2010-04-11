@@ -10,6 +10,11 @@ class Citizen extends Role {
 		team = nteam;
 		super.setNightAction(true);
 	}
+	
+	public void resetNightAction()
+	{
+		
+	}
 
 	public void nightAction(Player target) {
 	}

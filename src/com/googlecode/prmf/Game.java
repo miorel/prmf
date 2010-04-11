@@ -43,7 +43,7 @@ public class Game{
 		System.err.println("checking if game is over");
 		boolean result = false;
 		LinkedList<String> teamsWon = new LinkedList<String>();
-		for(Player player: players) {
+		for(Player player : getPlayerList()) {
 			if(player.getRole().getTeam().hasWon(players)){
 				result = true;
 				String teamName = player.getRole().getTeam().getName();
