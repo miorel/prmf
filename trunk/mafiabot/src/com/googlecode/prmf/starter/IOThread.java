@@ -15,19 +15,15 @@ public class IOThread extends Thread {
 	private String channel;
 	private String botName;
 
-	public IOThread(String server, int port, String channel, String botName) {
-		try {
-			this.setName("I/O");
-			soc = new Socket(server, port);
-			inputStream = soc.getInputStream();
-			printStream = new PrintStream(soc.getOutputStream());
-		}
-		catch (Exception e) {
-			System.out.println("oops");
-		} 
+	public IOThread(SettingsFileParser settings) throws Exception
+	{
+		this.setName("I/O");
+		soc = new Socket(settings.getServer(), settings.getPort());
+		inputStream = soc.getInputStream();
+		printStream = new PrintStream(soc.getOutputStream());
 		list = new ArrayList<Listener>();
-		this.channel = channel;
-		this.botName = botName;
+		this.channel = settings.getChannel();
+		this.botName = settings.getBotName();
 		
 		printStream.println("NICK " + this.botName); 
 		printStream.println("USER " + this.botName + " 12 * " + this.botName);
