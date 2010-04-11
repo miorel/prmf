@@ -2,6 +2,9 @@ package com.googlecode.prmf;
 
 import com.googlecode.prmf.starter.IOThread;
 
+//TODO: I'm thinking this class needs to be totally redone... the player object should probably track its own votes
+//and it can report back to this when status updates are needed, or something like that
+
 public class VoteTracker {
 	
 	private int[] votes;
@@ -63,6 +66,7 @@ public class VoteTracker {
 	// TODO probably better (i.e. OOP-ish) to pass in a Player object rather than an int voter 
 	public int newVote(int voter, int voted , IOThread inputThread)
 	{
+		Action action = null;
 		/*in Player, votes for -1 is no vote
 		 * -2 is no lynch
 		 *  0-# of players-1 represents the actual players
@@ -76,49 +80,18 @@ public class VoteTracker {
 			return -1;
 		if ( voted >= 0)
 		{
-			if( players[voter].getVote() >= 0)
-			{
-				--votes[players[voter].getVote()];
-			}
-			else if( players[voter].getVote() == -2)
-			{
-				--noLynchVotes;
-			}
-			players[voter].setVote(voted);
-			++votes[voted];
+			action = new VoteAction(voter, voted);
 		}
 		else if( voted == -1)
 		{
-			if(players[voter].getVote() >= 0)
-			{
-				//uncount his previous vote
-				--votes[players[voter].getVote()];
-				players[voter].setVote(-1);
-			}
-			else if( players[voter].getVote() == -2)
-			{
-				--noLynchVotes;
-				players[voter].setVote(-1);
-			}
-			else
-			{
-				// if command was to unvote AND players vote was already -1 .. 
-				// he had no vote to begin with...!unvote command should do nothing
-				return -1;
-			}
+			action = new UnvoteAction(voter);
 		}
 		else if( voted == -2)
 		{
-			if(players[voter].getVote() >= 0 )
-			{
-				--votes[players[voter].getVote()];
-			}
-			if( players[voter].getVote() != -2)
-				++noLynchVotes;
-			
-			players[voter].setVote(-2);
+			action = new NoLynchAction(voter);
 		}
 		
+		action.handle();
 		status(inputThread);
 		return checkMajority();
 	}
@@ -137,6 +110,72 @@ public class VoteTracker {
 			if(votes[i] >= needed)
 				result = i;	
 		return result;
+	}
+	
+	class UnvoteAction implements Action
+	{
+		private Player voter;
+		public UnvoteAction(int voter)
+		{
+			this.voter = players[voter];
+		}
+		public void handle()
+		{
+			if(voter.getVote() >= 0)
+			{
+				--votes[voter.getVote()];
+			}
+			else if(voter.getVote() == -2)
+			{
+				--noLynchVotes;
+			}
+			voter.setVote(-1);
+		}
+	}
+	
+	class NoLynchAction implements Action
+	{
+		private Player voter;
+		public NoLynchAction(int voter)
+		{
+			this.voter = players[voter];
+		}
+		public void handle()
+		{
+			if(voter.getVote() >= 0)
+			{
+				--votes[voter.getVote()];
+			}
+			else if(voter.getVote() == -2)
+			{
+				--noLynchVotes;
+			}
+			voter.setVote(-2);
+		}
+	}
+	
+	class VoteAction implements Action
+	{
+		private Player voter;
+		private int target;
+		public VoteAction(int voter, int voted)
+		{
+			this.voter = players[voter];
+			this.target = voted;
+		}
+		public void handle()
+		{
+			if( voter.getVote() >= 0)
+			{
+				--votes[voter.getVote()];
+			}
+			else if(voter.getVote() == -2)
+			{
+				--noLynchVotes;
+			}
+			voter.setVote(target);
+			++votes[target];
+		}
 	}
 	
 }

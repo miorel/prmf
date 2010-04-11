@@ -15,7 +15,7 @@ public class Night implements MafiaGameState
 	}
 	
 //	TODO add a timer to night
-	
+    //TODO: why is this receiving an IO thread? one was given in the constructor
 	public boolean receiveMessage(Game game, String line, IOThread inputThread)
 	{
 		if (isNightOver())
@@ -56,7 +56,7 @@ public class Night implements MafiaGameState
 		}
 		return isOver;
 	}
-	
+    //TODO: why is this receiving an IO thread? one was given in the constructor
 	public void introduction(IOThread inputThread)
 	{
 		for (Player player : players)
@@ -111,7 +111,7 @@ public class Night implements MafiaGameState
 	public void cleanUp()
 	{
 		resetActions();
-		
+		resetLives();
 	}
 	
 	public void status()

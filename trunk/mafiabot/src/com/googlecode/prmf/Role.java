@@ -59,7 +59,7 @@ public abstract class Role {
 
 	public abstract String description();
 
-	String resolveNightAction() {
+	public String resolveNightAction() {
 		return "";
 	}
 	

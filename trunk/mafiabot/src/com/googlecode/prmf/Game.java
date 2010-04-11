@@ -26,7 +26,7 @@ public class Game{
 	{
 		state.receiveMessage(this, line, inputThread);
 	}
-	
+    //TODO: why is this receiving an IO thread? one was given in the constructor	
 	public Game(String gameStarter, IOThread inputThread, boolean dayStart, int numMafia)
 	{
 		this(gameStarter, inputThread);

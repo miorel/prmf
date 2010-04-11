@@ -14,7 +14,7 @@ public class Day implements MafiaGameState {
 		this.players = players;
 		this.inputOutputThread = inputThread;
 	}
-
+    //TODO: why is this receiving an IO thread? one was given in the constructor
 	public boolean receiveMessage(Game game, String line, IOThread inputThread) {
 		boolean ret = false;
 		String speaker = line.substring(1, line.indexOf("!"));
@@ -60,7 +60,7 @@ public class Day implements MafiaGameState {
 		}
 		return ret;
 	}
-
+    //TODO: why is this receiving an IO thread? one was given in the constructor
     private int parseMessage(String instruc, String speaker, IOThread inputThread)
     {
     	// TODO this method looks like a perfect application of Java enums
@@ -83,6 +83,7 @@ public class Day implements MafiaGameState {
 	    	return -3;
 	    
 	    // TODO I hope you realize there are better ways to do this than a bunch of if/else statements.
+	    //TODO: change this to use the Class.forName() method. I think that's a much nicer solution than the one we have
 	    if( command.equals(":~lynch") )
 	    {
 	    	ret = processVote(speakerId, targetId, inputThread);
@@ -107,6 +108,7 @@ public class Day implements MafiaGameState {
 	    return ret;
     }
    
+    //TODO: why is this receiving an IO thread? one was given in the constructor
     private int processVote(int voter, int voted, IOThread inputThread)
     {
     	/** int voted values:
@@ -153,4 +155,21 @@ public class Day implements MafiaGameState {
 		game.isOver();
 		game.getState().status();
 	}
+    
+    class LynchAction implements Action {
+
+    	private int voter;
+    	private int voted;
+    	public LynchAction(int voter, int voted)
+    	{
+    		this.voter=voter;
+    		this.voted=voted;
+    	}
+    	public void handle() {
+    		tracker.newVote(voter, voted, inputOutputThread);
+    	}
+
+    }
 }
+
+
