@@ -21,6 +21,7 @@
 
     <target name="run" depends="jar">
         <copy file="src/com/googlecode/prmf/starter/settings.txt" tofile="settings.txt"/>
+        <copy file="src/com/googlecode/prmf/starter/settings.txt" tofile="dist/settings.txt"/>
         <java jar="dist/MafiaBot.jar" fork="true"/>
     </target>
 
