@@ -8,6 +8,7 @@ public class Day implements MafiaGameState {
 	boolean killed; // if anyone was killed the previous night
 	String dead; // who was killed , if anyone;
 	IOThread inputOutputThread; 
+	//TODO: Day, and other classes, have inputOutputThreads, inputThreads, and IOThreads. we need to pick a name and keep it
 
 	public Day(Player[] players, IOThread inputThread) {
 		tracker = new VoteTracker(players);

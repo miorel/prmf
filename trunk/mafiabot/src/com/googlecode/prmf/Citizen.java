@@ -1,10 +1,10 @@
 package com.googlecode.prmf;
 
 class Citizen extends Role {
-	final private Team team;
+	final private Town team;
 	final private String name;
 
-	public Citizen(Team nteam) {
+	public Citizen(Town nteam) {
 		name = "citizen";
 		team = nteam;
 		super.setNightAction(true);
@@ -27,7 +27,7 @@ class Citizen extends Role {
 		return this.name;
 	}
 
-	public Team getTeam() {
+	public Town getTeam() {
 		return this.team;
 	}
 

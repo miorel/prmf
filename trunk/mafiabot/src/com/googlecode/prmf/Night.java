@@ -94,6 +94,7 @@ public class Night implements MafiaGameState
 		game.getState().status();
 	}
 	
+	//TODO: turn this into something Player does in endNight perhaps
 	public void resetActions()
 	{
 		for (Player p : players)

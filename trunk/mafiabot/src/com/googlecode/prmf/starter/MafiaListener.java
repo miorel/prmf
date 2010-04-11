@@ -8,12 +8,12 @@ public class MafiaListener implements Listener {
 		super();
 		this.botName = botName;
 	}
+	//TODO: need to clean this massive pile of if/else up
 	public void receiveLine(String in, IOThread inputThread) 
 	{
 		
 		String[] msg = in.split(" ",4);
 		String user = "";
-		
 		if(msg[0].indexOf("!") > 1)
 			user = msg[0].substring(1,msg[0].indexOf("!"));
 		if (msg.length >= 2 && !msg[1].equals("PRIVMSG"))
