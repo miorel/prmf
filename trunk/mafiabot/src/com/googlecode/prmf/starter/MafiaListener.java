@@ -83,6 +83,10 @@ public class MafiaListener implements Listener {
 		{
 			game.receiveMessage(in);
 		}
+		else if(msg.length >= 4 && msg[3].startsWith(":~help"))
+		{
+			inputThread.sendMessage(inputThread.getChannel(), "MafiaBot has the following commands: mafia, join, quit, start, lynch, nolynch, unvote, stats, help");
+		}
 	}
 	
 	public void timerMessage()
