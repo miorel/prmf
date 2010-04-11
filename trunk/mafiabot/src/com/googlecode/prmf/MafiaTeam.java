@@ -39,6 +39,8 @@ class MafiaTeam extends Team {
 		boolean agree = true;
 		for(Player p : getList())
 		{
+			if (!p.isAlive())
+				continue;
 			if(target == null)
 			{
 				target = p.getRole().getTarget();

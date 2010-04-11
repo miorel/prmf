@@ -25,9 +25,6 @@ public class Pregame implements MafiaGameState {
 		this.inputThread = inputThread;
 	}
 
-	// TODO change return type to enum for day-start, night-start
-	// REBUTTAL that sounds like a hack to me
-	//we wont need this to-do if the swapState() i'm thinking of is the one we implement
 	public boolean receiveMessage(Game game, String line, IOThread inputThread)
 	{
 			boolean ret = false;

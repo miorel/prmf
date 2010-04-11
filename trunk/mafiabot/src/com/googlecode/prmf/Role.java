@@ -9,7 +9,6 @@ public abstract class Role {
 	//REBUTTAL aren't they technically simultaneous?
 	//eh i dont think so... if agent alters someone, that needs to happen before cop checks right?
 	boolean nightAction(String message, Player[] players) {
-		//TODO check night action for validity here instead of before?
 		boolean toReturn = false;
 		if (!checkNightAction(message))
 			return toReturn;
@@ -24,6 +23,11 @@ public abstract class Role {
 			}
 		return toReturn;
 			
+	}
+	
+	public void resetNightAction()
+	{
+		setNightAction(false);
 	}
 	
 	boolean hasNightAction() {

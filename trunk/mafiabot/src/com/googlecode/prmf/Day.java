@@ -45,7 +45,7 @@ public class Day implements MafiaGameState {
 		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
 		System.err.println(ret);
 		if (ret)
-			game.swapState(game.getNight());
+			game.swapState(new Night(players, inputThread));
 		return ret;
 	}
         
