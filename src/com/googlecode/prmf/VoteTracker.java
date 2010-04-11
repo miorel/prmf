@@ -32,13 +32,16 @@ public class VoteTracker {
 			StringBuilder toAdd = new StringBuilder();
 			
 			//must check if player is alive because player can !quit is set to dead.
-			if (votes[i] == 0 && players[i].isAlive()) continue;
+			if (votes[i] == 0 || !players[i].isAlive()) continue;
 			if (toPrint.length() > 0)
 				toAdd.append(", ");
 			toAdd.append(players[i].getName());
 			toAdd.append(" has ");
 			toAdd.append(votes[i]);
-			toAdd.append(" votes");
+			if(votes[i] > 1)
+				toAdd.append(" votes");
+			else
+				toAdd.append(" vote");
 			toPrint.append(toAdd);
 		}
 		if (noLynchVotes > 0)
@@ -48,12 +51,15 @@ public class VoteTracker {
 				toAdd.append(", ");
 			toAdd.append("No Lynch has ");
 			toAdd.append(noLynchVotes);
-			toAdd.append(" votes");
+			if(noLynchVotes == 1)
+				toAdd.append(" vote");
+			else
+				toAdd.append(" votes");
 			toPrint.append(toAdd);
 		}
 		if(toPrint.length() == 0)
 		{
-			toPrint.append("There are currently no votes");
+			toPrint.append("There are currently no votes.");
 			
 		}
 		toPrint.append(".");

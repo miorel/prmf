@@ -40,7 +40,7 @@ class Citizen extends Role {
 	{
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("You are a ").append(getName()).append("! ");
-		toReturn.append("As a ").append(getName()).append(", you have no special powers. You win when all threats to the town are eliminated");
+		toReturn.append("As a ").append(getName()).append(", you have no special powers. You win when all threats to the town are eliminated.");
 		return toReturn.toString();
 	}
 }

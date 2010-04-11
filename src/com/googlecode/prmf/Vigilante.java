@@ -31,7 +31,7 @@ class Vigilante extends Role {
 	{
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("You are a ").append(getName()).append("! ");
-		toReturn.append("As a ").append(getName()).append(", you have the ability to kill a player that you suspect is mafia. Bear in mind you can only do this once, so choose wisely. You win when all threats to the town are eliminated");
+		toReturn.append("As a ").append(getName()).append(", you have the ability to kill a player that you suspect is mafia. Bear in mind you can only do this once, so choose wisely. You win when all threats to the town are eliminated.");
 		return toReturn.toString();
 	}
 
