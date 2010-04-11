@@ -1,6 +1,5 @@
 package com.googlecode.prmf.starter;
-
-import com.googlecode.prmf.Game;
+import com.googlecode.prmf.*;
 
 public class MafiaListener implements Listener {
 	private Game game;
@@ -29,6 +28,25 @@ public class MafiaListener implements Listener {
 			inputThread.sendMessage(inputThread.getChannel(), "Mafia game started by " + user + "!");
 			game.receiveMessage(":" + user + "! PRIVMSG " + inputThread.getChannel() + " :~join"); // TODO H4X is bad
 			
+		}
+		else if(msg.length >= 4 && msg[3].equals(":~stats") && game != null)
+		{
+			if(game.postgame != null)
+				inputThread.sendMessage(inputThread.getChannel(), "Game over");
+			else{
+				inputThread.sendMessage(inputThread.getChannel(), "The following people are still alive:");
+		    	StringBuilder livingPeople = new StringBuilder();
+		    	for (Player p : game.getPlayerList())
+		    	{
+		    		if (p.isAlive())
+		    		{
+		    			if(livingPeople.length() > 0)
+		    				livingPeople.append(", ");
+		    			livingPeople.append(p);
+		    		}
+		    	}
+		    	inputThread.sendMessage(inputThread.getChannel(), livingPeople.toString());
+			}
 		}
 		else if(msg.length >= 4 && msg[3].equals(":~join") && game != null) 
 		{
