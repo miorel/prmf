@@ -71,7 +71,7 @@ public class Game{
 	}
 
 	public void stopTimer() {
-		getTimerThread().timer.interrupt();
+		getTimerThread().getTimer().interrupt();
 	}
 	
 	public MafiaGameState getState()
@@ -94,7 +94,7 @@ public class Game{
 	public void startTimer()
 	{
 		timerThread = new TimerThread(inputThread);
-		getTimerThread().timer.start();
+		getTimerThread().getTimer().start();
 	}
 	
 	public Pregame getPregame()

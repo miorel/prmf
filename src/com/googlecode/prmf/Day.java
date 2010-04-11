@@ -25,7 +25,7 @@ public class Day implements MafiaGameState {
 			ret = true;
 		}
 		else if(returnCode == -2) {
-			inputThread.sendMessage(inputThread.getChannel(), "the majority has voted for no lynching today!");
+			inputThread.sendMessage(inputThread.getChannel(), "The majority has voted for no lynching today!");
 			ret = true;
 		}
 		else if(returnCode == -1) {

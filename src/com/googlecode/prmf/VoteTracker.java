@@ -38,10 +38,7 @@ public class VoteTracker {
 			toAdd.append(players[i].getName());
 			toAdd.append(" has ");
 			toAdd.append(votes[i]);
-			if(votes[i] > 1)
-				toAdd.append(" votes");
-			else
-				toAdd.append(" vote");
+			toAdd.append((votes[i] == 1) ? " vote" : " votes");
 			toPrint.append(toAdd);
 		}
 		if (noLynchVotes > 0)
@@ -51,15 +48,12 @@ public class VoteTracker {
 				toAdd.append(", ");
 			toAdd.append("No Lynch has ");
 			toAdd.append(noLynchVotes);
-			if(noLynchVotes == 1)
-				toAdd.append(" vote");
-			else
-				toAdd.append(" votes");
+			toAdd.append((noLynchVotes == 1) ? " vote" : " votes");
 			toPrint.append(toAdd);
 		}
 		if(toPrint.length() == 0)
 		{
-			toPrint.append("There are currently no votes.");
+			toPrint.append("There are currently no votes");
 			
 		}
 		toPrint.append(".");
