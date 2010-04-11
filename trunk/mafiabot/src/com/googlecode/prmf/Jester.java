@@ -1,10 +1,8 @@
 package com.googlecode.prmf;
 
 class Jester extends Role {
-	// TODO mark as final any fields you don't plan on changing
-	private Team team;
-	private String name;
-	private Player target;
+	final private Team team;
+	final private String name;
 
 	public Jester(Team nteam) {
 		name = "jester";
@@ -20,10 +18,6 @@ class Jester extends Role {
 
 	public Team getTeam() {
 		return this.team;
-	}
-
-	public Player getTarget() {
-		return this.target;
 	}
 
 	public String description()
