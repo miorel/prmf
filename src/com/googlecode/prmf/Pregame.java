@@ -24,7 +24,7 @@ public class Pregame implements MafiaGameState {
 		dayStart = true;
 		this.inputThread = inputThread;
 	}
-
+    //TODO: why is this receiving an IO thread? one was given in the constructor
 	public boolean receiveMessage(Game game, String line, IOThread inputThread)
 	{
 			boolean ret = false;
@@ -85,7 +85,7 @@ public class Pregame implements MafiaGameState {
 			}
 			return ret;
 	}	
-	
+    //TODO: why is this receiving an IO thread? one was given in the constructor
 	private void startGame(Game game, IOThread inputThread)
 	{
 		MafiaTeam mt = new MafiaTeam();
