@@ -1,9 +1,8 @@
 package com.googlecode.prmf;
 
 class Doctor extends Role {
-	// TODO mark as final any fields you don't plan on changing
-	private Team team;
-	private String name;
+	final private Team team;
+	final private String name;
 
 	public Doctor(Team nteam) {
 		name = "doctor";
