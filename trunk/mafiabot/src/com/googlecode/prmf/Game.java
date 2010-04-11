@@ -10,16 +10,14 @@ public class Game{
 	private IOThread inputThread;
 	private MafiaGameState state;
 	
-	Pregame pregame;
-	//Day day;
-	//Night night;
-	public PostGame postgame;
+	private Pregame pregame;
+	private Postgame postgame;
 	
 	public Game(String gameStarter, IOThread inputThread)	{
 		this.gameStarter = gameStarter;
 		this.inputThread = inputThread;
 		pregame = new Pregame(gameStarter, inputThread);
-		state = pregame;
+		state = getPregame();
 		timerThread = new TimerThread(inputThread);
 	}
 
@@ -51,7 +49,7 @@ public class Game{
 			}
 		}
 		if(result){
-			postgame = new PostGame(inputThread);
+			postgame = new Postgame(inputThread);
 			setState(postgame);
 			StringBuilder ret = new StringBuilder();
 			ret.append("Team:");
@@ -86,25 +84,10 @@ public class Game{
 		this.state = state;
 	}
 	
-	/*
-	public MafiaGameState getDay()
-	{
-		if (day == null)
-			day = new Day(getPlayerList(), inputThread);
-		return day;
-	}
-	
-	public MafiaGameState getNight()
-	{
-		if (night == null)
-			night = new Night(getPlayerList(), inputThread);
-		return night;
-	}*/
-	
 	public Player[] getPlayerList()
 	{
 		if(players == null)
-			players = pregame.getPlayerArray();
+			players = getPregame().getPlayerArray();
 		return players;
 			
 	}
@@ -112,6 +95,16 @@ public class Game{
 	{
 		timerThread = new TimerThread(inputThread);
 		getTimerThread().timer.start();
+	}
+	
+	public Pregame getPregame()
+	{
+		return pregame;
+	}
+	
+	public Postgame getPostgame()
+	{
+		return postgame;
 	}
 	
 }

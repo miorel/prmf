@@ -82,8 +82,6 @@ public class Day implements MafiaGameState {
 	    if(speakerId == -3)
 	    	return -3;
 	    
-	    System.err.println(command + " " + target);
-	    
 	    // TODO I hope you realize there are better ways to do this than a bunch of if/else statements.
 	    if( command.equals(":~lynch") )
 	    {
