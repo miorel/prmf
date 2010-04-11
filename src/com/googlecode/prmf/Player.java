@@ -1,6 +1,6 @@
 package com.googlecode.prmf;
 
-class Player {
+public class Player {
 	private String name;
 	private Role role;
 
