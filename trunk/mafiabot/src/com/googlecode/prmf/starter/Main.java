@@ -10,8 +10,10 @@ public class Main {
 			IOThread inputOutputThread = new IOThread(settings);
 			Listener mafiaListener = new MafiaListener(settings.getBotName());
 			PingListener pingListener = new PingListener();
+			DisconnectListener disconnectListener = new DisconnectListener();
 			inputOutputThread.addListener(mafiaListener);
 			inputOutputThread.addListener(pingListener);
+			inputOutputThread.addListener(disconnectListener);
 			inputOutputThread.start();
 		}
 		catch(Exception e)

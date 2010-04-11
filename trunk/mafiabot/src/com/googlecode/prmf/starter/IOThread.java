@@ -1,5 +1,6 @@
 package com.googlecode.prmf.starter;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -14,11 +15,13 @@ public class IOThread extends Thread {
 	private PrintStream printStream; 
 	private String channel;
 	private String botName;
-
+	private SettingsFileParser settings;
+	
 	public IOThread(SettingsFileParser settings) throws Exception
 	{
+		this.settings = settings;
 		this.setName("I/O");
-		soc = new Socket(settings.getServer(), settings.getPort());
+		makeSocket();
 		inputStream = soc.getInputStream();
 		printStream = new PrintStream(soc.getOutputStream());
 		list = new ArrayList<Listener>();
@@ -81,5 +84,15 @@ public class IOThread extends Thread {
 	public String getChannel()
 	{
 		return channel;
+	}
+	
+	public SettingsFileParser getSettings()
+	{
+		return settings;
+	}
+	
+	public void makeSocket() throws IOException
+	{
+		soc = new Socket(getSettings().getServer(), getSettings().getPort());
 	}
 }
