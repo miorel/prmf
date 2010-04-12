@@ -31,7 +31,7 @@ public class Night implements MafiaGameState
 		
 		
 		Player speaking = null;
-		for (int i=0;i<players.length;i++)
+		for (int i=0;i<players.length;i++) //TODO for each please?
 		{
 			if (players[i].equals(new Player(speaker)))
 			{
@@ -52,7 +52,7 @@ public class Night implements MafiaGameState
 		{
 			resolveNightActions();
 			cleanUp();
-			game.swapState(new Day(players, inputThread));
+			game.setState(new Day(players, inputThread));
 		}
 		return isOver;
 	}
@@ -68,13 +68,11 @@ public class Night implements MafiaGameState
 		}
 	}
 	
-	//changed to sexier enhanced for loop ;p
-	public boolean isNightOver()
-	{
+	public boolean isNightOver() {
 		boolean result = true;
-		for (Player p : players)
+		for(Player p: players)
 			if(p.isAlive() && !p.getRole().didNightAction())
-				result = false; 
+				result = false; //TODO why keep searching after?
 		return result;
 	}
 	
@@ -87,12 +85,14 @@ public class Night implements MafiaGameState
 		}
 	}
 	
+	/*
 	public void swapState(Game game, MafiaGameState newState)
 	{
 		game.setState(newState);
 		game.isOver();
-		game.getState().status();
+		game.getState().status();	
 	}
+	*/
 	
 	//TODO: turn this into something Player does in endNight perhaps
 	public void resetActions()

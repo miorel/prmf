@@ -45,7 +45,7 @@ public class Day implements MafiaGameState {
 		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
 		System.err.println(ret);
 		if (ret)
-			game.swapState(new Night(players, inputThread));
+			game.setState(new Night(players, inputThread));
 		return ret;
 	}
         
@@ -149,13 +149,15 @@ public class Day implements MafiaGameState {
     	}
     	inputOutputThread.sendMessage(inputOutputThread.getChannel(), livingPeople.toString());
     }
-    
+
+    /*
     public void swapState(Game game, MafiaGameState newState)
 	{
 		game.setState(newState);
 		game.isOver();
 		game.getState().status();
 	}
+	*/
     
     class LynchAction implements Action {
 

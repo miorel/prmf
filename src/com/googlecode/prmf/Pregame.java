@@ -79,9 +79,9 @@ public class Pregame implements MafiaGameState {
 			if (ret)
 			{
 				if (dayStart)
-					game.swapState(new Day(getPlayerArray(), inputThread));
+					game.setState(new Day(getPlayerArray(), inputThread));
 				else
-					game.swapState(new Night(getPlayerArray(), inputThread));
+					game.setState(new Night(getPlayerArray(), inputThread));
 			}
 			return ret;
 	}	
@@ -138,10 +138,11 @@ public class Pregame implements MafiaGameState {
 		return players.toArray(new Player[0]);
 	}
 	
+	/*
 	public void swapState(Game game, MafiaGameState newState)
 	{
 		game.setState(newState);
-		/*if(dayStart)
+		if(dayStart)
 		{
 			if (game.getDay() == null)
 				game.makeDay();
@@ -152,9 +153,9 @@ public class Pregame implements MafiaGameState {
 			if (game.getNight() == null)
 				game.makeNight();
 			game.setState(game.getNight());
-		}*/
+		}
 		game.getState().status();
-	}
+	}*/
 	
 	public boolean getDayStart()
 	{
