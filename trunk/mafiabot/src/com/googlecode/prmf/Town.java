@@ -1,23 +1,22 @@
 package com.googlecode.prmf;
 
 class Town extends Team{
-	private String name;
+//	private String name;
 	 
-	public Town (){
-		name = "Town";
-		super.createList();
+	public Town() {
+		// name = "Town";
+		// super.createList();
 	}
-	
-	public String getName()
-	{
-		return name;
+
+	public String getName() {
+		return "Town";
 	}
 	
 	public boolean hasWon(Player[] players) {
 		boolean result = true;
 		for(Player p: players) {
 			if(!p.getRole().getTeam().equals(this) && p.isAlive())
-				result = false;
+				result = false; //TODO why keep searching after?
 		}
 		return result;
 

@@ -4,8 +4,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Team {
-	private String name; 
+//	private String name;
 	private List<Player> list;
+	
+	public Team() {
+		list = new LinkedList<Player>();
+	}
 	
 	// TODO why is an array of players passed as an argument?
 	//most win conditions don't just involve the team in isolation, but rather the team with respect to the rest of the game
@@ -25,9 +29,7 @@ public abstract class Team {
 		return list.contains(player);
 	}
 
-	public String getName() {
-		return name;
-	}
+	public abstract String getName();
 	
 	public List<Player> getList()
 	{
@@ -35,9 +37,9 @@ public abstract class Team {
 		return list;
 	}
 	
-	public void createList()
+	/*public void createList()
 	{
 		list = new LinkedList<Player>();
-	}
+	}*/
 	
 }
