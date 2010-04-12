@@ -1,0 +1,3 @@
+3 normal3 Citizen:Town,Citizen:Town, Mafia:MafiaTeam
+4 normal4 Citizen:Town,Citizen:Town,Citizen:Town,Mafia:MafiaTeam
+5 normal5 Citizen:Town,Citizen:Town,Citizen:Town,Mafia:MafiaTeam,Citizen:Town

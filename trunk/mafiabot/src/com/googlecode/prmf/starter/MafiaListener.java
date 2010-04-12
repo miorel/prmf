@@ -1,5 +1,10 @@
 package com.googlecode.prmf.starter;
-import com.googlecode.prmf.*;
+import java.io.File;
+import java.util.Scanner;
+
+import com.googlecode.prmf.Game;
+import com.googlecode.prmf.Player;
+import com.googlecode.prmf.Role;
 
 public class MafiaListener implements Listener {
 	private Game game;
@@ -11,7 +16,6 @@ public class MafiaListener implements Listener {
 	//TODO: need to clean this massive pile of if/else up
 	public void receiveLine(String in, IOThread inputThread) 
 	{
-		
 		String[] msg = in.split(" ",4);
 		String user = "";
 		if(msg[0].indexOf("!") > 1)
@@ -69,6 +73,11 @@ public class MafiaListener implements Listener {
 		}
 		else if(msg.length >= 4 && msg[3].equals(":~start") && game != null)
 		{
+			if(game.getPlayerList().length < 3)
+			{
+				inputThread.sendMessage(inputThread.getChannel(), "Game should have at least 3 people!");
+			}
+			else
 			game.receiveMessage(in);
 		}
 		else if(msg.length >= 4 && msg[3].startsWith(":~lynch") && game != null)
@@ -87,11 +96,68 @@ public class MafiaListener implements Listener {
 		{
 			inputThread.sendMessage(inputThread.getChannel(), "MafiaBot has the following commands: mafia, join, quit, start, lynch, nolynch, unvote, stats, help");
 		}
+		else if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~save"))
+		{
+			inputThread.sendMessage(inputThread.getChannel(), "~save not implemented yet");
+		}
+		else if(msg.length >= 4 && msg[3].startsWith(":~load") && game != null)
+		{
+			Scanner prof = null;
+			try{
+				
+				prof = new Scanner(new File("profiles.txt"));
+				if(msg[3].equalsIgnoreCase(":~load"))
+				{
+					//int profileNum = 1;
+					StringBuilder currProfile = new StringBuilder();
+					currProfile.append("List of saved profiles: ");
+					while(prof.hasNextLine())
+					{
+						String profileLine = prof.nextLine();
+						String profMsg[] = profileLine.split(" ",3);
+						//String roleMsg[] = profMsg[2].split(",");
+						currProfile.append(" "+ profMsg[1]);
+						/**
+						for(int i=0;i<roleMsg.length;++i)
+						{
+							currProfile.append(" "+roleMsg[i].trim());
+						}
+						**/
+					}
+					inputThread.sendMessage(user, currProfile.toString());
+				}
+				else
+				{
+					while(prof.hasNextLine())
+					{
+						String profileLine = prof.nextLine();
+						String profMsg[] = profileLine.split(" ",3);
+						String roleMsg[] = profMsg[2].split(",");
+						for(int i=0;i<roleMsg.length;++i)
+							roleMsg[i] = roleMsg[i].trim();
+						String[] msgLoad = msg[3].split(" ",2);
+						String ProfDesired = msgLoad[1];
+						if(ProfDesired.equalsIgnoreCase(profMsg[1]))
+						{
+							game.getPregame().loadRoleProfile(roleMsg);
+							break;
+						}
+					}
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				inputThread.sendMessage(inputThread.getChannel(), "profiles.txt file not found");
+			}
+
+			
+
+		}
 	}
 	
 	public void timerMessage()
 	{
 		game.stopTimer();
 	}
-	
 }

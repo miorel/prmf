@@ -1,5 +1,6 @@
 package com.googlecode.prmf;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.List;
 import com.googlecode.prmf.starter.IOThread;
 
 public class Pregame implements MafiaGameState {
+	static private MafiaTeam mafiaTeam = new MafiaTeam();
+	static private Town town = new Town();
 	private String startName;
 	private List<Player> players;
 	private List<Role> townRoles;
@@ -92,20 +95,7 @@ public class Pregame implements MafiaGameState {
 		Town t = new Town();
 		//assigning roles
 		int numMafia = (int)Math.ceil(players.size()/4.0);
-		/*
-		//create the Mafia team
-		for(int a = 0; a < numMafia; ++a)
-		{
-			mafiaRoles.add(new Mafia(mt));
-		}
-		
-		//create the Town team
-		for(int a = 0; a < (players.size() - numMafia); ++a)
-		{
-			townRoles.add(new Citizen(t));
-		}
-		*/
-		
+
 		for(int a = 0; a < numMafia; ++a)
 		{
 			mafiaRoles.add(new Mafia(mt));
@@ -132,7 +122,28 @@ public class Pregame implements MafiaGameState {
 			inputThread.sendMessage(players.get(a).getName(), p.getRole().description());
 		}
 	}
-
+	public void loadRoleProfile(String[] roleMsg)
+	{
+		//Method not working yet
+		roles.clear();
+		for(int i=0;i<roleMsg.length;++i)
+		{
+			roleMsg[i] = roleMsg[i].trim();
+			String[] roleSplit = roleMsg[i].split(":");
+			
+			try
+			{
+				Class tempTeam = Class.forName(roleSplit[0]+"Assigner");
+				Method getTeam = tempTeam.getMethod("get"+roleSplit[0]);
+				Team specificTeam = (Team) getTeam.invoke(tempTeam);
+				roles.add( (Role)Class.forName( roleSplit[0]).getConstructor().newInstance(specificTeam) );
+			}
+			catch(Exception e)
+			{
+				System.err.println("OOP is hard");
+			}
+		}
+	}
 	public Player[] getPlayerArray() // it's a player array now, hope you're happy ;p
 	{
 		return players.toArray(new Player[0]);
@@ -155,7 +166,8 @@ public class Pregame implements MafiaGameState {
 			game.setState(game.getNight());
 		}
 		game.getState().status();
-	}*/
+	}
+	*/
 	
 	public boolean getDayStart()
 	{
@@ -182,5 +194,20 @@ public class Pregame implements MafiaGameState {
 			inputThread.sendMessage(inputThread.getChannel(), "This game is currently set to day start");
 		else
 			inputThread.sendMessage(inputThread.getChannel(), "This game is currently set to night start");
+	}
+	
+	class MafiaTeamAssigner
+	{
+		public MafiaTeam getMafiaTeam()
+		{
+			return mafiaTeam;
+		}
+	}
+	class TownAssigner
+	{
+		public Town getTown()
+		{
+			return town;
+		}
 	}
 }
