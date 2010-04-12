@@ -31,11 +31,6 @@ public class Game{
 	{
 		this(gameStarter, inputThread);
 	}
-
-	public void swapState(MafiaGameState newState)
-	{
-		state.swapState(this, newState);
-	}
  
 	public boolean isOver() {
 		boolean result = false;
@@ -82,6 +77,8 @@ public class Game{
 	public void setState(MafiaGameState state)
 	{
 		this.state = state;
+		isOver();
+		state.status();	
 	}
 	
 	public Player[] getPlayerList()
