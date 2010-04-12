@@ -1,15 +1,15 @@
 package com.googlecode.prmf;
 
 class MafiaTeam extends Team {
-	private String name;
-		
+	// private String name;
+
 	public MafiaTeam() {
-		name = "MafiaTeam";
-		super.createList();
+		// name = "MafiaTeam";
+		// super.createList();
 	}
 
 	public String getName() {
-		return name;
+		return "MafiaTeam";
 	}
 	
 	public boolean hasWon(Player[] players)

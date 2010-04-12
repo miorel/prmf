@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import com.googlecode.prmf.Game;
 import com.googlecode.prmf.Player;
-import com.googlecode.prmf.Role;
+import com.googlecode.prmf.Role; //TODO press Ctrl+Shift+O in Eclipse
 
 public class MafiaListener implements Listener {
 	private Game game;

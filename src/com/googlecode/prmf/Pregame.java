@@ -15,7 +15,7 @@ public class Pregame implements MafiaGameState {
 	private List<Role> townRoles;
 	private List<Role> mafiaRoles;
 	private List<Role> roles;
-	IOThread inputThread;
+	IOThread inputThread; // TODO why is this not private?
 	private boolean dayStart;
 
 	public Pregame(String startName, IOThread inputThread) {
@@ -91,22 +91,22 @@ public class Pregame implements MafiaGameState {
     //TODO: why is this receiving an IO thread? one was given in the constructor
 	private void startGame(Game game, IOThread inputThread)
 	{
-		MafiaTeam mt = new MafiaTeam();
-		Town t = new Town();
+		//MafiaTeam mt = new MafiaTeam();
+		//Town t = new Town();
 		//assigning roles
 		int numMafia = (int)Math.ceil(players.size()/4.0);
 
 		for(int a = 0; a < numMafia; ++a)
 		{
-			mafiaRoles.add(new Mafia(mt));
+			mafiaRoles.add(new Mafia(mafiaTeam));
 		}
 		
-		townRoles.add(new Cop(t));
-		townRoles.add(new Doctor(t));
+		townRoles.add(new Cop(town));
+		townRoles.add(new Doctor(town));
 		//create the Town team
 		for(int a = 0; a < (players.size() - numMafia-2); ++a)
 		{
-			townRoles.add(new Citizen(t));
+			townRoles.add(new Citizen(town));
 		}
 		roles.addAll(mafiaRoles);
 		roles.addAll(townRoles);
@@ -119,6 +119,7 @@ public class Pregame implements MafiaGameState {
 			
 			p.setRole(roles.get(a));
 			p.getRole().getTeam().addPlayer(p); //this seems kinda sloppy, any better way of doing this?
+												//yes, do it from within setRole()
 			inputThread.sendMessage(players.get(a).getName(), p.getRole().description());
 		}
 	}
@@ -133,6 +134,7 @@ public class Pregame implements MafiaGameState {
 			
 			try
 			{
+				//TODO there be warnings here, fix them
 				Class tempTeam = Class.forName(roleSplit[0]+"Assigner");
 				Method getTeam = tempTeam.getMethod("get"+roleSplit[0]);
 				Team specificTeam = (Team) getTeam.invoke(tempTeam);
@@ -140,7 +142,7 @@ public class Pregame implements MafiaGameState {
 			}
 			catch(Exception e)
 			{
-				System.err.println("OOP is hard");
+				System.err.println("OOP is hard"); // reflection is hardly OOP
 			}
 		}
 	}
@@ -190,6 +192,8 @@ public class Pregame implements MafiaGameState {
 			playersIn.append(p);
 		}
 		inputThread.sendMessage(inputThread.getChannel(), playersIn.toString());
+		
+		//TODO transform the following to biconditional
 		if(dayStart)
 			inputThread.sendMessage(inputThread.getChannel(), "This game is currently set to day start");
 		else
