@@ -33,6 +33,11 @@ public class IOThread extends Thread {
 		printStream.println("JOIN " + channel);
 	}
 	
+	public IOThread()
+	{
+		
+	}
+	
 	public void run()
 	{
 		Scanner in = new Scanner(inputStream);

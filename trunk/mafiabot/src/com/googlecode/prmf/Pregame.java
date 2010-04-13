@@ -11,6 +11,7 @@ public class Pregame implements MafiaGameState {
 	static private MafiaTeam mafiaTeam = new MafiaTeam();
 	static private Town town = new Town();
 	private String startName;
+	private boolean profileLoaded;
 	private List<Player> players;
 	private List<Role> townRoles;
 	private List<Role> mafiaRoles;
@@ -26,6 +27,12 @@ public class Pregame implements MafiaGameState {
 		roles = new ArrayList<Role>();
 		dayStart = true;
 		this.inputThread = inputThread;
+		profileLoaded = false;
+	}
+	
+	public Pregame()
+	{
+		
 	}
     //TODO: why is this receiving an IO thread? one was given in the constructor
 	public boolean receiveMessage(Game game, String line, IOThread inputThread)
@@ -90,10 +97,35 @@ public class Pregame implements MafiaGameState {
 	}	
     //TODO: why is this receiving an IO thread? one was given in the constructor
 	private void startGame(Game game, IOThread inputThread)
+	{	
+		if(!profileLoaded)
+		{
+			defaultStart(game,inputThread);
+			return;
+		}
+		
+		Collections.shuffle(roles);
+		for(int a = 0; a < players.size(); ++a)
+		{
+			Player p = players.get(a);
+			
+			p.setRole(roles.get(a));
+			p.getRole().getTeam().addPlayer(p); //this seems kinda sloppy, any better way of doing this?
+												//yes, do it from within setRole()
+			inputThread.sendMessage(players.get(a).getName(), p.getRole().description());
+		}
+	}
+	
+	private void defaultStart(Game game,IOThread inputThread)
 	{
-		//MafiaTeam mt = new MafiaTeam();
-		//Town t = new Town();
-		//assigning roles
+		try {
+			Class tempTeam = Class.forName("com.googlecode.prmf.Pregame");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.err.println("Exception caught forName testing.");
+		}
+		
 		int numMafia = (int)Math.ceil(players.size()/4.0);
 
 		for(int a = 0; a < numMafia; ++a)
@@ -123,6 +155,7 @@ public class Pregame implements MafiaGameState {
 			inputThread.sendMessage(players.get(a).getName(), p.getRole().description());
 		}
 	}
+	
 	public void loadRoleProfile(String[] roleMsg)
 	{
 		//Method not working yet
@@ -131,18 +164,34 @@ public class Pregame implements MafiaGameState {
 		{
 			roleMsg[i] = roleMsg[i].trim();
 			String[] roleSplit = roleMsg[i].split(":");
-			
+			Pregame pregame = null;
+			try
+			{
+				Class clsBook = Pregame.class.getClassLoader().loadClass(
+                "com.googlecode.prmf.Pregame");
+				pregame = (Pregame)clsBook.newInstance();
+
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				System.err.println("dont add new shit nooby");
+			}
 			try
 			{
 				//TODO there be warnings here, fix them
-				Class tempTeam = Class.forName(roleSplit[0]+"Assigner");
-				Method getTeam = tempTeam.getMethod("get"+roleSplit[0]);
-				Team specificTeam = (Team) getTeam.invoke(tempTeam);
-				roles.add( (Role)Class.forName( roleSplit[0]).getConstructor().newInstance(specificTeam) );
+				Class tempAssigner = Class.forName("com.googlecode.prmf.Pregame$"+roleSplit[1]+"Assigner");
+				Method[] allMethods = tempAssigner.getMethods();
+				Method getTeam = allMethods[0];
+				Object obj = tempAssigner.getDeclaredConstructor(new Class[]{Pregame.class}).newInstance(new Object[]{pregame});
+				Team specificTeam = (Team)(getTeam.invoke(obj));
+				roles.add( (Role)Class.forName("com.googlecode.prmf."+roleSplit[0]).getConstructor(specificTeam.getClass()).newInstance(specificTeam) );
+				profileLoaded = true;
 			}
 			catch(Exception e)
 			{
-				System.err.println("OOP is hard"); // reflection is hardly OOP
+				e.printStackTrace();
+				System.err.println("OOP is hard"); // reflection is not very OOPy
 			}
 		}
 	}
@@ -200,16 +249,16 @@ public class Pregame implements MafiaGameState {
 			inputThread.sendMessage(inputThread.getChannel(), "This game is currently set to night start");
 	}
 	
-	class MafiaTeamAssigner
+	class MafiaTeamAssigner implements Assigner
 	{
-		public MafiaTeam getMafiaTeam()
+		public MafiaTeam getTeam()
 		{
 			return mafiaTeam;
 		}
 	}
-	class TownAssigner
+	class TownAssigner implements Assigner
 	{
-		public Town getTown()
+		public Town getTeam()
 		{
 			return town;
 		}
