@@ -36,6 +36,18 @@ class MafiaTeam extends Team {
 		return nonMafia <= mafia;
 	}
 	
+	@Override
+	public String toString()
+	{
+		
+		StringBuilder toReturn = new StringBuilder();
+		toReturn.append("The current living mafia team members are: ");
+		for (Player p : getList())
+			if(p.isAlive())
+			toReturn.append(p + " ");
+		return toReturn.toString();
+	}
+	
 	public boolean contains(Player player) {
 		return getList().contains(player);
 	}

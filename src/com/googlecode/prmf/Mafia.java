@@ -3,7 +3,6 @@ package com.googlecode.prmf;
 class Mafia extends Role {
 	private MafiaTeam team;
 	final private String name;
-	//private Player target;
 
 	public Mafia(MafiaTeam nteam) {
 		name = "mafia";
@@ -12,6 +11,7 @@ class Mafia extends Role {
 		super.setNightAction(false);
 	}
 	
+	@Override
 	public boolean nightAction(String message, Player[] players)
 	{
 		boolean temp = super.nightAction(message, players);
@@ -22,18 +22,22 @@ class Mafia extends Role {
 		return temp;
 	}
 
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	@Override
 	public MafiaTeam getTeam() {
 		return this.team;
 	}
 
+	@Override
 	public Player getTarget() {
 		return super.getTarget();
 	}
 
+	@Override
 	boolean checkNightAction(String message) {
 		String[] splitMessage = message.split(" ");
 		if(splitMessage.length >= 2 && splitMessage[0].equals(":~kill"))
@@ -41,6 +45,7 @@ class Mafia extends Role {
 		return false;
 	}
 
+	@Override
 	public String resolveNightAction() {
 		StringBuilder toReturn = new StringBuilder();
 		if(getTeam().agreeOnTarget())
@@ -53,11 +58,13 @@ class Mafia extends Role {
 		return toReturn.toString();
 	}
 	
+	@Override
 	public String description()
 	{
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("You are a ").append(getName()).append("! ");
-		toReturn.append("As a ").append(getName()).append(", you get to kill someone every night. You win when the mafia achieve parity with non-mafia.");
+		toReturn.append("As a ").append(getName()).append(", you get to kill someone every night. You win when the mafia achieve parity with non-mafia. ");
+		toReturn.append(getTeam());
 		return toReturn.toString();
 	}
 }

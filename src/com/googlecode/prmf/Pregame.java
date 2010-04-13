@@ -148,7 +148,11 @@ public class Pregame implements MafiaGameState {
 			p.setRole(roles.get(a));
 			p.getRole().getTeam().addPlayer(p); //this seems kinda sloppy, any better way of doing this?
 												//yes, do it from within setRole()
-			inputThread.sendMessage(players.get(a).getName(), p.getRole().description());
+			
+		}
+		for (Player p : players)
+		{
+			inputThread.sendMessage(p.getName(), p.getRole().description());
 		}
 	}
 	
@@ -163,6 +167,7 @@ public class Pregame implements MafiaGameState {
 			Pregame pregame = null;
 			try
 			{
+				//how do i fix these warnings
 				Class clsBook = Pregame.class.getClassLoader().loadClass("com.googlecode.prmf.Pregame");
 				pregame = (Pregame)clsBook.newInstance();
 
