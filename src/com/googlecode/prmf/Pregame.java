@@ -236,7 +236,13 @@ public class Pregame implements MafiaGameState {
 	
 	public void status()
 	{
-		inputThread.sendMessage(inputThread.getChannel(), "The following players are currently in:");
+    	if(players.size() >= 1)
+    		inputThread.sendMessage(inputThread.getChannel(), "The following people are registered");
+    	else
+    	{
+    		inputThread.sendMessage(inputThread.getChannel(), "There is no one registered yet!");
+    		return;
+    	}
 		StringBuilder playersIn = new StringBuilder();
 		for (Player p : players)
 		{

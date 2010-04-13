@@ -144,7 +144,14 @@ public class Day implements MafiaGameState {
     public void status()
     {
     	inputOutputThread.sendMessage(inputOutputThread.getChannel(), "It is now day!");
-    	inputOutputThread.sendMessage(inputOutputThread.getChannel(), "The following people are still alive:");
+    	
+    	if(players.length >= 1)
+    		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "The following people are still alive:");
+    	else
+    	{
+    		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "There is no one registered yet!");
+    		return;
+    	}
     	StringBuilder livingPeople = new StringBuilder();
     	for (Player p : players)
     	{
