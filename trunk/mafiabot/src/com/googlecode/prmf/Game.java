@@ -45,7 +45,6 @@ public class Game{
 		}
 		if(result){
 			postgame = new Postgame(inputThread);
-			setState(postgame);
 			StringBuilder ret = new StringBuilder();
 			ret.append("Team:");
 			for(String teamName : teamsWon)
@@ -77,8 +76,9 @@ public class Game{
 	public void setState(MafiaGameState state)
 	{
 		this.state = state;
-		isOver();
-		state.status();	
+		if(isOver())
+			this.state = new Postgame(inputThread);
+		this.state.status();	
 	}
 	
 	public Player[] getPlayerList()
