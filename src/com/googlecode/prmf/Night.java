@@ -31,16 +31,16 @@ public class Night implements MafiaGameState
 		
 		
 		Player speaking = null;
-		for (int i=0;i<players.length;i++) //TODO for each please?
+		for (Player p : players)
 		{
-			if (players[i].equals(new Player(speaker)))
+			if (p.equals(new Player(speaker)))
 			{
-				speaking = players[i];
+				speaking = p;
 				break;
 			}
-			if (i == players.length-1)
-				return false;
 		}
+		if (speaking == null)
+			return false;
 		
 		if (speaking.getRole().hasNightAction())
 		{
@@ -72,7 +72,10 @@ public class Night implements MafiaGameState
 		boolean result = true;
 		for(Player p: players)
 			if(p.isAlive() && !p.getRole().didNightAction())
-				result = false; //TODO why keep searching after?
+			{
+				result = false;
+				break;
+			}
 		return result;
 	}
 	

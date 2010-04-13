@@ -16,7 +16,10 @@ class Town extends Team{
 		boolean result = true;
 		for(Player p: players) {
 			if(!p.getRole().getTeam().equals(this) && p.isAlive())
-				result = false; //TODO why keep searching after?
+			{
+				result = false;
+				break;
+			}
 		}
 		return result;
 
