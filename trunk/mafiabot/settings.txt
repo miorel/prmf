@@ -1,5 +1,5 @@
 #If this settings file doesn't seem to work, then try placing a copy in the same dir as build.xml when testing
-nick = MAFIABOT22
+nick = MAFIABOT77
 channel = #ufpt
 server = irc.freenode.net
 port = 6667

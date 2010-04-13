@@ -42,11 +42,32 @@ public class Pregame implements MafiaGameState {
 			if(msg[0].indexOf("!")>1)
 				user = msg[0].substring(1,msg[0].indexOf("!"));
 			
+			if(msg[1].startsWith("KICK") || msg[1].startsWith("PART") || msg[1].startsWith("QUIT") )
+			{
+				for(int i=0;i<players.size();++i)
+				{
+					if(players.get(i).getName().equals(user))
+					{
+						players.remove(i);
+						return false;
+					}
+				}
+			}
+			
+			if(msg[1].startsWith("NICK") )
+			{
+				changeNick(user,msg[2]);
+				return false;
+			}
+			
 			Player temp = new Player(user);
 			int index = players.indexOf(temp);
 			
 			String destination = msg[2];
 			String command = msg[3].toLowerCase();
+			
+
+			
 			if(command.equalsIgnoreCase(":~start"))
 			{
 				if(user.equals(startName))		
@@ -91,6 +112,17 @@ public class Pregame implements MafiaGameState {
 			}
 			return ret;
 	}	
+	private void changeNick(String oldNick , String newNick)
+	{
+		for(int i=0;i<players.size();++i)
+		{
+			if(players.get(i).getName().equals(oldNick))
+			{
+				players.get(i).setName(newNick.substring(1));
+				return;
+			}
+		}
+	}
     //TODO: why is this receiving an IO thread? one was given in the constructor
 	private void startGame(Game game, IOThread inputThread)
 	{	
@@ -114,14 +146,6 @@ public class Pregame implements MafiaGameState {
 	
 	private void defaultStart(Game game,IOThread inputThread)
 	{
-		try {
-			Class tempTeam = Class.forName("com.googlecode.prmf.Pregame");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.err.println("Exception caught forName testing.");
-		}
-		
 		int numMafia = (int)Math.ceil(players.size()/4.0);
 
 		for(int a = 0; a < numMafia; ++a)

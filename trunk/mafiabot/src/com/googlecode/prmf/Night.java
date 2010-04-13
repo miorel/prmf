@@ -29,6 +29,11 @@ public class Night implements MafiaGameState
 		String action = splitLine[3];
 		String target = splitLine[4];
 		
+		if(splitLine[1].startsWith("NICK") )
+		{
+			changeNick(speaker,splitLine[2]);
+			return false;
+		}
 		
 		Player speaking = null;
 		for (Player p : players)
@@ -123,5 +128,15 @@ public class Night implements MafiaGameState
 		inputThread.sendMessage(inputThread.getChannel(), "It is now night!");
 	}
 	
-	
+	private void changeNick(String oldNick , String newNick)
+	{
+		for(int i=0;i<players.length;++i)
+		{
+			if(players[i].getName().equals(oldNick))
+			{
+				players[i].setName(newNick.substring(1));
+				return;
+			}
+		}
+	}
 }
