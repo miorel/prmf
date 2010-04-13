@@ -28,7 +28,7 @@ public class Player {
 	{
 		if (getNightLives() < 0)
 			setAlive(false);
-		setNightLives(0);
+		resetNightLives();
 	}
 
 	public String getName() {
