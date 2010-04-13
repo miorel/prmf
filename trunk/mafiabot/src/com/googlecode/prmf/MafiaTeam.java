@@ -22,9 +22,16 @@ class MafiaTeam extends Team {
 			if (!p.isAlive())
 				continue;
 			if (p.getRole().getTeam().equals(this)) // TODO this looks like a bug to me // why is that a bug?
+			{
 				++mafia;
+				System.err.println(p + " is a mafia");
+			}
+				
 			else
+			{
 				++nonMafia;
+				System.err.println(p + " is not a mafia");
+			}
 		}
 		return nonMafia <= mafia;
 	}

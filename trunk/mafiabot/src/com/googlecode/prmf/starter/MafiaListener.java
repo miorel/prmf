@@ -34,22 +34,7 @@ public class MafiaListener implements Listener {
 		}
 		else if(msg.length >= 4 && msg[3].equals(":~stats") && game != null)
 		{
-			if(game.getPostgame() != null)
-				inputThread.sendMessage(inputThread.getChannel(), "Game over");
-			else{
-				inputThread.sendMessage(inputThread.getChannel(), "The following people are still alive:");
-		    	StringBuilder livingPeople = new StringBuilder();
-		    	for (Player p : game.getPlayerList())
-		    	{
-		    		if (p.isAlive())
-		    		{
-		    			if(livingPeople.length() > 0)
-		    				livingPeople.append(", ");
-		    			livingPeople.append(p);
-		    		}
-		    	}
-		    	inputThread.sendMessage(inputThread.getChannel(), livingPeople.toString());
-			}
+			game.getState().status();
 		}
 		else if(msg.length >= 4 && msg[3].equals(":~join") && game != null) 
 		{

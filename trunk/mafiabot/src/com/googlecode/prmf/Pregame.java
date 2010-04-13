@@ -29,11 +29,7 @@ public class Pregame implements MafiaGameState {
 		this.inputThread = inputThread;
 		profileLoaded = false;
 	}
-	
-	public Pregame()
-	{
-		
-	}
+
     //TODO: why is this receiving an IO thread? one was given in the constructor
 	public boolean receiveMessage(Game game, String line, IOThread inputThread)
 	{
@@ -167,8 +163,7 @@ public class Pregame implements MafiaGameState {
 			Pregame pregame = null;
 			try
 			{
-				Class clsBook = Pregame.class.getClassLoader().loadClass(
-                "com.googlecode.prmf.Pregame");
+				Class clsBook = Pregame.class.getClassLoader().loadClass("com.googlecode.prmf.Pregame");
 				pregame = (Pregame)clsBook.newInstance();
 
 			}
@@ -191,7 +186,7 @@ public class Pregame implements MafiaGameState {
 			catch(Exception e)
 			{
 				e.printStackTrace();
-				System.err.println("OOP is hard"); // reflection is not very OOPy
+				System.err.println("OOP is hard");
 			}
 		}
 	}
@@ -199,26 +194,6 @@ public class Pregame implements MafiaGameState {
 	{
 		return players.toArray(new Player[0]);
 	}
-	
-	/*
-	public void swapState(Game game, MafiaGameState newState)
-	{
-		game.setState(newState);
-		if(dayStart)
-		{
-			if (game.getDay() == null)
-				game.makeDay();
-			game.setState(game.getDay());
-		}
-		else
-		{
-			if (game.getNight() == null)
-				game.makeNight();
-			game.setState(game.getNight());
-		}
-		game.getState().status();
-	}
-	*/
 	
 	public boolean getDayStart()
 	{
