@@ -150,6 +150,7 @@ public class VoteTracker {
 			{
 				--noLynchVotes;
 			}
+			++noLynchVotes;
 			voter.setVote(-2);
 		}
 	}
