@@ -19,6 +19,14 @@ public class Day implements MafiaGameState {
 	public boolean receiveMessage(Game game, String line, IOThread inputThread) {
 		boolean ret = false;
 		String speaker = line.substring(1, line.indexOf("!"));
+		String[] msg = line.split(" ");
+		
+		if(msg[1].startsWith("NICK") )
+		{
+			changeNick(speaker,msg[2]);
+			return false;
+		}
+		
 		int returnCode;
 		if((returnCode = parseMessage(line, speaker, inputThread)) >= 0) {
 			inputThread.sendMessage(inputThread.getChannel(), players[returnCode] + " was lynched :(");
@@ -84,6 +92,7 @@ public class Day implements MafiaGameState {
 	    
 	    // TODO I hope you realize there are better ways to do this than a bunch of if/else statements.
 	    //TODO: change this to use the Class.forName() method. I think that's a much nicer solution than the one we have
+	    
 	    if( command.equals(":~lynch") )
 	    {
 	    	ret = processVote(speakerId, targetId, inputThread);
@@ -172,6 +181,17 @@ public class Day implements MafiaGameState {
     	}
 
     }
+	private void changeNick(String oldNick , String newNick)
+	{
+		for(int i=0;i<players.length;++i)
+		{
+			if(players[i].getName().equals(oldNick))
+			{
+				players[i].setName(newNick.substring(1));
+				return;
+			}
+		}
+	}
 }
 
 

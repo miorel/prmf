@@ -19,6 +19,18 @@ public class MafiaListener implements Listener {
 		String user = "";
 		if(msg[0].indexOf("!") > 1)
 			user = msg[0].substring(1,msg[0].indexOf("!"));
+		
+		if(msg.length >=2 && (msg[1].startsWith("KICK") || msg[1].startsWith("PART") || msg[1].startsWith("QUIT") ))
+		{
+			game.receiveMessage(in);
+			return;
+		}
+		else if(msg.length >=2 && msg[1].startsWith("NICK"))
+		{
+			game.receiveMessage(in);
+			return;
+		}
+		
 		if (msg.length >= 2 && !msg[1].equals("PRIVMSG"))
 			return;
 		if (msg.length >= 4 && msg[2].equals(botName) && msg[3].startsWith(":~"))
