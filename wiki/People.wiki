@@ -1,9 +1,9 @@
-#summary List of contributors
+#summary Members of the Programming Mafia
 #labels Featured
 
-  * Miorel Palii
-  * Mauricio Bell'Albero
-  * Rodrigo Salazar
-  * Joe Thuemler
-  * Walter Cornnell
+  * [MauricioBellAlbero Mauricio Bell'Albero]
   * TJ Boyd
+  * [WalterCornnell Walter Cornnell]
+  * [MiorelPalii Miorel Palii]
+  * [RodrigoSalazar Rodrigo Salazar]
+  * [JosephThuemler Joe Thuemler]
