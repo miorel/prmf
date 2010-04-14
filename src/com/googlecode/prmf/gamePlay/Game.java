@@ -1,6 +1,7 @@
-package com.googlecode.prmf;
+package com.googlecode.prmf.gamePlay;
 
-import com.googlecode.prmf.starter.IOThread;
+import com.googlecode.prmf.connection.IOThread;
+
 import java.util.LinkedList;
 
 public class Game{

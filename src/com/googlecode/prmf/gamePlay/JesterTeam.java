@@ -1,4 +1,4 @@
-package com.googlecode.prmf;
+package com.googlecode.prmf.gamePlay;
 import java.util.LinkedList;
 import java.util.List;
 

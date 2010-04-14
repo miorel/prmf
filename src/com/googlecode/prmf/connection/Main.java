@@ -1,4 +1,4 @@
-package com.googlecode.prmf.starter;
+package com.googlecode.prmf.connection;
 
 public class Main {
 	public static void main(String[] arg) {

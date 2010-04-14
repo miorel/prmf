@@ -1,9 +1,9 @@
-package com.googlecode.prmf.starter;
+package com.googlecode.prmf.connection;
 import java.io.File;
 import java.util.Scanner;
 
-import com.googlecode.prmf.Game;
-import com.googlecode.prmf.Player;
+import com.googlecode.prmf.gamePlay.Game;
+import com.googlecode.prmf.gamePlay.Player;
 
 public class MafiaListener implements Listener {
 	private Game game;

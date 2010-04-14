@@ -14,14 +14,16 @@
         <mkdir dir="dist"/>
         <jar destfile="dist/MafiaBot.jar" basedir="bin">
             <manifest>
-                <attribute name="Main-Class" value="com.googlecode.prmf.starter.Main"/>
+                <attribute name="Main-Class" value="com.googlecode.prmf.connection.Main"/>
             </manifest>
         </jar>
     </target>
 
     <target name="run" depends="jar">
-        <copy file="src/com/googlecode/prmf/starter/settings.txt" tofile="settings.txt"/>
-        <copy file="src/com/googlecode/prmf/starter/settings.txt" tofile="dist/settings.txt"/>
+        <copy file="src/com/googlecode/prmf/connection/profiles.txt" tofile="profiles.txt"/>
+        <copy file="src/com/googlecode/prmf/connection/profiles.txt" tofile="dist/profiles.txt"/>
+        <copy file="src/com/googlecode/prmf/connection/settings.txt" tofile="settings.txt"/>
+        <copy file="src/com/googlecode/prmf/connection/settings.txt" tofile="dist/settings.txt"/>
         <java jar="dist/MafiaBot.jar" fork="true"/>
     </target>
 

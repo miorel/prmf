@@ -1,11 +1,11 @@
-package com.googlecode.prmf;
+package com.googlecode.prmf.gamePlay;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.googlecode.prmf.starter.IOThread;
+import com.googlecode.prmf.connection.IOThread;
 
 public class Pregame implements MafiaGameState {
 	static private MafiaTeam mafiaTeam = new MafiaTeam();
