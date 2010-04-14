@@ -2,39 +2,34 @@ package com.googlecode.prmf.gamePlay;
 
 class Citizen extends Role {
 	final private Town team;
-	final private String name;
 
 	public Citizen(Town nteam) {
-		name = "citizen";
+		setName("citizen");
 		team = nteam;
-		super.setNightAction(true);
+		setNightAction(true);
 	}
 	
+	@Override
 	public void resetNightAction()
 	{
-		
+		setNightAction(true);
 	}
 
 	public void nightAction(Player target) {
 	}
 	
+	@Override
 	public boolean hasNightAction()
 	{
 		return false;
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
+	@Override
 	public Town getTeam() {
 		return this.team;
 	}
-
-	public Player getTarget() {
-		return super.getTarget();
-	}
 	
+	@Override
 	public String description()
 	{
 		StringBuilder toReturn = new StringBuilder();

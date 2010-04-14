@@ -56,6 +56,11 @@ public abstract class Role {
 	boolean checkNightAction(String message) {
 		return true;
 	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
 	public abstract String description();
 
