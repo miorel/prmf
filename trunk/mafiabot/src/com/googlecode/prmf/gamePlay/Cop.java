@@ -2,31 +2,28 @@ package com.googlecode.prmf.gamePlay;
 
 class Cop extends Role {
 	final private Town team;
-	final private String name;
 
 	public Cop(Town nteam) {
-		name = "cop";
+		setName("cop");
 		team = nteam;
 	}
 
 	public void nightAction(Player target) {
-		System.out.println("i chek u");
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
+	@Override
 	public Town getTeam() {
 		return this.team;
 	}
 	
+	@Override
 	public String resolveNightAction() {
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append(getTarget()).append(" is a ").append(getTarget().getRole().getName());
 		return toReturn.toString();
 	}
 
+	@Override
 	public String description() {
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("You are a ").append(getName()).append("! ");

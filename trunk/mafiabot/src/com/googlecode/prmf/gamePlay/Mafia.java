@@ -2,29 +2,22 @@ package com.googlecode.prmf.gamePlay;
 
 class Mafia extends Role {
 	private MafiaTeam team;
-	final private String name;
 
 	public Mafia(MafiaTeam nteam) {
-		name = "mafia";
+		setName("mafia");
 		team = nteam;
-		super.setTarget(null);
-		super.setNightAction(false);
+		setTarget(null);
+		setNightAction(false);
 	}
 	
 	@Override
 	public boolean nightAction(String message, Player[] players)
 	{
 		boolean temp = super.nightAction(message, players);
-		
 		temp = temp && getTeam().agreeOnTarget();
 		if(temp)
 			setNightAction(true);
 		return temp;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
 	}
 
 	@Override

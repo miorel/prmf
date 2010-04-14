@@ -2,26 +2,22 @@ package com.googlecode.prmf.gamePlay;
 
 class Doctor extends Role {
 	final private Town team;
-	final private String name;
 
 	public Doctor(Town nteam) {
-		name = "doctor";
+		setName("doctor");
 		team = nteam;
 	}
 
 	public void nightAction(Player target) {
 		setNightAction(true);
-		System.out.println("i save u");
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
+	@Override
 	public Town getTeam() {
 		return this.team;
 	}
 	
+	@Override
 	public String resolveNightAction()
 	{
 		StringBuilder toReturn = new StringBuilder();
@@ -29,6 +25,7 @@ class Doctor extends Role {
 		return toReturn.toString();
 	}
 
+	@Override
 	public String description()
 	{
 		StringBuilder toReturn = new StringBuilder();
