@@ -126,6 +126,7 @@ public class Pregame implements MafiaGameState {
     //TODO: why is this receiving an IO thread? one was given in the constructor
 	private void startGame(Game game, IOThread inputThread)
 	{	
+		game.setProgress(true);
 		if(!profileLoaded)
 		{
 			defaultStart(game,inputThread);
@@ -219,6 +220,7 @@ public class Pregame implements MafiaGameState {
 			}
 		}
 	}
+	
 	public Player[] getPlayerArray() // it's a player array now, hope you're happy ;p
 	{
 		return players.toArray(new Player[0]);
