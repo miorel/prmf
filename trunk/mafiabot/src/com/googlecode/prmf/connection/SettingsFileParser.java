@@ -1,4 +1,4 @@
-package com.googlecode.prmf.starter;
+package com.googlecode.prmf.connection;
 
 import java.io.File;
 import java.io.FileNotFoundException;

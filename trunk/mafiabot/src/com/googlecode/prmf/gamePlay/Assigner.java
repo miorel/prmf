@@ -1,4 +1,4 @@
-package com.googlecode.prmf;
+package com.googlecode.prmf.gamePlay;
 
 public interface Assigner {
 	public Team getTeam();

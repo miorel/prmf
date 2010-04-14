@@ -1,6 +1,6 @@
-package com.googlecode.prmf;
+package com.googlecode.prmf.gamePlay;
 
-import com.googlecode.prmf.starter.IOThread;
+import com.googlecode.prmf.connection.IOThread;
 
 //TODO: I'm thinking this class needs to be totally redone... the player object should probably track its own votes
 //and it can report back to this when status updates are needed, or something like that

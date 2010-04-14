@@ -1,4 +1,4 @@
-package com.googlecode.prmf;
+package com.googlecode.prmf.gamePlay;
 
 class Citizen extends Role {
 	final private Town team;

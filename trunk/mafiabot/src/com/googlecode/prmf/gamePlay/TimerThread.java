@@ -1,6 +1,6 @@
-package com.googlecode.prmf;
+package com.googlecode.prmf.gamePlay;
 
-import com.googlecode.prmf.starter.IOThread;
+import com.googlecode.prmf.connection.IOThread;
 
 /**
  * This class 'should' create a thread that will sleep for some time,
