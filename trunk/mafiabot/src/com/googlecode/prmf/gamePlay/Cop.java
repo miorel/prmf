@@ -8,9 +8,6 @@ class Cop extends Role {
 		team = nteam;
 	}
 
-	public void nightAction(Player target) {
-	}
-
 	@Override
 	public Town getTeam() {
 		return this.team;

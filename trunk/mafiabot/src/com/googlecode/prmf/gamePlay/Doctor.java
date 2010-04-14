@@ -8,10 +8,6 @@ class Doctor extends Role {
 		team = nteam;
 	}
 
-	public void nightAction(Player target) {
-		setNightAction(true);
-	}
-
 	@Override
 	public Town getTeam() {
 		return this.team;

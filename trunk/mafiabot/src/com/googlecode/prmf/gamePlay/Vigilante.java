@@ -1,37 +1,24 @@
 package com.googlecode.prmf.gamePlay;
 
 class Vigilante extends Role {
-	private Team team;
-	private String name;
-	private Player target;
+	private final Town team;
 
-	public Vigilante(Team nteam) {
-		name = "vigilante";
+	public Vigilante(Town nteam) {
+		setName("vigilante");
 		team = nteam;
 	}
 
-	public void nightAction(Player target) {
-		this.target = target;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public Team getTeam() {
+	@Override
+	public Town getTeam() {
 		return this.team;
 	}
-
-	public Player getTarget() {
-		return this.target;
-	}
-
 	
+	@Override
 	public String description()
 	{
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("You are a ").append(getName()).append("! ");
-		toReturn.append("As a ").append(getName()).append(", you have the ability to kill a player that you suspect is mafia. Bear in mind you can only do this once, so choose wisely. You win when all threats to the town are eliminated.");
+		toReturn.append("As a ").append(getName()).append(", you have the ability to kill a player at night. Bear in mind you can only do this once, so choose wisely. You win when all threats to the town are eliminated.");
 		return toReturn.toString();
 	}
 }

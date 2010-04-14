@@ -91,7 +91,8 @@ public class VoteTracker {
 			action = new NoLynchAction(voter);
 		}
 		
-		action.handle();
+		if (action != null)
+			action.handle();
 		status(inputThread);
 		return checkMajority();
 	}

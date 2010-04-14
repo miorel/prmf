@@ -1,25 +1,22 @@
 package com.googlecode.prmf.gamePlay;
 
 class Jester extends Role {
-	final private Team team;
-	final private String name;
+	final private JesterTeam team;
 
-	public Jester(Team nteam) {
-		name = "jester";
+	public Jester(JesterTeam nteam) {
+		setName("jester");
 		team = nteam;
 	}
 
 	public void nightAction(Player target) {
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
-	public Team getTeam() {
+	@Override
+	public JesterTeam getTeam() {
 		return this.team;
 	}
 
+	@Override
 	public String description()
 	{
 		StringBuilder toReturn = new StringBuilder();

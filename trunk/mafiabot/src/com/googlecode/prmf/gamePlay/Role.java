@@ -1,5 +1,7 @@
 package com.googlecode.prmf.gamePlay;
 
+import com.googlecode.prmf.connection.IOThread;
+
 public abstract class Role {
 	private Team team;
 	private String name;
