@@ -1,0 +1,6 @@
+#summary Main page of the "corleone" project
+#labels Projects
+
+*corleone* is an IRC bot that moderates mafia games. It is named after the surname of the title character in [http://en.wikipedia.org/wiki/The_Godfather The Godfather], which in turn was adopted from the name of the Sicilian town [http://en.wikipedia.org/wiki/Corleone Corleone].
+
+Coded in Java, this project is rather buggy but for the most part working!

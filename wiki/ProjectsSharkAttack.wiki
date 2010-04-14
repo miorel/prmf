@@ -1,0 +1,6 @@
+#summary Main page of the "SHARK ATTACK" project
+#labels Projects
+
+*SHARK ATTACK* will be a battle game featuring characters based on members/friends of the UF Programming Team.
+
+The project is currently in the brainstorming stage.

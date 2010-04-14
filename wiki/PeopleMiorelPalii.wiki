@@ -1,4 +1,5 @@
 #summary People page for Miorel Palii
+#labels People
 
 || *Real name* || Miorel-Lucian Palii ||
 || *Goes by* || Miorel ||

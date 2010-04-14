@@ -1,4 +1,5 @@
 #summary People page for Rodrigo Salazar
+#labels People
 
 || *Real name* || Rodrigo Salazar ||
 || *Goes by* || Rodrigo ||

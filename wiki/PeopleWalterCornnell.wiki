@@ -1,4 +1,5 @@
 #summary People page for Walter Cornnell
+#labels People
 
 || *Real name* || Walter Cornnell ||
 || *Goes by* || Walter ||

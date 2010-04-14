@@ -1,4 +1,5 @@
 #summary People page for Mauricio Bell'Albero
+#labels People
 
 || *Real name* || Mauricio Bell'Albero ||
 || *Goes by* || Mauricio ||

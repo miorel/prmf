@@ -1,9 +1,9 @@
 #summary Members of the Programming Mafia
-#labels Featured
+#labels Featured People
 
-  * [MauricioBellAlbero Mauricio Bell'Albero]
+  * [PeopleMauricioBellAlbero Mauricio Bell'Albero]
   * TJ Boyd
-  * [WalterCornnell Walter Cornnell]
-  * [MiorelPalii Miorel Palii]
-  * [RodrigoSalazar Rodrigo Salazar]
-  * [JosephThuemler Joe Thuemler]
+  * [PeopleWalterCornnell Walter Cornnell]
+  * [PeopleMiorelPalii Miorel Palii]
+  * [PeopleRodrigoSalazar Rodrigo Salazar]
+  * [PeopleJosephThuemler Joe Thuemler]

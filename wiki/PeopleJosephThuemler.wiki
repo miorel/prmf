@@ -1,4 +1,5 @@
 #summary People page for Joseph Thuemler
+#labels People
 
 || *Real name* || Joseph Thuemler ||
 || *Goes by* || Joe ||

@@ -2,12 +2,12 @@
 #labels Featured,Phase-Deploy
 
 = The Basics =
-Packaged with all of the source code is lovely file entitled "build.xml"; it is the one that will be doing all of the hard work for you. 
+Packaged with all of the source code is a lovely file entitled "build.xml"; it is the one that will be doing all of the hard work for you. 
 
 Assuming you are on the CISE computers, you should already have Ant installed. 
 
-In the Terminal, navigate to the directory in which the bot files are stored.
-(If you used the default workspace directory in eclipse this should just be:<br>
+In the terminal, navigate to the directory in which the bot files are stored.
+(If you used the default workspace directory in Eclipse this should just be:<br>
 /YOUR HOME FOLDER/workspace/mafiabot/
 
 From here type "*ant run*". This will compile all of the source code, create the jar, and then execute it. Congratulations, you are finished! (Unless you want...*Fancier Stuff*)

@@ -31,7 +31,7 @@ public class Main
 
 Should be noted that the 'main thread' will end once it reaches end of block but the ML thread will still be running.
 
-To stop a thread we must use the interrupt() method. The interrupt method sends a flag to the thread telling it that it has been signaled to stop. note that it will not stop unless the thread is actively checking for interrupts.
+To stop a thread we can use the `interrupt()` method. This method sets a flag in the thread telling it that it has been signaled to stop. note that it will not stop unless the thread is actively checking for interrupts.
 
 We will use both methods of threading here to show interrupts, its also used in the TimerThread class in mafiabot.
 
@@ -50,7 +50,7 @@ public class Worker extends Thread
   public void run()
   {
      //will continue to do this loop till someone interrupts it
-     while( !this.isInterrupted() )
+     while( !Thread.interrupted() )
      {}
   }
 }
