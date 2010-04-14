@@ -52,7 +52,9 @@ public class Day implements MafiaGameState {
 		// TODO actually, it would be better to use enums
 		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
 		if (ret)
+		{
 			game.setState(new Night(players, inputThread));
+		}
 		return ret;
 	}
         
