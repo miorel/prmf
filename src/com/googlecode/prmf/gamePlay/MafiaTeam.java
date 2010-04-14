@@ -1,17 +1,17 @@
 package com.googlecode.prmf.gamePlay;
 
 class MafiaTeam extends Team {
-	// private String name;
 
 	public MafiaTeam() {
-		// name = "MafiaTeam";
-		// super.createList();
+		setName("MafiaTeam");
 	}
 
+	@Override
 	public String getName() {
 		return "MafiaTeam";
 	}
 	
+	@Override
 	public boolean hasWon(Player[] players)
 	{
 		//itt we check for victory
@@ -46,10 +46,6 @@ class MafiaTeam extends Team {
 			if(p.isAlive())
 			toReturn.append(p + " ");
 		return toReturn.toString();
-	}
-	
-	public boolean contains(Player player) {
-		return getList().contains(player);
 	}
 	
 	public boolean agreeOnTarget()

@@ -87,31 +87,35 @@ public class Game{
 	
 	public void setState(MafiaGameState state)
 	{
-		this.state = state;
-		if(state instanceof Day)
-		{
-			for(int i=0;i<getPlayerList().length;++i)
-			{
-				if(players[i].isAlive())
-				inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+players[i].getName());
-			}
-		}
-		else if(state instanceof Night)
-		{
-			for(int i=0;i<getPlayerList().length;++i)
-			{
-				inputThread.sendMessage("MODE",inputThread.getChannel(), "-v "+players[i].getName());
-			}
-
-		}
 		if(isOver())
 		{
+			state = new Postgame(inputThread);
 			for(int i=0;i<getPlayerList().length;++i)
 			{
 				inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+players[i].getName());
 			}
 			inputThread.sendMessage("MODE",inputThread.getChannel(), "-m");
 		}
+		else
+		{
+			if(state instanceof Day)
+			{
+				for(int i=0;i<getPlayerList().length;++i)
+				{
+					if(players[i].isAlive())
+					inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+players[i].getName());
+				}
+			}
+			else if(state instanceof Night)
+			{
+				for(int i=0;i<getPlayerList().length;++i)
+				{
+					inputThread.sendMessage("MODE",inputThread.getChannel(), "-v "+players[i].getName());
+				}
+	
+			}
+		}
+		this.state = state;
 		this.state.status();	
 	}
 	

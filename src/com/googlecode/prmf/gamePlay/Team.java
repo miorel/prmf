@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Team {
-//	private String name;
 	private List<Player> list;
+	private String name;
 	
 	public Team() {
 		list = new LinkedList<Player>();
@@ -18,6 +18,16 @@ public abstract class Team {
 		//TODO functionality
 		return false;
 	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
 	
 	public void addPlayer(Player p) {
@@ -26,20 +36,12 @@ public abstract class Team {
 	
 
 	public boolean contains(Player player) {
-		return list.contains(player);
+		return getList().contains(player);
 	}
-
-	public abstract String getName();
 	
 	public List<Player> getList()
 	{
-		System.out.println(list);
 		return list;
 	}
-	
-	/*public void createList()
-	{
-		list = new LinkedList<Player>();
-	}*/
 	
 }
