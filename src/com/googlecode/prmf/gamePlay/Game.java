@@ -81,28 +81,27 @@ public class Game{
 		{
 			for(int i=0;i<players.length;++i)
 			{
-				inputThread.sendMessage(inputThread.getChannel(), "/mode +v "+players[i].getName());
+				if(players[i].isAlive())
+				inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+players[i].getName());
 			}
-			inputThread.sendMessage(inputThread.getChannel(), "/mode -m");
 		}
 		else if(state instanceof Night)
 		{
 			for(int i=0;i<players.length;++i)
 			{
-				inputThread.sendMessage(inputThread.getChannel(), "/mode -v "+players[i].getName());
+				inputThread.sendMessage("MODE",inputThread.getChannel(), "-v "+players[i].getName());
 			}
-			inputThread.sendMessage(inputThread.getChannel(), "/mode +m");
-		}
-		else if(state instanceof Postgame)
-		{
-			for(int i=0;i<players.length;++i)
-			{
-				inputThread.sendMessage(inputThread.getChannel(), "/mode +v "+players[i].getName());
-			}
-			inputThread.sendMessage(inputThread.getChannel(), "/mode -m");
+
 		}
 		if(isOver())
+		{
 			this.state = new Postgame(inputThread);
+			for(int i=0;i<players.length;++i)
+			{
+				inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+players[i].getName());
+			}
+			inputThread.sendMessage("MODE",inputThread.getChannel(), "-m");
+		}
 		this.state.status();	
 	}
 	
