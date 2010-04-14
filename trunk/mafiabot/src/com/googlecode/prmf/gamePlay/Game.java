@@ -13,6 +13,7 @@ public class Game{
 	
 	private Pregame pregame;
 	private Postgame postgame;
+	private boolean inProgress;
 	
 	public Game(String gameStarter, IOThread inputThread)	{
 		this.gameStarter = gameStarter;
@@ -20,8 +21,18 @@ public class Game{
 		pregame = new Pregame(gameStarter, inputThread);
 		state = getPregame();
 		timerThread = new TimerThread(inputThread);
+		setProgress(false);
 	}
-
+	
+	public void setProgress(boolean set)
+	{
+		this.inProgress = set;
+	}
+	
+	public boolean isInProgress()
+	{
+		return inProgress;
+	}
 
 	public void receiveMessage(String line)
 	{
@@ -79,7 +90,7 @@ public class Game{
 		this.state = state;
 		if(state instanceof Day)
 		{
-			for(int i=0;i<players.length;++i)
+			for(int i=0;i<getPlayerList().length;++i)
 			{
 				if(players[i].isAlive())
 				inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+players[i].getName());
@@ -87,7 +98,7 @@ public class Game{
 		}
 		else if(state instanceof Night)
 		{
-			for(int i=0;i<players.length;++i)
+			for(int i=0;i<getPlayerList().length;++i)
 			{
 				inputThread.sendMessage("MODE",inputThread.getChannel(), "-v "+players[i].getName());
 			}
@@ -95,8 +106,7 @@ public class Game{
 		}
 		if(isOver())
 		{
-			this.state = new Postgame(inputThread);
-			for(int i=0;i<players.length;++i)
+			for(int i=0;i<getPlayerList().length;++i)
 			{
 				inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+players[i].getName());
 			}
@@ -107,9 +117,13 @@ public class Game{
 	
 	public Player[] getPlayerList()
 	{
-		if(players == null)
-			players = getPregame().getPlayerArray();
-		return players;
+		if(isInProgress())
+		{
+			if (players == null)
+				players = getPregame().getPlayerArray();
+			return players;
+		}	
+		return getPregame().getPlayerArray();
 	}
 	public void startTimer()
 	{
