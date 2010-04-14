@@ -20,7 +20,7 @@ public class MafiaListener implements Listener {
 		if(msg[0].indexOf("!") > 1)
 			user = msg[0].substring(1,msg[0].indexOf("!"));
 		
-		if(msg.length >=2 && (msg[1].startsWith("KICK") || msg[1].startsWith("PART") || msg[1].startsWith("QUIT") ))
+		if(msg.length >=2 && game != null && (msg[1].startsWith("KICK") || msg[1].startsWith("PART") || msg[1].startsWith("QUIT") ))
 		{
 			game.receiveMessage(in);
 			return;
