@@ -129,7 +129,7 @@ public class Pregame implements MafiaGameState {
 		game.setProgress(true);
 		if(!profileLoaded)
 		{
-			defaultStart(game,inputThread);
+			defaultStart(inputThread);
 			return;
 		}
 		
@@ -145,7 +145,7 @@ public class Pregame implements MafiaGameState {
 		}
 	}
 	
-	private void defaultStart(Game game,IOThread inputThread)
+	private void defaultStart(IOThread inputThread)
 	{
 		int numMafia = (int)Math.ceil(players.size()/4.0);
 

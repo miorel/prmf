@@ -15,6 +15,7 @@ public class Player {
 		votedFor = -1;
 	}
 	
+	@Override
 	public boolean equals(Object obj) {
 		boolean ret = false;
 		if(obj instanceof Player) {
@@ -44,10 +45,12 @@ public class Player {
 		this.role = role;
 	}
 
+	@Override
 	public int hashCode() {
 		return name.hashCode();
 	}
-
+	
+	@Override
 	public String toString() {
 		return name;
 	}

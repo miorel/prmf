@@ -49,8 +49,11 @@ public class Night implements MafiaGameState
 		
 		if (speaking.getRole().hasNightAction())
 		{
-			speaking.getRole().nightAction(action + " " + target, players);
-			inputThread.sendMessage(inputThread.getChannel(), "oh god you did a night action~");
+			boolean result = speaking.getRole().nightAction(action + " " + target, players);
+			if (result)
+				inputThread.sendMessage(speaking.toString(), "You successfully targetted " + target);
+			else
+				inputThread.sendMessage(speaking.toString(), "Your night action did not resolve");
 		}
 		boolean isOver = isNightOver();
 		if (isOver)
