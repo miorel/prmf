@@ -25,7 +25,7 @@ public class MafiaListener implements Listener {
 			game.receiveMessage(in);
 			return;
 		}
-		else if(msg.length >=2 && msg[1].startsWith("NICK"))
+		else if(game != null && msg.length >=2 && msg[1].startsWith("NICK"))
 		{
 			game.receiveMessage(in);
 			return;
@@ -75,6 +75,7 @@ public class MafiaListener implements Listener {
 			}
 			else
 			game.receiveMessage(in);
+			inputThread.sendMessage("MODE",inputThread.getChannel(), "+m");
 		}
 		else if(msg.length >= 4 && msg[3].startsWith(":~lynch") && game != null)
 		{

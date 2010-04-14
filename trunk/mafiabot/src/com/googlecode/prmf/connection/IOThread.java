@@ -71,6 +71,12 @@ public class IOThread extends Thread {
 		System.out.println(">>>> " + "PRIVMSG "+destination+" :"+message);
 	}
 	
+	public void sendMessage(String command, String destination, String message)
+	{
+		printStream.println(command+" "+destination+" "+message);
+		System.out.println(">>>> " + command+" "+destination+" "+message);
+	}
+	
 	public void sendPONG(String[] msg)
 	{
 		msg[0] = "PONG";
