@@ -1,17 +1,12 @@
 package com.googlecode.prmf.gamePlay;
 
 class Town extends Team{
-//	private String name;
-	 
+
 	public Town() {
-		// name = "Town";
-		// super.createList();
+		setName("Town");
 	}
 
-	public String getName() {
-		return "Town";
-	}
-	
+	@Override
 	public boolean hasWon(Player[] players) {
 		boolean result = true;
 		for(Player p: players) {
@@ -23,9 +18,5 @@ class Town extends Team{
 		}
 		return result;
 
-	}
-
-	public boolean contains(Player player) {
-		return getList().contains(player);
 	}
 }
