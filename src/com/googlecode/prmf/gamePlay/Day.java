@@ -29,24 +29,24 @@ public class Day implements MafiaGameState {
 		}
 		
 		int returnCode;
-		if((returnCode = parseMessage(line, speaker, inputThread)) >= 0) {
-			inputThread.sendMessage(inputThread.getChannel(), players[returnCode] + " was lynched :(");
+		if((returnCode = parseMessage(line, speaker, inputOutputThread)) >= 0) {
+			inputOutputThread.sendMessage(inputOutputThread.getChannel(), players[returnCode] + " was lynched :(");
 			players[returnCode].setAlive(false);
 			ret = true;
 		}
 		else if(returnCode == -2) {
-			inputThread.sendMessage(inputThread.getChannel(), "The majority has voted for no lynching today!");
+			inputOutputThread.sendMessage(inputOutputThread.getChannel(), "The majority has voted for no lynching today!");
 			ret = true;
 		}
 		else if(returnCode == -1) {
 			ret = false;
 		}
 		else if(returnCode == -3) {
-			inputThread.sendMessage(inputThread.getChannel(), "What?");
+			inputOutputThread.sendMessage(inputOutputThread.getChannel(), "What?");
 			ret = false;
 		}
 		else if(returnCode == -4) {
-			inputThread.sendMessage(inputThread.getChannel(), speaker + " has been removed from the game!");
+			inputOutputThread.sendMessage(inputOutputThread.getChannel(), speaker + " has been removed from the game!");
 		}
 		// Must handle all cases of parseMessage return such as -3,-2,-1, >=0
 
@@ -54,7 +54,11 @@ public class Day implements MafiaGameState {
 		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
 		if (ret)
 		{
-			game.setState(new Night(players, inputThread));
+			game.setState(new Night(players, inputOutputThread));
+			for(Player p : game.getPlayerList())
+			{
+				inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "-v "+p.getName());
+			}
 		}
 		return ret;
 	}
@@ -189,7 +193,6 @@ public class Day implements MafiaGameState {
     	public void handle() {
     		tracker.newVote(voter, voted, inputOutputThread);
     	}
-
     }
 	private void changeNick(String oldNick , String newNick)
 	{

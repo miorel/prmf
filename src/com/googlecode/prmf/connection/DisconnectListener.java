@@ -15,4 +15,9 @@ public class DisconnectListener implements Listener{
 				System.out.println("Oops. (DisconnectListener)");
 			}
 	}
+	
+	public void timerMessage()
+	{
+		
+	}
 }

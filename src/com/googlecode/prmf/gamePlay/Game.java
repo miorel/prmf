@@ -66,6 +66,11 @@ public class Game{
 		}
 		return result;
 	}
+	
+	public IOThread getIOThread()
+	{
+		return inputThread;
+	}
 
 	public String getGameStarter() {
 		return gameStarter;
@@ -95,25 +100,6 @@ public class Game{
 				inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+players[i].getName());
 			}
 			inputThread.sendMessage("MODE",inputThread.getChannel(), "-m");
-		}
-		else
-		{
-			if(state instanceof Day)
-			{
-				for(int i=0;i<getPlayerList().length;++i)
-				{
-					if(players[i].isAlive())
-					inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+players[i].getName());
-				}
-			}
-			else if(state instanceof Night)
-			{
-				for(int i=0;i<getPlayerList().length;++i)
-				{
-					inputThread.sendMessage("MODE",inputThread.getChannel(), "-v "+players[i].getName());
-				}
-	
-			}
 		}
 		this.state = state;
 		this.state.status();	

@@ -9,4 +9,9 @@ public class PingListener implements Listener {
 		}
 
 	}
+	
+	public void timerMessage()
+	{
+		
+	}
 }

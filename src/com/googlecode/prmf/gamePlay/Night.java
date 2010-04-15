@@ -60,6 +60,11 @@ public class Night implements MafiaGameState
 		{
 			resolveNightActions();
 			cleanUp();
+			for(Player p : game.getPlayerList())
+			{
+				if(p.isAlive())
+					inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+p.getName());
+			}
 			game.setState(new Day(players, inputThread));
 		}
 		return isOver;

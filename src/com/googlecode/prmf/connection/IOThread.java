@@ -56,8 +56,7 @@ public class IOThread extends Thread {
 		for(Listener l : list)
 			if(l instanceof MafiaListener)
 			{
-				// TODO if you find yourself needing a cast chances are you're doing something wrong
-				((MafiaListener)l).timerMessage();
+				l.timerMessage();
 				break;
 			}
 	}

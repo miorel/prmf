@@ -37,6 +37,8 @@ public class MafiaListener implements Listener {
 			game.receiveMessage(in);
 		if(msg.length >= 4)
 			msg[3] = msg[3].toLowerCase();
+		//TODO: consider changing this to just pass any message that starts with a tilde
+		//then the current game state can handle it or ignore it
 		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && (game == null || game.getPostgame() != null)) 
 		{
 			game = new Game(user, inputThread);
@@ -67,6 +69,8 @@ public class MafiaListener implements Listener {
 		{
 			game.receiveMessage(in);
 		}
+		
+		//TODO: why does game not handle all of this? just pass the message IMO
 		else if(msg.length >= 4 && msg[3].equals(":~start") && game != null)
 		{
 			if(game.getPlayerList().length < 3)
@@ -74,8 +78,10 @@ public class MafiaListener implements Listener {
 				inputThread.sendMessage(inputThread.getChannel(), "Game should have at least 3 people!");
 			}
 			else
-			game.receiveMessage(in);
-			inputThread.sendMessage("MODE",inputThread.getChannel(), "+m");
+			{
+				game.receiveMessage(in);
+				inputThread.sendMessage("MODE",inputThread.getChannel(), "+m");
+			}
 		}
 		else if(msg.length >= 4 && msg[3].startsWith(":~lynch") && game != null)
 		{
