@@ -8,15 +8,15 @@ import java.util.List;
 import com.googlecode.prmf.connection.IOThread;
 
 public class Pregame implements MafiaGameState {
-	static private MafiaTeam mafiaTeam = new MafiaTeam();
-	static private Town town = new Town();
+	private MafiaTeam mafiaTeam;
+	private Town town;
 	private String startName;
 	private boolean profileLoaded;
 	private List<Player> players;
 	private List<Role> townRoles;
 	private List<Role> mafiaRoles;
 	private List<Role> roles;
-	IOThread inputThread; // TODO why is this not private?
+	private IOThread inputThread;
 	private boolean dayStart;
 
 	public Pregame(String startName, IOThread inputThread) {
@@ -28,6 +28,8 @@ public class Pregame implements MafiaGameState {
 		dayStart = true;
 		this.inputThread = inputThread;
 		profileLoaded = false;
+		mafiaTeam = new MafiaTeam();
+		town = new Town();
 	}
 
     //TODO: why is this receiving an IO thread? one was given in the constructor
@@ -60,56 +62,30 @@ public class Pregame implements MafiaGameState {
 				return false;
 			}
 			
-			Player temp = new Player(user);
-			int index = players.indexOf(temp);
-			
-			String destination = msg[2];
 			String command = msg[3].toLowerCase();
 			
-
+			Action action = null;
 			
+			//TODO: handle with Class.forName(), although I'm not sure how case sensitivity will work with that? =\
+			//then we can catch class not found exceptions with a message telling user to see ~help or something
 			if(command.equalsIgnoreCase(":~start"))
 			{
-				if(user.equals(startName))		
-				{
-					inputThread.sendMessage(destination, "The game has begun!");
-					startGame(game, inputThread);
-					ret = true;
-				}
-				else
-					inputThread.sendMessage(destination,  "Only " + startName + " can start the game!");
+				ret = true;
+				action = new StartAction(user, game);
 			}	
 			if(command.equalsIgnoreCase(":~join"))
 			{
-				System.out.println(index);
-				if(index == -1)
-				{
-					players.add(new Player(user));
-					inputThread.sendMessage(destination,  user + " has joined the game!");
-				}
-				else
-					inputThread.sendMessage(destination,  user + " has already joined the game!");
+				action = new JoinAction(user, game);
 			}
 			
 			if(command.equalsIgnoreCase(":~quit"))
 			{
-				System.out.println(index);
-				if(index == -1)
-					inputThread.sendMessage(destination, user + " is not part of the game!");
-				else
-				{
-					players.remove(index);
-					inputThread.sendMessage(destination,  user + " has quit the game!");
-				}
+				action = new QuitAction(user, game);
 				
 			}	
-			if (ret)
-			{
-				if (dayStart)
-					game.setState(new Day(getPlayerArray(), inputThread));
-				else
-					game.setState(new Night(getPlayerArray(), inputThread));
-			}
+			
+			if (action != null)
+				action.handle();
 			return ret;
 	}	
 	private void changeNick(String oldNick , String newNick)
@@ -253,12 +229,97 @@ public class Pregame implements MafiaGameState {
 			playersIn.append(p);
 		}
 		inputThread.sendMessage(inputThread.getChannel(), playersIn.toString());
+		inputThread.sendMessage(inputThread.getChannel(), (dayStart?"This game is currently set to day start":"This game is currently set to night start"));
+	}
+	
+	class JoinAction implements Action
+	{
+		String name;
+		Game game;
+		public JoinAction(String name, Game game)
+		{
+			this.name = name;
+			this.game = game;
+		}
 		
-		//TODO transform the following to biconditional
-		if(dayStart)
-			inputThread.sendMessage(inputThread.getChannel(), "This game is currently set to day start");
-		else
-			inputThread.sendMessage(inputThread.getChannel(), "This game is currently set to night start");
+		public void handle()
+		{
+			Player potential = new Player(name);
+			int index = players.indexOf(potential);
+			if(index == -1)
+			{
+				players.add(potential);
+				inputThread.sendMessage(game.getIOThread().getChannel(), name + " has joined the game!");
+			}
+			else
+				inputThread.sendMessage(game.getIOThread().getChannel(), name + " has already joined the game!");
+		}
+	}
+	
+	class QuitAction implements Action
+	{
+		String name;
+		Game game;
+		public QuitAction(String name, Game game)
+		{
+			this.name = name;
+			this.game = game;
+		}
+		
+		public void handle()
+		{
+			Player potential = new Player(name);
+			int index = players.indexOf(potential);
+			if(index == -1)
+				inputThread.sendMessage(game.getIOThread().getChannel(), name + " is not part of the game!");
+			else
+			{
+				players.remove(index);
+				inputThread.sendMessage(game.getIOThread().getChannel(), name + " has quit the game!");
+			}
+		}
+	}
+	
+	class StartAction implements Action
+	{
+		String name;
+		Game game;
+		public StartAction(String name, Game game)
+		{
+			this.name = name;
+			this.game = game;
+		}
+		
+		public void handle()
+		{
+			if(name.equals(startName))		
+			{
+				inputThread.sendMessage(game.getIOThread().getChannel(), "The game has begun!");
+				startGame(game, inputThread);
+				//TODO: maybe move this, and the changes at the end of the day/night, to the appropriate constructors?
+				//that way we won't have any extraneous chances after the end of the game, plus we can put it
+				//in two places only instead of 3 ^_^
+				if (dayStart)
+				{
+					for(Player p : game.getPlayerList())
+					{
+						if(p.isAlive())
+							inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+p.getName());
+					}
+					game.setState(new Day(getPlayerArray(), inputThread));
+				}
+				else
+				{
+					for(Player p : game.getPlayerList())
+					{
+						inputThread.sendMessage("MODE",inputThread.getChannel(), "-v "+p.getName());
+					}
+					game.setState(new Night(getPlayerArray(), inputThread));
+				}
+			}
+			else
+				inputThread.sendMessage(game.getIOThread().getChannel(),  "Only " + startName + " can start the game!");
+		}
 	}
 	
 	class MafiaTeamAssigner implements Assigner
