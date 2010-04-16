@@ -14,6 +14,16 @@ class Cop extends Role {
 	}
 	
 	@Override
+	public boolean checkNightAction(String message)
+	{
+		boolean result = false;
+		message = message.toLowerCase();
+		if (message.substring(2).startsWith("check"))
+			result = true;
+		return result;
+	}
+	
+	@Override
 	public String resolveNightAction() {
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append(getTarget()).append(" is a ").append(getTarget().getRole().getName());

@@ -16,24 +16,23 @@ public class Pregame implements MafiaGameState {
 	private List<Role> townRoles;
 	private List<Role> mafiaRoles;
 	private List<Role> roles;
-	private IOThread inputThread;
+	private IOThread inputOutputThread;
 	private boolean dayStart;
 
-	public Pregame(String startName, IOThread inputThread) {
+	public Pregame(String startName, IOThread inputOutputThread) {
 		this.startName = startName;
 		players = new ArrayList<Player>();
 		townRoles = new ArrayList<Role>();
 		mafiaRoles = new ArrayList<Role>();
 		roles = new ArrayList<Role>();
 		dayStart = true;
-		this.inputThread = inputThread;
+		this.inputOutputThread = inputOutputThread;
 		profileLoaded = false;
 		mafiaTeam = new MafiaTeam();
 		town = new Town();
 	}
 
-    //TODO: why is this receiving an IO thread? one was given in the constructor
-	public boolean receiveMessage(Game game, String line, IOThread inputThread)
+	public boolean receiveMessage(Game game, String line)
 	{
 			boolean ret = false;
 			String[] msg = line.split(" ", 4);
@@ -99,13 +98,13 @@ public class Pregame implements MafiaGameState {
 			}
 		}
 	}
-    //TODO: why is this receiving an IO thread? one was given in the constructor
-	private void startGame(Game game, IOThread inputThread)
+	
+	private void startGame(Game game)
 	{	
 		game.setProgress(true);
 		if(!profileLoaded)
 		{
-			defaultStart(inputThread);
+			defaultStart();
 			return;
 		}
 		
@@ -117,11 +116,11 @@ public class Pregame implements MafiaGameState {
 			p.setRole(roles.get(a));
 			p.getRole().getTeam().addPlayer(p); //this seems kinda sloppy, any better way of doing this?
 												//yes, do it from within setRole()
-			inputThread.sendMessage(players.get(a).getName(), p.getRole().description());
+			inputOutputThread.sendMessage(players.get(a).getName(), p.getRole().description());
 		}
 	}
 	
-	private void defaultStart(IOThread inputThread)
+	private void defaultStart()
 	{
 		int numMafia = (int)Math.ceil(players.size()/4.0);
 
@@ -153,7 +152,7 @@ public class Pregame implements MafiaGameState {
 		}
 		for (Player p : players)
 		{
-			inputThread.sendMessage(p.getName(), p.getRole().description());
+			inputOutputThread.sendMessage(p.getName(), p.getRole().description());
 		}
 	}
 	
@@ -215,10 +214,10 @@ public class Pregame implements MafiaGameState {
 	public void status()
 	{
     	if(players.size() >= 1)
-    		inputThread.sendMessage(inputThread.getChannel(), "The following people are registered");
+    		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "The following people are registered");
     	else
     	{
-    		inputThread.sendMessage(inputThread.getChannel(), "There is no one registered yet!");
+    		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "There is no one registered yet!");
     		return;
     	}
 		StringBuilder playersIn = new StringBuilder();
@@ -228,8 +227,8 @@ public class Pregame implements MafiaGameState {
 				playersIn.append(", ");
 			playersIn.append(p);
 		}
-		inputThread.sendMessage(inputThread.getChannel(), playersIn.toString());
-		inputThread.sendMessage(inputThread.getChannel(), (dayStart?"This game is currently set to day start":"This game is currently set to night start"));
+		inputOutputThread.sendMessage(inputOutputThread.getChannel(), playersIn.toString());
+		inputOutputThread.sendMessage(inputOutputThread.getChannel(), (dayStart?"This game is currently set to day start":"This game is currently set to night start"));
 	}
 	
 	class JoinAction implements Action
@@ -249,10 +248,10 @@ public class Pregame implements MafiaGameState {
 			if(index == -1)
 			{
 				players.add(potential);
-				inputThread.sendMessage(game.getIOThread().getChannel(), name + " has joined the game!");
+				inputOutputThread.sendMessage(game.getIOThread().getChannel(), name + " has joined the game!");
 			}
 			else
-				inputThread.sendMessage(game.getIOThread().getChannel(), name + " has already joined the game!");
+				inputOutputThread.sendMessage(game.getIOThread().getChannel(), name + " has already joined the game!");
 		}
 	}
 	
@@ -271,11 +270,11 @@ public class Pregame implements MafiaGameState {
 			Player potential = new Player(name);
 			int index = players.indexOf(potential);
 			if(index == -1)
-				inputThread.sendMessage(game.getIOThread().getChannel(), name + " is not part of the game!");
+				inputOutputThread.sendMessage(game.getIOThread().getChannel(), name + " is not part of the game!");
 			else
 			{
 				players.remove(index);
-				inputThread.sendMessage(game.getIOThread().getChannel(), name + " has quit the game!");
+				inputOutputThread.sendMessage(game.getIOThread().getChannel(), name + " has quit the game!");
 			}
 		}
 	}
@@ -294,8 +293,8 @@ public class Pregame implements MafiaGameState {
 		{
 			if(name.equals(startName))		
 			{
-				inputThread.sendMessage(game.getIOThread().getChannel(), "The game has begun!");
-				startGame(game, inputThread);
+				inputOutputThread.sendMessage(game.getIOThread().getChannel(), "The game has begun!");
+				startGame(game);
 				//TODO: maybe move this, and the changes at the end of the day/night, to the appropriate constructors?
 				//that way we won't have any extraneous chances after the end of the game, plus we can put it
 				//in two places only instead of 3 ^_^
@@ -304,21 +303,21 @@ public class Pregame implements MafiaGameState {
 					for(Player p : game.getPlayerList())
 					{
 						if(p.isAlive())
-							inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+p.getName());
+							inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "+v "+p.getName());
 					}
-					game.setState(new Day(getPlayerArray(), inputThread));
+					game.setState(new Day(getPlayerArray(), inputOutputThread));
 				}
 				else
 				{
 					for(Player p : game.getPlayerList())
 					{
-						inputThread.sendMessage("MODE",inputThread.getChannel(), "-v "+p.getName());
+						inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "-v "+p.getName());
 					}
-					game.setState(new Night(getPlayerArray(), inputThread));
+					game.setState(new Night(getPlayerArray(), inputOutputThread));
 				}
 			}
 			else
-				inputThread.sendMessage(game.getIOThread().getChannel(),  "Only " + startName + " can start the game!");
+				inputOutputThread.sendMessage(game.getIOThread().getChannel(),  "Only " + startName + " can start the game!");
 		}
 	}
 	

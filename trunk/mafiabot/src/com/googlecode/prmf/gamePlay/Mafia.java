@@ -31,7 +31,7 @@ class Mafia extends Role {
 	}
 
 	@Override
-	boolean checkNightAction(String message) {
+	public boolean checkNightAction(String message) {
 		String[] splitMessage = message.split(" ");
 		if(splitMessage.length >= 2 && splitMessage[0].equals(":~kill"))
 			return true;

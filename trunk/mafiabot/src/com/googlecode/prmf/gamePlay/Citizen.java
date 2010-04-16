@@ -14,6 +14,12 @@ class Citizen extends Role {
 	{
 		setNightAction(true);
 	}
+	
+	@Override
+	public boolean checkNightAction(String message)
+	{
+		return false;
+	}
 
 	public void nightAction(Player target) {
 	}

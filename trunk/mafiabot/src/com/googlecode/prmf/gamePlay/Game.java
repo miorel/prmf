@@ -8,19 +8,19 @@ public class Game{
 	private Player[] players;
 	private TimerThread timerThread;
 	private String gameStarter;
-	private IOThread inputThread;
+	private IOThread inputOutputThread;
 	private MafiaGameState state;
 	
 	private Pregame pregame;
 	private Postgame postgame;
 	private boolean inProgress;
 	
-	public Game(String gameStarter, IOThread inputThread)	{
+	public Game(String gameStarter, IOThread inputOutputThread)	{
 		this.gameStarter = gameStarter;
-		this.inputThread = inputThread;
-		pregame = new Pregame(gameStarter, inputThread);
+		this.inputOutputThread = inputOutputThread;
+		pregame = new Pregame(gameStarter, inputOutputThread);
 		state = getPregame();
-		timerThread = new TimerThread(inputThread);
+		timerThread = new TimerThread(inputOutputThread);
 		setProgress(false);
 	}
 	
@@ -36,12 +36,11 @@ public class Game{
 
 	public void receiveMessage(String line)
 	{
-		state.receiveMessage(this, line, inputThread);
+		state.receiveMessage(this, line);
 	}
-    //TODO: why is this receiving an IO thread? one was given in the constructor	
-	public Game(String gameStarter, IOThread inputThread, boolean dayStart, int numMafia)
+	public Game(String gameStarter, IOThread inputOutputThread, boolean dayStart, int numMafia)
 	{
-		this(gameStarter, inputThread);
+		this(gameStarter, inputOutputThread);
 	}
  
 	public boolean isOver() {
@@ -56,20 +55,20 @@ public class Game{
 			}
 		}
 		if(result){
-			postgame = new Postgame(inputThread);
+			postgame = new Postgame(inputOutputThread);
 			StringBuilder ret = new StringBuilder();
 			ret.append("Team:");
 			for(String teamName : teamsWon)
 					ret.append(" " + teamName);
 			ret.append(" has won");
-			inputThread.sendMessage(inputThread.getChannel(),ret.toString());
+			inputOutputThread.sendMessage(inputOutputThread.getChannel(),ret.toString());
 		}
 		return result;
 	}
 	
 	public IOThread getIOThread()
 	{
-		return inputThread;
+		return inputOutputThread;
 	}
 
 	public String getGameStarter() {
@@ -94,12 +93,12 @@ public class Game{
 	{
 		if(isOver())
 		{
-			state = new Postgame(inputThread);
+			state = new Postgame(inputOutputThread);
 			for(int i=0;i<getPlayerList().length;++i)
 			{
-				inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+players[i].getName());
+				inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "+v "+players[i].getName());
 			}
-			inputThread.sendMessage("MODE",inputThread.getChannel(), "-m");
+			inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "-m");
 		}
 		this.state = state;
 		this.state.status();	
@@ -117,7 +116,7 @@ public class Game{
 	}
 	public void startTimer()
 	{
-		timerThread = new TimerThread(inputThread);
+		timerThread = new TimerThread(inputOutputThread);
 		getTimerThread().getTimer().start();
 	}
 	

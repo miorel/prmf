@@ -16,8 +16,7 @@ public class Day implements MafiaGameState {
 		this.players = players;
 		this.inputOutputThread = inputThread;
 	}
-    //TODO: why is this receiving an IO thread? one was given in the constructor
-	public boolean receiveMessage(Game game, String line, IOThread inputThread) {
+	public boolean receiveMessage(Game game, String line) {
 		boolean ret = false;
 		String speaker = line.substring(1, line.indexOf("!"));
 		String[] msg = line.split(" ");
@@ -28,8 +27,8 @@ public class Day implements MafiaGameState {
 			return false;
 		}
 		
-		int returnCode;
-		if((returnCode = parseMessage(line, speaker, inputOutputThread)) >= 0) {
+		int returnCode = parseMessage(line, speaker);
+		if(returnCode >= 0) {
 			inputOutputThread.sendMessage(inputOutputThread.getChannel(), players[returnCode] + " was lynched :(");
 			players[returnCode].setAlive(false);
 			ret = true;
@@ -57,12 +56,14 @@ public class Day implements MafiaGameState {
 			game.setState(new Night(players, inputOutputThread));
 			for(Player p : game.getPlayerList())
 			{
+				//unvoice the players since NO TALKING DURING THE NIGHT
 				inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "-v "+p.getName());
 			}
 		}
 		return ret;
 	}
         
+	//get ID number of the player for syncing with votes
 	private int searchPlayers(String name) {
 		int ret = -3;
 		
@@ -75,20 +76,19 @@ public class Day implements MafiaGameState {
 		}
 		return ret;
 	}
-    //TODO: why is this receiving an IO thread? one was given in the constructor
-    private int parseMessage(String instruc, String speaker, IOThread inputThread)
+    private int parseMessage(String instruc, String speaker)
     {
     	// TODO this method looks like a perfect application of Java enums
     	int ret = -3;
 	    String[] instrucTokens = instruc.split(" ",5);
-	    String command = instrucTokens[3];
-	    String target="";
+	    String command = instrucTokens[3]; //command is "lynch" "unvote" etc
+	    String target=""; //target of lynch etc
 	    if(command.equals(":~lynch"))
 	    {
 	    	if(instrucTokens.length >= 5)
 	    		target = instrucTokens[4];
 	    	else
-	    		return -3;
+	    		return -3; //no lynch target = bad vote
 	    }
 	    int speakerId = searchPlayers(speaker);
 	    int targetId = searchPlayers(target);
@@ -102,30 +102,29 @@ public class Day implements MafiaGameState {
 	    
 	    if( command.equals(":~lynch") )
 	    {
-	    	ret = processVote(speakerId, targetId, inputThread);
+	    	ret = processVote(speakerId, targetId);
 	    }
 	    else if( command.equals(":~nolynch") )
 	    {
-	    	ret = processVote(speakerId, -2,inputThread);
+	    	ret = processVote(speakerId, -2);
 	    
 	    }
 	    else if( command.equals(":~unvote") )
 	    {
-	    	ret = processVote(speakerId, -1,inputThread);
+	    	ret = processVote(speakerId, -1);
 	    }
 	    else if( command.equals(":~quit") )
 	    {
 	    	//kill speaker
 	    	players[speakerId].setAlive(false);
-	    	tracker.status(inputThread);
+	    	tracker.status(inputOutputThread);
 	    	ret = -4;
 	    }
 	    
 	    return ret;
     }
    
-    //TODO: why is this receiving an IO thread? one was given in the constructor
-    private int processVote(int voter, int voted, IOThread inputThread)
+    private int processVote(int voter, int voted)
     {
     	/** int voted values:
     	 *  -4 , player quit command ..
@@ -139,7 +138,7 @@ public class Day implements MafiaGameState {
     		if(voted == -3)
     			return -3;
     		
-    		return tracker.newVote( voter, voted , inputThread);   
+    		return tracker.newVote( voter, voted , inputOutputThread);   
     		/**return values:   -3 , bad vote, not processed
     		 * 					-2, +1 nolynch
     		 * 					-1 , no majority
@@ -171,15 +170,6 @@ public class Day implements MafiaGameState {
     	}
     	inputOutputThread.sendMessage(inputOutputThread.getChannel(), livingPeople.toString());
     }
-
-    /*
-    public void swapState(Game game, MafiaGameState newState)
-	{
-		game.setState(newState);
-		game.isOver();
-		game.getState().status();
-	}
-	*/
     
     class LynchAction implements Action {
 

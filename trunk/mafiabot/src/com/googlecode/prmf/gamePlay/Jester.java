@@ -10,6 +10,12 @@ class Jester extends Role {
 
 	public void nightAction(Player target) {
 	}
+	
+	@Override
+	public boolean checkNightAction(String message)
+	{
+		return false;
+	}
 
 	@Override
 	public JesterTeam getTeam() {

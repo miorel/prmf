@@ -14,6 +14,16 @@ class Vigilante extends Role {
 	}
 	
 	@Override
+	public boolean checkNightAction(String message)
+	{
+		boolean result = false;
+		message = message.toLowerCase();
+		if (message.substring(2).startsWith("attack"))
+			result = true;
+		return result;
+	}
+	
+	@Override
 	public String description()
 	{
 		StringBuilder toReturn = new StringBuilder();

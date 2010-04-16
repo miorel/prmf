@@ -6,17 +6,16 @@ import com.googlecode.prmf.connection.IOThread;
 public class Night implements MafiaGameState
 {
 	private Player[] players;
-	private IOThread inputThread;
+	private IOThread inputOutputThread;
 	
-	public Night(Player[] players, IOThread inputThread)
+	public Night(Player[] players, IOThread inputOutputThread)
 	{
 		this.players = players;
-		this.inputThread = inputThread;
+		this.inputOutputThread = inputOutputThread;
 	}
 	
 //	TODO add a timer to night
-    //TODO: why is this receiving an IO thread? one was given in the constructor
-	public boolean receiveMessage(Game game, String line, IOThread inputThread)
+	public boolean receiveMessage(Game game, String line)
 	{
 		if (isNightOver())
 			return true;
@@ -49,11 +48,11 @@ public class Night implements MafiaGameState
 		
 		if (speaking.getRole().hasNightAction())
 		{
+
 			boolean result = speaking.getRole().nightAction(action + " " + target, players);
-			if (result)
-				inputThread.sendMessage(speaking.toString(), "You successfully targetted " + target);
-			else
-				inputThread.sendMessage(speaking.toString(), "Your night action did not resolve");
+			inputOutputThread.sendMessage(speaking.toString(),
+					(result?"You successfully targetted " + target:"Your night action did not resolve"));
+			
 		}
 		boolean isOver = isNightOver();
 		if (isOver)
@@ -63,20 +62,19 @@ public class Night implements MafiaGameState
 			for(Player p : game.getPlayerList())
 			{
 				if(p.isAlive())
-					inputThread.sendMessage("MODE",inputThread.getChannel(), "+v "+p.getName());
+					inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "+v "+p.getName());
 			}
-			game.setState(new Day(players, inputThread));
+			game.setState(new Day(players, inputOutputThread));
 		}
 		return isOver;
 	}
-    //TODO: why is this receiving an IO thread? one was given in the constructor
-	public void introduction(IOThread inputThread)
+	public void introduction()
 	{
 		for (Player player : players)
 		{
 			if (player.isAlive())
 			{
-				inputThread.sendMessage(player.getName(), player.getRole().description());
+				inputOutputThread.sendMessage(player.getName(), player.getRole().description());
 			}
 		}
 	}
@@ -97,18 +95,9 @@ public class Night implements MafiaGameState
 		for (Player p : players)
 		{
 			String result = p.getRole().resolveNightAction();
-			inputThread.sendMessage(p.toString(), result);
+			inputOutputThread.sendMessage(p.toString(), result);
 		}
 	}
-	
-	/*
-	public void swapState(Game game, MafiaGameState newState)
-	{
-		game.setState(newState);
-		game.isOver();
-		game.getState().status();	
-	}
-	*/
 	
 	//TODO: turn this into something Player does in endNight perhaps
 	public void resetActions()
@@ -133,7 +122,7 @@ public class Night implements MafiaGameState
 	
 	public void status()
 	{
-		inputThread.sendMessage(inputThread.getChannel(), "It is now night!");
+		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "It is now night!");
 	}
 	
 	private void changeNick(String oldNick , String newNick)

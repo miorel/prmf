@@ -1,7 +1,5 @@
 package com.googlecode.prmf.gamePlay;
 
-import com.googlecode.prmf.connection.IOThread;
-
 public abstract class Role {
 	private Team team;
 	private String name;
@@ -55,9 +53,7 @@ public abstract class Role {
 		this.target = p;
 	}
 
-	boolean checkNightAction(String message) {
-		return true;
-	}
+	public abstract boolean checkNightAction(String message);
 	
 	public void setName(String name)
 	{

@@ -3,7 +3,6 @@ import java.io.File;
 import java.util.Scanner;
 
 import com.googlecode.prmf.gamePlay.Game;
-import com.googlecode.prmf.gamePlay.Player;
 
 public class MafiaListener implements Listener {
 	private Game game;

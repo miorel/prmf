@@ -3,13 +3,13 @@ package com.googlecode.prmf.gamePlay;
 import com.googlecode.prmf.connection.IOThread;
 
 public class Postgame implements MafiaGameState {
-	IOThread inputThread;
+	IOThread inputOutputThread;
 
-	public Postgame(IOThread inputThread) {
-		this.inputThread = inputThread;
+	public Postgame(IOThread inputOutputThread) {
+		this.inputOutputThread = inputOutputThread;
 	}
 
-	public boolean receiveMessage(Game game, String line, IOThread inputThread)
+	public boolean receiveMessage(Game game, String line)
 	{
 		return true;
 	}	
@@ -21,6 +21,6 @@ public class Postgame implements MafiaGameState {
 	
 	public void status()
 	{
-		inputThread.sendMessage(inputThread.getChannel(), "The game is now over");
+		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "The game is now over");
 	}
 }

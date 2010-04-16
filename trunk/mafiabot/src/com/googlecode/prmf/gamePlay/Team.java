@@ -14,10 +14,7 @@ public abstract class Team {
 	// TODO why is an array of players passed as an argument?
 	//most win conditions don't just involve the team in isolation, but rather the team with respect to the rest of the game
 	//without knowing some things about the other players it's impossible to determine if you've won or not
-	public boolean hasWon(Player[] players) {
-		//TODO functionality
-		return false;
-	}
+	public abstract boolean hasWon(Player[] players);
 	
 	public String getName()
 	{
