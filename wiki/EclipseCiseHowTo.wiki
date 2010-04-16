@@ -1,0 +1,79 @@
+#summary How to work on Programming Mafia projects using Eclipse from CISE computers
+
+[http://www.eclipse.org/ Eclipse] is the recommended IDE for our projects. This page explains how to get Eclipse working on the CISE Linux computers in the dungeon.
+
+Usually we'd start by installing Eclipse. Fortunately, this is already done for you on CISE systems. Rejoice, because this is about the only step that will be straightforward. Then, start up Eclipse:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/start.png
+
+Next we need to install [http://subclipse.tigris.org/ Subclipse] which will allow us to checkout projects from [http://subversion.apache.org/ Subversion] repositories such as the one of the Programming Mafia.
+
+Go to `Help`, `Software Updates`, `Find and Install`. You'll want to `Search for new features to install`.
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/new_features.png
+
+Now normally we'd install from a remote site, but surprise surprise this doesn't work properly on CISE computers. So you'll need to download an archived version of the update site from: http://subclipse.tigris.org/files/documents/906/45156/site-1.4.8.zip This is the proper Subclipse version to use with Subversion 1.5, which is what is installed on CISE systems at the time of this writing.
+
+Once the download completes, create a `New Archived Site`:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/new_archived_site.png
+
+Find the `site-1.4.8.zip` file you just downloaded and give the update site a better name like "Subclipse 1.4". While you're at, let Eclipse `Automatically select mirrors` for you. Then go ahead and `Finish`.
+
+Again not surprisingly, you can't actually install every Subclipse feature on CISE computers. But no worries, because you don't actually need every feature. Make the installation window look like the screenshot below:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/install_subclipse.png
+
+Proceed with the installation. You'll have to accept a license agreement, confirm installation of unsigned features, and restart Eclipse. Congratulations, you now have Subclipse installed!
+
+Time to add some projects. Go to `File`, `New`, `Project`, `SVN`, `Checkout Projects from SVN`:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/checkout_from_svn.png
+
+If this is the first time you're doing this, you have to `Create a new repository location`. This might seem counterintuitive because the repository location clearly exists already! But it doesn't exist in Eclipse, so you must create it:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/create_new_repo.png
+
+Enter the repository location: http://prmf.googlecode.com/svn/
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/svn_repo_location.png
+
+You may or may not be asked for your credentials. If you are, input your Google Account and your Google Code password, which you can find on [https://code.google.com/hosting/settings your Google Code settings page]. If you aren't asked for your credentials right away, you will be the first time you try to commit something, so make a mental note that this is probably a different password than you were expecting.
+
+The next step is important, so pay attention. *DO NOT CHECKOUT THE WHOLE REPOSITORY.* First of all you don't need the whole repository. Secondly you'll end up confusing Eclipse because files it expects to be in the top-level project directory will now be in a subdirectory. Therefore checkout only the directory corresponding to the project you want to work on:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/svn_select_folder.png
+
+If you've selected the proper directory, it should be safe to `Finish`. Sit back and relax while the project source is downloaded!
+
+Think you're done? Think again. Chances are you have some strange compile errors. Since nobody here _ever_ commits broken code, this is clearly yet another problem with CISE systems. Specifically, it has to do with a broken JRE system library. Let's fix that!
+
+Click on the project root in the Package Explorer on the left. Then go to `Project`, `Properties`. Find the `Libraries` tab under `Java Build Path`. Select the library and `Edit` it:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/build_path_libraries.png
+
+Let's go straight to the source of the problem. Click on `Installed JREs`:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/edit_library.png
+
+You will probably see a window like this:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/installed_jre_before.png
+
+The default JRE in Eclipse (on CISE computers) is a broken Java 1.5 from [http://gcc.gnu.org/java/ gcj]. However if you execute `java -version` on the command line you'll probably see something like:
+
+{{{
+java version "1.6.0_16"
+Java(TM) SE Runtime Environment (build 1.6.0_16-b01)
+Java HotSpot(TM) 64-Bit Server VM (build 14.2-b01, mixed mode)
+}}}
+
+We need to make Eclipse use _that_ Java. To do so, `Add` another JRE.
+
+We must first find out where the proper `java` executable is actually located. Run `which java` at the command line to get the full path to the `java` executable. It will probably be `/usr/bin/java`. Unfortunately, this is most likely a symbolic link (read "shortcut" if you're a Windows user). You can execute `ls -l /usr/bin/java` to find out what the symlink points to (`/etc/alternatives/java` for me). But that's probably also a symlink! Keep executing `ls -l` with the new path until you get to a regular file. The resulting path probably ends with `/bin/java`. Copy the part before that (`/usr/lib/jvm/java-6-sun/jre` for me) and paste it into the `JRE home directory` field. The rest of the information should be automagically filled in for you! Hit `OK`.
+
+Set the newly-added as the default. It's also probably a good idea to `Remove` the other JRE lest you end up accidentally using it for other projects. Here's what my window looks like at the end of all this:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/installed_jre_after.png
+
+Hit `OK`, `Finish`, `OK` and you're probably done. If you still have errors, try cleaning the project (go to `Project`, `Clean`). If you still have errors after that, someone must have committed broken code. You must find and ridicule the one responsible. Otherwise, happy coding!
