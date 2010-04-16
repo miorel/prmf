@@ -27,3 +27,5 @@ Troll>Instructor>Studious>Creative>Evil>Normal>Troll.(Will probably add more rel
 -Picking a language to use for this project. Joe has suggested that we use something else other than Java so that we may expand our horizons.
 
 -Figuring out where to put project's issues(I think it would be a bit chaotic if we share the issues page with the mafiabot).
+
+-Starting the programming planning.
