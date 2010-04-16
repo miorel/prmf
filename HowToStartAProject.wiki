@@ -1,0 +1,27 @@
+#summary A guide to getting the Programming Mafia to do your work for you
+#labels Projects
+
+First of all congratulations on your initiative! Starting projects isn't easy (though it's certainly easier than finishing them). This page will tell you all the steps for making your idea an official activity of the Programming Mafia. Some of the ideas may also have farther-reaching applicability.
+
+ * First of all, *clearly define the project.* _"I want to make something cool"_ is obviously too broad, but _"I want to make a game"_ is only marginally better. Though a general idea is more likely to intersect with what others find interesting, a project usually benefits from a clear vision. As the project starter, you will be in charge of this vision, so try to narrow it down from the start. If there are aspects you aren't set on, at least narrow it down to a few choices e.g. _"I want to make a strategy game but I don't care if it's turn-based or real-time."_
+
+ * *Formally announce your intent to start the project.* Doing this in person is great if you get the opportunity because other people have to at least pretend to listen to you or appear rude. It also allows you to directly express your excitement about the project, which can be contagious! The downside is that a conversation is easily forgotten. If you use the IRC channel for the announcement, it's in writing (sort of) and you might reach more people if idlers decide to read their messages. Or your announcement might be lost amidst remarks from bots and you won't reach anyone. The mailing list (Google Group) is probably the most permanent, but it's also very easy to ignore. People assume that messages addressed to everyone aren't addressed to them. Therefore use as many forms of communication as possible, and be persistent.
+
+ * If the response to your idea is positive, then you're ready to *invent a name.* Because this isn't a corporate environment, you have a lot of freedom with the name you choose. It can be clever, funny, or it can make no sense at all. Do try, however, to make it memorable and recognizable. Avoid naming conflicts with similar projects. Pronounceability is a plus (random aside: "pronounceability" is ironically a bit of a mouthful). Don't stress too much over the name, because you _can_ change it later.
+
+ * *Create a directory for the project in the repository.* You can do this from the command line on any Unix-like system with Subversion installed. For example, if you wanted to create a project named `thugaim` you would
+{{{
+svn checkout http://prmf.googlecode.com/svn/trunk/ prmf
+cd prmf
+mkdir thugaim
+}}}
+ then you can add whatever files you want to the `thugaim` directory and finish up with
+{{{
+svn add thugaim
+svn commit
+}}}
+ This will open up an editor allowing you to type a commit message. You can also prepare the commit message in advance and `svn commit -F message.txt`.
+
+ * *Start working on the project.* Others won't unless you do first (but they might be more likely to work on your project if you work on theirs). To maximize your chances of success, constant communication will be required: you must always tell people what's been done, what's being done, and what needs to be done. And you must get others to be as excited about the project as you are. Yes, this is hard. But if you can do it, in the long term it's well worth the effort.
+
+This concludes this guide. Hopefully you found it informative, and you are now well on your way to create an awesome project. Best of luck to ya! And if you discover some secrets to making projects succeed, remember that this is a wiki page, so you can edit it!
