@@ -1,0 +1,23 @@
+#summary A quick introduction to the inner workings of TWW2Bot.
+
+= Introduction =
+
+TWW2Bot is written using the PircBot API which can be found at http://www.jibble.org/pircbot.php and it will only compile if PircBot is downloaded and placed in the same directory. I will point out that it is very badly hacked together code. When I get around to it, I will add a master list of valid commands to this page. A lot of channel op commands have been commented out because they're not really necessary in the context that I generally use TWW2Bot. Feel free to laugh at how badly coded it is, basically I went for the as long as it works strategy.
+
+
+= Valid Commands =
+
+==!help==
+==!roll==
+==!joke==
+==!version==
+==!uptime==
+==!finchtime==
+==!finchcount==
+==!downtime==
+==!hammertime==
+==!mafia==
+===!join===
+===!quit===
+===!start===
+===!end===
