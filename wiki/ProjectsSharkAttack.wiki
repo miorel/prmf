@@ -3,4 +3,18 @@
 
 *SHARK ATTACK* will be a battle game featuring characters based on members/friends of the UF Programming Team.
 
-The project is currently in the brainstorming stage.
+/*Keep in mind that none of this is subject to change(but fairly certain)*/
+
+Shark attack will be a game where two players will battle in real time and it will be much like the pokemon battle style which I will expain briefly:
+Both players will have up to 6 ufptmons, which will in turn have 4 moves/attacks each. During each turn, both players will choose which move each ufptmon will use. Once both have decided, each attack will be performed and damage/status change will be dealt. Once a ufptmon's hp <= 0, then that upftmon will faint and will be replaced. Player will win when all other player's ufptmons have fainted.
+
+Current ideas:
+-All ufptmons will be characters based on people/friends of ufpters.
+-Each ufptmon will have basic "types" which will include: Troll, Evil, Studious, Normal, Instructor, Creative.
+-Types will be strong/weak against each other, therefore dealing more/less damage than other -types would when attacking a particular type. It will be something like this:
+Troll>Instructor>Studious>Creative>Evil>Normal>Troll.(Will probably add more relationships)
+-Game will be networked so that we may play online.
+
+Current issues:
+-Picking a language to use for this project. Joe has suggested that we use something else other than Java so that we may expand our horizons.
+-Figuring out where to put project's issues(I think it would be a bit chaotic if we share the issues page with the mafiabot).
