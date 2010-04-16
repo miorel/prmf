@@ -117,12 +117,28 @@ public class Night implements MafiaGameState
 	public void cleanUp()
 	{
 		resetActions();
+		results();
 		resetLives();
 	}
 	
 	public void status()
 	{
 		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "It is now night!");
+	}
+	
+	public void results()
+	{
+		for (Player p : players)
+		{
+			if (p.getNightLives() == 0 && p.getTargetted())
+			{
+				inputOutputThread.sendMessage(p + "", "You were saved!");
+			}
+			if (p.getNightLives() < 0)
+			{
+				inputOutputThread.sendMessage(inputOutputThread.getChannel(), p + " was killed during the night!");
+			}
+		}
 	}
 	
 	private void changeNick(String oldNick , String newNick)

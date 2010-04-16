@@ -41,4 +41,24 @@ public abstract class Team {
 		return list;
 	}
 	
+	public String getPlayers()
+	{
+		StringBuilder toRet = new StringBuilder();
+		for (Player p : list)
+		{
+			if (toRet.length() > 0)
+			{
+				toRet.append(", ");
+			}
+			toRet.append(p);
+		}
+		return toRet.toString();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return name;
+	}
+	
 }

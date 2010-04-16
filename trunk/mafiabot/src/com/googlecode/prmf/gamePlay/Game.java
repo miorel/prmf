@@ -2,8 +2,6 @@ package com.googlecode.prmf.gamePlay;
 
 import com.googlecode.prmf.connection.IOThread;
 
-import java.util.LinkedList;
-
 public class Game{
 	private Player[] players;
 	private TimerThread timerThread;
@@ -45,23 +43,12 @@ public class Game{
  
 	public boolean isOver() {
 		boolean result = false;
-		LinkedList<String> teamsWon = new LinkedList<String>();
+
 		for(Player player : getPlayerList()) {
 			if(player.getRole().getTeam().hasWon(players)){
 				result = true;
-				String teamName = player.getRole().getTeam().getName();
-				if(!teamsWon.contains(teamName))
-					teamsWon.add(teamName);
+				break;
 			}
-		}
-		if(result){
-			postgame = new Postgame(inputOutputThread);
-			StringBuilder ret = new StringBuilder();
-			ret.append("Team:");
-			for(String teamName : teamsWon)
-					ret.append(" " + teamName);
-			ret.append(" has won");
-			inputOutputThread.sendMessage(inputOutputThread.getChannel(),ret.toString());
 		}
 		return result;
 	}
@@ -93,7 +80,7 @@ public class Game{
 	{
 		if(isOver())
 		{
-			state = new Postgame(inputOutputThread);
+			state = new Postgame(inputOutputThread, getPlayerList());
 			for(int i=0;i<getPlayerList().length;++i)
 			{
 				inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "+v "+players[i].getName());

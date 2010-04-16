@@ -167,8 +167,8 @@ public class Pregame implements MafiaGameState {
 			Pregame pregame = null;
 			try
 			{
-				//how do i fix these warnings
-				Class clsBook = Pregame.class.getClassLoader().loadClass("com.googlecode.prmf.Pregame");
+				//that's how!
+				Class<?> clsBook = Pregame.class.getClassLoader().loadClass("com.googlecode.prmf.Pregame");
 				pregame = (Pregame)clsBook.newInstance();
 
 			}
@@ -180,7 +180,7 @@ public class Pregame implements MafiaGameState {
 			try
 			{
 				//TODO there be warnings here, fix them
-				Class tempAssigner = Class.forName("com.googlecode.prmf.Pregame$"+roleSplit[1]+"Assigner");
+				Class<?> tempAssigner = Class.forName("com.googlecode.prmf.Pregame$"+roleSplit[1]+"Assigner");
 				Method[] allMethods = tempAssigner.getMethods();
 				Method getTeam = allMethods[0];
 				Object obj = tempAssigner.getDeclaredConstructor(new Class[]{Pregame.class}).newInstance(new Object[]{pregame});

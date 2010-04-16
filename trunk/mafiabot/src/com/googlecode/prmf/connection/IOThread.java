@@ -54,11 +54,7 @@ public class IOThread extends Thread {
 	public void ceaseTimer()
 	{
 		for(Listener l : list)
-			if(l instanceof MafiaListener)
-			{
-				l.timerMessage();
-				break;
-			}
+			l.timerMessage();
 	}
 	
 	public void addListener(Listener listener) {

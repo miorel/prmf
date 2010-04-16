@@ -7,12 +7,14 @@ public class Player {
 	private boolean isAlive;
 	private int votedFor;
 	private int nightLives;
+	private boolean targetted;
 
 	public Player(String name) {
 		setName(name);
 		isAlive = true;
 		role = null;
 		votedFor = -1;
+		targetted = false;
 	}
 	
 	@Override
@@ -30,6 +32,7 @@ public class Player {
 		if (getNightLives() < 0)
 			setAlive(false);
 		resetNightLives();
+		targetted = false;
 	}
 
 	public String getName() {
@@ -87,11 +90,17 @@ public class Player {
 	
 	public void setNightLives(int setTo)
 	{
+		targetted = true;
 		nightLives = setTo;
 	}
 	
 	public int getNightLives()
 	{
 		return nightLives;
+	}
+	
+	public boolean getTargetted()
+	{
+		return targetted;
 	}
 }
