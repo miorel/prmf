@@ -1,4 +1,5 @@
 #summary How to work on Programming Mafia projects using Eclipse from CISE computers
+#labels Phase-Implementation
 
 [http://www.eclipse.org/ Eclipse] is the recommended IDE for our projects. This page explains how to get Eclipse working on the CISE Linux computers in the dungeon.
 
@@ -58,7 +59,7 @@ http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/edit_library.png
 
 You will probably see a window like this:
 
-http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/installed_jre_before.png
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/installed_jres_before.png
 
 The default JRE in Eclipse (on CISE computers) is a broken Java 1.5 from [http://gcc.gnu.org/java/ gcj]. However if you execute `java -version` on the command line you'll probably see something like:
 
@@ -70,10 +71,12 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.2-b01, mixed mode)
 
 We need to make Eclipse use _that_ Java. To do so, `Add` another JRE.
 
-We must first find out where the proper `java` executable is actually located. Run `which java` at the command line to get the full path to the `java` executable. It will probably be `/usr/bin/java`. Unfortunately, this is most likely a symbolic link (read "shortcut" if you're a Windows user). You can execute `ls -l /usr/bin/java` to find out what the symlink points to (`/etc/alternatives/java` for me). But that's probably also a symlink! Keep executing `ls -l` with the new path until you get to a regular file. The resulting path probably ends with `/bin/java`. Copy the part before that (`/usr/lib/jvm/java-6-sun/jre` for me) and paste it into the `JRE home directory` field. The rest of the information should be automagically filled in for you! Hit `OK`.
+We must first find out where the proper `java` executable is actually located. Run `which java` at the command line to get the full path to the `java` executable. It will probably be `/usr/bin/java`. Unfortunately, this is most likely a symbolic link (read "shortcut" if you're a Windows user). You can execute `ls -l /usr/bin/java` to find out what the symlink points to (`/etc/alternatives/java` for me). But that's probably also a symlink! Keep executing `ls -l` with the new path until you get to a regular file. The resulting path probably ends with `/bin/java`. Copy the part before that (`/usr/lib/jvm/java-6-sun/jre` for me) and paste it into the `JRE home directory` field. As shown below, the rest of the information should be automagically filled in for you! Hit `OK`.
 
-Set the newly-added as the default. It's also probably a good idea to `Remove` the other JRE lest you end up accidentally using it for other projects. Here's what my window looks like at the end of all this:
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/add_jre.png
 
-http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/installed_jre_after.png
+Set the newly-added JRE as the default. It's also probably a good idea to `Remove` the other JRE lest you end up accidentally using it for other projects. Here's what my window looks like at the end of all this:
+
+http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/installed_jres_after.png
 
 Hit `OK`, `Finish`, `OK` and you're probably done. If you still have errors, try cleaning the project (go to `Project`, `Clean`). If you still have errors after that, someone must have committed broken code. You must find and ridicule the one responsible. Otherwise, happy coding!
