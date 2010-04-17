@@ -12,6 +12,7 @@ In the terminal, navigate to the directory in which the bot files are stored.
 
 From here type "*ant run*". This will compile all of the source code, create the jar, and then execute it. Congratulations, you are finished! (Unless you want...*Fancier Stuff*)
 
+
 == Fancier Stuff ==
 
 
@@ -25,3 +26,5 @@ From here type "*ant run*". This will compile all of the source code, create the
  * In the event that you change you code, and running the bot doesn't seem to reflect it, you may need to clean out the class files.
  This can be done by typing "ant clean". (For extra fanciness you can use the command "*ant clean run*" (which of course can be couple with *-e* for _extreme_ fancy:
  "*ant clean -e run*"))
+
+ * For other help (i.e. basic descriptions of what each of the tasks do) you can use the option *"-projecthelp"* (or just *"-p"* if you're feeling a little lazy)
