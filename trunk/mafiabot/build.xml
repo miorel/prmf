@@ -1,16 +1,16 @@
 <project>
 
-    <target name="clean">
+    <target name="clean" description = "Removes old class and jar files by deleting the /bin and /dist directories">
         <delete dir="bin"/>
     	<delete dir="dist"/>
     </target>
 
-    <target name="compile">
+    <target name="compile" description = "Compiles the source code.">
         <mkdir dir="bin"/>
         <javac srcdir="src" destdir="bin"/>
     </target>
 
-    <target name="jar" depends="compile">
+    <target name="jar" depends="compile" description = "Creates the jar file from the compiled source; depends on compile">
         <mkdir dir="dist"/>
         <jar destfile="dist/MafiaBot.jar" basedir="bin">
             <manifest>
@@ -19,7 +19,7 @@
         </jar>
     </target>
 
-    <target name="run" depends="jar">
+    <target name="run" depends="jar" description = "Runs the jar file; depends on jar">
 
    		 <copy file="src/com/googlecode/prmf/connection/profiles.txt" tofile="profiles.txt"/>
     	 <copy file="src/com/googlecode/prmf/connection/profiles.txt" tofile="dist/profiles.txt"/>
