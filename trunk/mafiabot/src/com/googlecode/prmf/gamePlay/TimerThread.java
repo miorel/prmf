@@ -19,7 +19,7 @@ public class TimerThread  implements Runnable{
 	}
 	
 	public TimerThread(IOThread inputThread) {
-		this(inputThread, 6 * 60000);
+		this(inputThread, 10000);
 	}
 	
 	public void run()

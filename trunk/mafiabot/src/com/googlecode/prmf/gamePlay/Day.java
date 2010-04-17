@@ -53,12 +53,7 @@ public class Day implements MafiaGameState {
 		// http://java.sun.com/docs/books/tutorial/java/javaOO/enum.html
 		if (ret)
 		{
-			game.setState(new Night(players, inputOutputThread));
-			for(Player p : game.getPlayerList())
-			{
-				//unvoice the players since NO TALKING DURING THE NIGHT
-				inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "-v "+p.getName());
-			}
+			endState(game);
 		}
 		return ret;
 	}
@@ -186,6 +181,7 @@ public class Day implements MafiaGameState {
     }
 	private void changeNick(String oldNick , String newNick)
 	{
+		System.err.println(oldNick + " to " + newNick);
 		for(int i=0;i<players.length;++i)
 		{
 			if(players[i].getName().equals(oldNick))
@@ -194,6 +190,17 @@ public class Day implements MafiaGameState {
 				return;
 			}
 		}
+	}
+	
+	public void endState(Game game)
+	{
+		game.setState(new Night(players, inputOutputThread));
+		for(Player p : game.getPlayerList())
+		{
+			//unvoice the players since NO TALKING DURING THE NIGHT
+			inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "-v "+p.getName());
+		}
+		game.startTimer();
 	}
 }
 

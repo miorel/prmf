@@ -85,6 +85,7 @@ public class Pregame implements MafiaGameState {
 			
 			if (action != null)
 				action.handle();
+			
 			return ret;
 	}	
 	private void changeNick(String oldNick , String newNick)
@@ -315,10 +316,16 @@ public class Pregame implements MafiaGameState {
 					}
 					game.setState(new Night(getPlayerArray(), inputOutputThread));
 				}
+				game.startTimer();
 			}
 			else
 				inputOutputThread.sendMessage(game.getIOThread().getChannel(),  "Only " + startName + " can start the game!");
 		}
+	}
+	
+	public void endState(Game game)
+	{
+		
 	}
 	
 	class MafiaTeamAssigner implements Assigner

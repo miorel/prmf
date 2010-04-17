@@ -40,6 +40,8 @@ class Mafia extends Role {
 
 	@Override
 	public String resolveNightAction() {
+		if (getTarget() == null)
+			return "You didn't give a target!";
 		StringBuilder toReturn = new StringBuilder();
 		if(getTeam().agreeOnTarget())
 		{

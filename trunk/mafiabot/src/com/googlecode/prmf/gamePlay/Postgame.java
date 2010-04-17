@@ -57,4 +57,9 @@ public class Postgame implements MafiaGameState {
 	{
 		return players;
 	}
+	
+	public void endState(Game game)
+	{
+		
+	}
 }

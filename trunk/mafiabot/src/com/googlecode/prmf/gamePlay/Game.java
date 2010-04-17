@@ -69,6 +69,7 @@ public class Game{
 
 	public void stopTimer() {
 		getTimerThread().getTimer().interrupt();
+		state.endState(this);
 	}
 	
 	public MafiaGameState getState()

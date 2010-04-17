@@ -17,22 +17,25 @@ public class Night implements MafiaGameState
 //	TODO add a timer to night
 	public boolean receiveMessage(Game game, String line)
 	{
-		if (isNightOver())
-			return true;
-		
-		//temporary bad solution until we get around to overhauling the command system
 		String[] splitLine = line.split(" ");
-		if (splitLine.length <= 4)
-			return false;
 		String speaker = splitLine[0].substring(1,line.indexOf("!"));
-		String action = splitLine[3];
-		String target = splitLine[4];
-		
 		if(splitLine[1].startsWith("NICK") )
 		{
 			changeNick(speaker,splitLine[2]);
 			return false;
 		}
+		if (isNightOver())
+			return true;
+		
+		//temporary bad solution until we get around to overhauling the command system
+		
+		if (splitLine.length <= 4)
+			return false;
+		
+		String action = splitLine[3];
+		String target = splitLine[4];
+		
+		
 		
 		Player speaking = null;
 		for (Player p : players)
@@ -57,14 +60,7 @@ public class Night implements MafiaGameState
 		boolean isOver = isNightOver();
 		if (isOver)
 		{
-			resolveNightActions();
-			cleanUp();
-			for(Player p : game.getPlayerList())
-			{
-				if(p.isAlive())
-					inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "+v "+p.getName());
-			}
-			game.setState(new Day(players, inputOutputThread));
+			endState(game);
 		}
 		return isOver;
 	}
@@ -143,6 +139,7 @@ public class Night implements MafiaGameState
 	
 	private void changeNick(String oldNick , String newNick)
 	{
+		System.err.println(oldNick + " to " + newNick);
 		for(int i=0;i<players.length;++i)
 		{
 			if(players[i].getName().equals(oldNick))
@@ -151,5 +148,18 @@ public class Night implements MafiaGameState
 				return;
 			}
 		}
+	}
+	
+	public void endState(Game game)
+	{
+		resolveNightActions();
+		cleanUp();
+		for(Player p : game.getPlayerList())
+		{
+			if(p.isAlive())
+				inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "+v "+p.getName());
+		}
+		game.setState(new Day(players, inputOutputThread));
+		game.startTimer();
 	}
 }

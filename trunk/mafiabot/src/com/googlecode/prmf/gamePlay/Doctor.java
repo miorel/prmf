@@ -26,6 +26,8 @@ class Doctor extends Role {
 	@Override
 	public String resolveNightAction()
 	{
+		if (getTarget() == null)
+			return "You didn't give a target!";
 		StringBuilder toReturn = new StringBuilder();
 		getTarget().setNightLives(getTarget().getNightLives()+1);
 		return toReturn.toString();
