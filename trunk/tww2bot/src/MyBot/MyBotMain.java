@@ -1,4 +1,4 @@
-import org.jibble.pircbot.*;
+package MyBot;
 
 public class MyBotMain {
     

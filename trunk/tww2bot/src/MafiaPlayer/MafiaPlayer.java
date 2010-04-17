@@ -1,4 +1,5 @@
-import org.jibble.pircbot.*;
+package MafiaPlayer;
+import PircAPI.*;
 import java.util.*;
 
 public class MafiaPlayer extends PircBot {

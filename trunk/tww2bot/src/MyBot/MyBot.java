@@ -1,4 +1,5 @@
-import org.jibble.pircbot.*;
+package MyBot;
+import PircAPI.*;
 import java.util.*;
 
 public class MyBot extends PircBot {
