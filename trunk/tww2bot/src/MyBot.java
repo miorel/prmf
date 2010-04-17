@@ -5,7 +5,7 @@ public class MyBot extends PircBot {
 	private boolean joining = false;
 	private ArrayList<String> playerList = new ArrayList<String>();
 	private boolean inGame = false;
-	private String myName = new String("TWW2Bot");
+	private String myName = new String("TestTWW2Bot");
     private String ownName = new String("TWW2");
 	private String[] chans = {"#UFPT", "#TWW2"};
 	private int[] finchCount = new int[2];

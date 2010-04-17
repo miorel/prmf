@@ -14,7 +14,6 @@ public class MyBotMain {
         bot.connect("irc.freenode.net");
 
         // Join my channels.
-        bot.identify("fttjot84ms");
         bot.joinChannel("#TWW2");
         
     }
