@@ -10,8 +10,7 @@ Both players will have up to 6 ufptmons, which will in turn have 4 moves/attacks
 
   * All ufptmons will be characters based on people/friends of ufpters.
   * Each ufptmon will have basic "types" which will include: Troll, Evil, Studious, Normal, Instructor, Creative.
-  * Types will be strong/weak against each other, therefore dealing more/less damage than other types would when attacking a particular type. It will be something like this:
-Troll>Instructor>Studious>Creative>Evil>Normal>Troll. (Will probably add more relationships)
+  * Types will be strong/weak against each other, therefore dealing more/less damage than other types would when attacking a particular type. It will be something like this: Troll>Instructor>Studious>Creative>Evil>Normal>Troll. (Will probably add more relationships)
   * Game will be networked so that we may play online.
 
 === Current issues ===
