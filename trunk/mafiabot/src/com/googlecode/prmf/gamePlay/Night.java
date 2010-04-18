@@ -64,12 +64,10 @@ public class Night implements MafiaGameState
 		}
 		return isOver;
 	}
-	public void introduction()
-	{
-		for (Player player : players)
-		{
-			if (player.isAlive())
-			{
+	
+	public void introduction() {
+		for(Player player : players) {
+			if(player.isAlive()) {
 				inputOutputThread.sendMessage(player.getName(), player.getRole().description());
 			}
 		}
@@ -128,6 +126,7 @@ public class Night implements MafiaGameState
 		{
 			if (p.getNightLives() == 0 && p.getTargetted())
 			{
+				// TODO p.toString() is cleaner than p + ""
 				inputOutputThread.sendMessage(p + "", "You were saved!");
 			}
 			if (p.getNightLives() < 0)

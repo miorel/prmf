@@ -12,8 +12,11 @@ public abstract class Team {
 	}
 	
 	// TODO why is an array of players passed as an argument?
+	//
 	//most win conditions don't just involve the team in isolation, but rather the team with respect to the rest of the game
 	//without knowing some things about the other players it's impossible to determine if you've won or not
+	//
+	// if this information is needed, it should be passed elsewhere methinks
 	public abstract boolean hasWon(Player[] players);
 	
 	public String getName()
@@ -21,6 +24,7 @@ public abstract class Team {
 		return name;
 	}
 	
+	// TODO why is changing the team's name allowed? seems like this belongs in the constructor and nowhere else
 	public void setName(String name)
 	{
 		this.name = name;
@@ -59,6 +63,5 @@ public abstract class Team {
 	public String toString()
 	{
 		return name;
-	}
-	
+	}	
 }

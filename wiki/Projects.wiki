@@ -1,6 +1,6 @@
 #summary Projects of the Programming Mafia
-#labels Featured Projects
+#labels Featured,Projects
 
-  * [ProjectsCorleone corleone], an IRC bot that moderates games of [http://en.wikipedia.org/wiki/Mafia_%28party_game%29 mafia]
-  * an [ProjectsAlgorithmPacket algorithm packet] for [http://icpc.baylor.edu/ ICPC] and other programming contests
-  * [ProjectsSharkAttack SHARK ATTACK], a battle game
+  * [Corleone corleone], an IRC bot that moderates games of [http://en.wikipedia.org/wiki/Mafia_%28party_game%29 mafia]
+  * an [AlgorithmPacket algorithm packet] for [http://icpc.baylor.edu/ ICPC] and other programming contests
+  * [ProjectsSharkAttack SHARK ATTACK], a two-player battle game

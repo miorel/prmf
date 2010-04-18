@@ -40,6 +40,7 @@ public class TimerThread  implements Runnable{
 		inputThread.ceaseTimer();
 	}
 	
+	// TODO this method should not exist
 	public Thread getTimer()
 	{
 		return timer;

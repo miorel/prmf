@@ -14,6 +14,7 @@ package com.googlecode.prmf.merapi.util.iterators;
 import java.util.Enumeration;
 
 import com.googlecode.prmf.merapi.dp.Iterator;
+import com.googlecode.prmf.merapi.util.Iterators;
 
 /**
  * Interface combining {@linkplain java.util.Iterator Java's iterator},

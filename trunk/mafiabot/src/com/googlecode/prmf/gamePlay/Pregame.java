@@ -110,6 +110,8 @@ public class Pregame implements MafiaGameState {
 		}
 		
 		Collections.shuffle(roles);
+		
+		// TODO the following would be slicker with two iterators
 		for(int a = 0; a < players.size(); ++a)
 		{
 			Player p = players.get(a);
@@ -142,6 +144,7 @@ public class Pregame implements MafiaGameState {
 		
 		Collections.shuffle(roles);
 		
+		// TODO code duplication for the lose
 		for(int a = 0; a < players.size(); ++a)
 		{
 			Player p = players.get(a);

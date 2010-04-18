@@ -11,6 +11,8 @@
  */
 package com.googlecode.prmf.merapi.util.iterators;
 
+import com.googlecode.prmf.merapi.util.Iterators;
+
 /**
  * An iterator over an array.
  * 

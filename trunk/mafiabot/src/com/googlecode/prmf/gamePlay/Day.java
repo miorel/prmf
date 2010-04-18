@@ -1,15 +1,24 @@
 package com.googlecode.prmf.gamePlay;
 
+import static com.googlecode.prmf.merapi.util.Iterators.filter;
+import static com.googlecode.prmf.merapi.util.Iterators.iterator;
+import static com.googlecode.prmf.merapi.util.Iterators.map;
 
 import com.googlecode.prmf.connection.IOThread;
+import com.googlecode.prmf.merapi.dp.Iterator;
+import com.googlecode.prmf.merapi.util.Filter;
+import com.googlecode.prmf.merapi.util.Mapper;
+import com.googlecode.prmf.merapi.util.Strings;
 
 public class Day implements MafiaGameState {
+	//TODO why are there non-private fields here?
 	VoteTracker tracker;
 	Player[] players;
 	boolean killed; // if anyone was killed the previous night
 	String dead; // who was killed , if anyone;
 	IOThread inputOutputThread; 
 	//TODO: Day, and other classes, have inputOutputThreads, inputThreads, and IOThreads. we need to pick a name and keep it
+	//TODO better yet, they shouldn't all keep a reference to it if you ask me
 
 	public Day(Player[] players, IOThread inputThread) {
 		tracker = new VoteTracker(players);
@@ -141,9 +150,7 @@ public class Day implements MafiaGameState {
 			 */
     }
     
-    //
-    public void status()
-    {
+    public void status() {
     	inputOutputThread.sendMessage(inputOutputThread.getChannel(), "It is now day!");
     	
     	if(players.length >= 1)
@@ -153,17 +160,27 @@ public class Day implements MafiaGameState {
     		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "There is no one registered yet!");
     		return;
     	}
-    	StringBuilder livingPeople = new StringBuilder();
-    	for (Player p : players)
-    	{
-    		if (p.isAlive())
-    		{
-    			if(livingPeople.length() > 0)
-    				livingPeople.append(", ");
-    			livingPeople.append(p);
-    		}
-    	}
-    	inputOutputThread.sendMessage(inputOutputThread.getChannel(), livingPeople.toString());
+    	
+		Filter<Player> live = new Filter<Player>() {
+			@Override
+			public boolean keep(Player p) {
+				return p.isAlive();
+			}
+		};
+		Mapper<Player,String> getNames = new Mapper<Player,String>() {
+			@Override
+			public String map(Player p) {
+				return p.getName();
+			}
+		};
+
+		Iterator<Player> playersIter = iterator(players);
+		Iterator<Player> livingPlayers = filter(live, playersIter);
+		Iterator<String> livingPlayersNames = map(getNames, livingPlayers);
+
+		String livingPeople = Strings.join(", ", livingPlayersNames);
+
+		inputOutputThread.sendMessage(inputOutputThread.getChannel(), livingPeople);
     }
     
     class LynchAction implements Action {

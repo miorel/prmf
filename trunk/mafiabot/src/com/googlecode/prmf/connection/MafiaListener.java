@@ -136,9 +136,9 @@ public class MafiaListener implements Listener {
 						String profMsg[] = profileLine.split(" ",3);
 						String roleMsg[] = profMsg[2].split(",");
 						for(int i=0;i<roleMsg.length;++i)
-							roleMsg[i] = roleMsg[i].trim();
+							roleMsg[i] = roleMsg[i].trim(); // TODO what does this do exactly?
 						String[] msgLoad = msg[3].split(" ",2);
-						String ProfDesired = msgLoad[1];
+						String ProfDesired = msgLoad[1]; // TODO this variable's name should not start with uppercase
 						if(ProfDesired.equalsIgnoreCase(profMsg[1]))
 						{
 							game.getPregame().loadRoleProfile(roleMsg);

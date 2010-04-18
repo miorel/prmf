@@ -13,6 +13,8 @@ package com.googlecode.prmf.merapi.util.iterators;
 
 import java.util.List;
 
+import com.googlecode.prmf.merapi.util.Iterators;
+
 /**
  * An iterator over a {@linkplain List Java list}.
  * 

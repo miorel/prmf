@@ -82,8 +82,7 @@ public class Game{
 		if(isOver())
 		{
 			state = new Postgame(inputOutputThread, getPlayerList());
-			for(int i=0;i<getPlayerList().length;++i)
-			{
+			for(int i=0;i<getPlayerList().length;++i) { // TODO rewrite using sexier foreach syntax
 				inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "+v "+players[i].getName());
 			}
 			inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "-m");
@@ -102,19 +101,20 @@ public class Game{
 		}	
 		return getPregame().getPlayerArray();
 	}
-	public void startTimer()
-	{
+	
+	public void startTimer() {
+		// TODO the fact that you have to do it like this is just weird
 		timerThread = new TimerThread(inputOutputThread);
 		getTimerThread().getTimer().start();
 	}
-	
-	public Pregame getPregame()
-	{
+
+	// TODO this is a bad method, it shouldn't exist imo
+	public Pregame getPregame() {
 		return pregame;
 	}
-	
-	public Postgame getPostgame()
-	{
+
+	// TODO this is a bad method, it shouldn't exist imo
+	public Postgame getPostgame() {
 		return postgame;
 	}
 	

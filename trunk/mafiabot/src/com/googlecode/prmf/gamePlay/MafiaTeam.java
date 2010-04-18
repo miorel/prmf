@@ -21,7 +21,10 @@ class MafiaTeam extends Team {
 		{
 			if (!p.isAlive())
 				continue;
-			if (p.getRole().getTeam().equals(this)) // TODO this looks like a bug to me // why is that a bug?
+			if (p.getRole().getTeam().equals(this))
+				// TODO the above line looks like a bug to me
+				// why is that a bug?
+				// because I don't think the equals() method works properly 
 			{
 				++mafia;
 				System.err.println(p + " is a mafia");
@@ -66,7 +69,7 @@ class MafiaTeam extends Team {
 				}
 			}
 			try
-			{
+			{ // TODO there be some useless parens on the next line
 				agree = (target.equals(p.getRole().getTarget()));
 			}
 			catch (Exception e)

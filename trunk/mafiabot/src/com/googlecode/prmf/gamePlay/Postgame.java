@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import com.googlecode.prmf.connection.IOThread;
 
 public class Postgame implements MafiaGameState {
+	// TODO default visibility is almost as bad as public
 	IOThread inputOutputThread;
 	Player[] players;
 
@@ -31,6 +32,7 @@ public class Postgame implements MafiaGameState {
 	
 	public void wrapUp()
 	{
+		// TODO declare things as what they're used not what they are
 		LinkedList<Team> teamsWon = new LinkedList<Team>();
 		for(Player player : getPlayerList())
 		{

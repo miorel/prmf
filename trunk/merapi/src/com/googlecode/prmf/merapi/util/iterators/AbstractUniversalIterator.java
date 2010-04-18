@@ -14,6 +14,7 @@ package com.googlecode.prmf.merapi.util.iterators;
 import java.util.NoSuchElementException;
 
 import com.googlecode.prmf.merapi.dp.Iterator;
+import com.googlecode.prmf.merapi.util.Iterators;
 
 /**
  * Skeleton implementation of a {@link UniversalIterator}. Subclasses need only

@@ -5,6 +5,8 @@ import com.googlecode.prmf.connection.IOThread;
 //TODO: I'm thinking this class needs to be totally redone... the player object should probably track its own votes
 //and it can report back to this when status updates are needed, or something like that
 
+// I agree this class needs to be redone, but I disagree that the Player object should track its own votes.
+
 public class VoteTracker {
 	
 	private int[] votes;
@@ -41,7 +43,7 @@ public class VoteTracker {
 			toAdd.append(players[i].getName());
 			toAdd.append(" has ");
 			toAdd.append(votes[i]);
-			toAdd.append((votes[i] == 1) ? " vote" : " votes");
+			toAdd.append(votes[i] == 1 ? " vote" : " votes");
 			toPrint.append(toAdd);
 		}
 		if (noLynchVotes > 0)

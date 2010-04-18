@@ -1,6 +1,6 @@
 package com.googlecode.prmf.gamePlay;
 
-class Town extends Team{
+class Town extends Team {
 
 	public Town() {
 		setName("Town");
@@ -10,8 +10,7 @@ class Town extends Team{
 	public boolean hasWon(Player[] players) {
 		boolean result = true;
 		for(Player p: players) {
-			if(!p.getRole().getTeam().equals(this) && p.isAlive())
-			{
+			if(!p.getRole().getTeam().equals(this) && p.isAlive()) {
 				result = false;
 				break;
 			}

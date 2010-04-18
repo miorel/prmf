@@ -52,55 +52,46 @@ public class Player {
 	public int hashCode() {
 		return name.hashCode();
 	}
-	
+
 	@Override
 	public String toString() {
 		return name;
 	}
-	
-	public void setName(String name)
-	{
+
+	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public boolean isAlive()
-	{
+
+	public boolean isAlive() {
 		return isAlive;
 	}
-	
-	public int getVote()
-	{
+
+	public int getVote() {
 		return votedFor;
 	}
-	
-	public void setAlive(boolean status)
-	{
+
+	public void setAlive(boolean status) {
 		this.isAlive = status;
 	}
-	
-	public void setVote(int vote)
-	{
+
+	public void setVote(int vote) {
 		this.votedFor = vote;
 	}
-	
-	public void resetNightLives()
-	{
+
+	public void resetNightLives() {
 		setNightLives(0);
 	}
-	
-	public void setNightLives(int setTo)
-	{
+
+	public void setNightLives(int setTo) {
 		targetted = true;
 		nightLives = setTo;
 	}
-	
-	public int getNightLives()
-	{
+
+	public int getNightLives() {
 		return nightLives;
 	}
-	
-	public boolean getTargetted()
-	{
+
+	public boolean getTargetted() {
 		return targetted;
 	}
 }

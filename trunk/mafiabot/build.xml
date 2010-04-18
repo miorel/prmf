@@ -1,32 +1,32 @@
 <project>
+	<target name="clean" description="Removes old class and jar files by deleting the /bin and /dist directories">
+		<delete dir="bin"/>
+		<delete dir="dist"/>
+	</target>
 
-    <target name="clean" description = "Removes old class and jar files by deleting the /bin and /dist directories">
-        <delete dir="bin"/>
-    	<delete dir="dist"/>
-    </target>
+	<target name="compile" description="Compiles the source code">
+		<mkdir dir="bin"/>
+		<javac srcdir="src" destdir="bin" classpath="lib/merapi-0.0.1.jar"/>
+	</target>
 
-    <target name="compile" description = "Compiles the source code.">
-        <mkdir dir="bin"/>
-        <javac srcdir="src" destdir="bin"/>
-    </target>
+	<target name="jar" description="Creates the jar file from the compiled source" depends="compile" >
+		<mkdir dir="dist"/>
+		<jar destfile="dist/MafiaBot.jar">
+			<manifest>
+				<attribute name="Main-Class" value="com.googlecode.prmf.connection.Main"/>
+			</manifest>
+			<fileset dir="bin"/>
+			<zipfileset src="lib/merapi-0.0.1.jar" excludes="META-INF/**"/>
+		</jar>
+	</target>
 
-    <target name="jar" depends="compile" description = "Creates the jar file from the compiled source; depends on compile">
-        <mkdir dir="dist"/>
-        <jar destfile="dist/MafiaBot.jar" basedir="bin">
-            <manifest>
-                <attribute name="Main-Class" value="com.googlecode.prmf.connection.Main"/>
-            </manifest>
-        </jar>
-    </target>
-
-    <target name="run" depends="jar" description = "Runs the jar file; depends on jar">
-
-   		 <copy file="src/com/googlecode/prmf/connection/profiles.txt" tofile="profiles.txt"/>
-    	 <copy file="src/com/googlecode/prmf/connection/profiles.txt" tofile="dist/profiles.txt"/>
-      	 <copy file="src/com/googlecode/prmf/connection/settings.txt" tofile="settings.txt"/>
-       	 <copy file="src/com/googlecode/prmf/connection/settings.txt" tofile="dist/settings.txt"/>
-        <java jar="dist/MafiaBot.jar" fork="true"/>
-    </target>
+	<target name="run" description="Runs the jar file" depends="jar" >
+		<copy file="src/com/googlecode/prmf/connection/profiles.txt" tofile="profiles.txt"/>
+		<copy file="src/com/googlecode/prmf/connection/profiles.txt" tofile="dist/profiles.txt"/>
+		<copy file="src/com/googlecode/prmf/connection/settings.txt" tofile="settings.txt"/>
+		<copy file="src/com/googlecode/prmf/connection/settings.txt" tofile="dist/settings.txt"/>
+		<java jar="dist/MafiaBot.jar" fork="true"/>
+	</target>
 
 </project>
 
