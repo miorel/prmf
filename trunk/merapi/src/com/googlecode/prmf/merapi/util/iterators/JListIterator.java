@@ -45,8 +45,7 @@ public class JListIterator<T> extends ListIterator<T> {
 	 *            whether or not to reverse the traversal order
 	 */
 	protected JListIterator(List<T> list, boolean reverse) {
-		// TODO reimplement reversibility
-		super(0, list.size()); //, reverse);
+		super(0, list.size(), reverse);
 		this.list = list;
 	}
 
@@ -55,8 +54,8 @@ public class JListIterator<T> extends ListIterator<T> {
 		return this.list.get(position);
 	}
 
-	/*@Override
+	@Override
 	public ReversibleIterator<T> reverse() {
 		return new JListIterator<T>(this.list, true);
-	}*/
+	}
 }

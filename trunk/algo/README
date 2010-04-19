@@ -1,0 +1,5 @@
+This directory contains the LaTeX source for the algorithm packet.
+
+To generate a pdf, execute the command `pdflatex algo.tex' TWICE. The first
+time you do it, it will generate a table of contents, and the second time you
+do it, it will incorporate it into a pdf file.

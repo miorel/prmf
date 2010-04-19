@@ -29,15 +29,14 @@ package com.googlecode.prmf.merapi.util.iterators;
  * @param <T>
  *            type of elements in the list
  */
-// TODO reimplement reversibility
-public abstract class ListIterator<T> extends AbstractUniversalIterator<T> {//AbstractReversibleIterator<T> {
+public abstract class ListIterator<T> extends AbstractReversibleIterator<T> {
 	private final int begin;
 	private final int end;
 	private final int increment;	
 
 	private int pointer;
 
-	/*
+	/**
 	 * Constructs an iterator that will traverse the list values in the
 	 * specified range of positions, possibly in reverse order. The first
 	 * position is inclusive, the last position is not inclusive. This
@@ -70,24 +69,12 @@ public abstract class ListIterator<T> extends AbstractUniversalIterator<T> {//Ab
 	 * @param reverse
 	 *            whether or not to reverse the traversal order
 	 */
-	
-	
-	/**
-	 * Constructs an iterator that will traverse the list values in the
-	 * specified range of positions. The first
-	 * position is inclusive, the last position is not inclusive. 
-	 * 
-	 * @param begin
-	 *            the first position in the range
-	 * @param end
-	 *            the position immediately after the last position in the range
-	 */
-	protected ListIterator(int begin, int end) {//, boolean reverse) {
-/*		if(reverse) {
+	protected ListIterator(int begin, int end, boolean reverse) {
+		if(reverse) {
 			int tmp = begin;
 			begin = end;
 			end = tmp;
-		}*/
+		}
 		this.begin = begin;
 		this.end = end;
 		this.increment = begin < end ? 1 : -1;

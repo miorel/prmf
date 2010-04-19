@@ -13,22 +13,26 @@ package com.googlecode.prmf.merapi.util;
 
 import static com.googlecode.prmf.merapi.util.Iterators.iterator;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.regex.Pattern;
+
 import com.googlecode.prmf.merapi.dp.Iterator;
 
 /**
  * A collection of string-related utilities.
  */
 public class Strings {
-//	/**
-//	 * Maps character sequences to their corresponding literal pattern strings.
-//	 */
-//	public final static Mapper<CharSequence,String> PATTERN_QUOTE = new Mapper<CharSequence,String>() {
-//		@Override
-//		public String map(CharSequence charSeq) {
-//			return Pattern.quote(charSeq.toString());
-//		}
-//	}; 
-//	
+	/**
+	 * Maps character sequences to their corresponding literal pattern strings.
+	 */
+	public final static Mapper<CharSequence,String> PATTERN_QUOTE = new Mapper<CharSequence,String>() {
+		@Override
+		public String map(CharSequence charSeq) {
+			return Pattern.quote(charSeq.toString());
+		}
+	}; 
+	
 //	private static final Pattern NON_WHITESPACE_PATTERN = Pattern.compile("((\\S)(\\S*))");
 //	
 //	private static final Map<String, String> XML_ESCAPE_MAP;
@@ -367,28 +371,28 @@ public class Strings {
 //			throw new Error("The UTF-8 encoding is not supported!", e);
 //		}
 //	}
-//
-//	/**
-//	 * <p>
-//	 * Convenience method for building URL objects from character sequences that
-//	 * doesn't throw a <code>MalformedURLException</code>.
-//	 * </p>
-//	 * <p>
-//	 * If the URL is guaranteed to be valid, calling this method is terser than
-//	 * wrapping in a try-catch block. Avoid this method if you don't have that
-//	 * guarantee.
-//	 * </p>
-//	 * 
-//	 * @param charSeq
-//	 *            the character sequence representation of the URL
-//	 * @return an object representation of the URL
-//	 */
-//	public static URL getUrl(CharSequence charSeq) {
-//		try {
-//			return new URL(charSeq.toString());
-//		}
-//		catch(MalformedURLException e) {
-//			throw new Error("A verified URL generated a MalformedURLException.", e);
-//		}
-//	}
+
+	/**
+	 * <p>
+	 * Convenience method for building URL objects from character sequences that
+	 * doesn't throw a <code>MalformedURLException</code>.
+	 * </p>
+	 * <p>
+	 * If the URL is guaranteed to be valid, calling this method is terser than
+	 * wrapping in a try-catch block. Avoid this method if you don't have that
+	 * guarantee.
+	 * </p>
+	 * 
+	 * @param charSeq
+	 *            the character sequence representation of the URL
+	 * @return an object representation of the URL
+	 */
+	public static URL toUrl(CharSequence charSeq) {
+		try {
+			return new URL(charSeq.toString());
+		}
+		catch(MalformedURLException e) {
+			throw new Error("A verified URL generated a MalformedURLException.", e);
+		}
+	}
 }

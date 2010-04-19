@@ -43,8 +43,7 @@ public class ArrayIterator<T> extends ListIterator<T> {
 	 *            whether or not to reverse the traversal order
 	 */
 	protected ArrayIterator(T[] array, boolean reverse) {
-		// TODO reimplement reversibility
-		super(0, array.length);//, reverse);
+		super(0, array.length, reverse);
 		this.array = array;
 	}
 
@@ -53,8 +52,8 @@ public class ArrayIterator<T> extends ListIterator<T> {
 		return this.array[position];
 	}
 
-	/*@Override
+	@Override
 	public ReversibleIterator<T> reverse() {
 		return new ArrayIterator<T>(this.array, true);
-	}*/
+	}
 }
