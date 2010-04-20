@@ -9,6 +9,7 @@ It has been proposed to make "the troll" mascot of the Programming Team and our 
 == For ==
 
 melic
+nezb
 
 == Against ==
 
@@ -16,4 +17,4 @@ melic
 
 == No vote ==
 
-Chemaba, hua, mau, nezb, pralz, !SpasticCowboy, TWW2, wac, winxordie, zaz
+Chemaba, hua, mau, pralz, !SpasticCowboy, TWW2, wac, winxordie, zaz
