@@ -35,6 +35,8 @@ import org.w3c.dom.NodeList;
 import com.googlecode.prmf.merapi.dp.Iterator;
 import com.googlecode.prmf.merapi.util.iterators.ArrayIterator;
 import com.googlecode.prmf.merapi.util.iterators.CharacterIterator;
+import com.googlecode.prmf.merapi.util.iterators.ContinuousIterator;
+import com.googlecode.prmf.merapi.util.iterators.FileHierarchyIterator;
 import com.googlecode.prmf.merapi.util.iterators.FilteredIterator;
 import com.googlecode.prmf.merapi.util.iterators.GOFIteratorAdapter;
 import com.googlecode.prmf.merapi.util.iterators.JEnumerationAdapter;
@@ -43,6 +45,7 @@ import com.googlecode.prmf.merapi.util.iterators.JListIterator;
 import com.googlecode.prmf.merapi.util.iterators.JoiningIterator;
 import com.googlecode.prmf.merapi.util.iterators.MappingIterator;
 import com.googlecode.prmf.merapi.util.iterators.MatchResultIterator;
+import com.googlecode.prmf.merapi.util.iterators.NodeHierarchyIterator;
 import com.googlecode.prmf.merapi.util.iterators.NodeListIterator;
 import com.googlecode.prmf.merapi.util.iterators.ReversibleIterator;
 import com.googlecode.prmf.merapi.util.iterators.ScannerIterator;
@@ -429,37 +432,37 @@ public class Iterators {
 		return new ScannerIterator(scanner);
 	}
 
-//	/**
-//	 * Returns an iterator over all the files in the directory hierarchy with
-//	 * the specified root. That is, this method is similar to the Unix
-//	 * <code>find</code> utility: if the <code>File</code> given to this method
-//	 * is a directory, the returned iterator will recurse through the directory
-//	 * tree in a depth-first manner. If the argument represents a normal file,
-//	 * the iterator will have a single element, the <code>File</code> itself. A
-//	 * file's children will be traversed in lexicographical order based on path,
-//	 * in a system-dependent manner (case-sensitive on Windows, case-insensitive
-//	 * on Unix).
-//	 * 
-//	 * @param file
-//	 *            root of the directory hierarchy to traverse
-//	 * @return an iterator over the directory hierarchy
-//	 */
-//	public static UniversalIterator<File> tree(File file) {
-//		return new FileHierarchyIterator(file);
-//	}
-//
-//	/**
-//	 * Returns an iterator over all the nodes in the node tree with the
-//	 * specified root.
-//	 * 
-//	 * @param node
-//	 *            root of the node hierarchy to traverse
-//	 * @return an iterator over the node hierarchy
-//	 */
-//	public static UniversalIterator<Node> tree(Node node) {
-//		return new NodeHierarchyIterator(node);
-//	}
-//
+	/**
+	 * Returns an iterator over all the files in the directory hierarchy with
+	 * the specified root. That is, this method is similar to the Unix
+	 * <code>find</code> utility: if the <code>File</code> given to this method
+	 * is a directory, the returned iterator will recurse through the directory
+	 * tree in a depth-first manner. If the argument represents a normal file,
+	 * the iterator will have a single element, the <code>File</code> itself. A
+	 * file's children will be traversed in lexicographical order based on path,
+	 * in a system-dependent manner (case-sensitive on Windows, case-insensitive
+	 * on Unix).
+	 * 
+	 * @param file
+	 *            root of the directory hierarchy to traverse
+	 * @return an iterator over the directory hierarchy
+	 */
+	public static UniversalIterator<File> tree(File file) {
+		return new FileHierarchyIterator(file);
+	}
+
+	/**
+	 * Returns an iterator over all the nodes in the node tree with the
+	 * specified root.
+	 * 
+	 * @param node
+	 *            root of the node hierarchy to traverse
+	 * @return an iterator over the node hierarchy
+	 */
+	public static UniversalIterator<Node> tree(Node node) {
+		return new NodeHierarchyIterator(node);
+	}
+
 	/**
 	 * Maps the elements of a traversal using the specified mapping function.
 	 * The mapping is done lazily, i.e. the backing mapper does not get to see
@@ -657,22 +660,22 @@ public class Iterators {
 		return iterator(list(iterator));
 	}
 
-//	/**
-//	 * Returns an iterator that continuously loops over the elements of a
-//	 * traversal. This does not immediately traverse the elements of the input,
-//	 * so it's safe to call with never-ending iterators (though it would serve
-//	 * no purpose).
-//	 * 
-//	 * @param <T>
-//	 *            type over which the iteration takes place
-//	 * @param iterator
-//	 *            the iterator to traverse
-//	 * @return an iterator that continuously loops over the elements of the
-//	 *         input
-//	 */
-//	public static <T> UniversalIterator<T> loop(Iterator<T> iterator) {
-//		return new ContinuousIterator<T>(iterator);
-//	}	
+	/**
+	 * Returns an iterator that continuously loops over the elements of a
+	 * traversal. This does not immediately traverse the elements of the input,
+	 * so it's safe to call with never-ending iterators (though it would serve
+	 * no purpose).
+	 * 
+	 * @param <T>
+	 *            type over which the iteration takes place
+	 * @param iterator
+	 *            the iterator to traverse
+	 * @return an iterator that continuously loops over the elements of the
+	 *         input
+	 */
+	public static <T> UniversalIterator<T> loop(Iterator<T> iterator) {
+		return new ContinuousIterator<T>(iterator);
+	}	
 	
 	/**
 	 * Traverses all the elements of an iterator from the beginning, doing
