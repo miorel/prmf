@@ -16,4 +16,4 @@ melic, nezb, !SpasticCowboy, rod, mau
 
 == No vote ==
 
-Chemaba, hua, mau, pralz, TWW2, wac, winxordie, zaz
+Chemaba, hua, pralz, TWW2, wac, winxordie, zaz
