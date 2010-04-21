@@ -8,7 +8,7 @@ It has been proposed to make "the troll" mascot of the Programming Team and our 
 
 == For ==
 
-melic, nezb, !SpasticCowboy
+melic, nezb, !SpasticCowboy, rod, mau
 
 == Against ==
 
