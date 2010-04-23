@@ -32,21 +32,14 @@ public class IOThread extends Thread {
 		this.channel = settings.getChannel();
 		this.botName = settings.getBotName();
 		
-		// TODO move the next three lines to run()
-		printStream.println("NICK " + this.botName); 
-		printStream.println("USER " + this.botName + " 12 * " + this.botName);
-		printStream.println("JOIN " + channel);
-	}
-	
-	// TODO why does the following even exist? it should be removed
-	public IOThread()
-	{
-		
 	}
 	
 	@Override
 	public void run()
 	{
+		printStream.println("NICK " + this.botName); 
+		printStream.println("USER " + this.botName + " 12 * " + this.botName);
+		printStream.println("JOIN " + channel);
 		Scanner in = new Scanner(inputStream);
 		while(in.hasNextLine())
 		{
@@ -102,8 +95,7 @@ public class IOThread extends Thread {
 		return settings;
 	}
 	
-	// TODO this shouldn't be publicly visible; make it private
-	public void makeSocket() throws IOException
+	private void makeSocket() throws IOException
 	{
 		soc = new Socket(getSettings().getServer(), getSettings().getPort());
 	}

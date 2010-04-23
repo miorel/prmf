@@ -36,10 +36,6 @@ public class SettingsFileParser {
 			if(line.charAt(start) == '#')
 				continue;
 			
-			
-			
-			
-			
 			String setting[] = line.split("=");
 			for(int i = 0; i < setting.length; ++i)
 				setting[i] = setting[i].trim();
@@ -64,7 +60,7 @@ public class SettingsFileParser {
 		if(numSettings != 4) {
 			throw new ParseException("Settings file corrupt", numSettings);
 		}
-		System.err.println(botName + " " + channel + " " + port + " " + server);
+		//System.err.println(botName + " " + channel + " " + port + " " + server);
 	}
 
 	public String getBotName() {
