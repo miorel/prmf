@@ -32,8 +32,7 @@ public class VoteTracker {
 	public void status(IOThread inputThread) {
 		StringBuilder toPrint = new StringBuilder();
 	
-		for (int i=0;i<numberOfPlayers;++i)
-		{
+		for (int i=0;i<numberOfPlayers;++i)	{
 			StringBuilder toAdd = new StringBuilder();
 			
 			//must check if player is alive because player can !quit is set to dead.
@@ -62,6 +61,8 @@ public class VoteTracker {
 			
 		}
 		toPrint.append(".");
+		
+		// TODO GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHH FOUND HARDCODED CHANNEL
 		inputThread.sendMessage("#UFPT", toPrint.toString());
 	}
 	

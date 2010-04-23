@@ -1,7 +1,6 @@
 package com.googlecode.prmf.connection;
 
 public class DisconnectListener implements Listener {
-
 	public void receiveLine(String line, IOThread inputOutputThread) {
 		String msg[] = line.split(" ");
 		if(msg[0].equals("ERROR"))
@@ -15,6 +14,5 @@ public class DisconnectListener implements Listener {
 	}
 
 	public void timerMessage() {
-
 	}
 }

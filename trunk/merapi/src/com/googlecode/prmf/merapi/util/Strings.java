@@ -15,6 +15,7 @@ import static com.googlecode.prmf.merapi.util.Iterators.iterator;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.googlecode.prmf.merapi.dp.Iterator;
@@ -33,8 +34,8 @@ public class Strings {
 		}
 	}; 
 	
-//	private static final Pattern NON_WHITESPACE_PATTERN = Pattern.compile("((\\S)(\\S*))");
-//	
+	private static final Pattern NON_WHITESPACE_PATTERN = Pattern.compile("((\\S)(\\S*))");
+	
 //	private static final Map<String, String> XML_ESCAPE_MAP;
 //	private static final Pattern XML_ESCAPE_PATTERN;
 //	static {
@@ -89,100 +90,100 @@ public class Strings {
 //	public static String regex(CharSequence... charSeqs) {
 //		return regex(iterator(charSeqs));
 //	}
-//
-//	/**
-//	 * <p>
-//	 * Changes the given text to lower case. That is, any upper case character
-//	 * in the text (e.g. a letter) will be replaced with its lower case
-//	 * counterpart.
-//	 * </p>
-//	 * <p>
-//	 * This method is primarily here for orthogonality, as the
-//	 * <code>String</code> class (likely the most commonly-used
-//	 * <code>CharSequence</code>) already has a {@link String#toLowerCase()
-//	 * toLowerCase()} method.
-//	 * </p>
-//	 * 
-//	 * @param charSeq
-//	 *            the text to change
-//	 * @return a lower case copy of the text
-//	 * @see String#toLowerCase()
-//	 * @see #toTitleCase(CharSequence)
-//	 * @see #toUpperCase(CharSequence)
-//	 */
-//	public static String toLowerCase(CharSequence charSeq) {
-//		return charSeq.toString().toLowerCase();
-//	}
-//
-//	/**
-//	 * <p>
-//	 * Changes the given text to upper case. That is, any lower case character
-//	 * in the text (e.g. a letter) will be replaced with its upper case
-//	 * counterpart.
-//	 * </p>
-//	 * <p>
-//	 * This method is primarily here for orthogonality, as the
-//	 * <code>String</code> class (likely the most commonly-used
-//	 * <code>CharSequence</code>) already has a {@link String#toUpperCase()
-//	 * toUpperCase()} method.
-//	 * </p>
-//	 * 
-//	 * @param charSeq
-//	 *            the text to change
-//	 * @return an upper case copy of the text
-//	 * @see String#toUpperCase()
-//	 * @see #toLowerCase(CharSequence)
-//	 * @see #toTitleCase(CharSequence)
-//	 */
-//	public static String toUpperCase(CharSequence charSeq) {
-//		return charSeq.toString().toUpperCase();
-//	}
-//
-//	/**
-//	 * <p>
-//	 * Changes the given text to title case. That is, the text will be changed
-//	 * to lower case, except for the first character of each word, which will be
-//	 * changed to upper case.
-//	 * </p>
-//	 * <p>
-//	 * Here, a word is not necessarily alphanumeric, but may be any sequence of
-//	 * non-whitespace characters.
-//	 * </p>
-//	 * 
-//	 * @param charSeq
-//	 *            the text to change
-//	 * @return a title case copy of the text
-//	 * @see #toTitleCase(CharSequence, int)
-//	 * @see #toLowerCase(CharSequence)
-//	 * @see #toUpperCase(CharSequence)
-//	 */
-//	public static String toTitleCase(CharSequence charSeq) {
-//		return toTitleCase(charSeq, Integer.MAX_VALUE);
-//	}
-//
-//	/**
-//	 * Changes the given text to title case, capitalizing words up to the
-//	 * specified limit. That is, this method behaves just like the
-//	 * single-argument version, except that any words beyond the limit will not
-//	 * be capitalized. They will still be changed to lower case, however.
-//	 * 
-//	 * @param charSeq
-//	 *            the text to change
-//	 * @param limit
-//	 *            the maximum number of words to capitalize
-//	 * @return a title case copy of the text
-//	 * @see #toTitleCase(CharSequence)
-//	 */
-//	public static String toTitleCase(CharSequence charSeq, int limit) {
-//		if(limit < 0)
-//			throw new IllegalArgumentException("The limit may not be negative.");
-//		StringBuffer sb = new StringBuffer();
-//		Matcher m = NON_WHITESPACE_PATTERN.matcher(toLowerCase(charSeq));
-//		while(m.find() && --limit >= 0)
-//			m.appendReplacement(sb, m.group(1).toUpperCase() + m.group(2));
-//		m.appendTail(sb);
-//		return sb.toString();
-//	}
+
+	/**
+	 * <p>
+	 * Changes the given text to lower case. That is, any upper case character
+	 * in the text (e.g. a letter) will be replaced with its lower case
+	 * counterpart.
+	 * </p>
+	 * <p>
+	 * This method is primarily here for orthogonality, as the
+	 * <code>String</code> class (likely the most commonly-used
+	 * <code>CharSequence</code>) already has a {@link String#toLowerCase()
+	 * toLowerCase()} method.
+	 * </p>
+	 * 
+	 * @param charSeq
+	 *            the text to change
+	 * @return a lower case copy of the text
+	 * @see String#toLowerCase()
+	 * @see #toTitleCase(CharSequence)
+	 * @see #toUpperCase(CharSequence)
+	 */
+	public static String toLowerCase(CharSequence charSeq) {
+		return charSeq.toString().toLowerCase();
+	}
+
+	/**
+	 * <p>
+	 * Changes the given text to upper case. That is, any lower case character
+	 * in the text (e.g. a letter) will be replaced with its upper case
+	 * counterpart.
+	 * </p>
+	 * <p>
+	 * This method is primarily here for orthogonality, as the
+	 * <code>String</code> class (likely the most commonly-used
+	 * <code>CharSequence</code>) already has a {@link String#toUpperCase()
+	 * toUpperCase()} method.
+	 * </p>
+	 * 
+	 * @param charSeq
+	 *            the text to change
+	 * @return an upper case copy of the text
+	 * @see String#toUpperCase()
+	 * @see #toLowerCase(CharSequence)
+	 * @see #toTitleCase(CharSequence)
+	 */
+	public static String toUpperCase(CharSequence charSeq) {
+		return charSeq.toString().toUpperCase();
+	}
+
+	/**
+	 * <p>
+	 * Changes the given text to title case. That is, the text will be changed
+	 * to lower case, except for the first character of each word, which will be
+	 * changed to upper case.
+	 * </p>
+	 * <p>
+	 * Here, a word is not necessarily alphanumeric, but may be any sequence of
+	 * non-whitespace characters.
+	 * </p>
+	 * 
+	 * @param charSeq
+	 *            the text to change
+	 * @return a title case copy of the text
+	 * @see #toTitleCase(CharSequence, int)
+	 * @see #toLowerCase(CharSequence)
+	 * @see #toUpperCase(CharSequence)
+	 */
+	public static String toTitleCase(CharSequence charSeq) {
+		return toTitleCase(charSeq, Integer.MAX_VALUE);
+	}
+
+	/**
+	 * Changes the given text to title case, capitalizing words up to the
+	 * specified limit. That is, this method behaves just like the
+	 * single-argument version, except that any words beyond the limit will not
+	 * be capitalized. They will still be changed to lower case, however.
+	 * 
+	 * @param charSeq
+	 *            the text to change
+	 * @param limit
+	 *            the maximum number of words to capitalize
+	 * @return a title case copy of the text
+	 * @see #toTitleCase(CharSequence)
+	 */
+	public static String toTitleCase(CharSequence charSeq, int limit) {
+		if(limit < 0)
+			throw new IllegalArgumentException("The limit may not be negative.");
+		StringBuffer sb = new StringBuffer();
+		Matcher m = NON_WHITESPACE_PATTERN.matcher(toLowerCase(charSeq));
+		while(m.find() && --limit >= 0)
+			m.appendReplacement(sb, m.group(1).toUpperCase() + m.group(2));
+		m.appendTail(sb);
+		return sb.toString();
+	}
 
 	/**
 	 * Returns a string containing the given character repeated a specified

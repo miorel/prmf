@@ -21,28 +21,25 @@ public class IOThread extends Thread {
 	private String botName;
 	private SettingsFileParser settings;
 	
-	public IOThread(SettingsFileParser settings) throws Exception
-	{
+	public IOThread(SettingsFileParser settings) throws Exception {
 		this.settings = settings;
-		this.setName("I/O");
+		this.setName("I/O"); //TODO use super() constructor to do this
 		makeSocket();
-		inputStream = soc.getInputStream();
-		printStream = new PrintStream(soc.getOutputStream());
-		list = new ArrayList<Listener>();
+		inputStream = soc.getInputStream(); //TODO be consistent, qualify everything with "this"
+		printStream = new PrintStream(soc.getOutputStream()); //TODO be consistent, qualify everything with "this"
+		list = new ArrayList<Listener>(); //TODO be consistent, qualify everything with "this"
 		this.channel = settings.getChannel();
 		this.botName = settings.getBotName();
 		
 	}
 	
 	@Override
-	public void run()
-	{
+	public void run() {
 		printStream.println("NICK " + this.botName); 
 		printStream.println("USER " + this.botName + " 12 * " + this.botName);
 		printStream.println("JOIN " + channel);
 		Scanner in = new Scanner(inputStream);
-		while(in.hasNextLine())
-		{
+		while(in.hasNextLine()) {
 			String line = in.nextLine();
 			System.out.println("<<<< " + line);
 			for(Listener l : list)
@@ -50,9 +47,8 @@ public class IOThread extends Thread {
 		}
 	}
 	
-	public void ceaseTimer()
-	{
-		for(Listener l : list)
+	public void ceaseTimer() {
+		for(Listener l: list)
 			l.timerMessage();
 	}
 	
@@ -61,22 +57,19 @@ public class IOThread extends Thread {
 	}
 	
 	// TODO reimplement this method using the other sendMessage()
-	public void sendMessage(String destination, String message) 
-	{
+	public void sendMessage(String destination, String message) {
 		printStream.println("PRIVMSG "+destination+" :"+message);
 		System.out.println(">>>> " + "PRIVMSG "+destination+" :"+message);
 	}
 	
 	// TODO rename this method; current name is inaccurate
-	public void sendMessage(String command, String destination, String message)
-	{
+	public void sendMessage(String command, String destination, String message) {
 		printStream.println(command+" "+destination+" "+message);
 		System.out.println(">>>> " + command+" "+destination+" "+message);
 	}
 	
 	// TODO reimplement this method using sendMessage()
-	public void sendPONG(String[] msg)
-	{
+	public void sendPONG(String[] msg) {
 		msg[0] = "PONG";
 		
 		String concat = Strings.join(' ', iterator(msg)); 
@@ -85,18 +78,16 @@ public class IOThread extends Thread {
 		System.out.println(">>>> " + concat);
 	}
 	
-	public String getChannel()
-	{
+	public String getChannel() {
 		return channel;
 	}
-	
-	public SettingsFileParser getSettings()
-	{
+
+	public SettingsFileParser getSettings() {
 		return settings;
 	}
-	
-	private void makeSocket() throws IOException
-	{
+
+	private void makeSocket() throws IOException {
+		//TODO this could even go directly in the constructor...
 		soc = new Socket(getSettings().getServer(), getSettings().getPort());
 	}
 }

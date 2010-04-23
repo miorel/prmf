@@ -46,10 +46,10 @@ public class Postgame implements MafiaGameState {
 		
 		StringBuilder ret = new StringBuilder();
 		ret.append("Team ");
-		for(Team team: teamsWon)
-		{
-				ret.append(" " + team.getName());
-				ret.append(" consisting of: " + team.getPlayers());
+		for(Team team : teamsWon) {
+			//TODO don't + when you append()
+			ret.append(" " + team.getName());
+			ret.append(" consisting of: " + team.getPlayers());
 		}
 		ret.append(" has won!");
 		inputOutputThread.sendMessage(inputOutputThread.getChannel(),ret.toString());

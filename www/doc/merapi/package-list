@@ -1,4 +1,7 @@
 com.googlecode.prmf.merapi.dp
 com.googlecode.prmf.merapi.event
+com.googlecode.prmf.merapi.math
+com.googlecode.prmf.merapi.nio
+com.googlecode.prmf.merapi.thread
 com.googlecode.prmf.merapi.util
 com.googlecode.prmf.merapi.util.iterators

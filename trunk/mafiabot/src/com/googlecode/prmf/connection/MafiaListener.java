@@ -157,9 +157,8 @@ public class MafiaListener implements Listener {
 
 		}
 	}
-	
-	public void timerMessage()
-	{
+
+	public void timerMessage() {
 		game.stopTimer();
 	}
 }

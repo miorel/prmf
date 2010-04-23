@@ -8,7 +8,8 @@ It has been proposed to make "the troll" mascot of the Programming Team and our 
 
 == For ==
 
-melic, nezb, !SpasticCowboy, mau, zaz, winxordie, pralz
+mau, melic, pralz, nezb, !SpasticCowboy, winxordie, zaz
+
 == Against ==
 
 == Abstaining ==
@@ -17,4 +18,4 @@ rod
 
 == No vote ==
 
-Chemaba, hua, TWW2, wac, 
+Chemaba, hua, TWW2, wac

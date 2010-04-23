@@ -3,8 +3,7 @@ package com.googlecode.prmf.connection;
 public class Main {
 	public static void main(String[] arg) {
 		SettingsFileParser settings;
-		try
-		{
+		try {
 			settings = new SettingsFileParser("settings.txt");
 			settings.parseFile();
 			IOThread inputOutputThread = new IOThread(settings);
@@ -16,8 +15,7 @@ public class Main {
 			inputOutputThread.addListener(disconnectListener);
 			inputOutputThread.start();
 		}
-		catch(Exception e)
-		{
+		catch(Exception e) {
 			e.printStackTrace();
 			return;
 		}

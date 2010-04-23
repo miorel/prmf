@@ -7,8 +7,7 @@ class JesterTeam extends Team {
 	}
 	
 	@Override
-	public boolean hasWon(Player[] players)
-	{
+	public boolean hasWon(Player[] players) {
 		// TODO after each lynch, check if it's a jester who just got lynched~
 		return false;
 	}

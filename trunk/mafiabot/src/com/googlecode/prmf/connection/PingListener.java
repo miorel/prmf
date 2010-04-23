@@ -7,11 +7,9 @@ public class PingListener implements Listener {
 		if(msg[0].equalsIgnoreCase("PING")) {
 			inputThread.sendPONG(msg);
 		}
-
 	}
-	
-	public void timerMessage()
-	{
-		
+
+	public void timerMessage() {
+
 	}
 }

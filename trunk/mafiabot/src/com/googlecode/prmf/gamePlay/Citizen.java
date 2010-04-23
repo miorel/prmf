@@ -10,14 +10,12 @@ class Citizen extends Role {
 	}
 	
 	@Override
-	public void resetNightAction()
-	{
+	public void resetNightAction() {
 		setNightAction(true);
 	}
-	
+
 	@Override
-	public boolean checkNightAction(String message)
-	{
+	public boolean checkNightAction(String message) {
 		return false;
 	}
 
@@ -25,8 +23,7 @@ class Citizen extends Role {
 	}
 	
 	@Override
-	public boolean hasNightAction()
-	{
+	public boolean hasNightAction() {
 		return false;
 	}
 

@@ -52,10 +52,10 @@ class Mafia extends Role {
 			toReturn.append("No target was selected.");
 		return toReturn.toString();
 	}
-	
+
 	@Override
-	public String description()
-	{
+	public String description() {
+		// TODO reimplement using String.format()
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("You are a ").append(getName()).append("! ");
 		toReturn.append("As a ").append(getName()).append(", you get to kill someone every night. You win when the mafia achieve parity with non-mafia. ");

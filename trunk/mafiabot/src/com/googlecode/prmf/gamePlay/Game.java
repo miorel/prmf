@@ -22,22 +22,19 @@ public class Game{
 		setProgress(false);
 	}
 	
-	public void setProgress(boolean set)
-	{
+	public void setProgress(boolean set) {
 		this.inProgress = set;
 	}
-	
-	public boolean isInProgress()
-	{
+
+	public boolean isInProgress() {
 		return inProgress;
 	}
 
-	public void receiveMessage(String line)
-	{
+	public void receiveMessage(String line) {
 		state.receiveMessage(this, line);
 	}
-	public Game(String gameStarter, IOThread inputOutputThread, boolean dayStart, int numMafia)
-	{
+
+	public Game(String gameStarter, IOThread inputOutputThread, boolean dayStart, int numMafia) {
 		this(gameStarter, inputOutputThread);
 	}
  
