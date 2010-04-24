@@ -1,0 +1,6 @@
+#summary People page for Brian Nez
+
+|| Real name || Brian Nez ||
+|| IRC nicks || nez, nezb ||
+|| Also known as || brianez21 ||
+|| Programming languages || Java, PHP, Python ||
