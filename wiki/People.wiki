@@ -2,7 +2,7 @@
 #labels Featured,People
 
   * [MauricioBellAlbero Mauricio Bell'Albero]
-  * TJ Boyd
+  * [TJBoyd TJ Boyd]
   * [WalterCornnell Walter Cornnell]
   * [WillieMaddox Willie Maddox]
   * [MiorelPalii Miorel Palii]
