@@ -1,4 +1,7 @@
 /*
+ * merapi - Multi-purpose Java library
+ * Copyright (C) 2009-2010 Miorel-Lucian Palii <mlpalii@gmail.com>
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
@@ -8,6 +11,9 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
  */
 package com.googlecode.prmf.merapi.math;
 
@@ -15,6 +21,8 @@ import java.math.BigInteger;
 
 /**
  * Some combinatorics formulas.
+ * 
+ * @author Miorel-Lucian Palii
  */
 public class Combinatorics {
 	/**
@@ -30,7 +38,7 @@ public class Combinatorics {
 	 * @param n the number whose factorial to calculate
 	 * @return n factorial
 	 */
-	public BigInteger factorial(int n) {
+	public static BigInteger factorial(int n) {
 		if(n < 0)
 			throw new IllegalArgumentException("Can't calculate the factorial of negative numbers.");
 		BigInteger ret = BigInteger.ONE;
@@ -38,4 +46,33 @@ public class Combinatorics {
 			ret = ret.multiply(BigInteger.valueOf(i));
 		return ret;
 	}
+
+//	// maybe this would be better in a NumberTheory class?
+//	public static UniversalIterator<BigInteger> primes() {
+//		UniversalIterator<BigInteger> ret = new AbstractUniversalIterator<BigInteger>() {
+//			private BigInteger current;
+//			
+//			@Override
+//			public void advance() {
+//				this.current = this.current.nextProbablePrime();
+//			}
+//
+//			@Override
+//			public BigInteger current() {
+//				return this.current;
+//			}
+//
+//			@Override
+//			public boolean isDone() {
+//				return false;
+//			}
+//
+//			@Override
+//			public void reset() {
+//				this.current = BigInteger.valueOf(2);
+//			}	
+//		};
+//		ret.reset();
+//		return ret;
+//	}
 }

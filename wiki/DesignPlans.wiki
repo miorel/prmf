@@ -1,5 +1,5 @@
 #summary Overview of design planning
-#labels Featured,Phase-Design,Phase-Requirements
+#labels Phase-Design,Phase-Requirements
 
 Bot connects to IRC with config file
 Waits for someone to start a mafia game

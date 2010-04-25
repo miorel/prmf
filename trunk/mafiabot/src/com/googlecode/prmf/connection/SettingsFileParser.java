@@ -1,32 +1,46 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ */
 package com.googlecode.prmf.connection;
 
+import static com.googlecode.prmf.merapi.util.Iterators.lines;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.InputStream;
 import java.text.ParseException;
 
 public class SettingsFileParser {
-	private Scanner in;
+	private InputStream in;
 	private String channel;
 	private String botName;
 	private String server;
 	private int port;
 
 	public SettingsFileParser(String filename) throws FileNotFoundException {
-		in = new Scanner(new File(filename));
+		this.in = new FileInputStream(new File(filename));
 	}
 	
 	public SettingsFileParser() throws FileNotFoundException {
-		this("./settings.txt");
+		this("settings.txt");
 	}
 
 	public void parseFile() throws ParseException {
 		int numSettings = 0;
-		while(in.hasNextLine()) {
+		for(String line: lines(in)) {
 
-			
-			
-			String line = in.nextLine();
 			// TODO do the following using a regular expression!
 			int start = 0;
 			for(start = 0; start < line.length(); ++start) {

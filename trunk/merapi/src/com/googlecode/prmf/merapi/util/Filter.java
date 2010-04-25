@@ -1,4 +1,7 @@
 /*
+ * merapi - Multi-purpose Java library
+ * Copyright (C) 2009-2010 Miorel-Lucian Palii <mlpalii@gmail.com>
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
@@ -8,6 +11,9 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
  */
 package com.googlecode.prmf.merapi.util;
 
@@ -23,19 +29,20 @@ package com.googlecode.prmf.merapi.util;
  * obtain the subset of that collection that has some desired property.
  * </p>
  * 
+ * @author Miorel-Lucian Palii
  * @param <T>
  *            type to be filtered
  */
 public interface Filter<T> {
-//	/**
-//	 * A convenience filter that discards any <code>null</code> object.
-//	 */
-//	public static final Filter<Object> NON_NULL = new Filter<Object>() {
-//		@Override
-//		public boolean keep(Object object) {
-//			return object != null;
-//		}
-//	};
+	/**
+	 * A convenience filter that discards any <code>null</code> object.
+	 */
+	public static final Filter<Object> NON_NULL = new Filter<Object>() {
+		@Override
+		public boolean keep(Object object) {
+			return object != null;
+		}
+	};
 
 	/**
 	 * Checks if the given object passes this filter.

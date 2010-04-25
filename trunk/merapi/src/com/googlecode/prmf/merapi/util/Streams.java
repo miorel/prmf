@@ -1,4 +1,7 @@
 /*
+ * merapi - Multi-purpose Java library
+ * Copyright (C) 2009-2010 Miorel-Lucian Palii <mlpalii@gmail.com>
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
@@ -8,12 +11,15 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
  */
 package com.googlecode.prmf.merapi.util;
 
-import java.io.File;
-
 import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,8 +35,12 @@ import java.nio.channels.ReadableByteChannel;
 
 /**
  * Utility methods for manipulating streams and "streamable" objects.
+ * 
+ * @author Miorel-Lucian Palii
  */
 public class Streams {
+	private static final int BUFFER_SIZE = 1 << 12;
+	
 	/**
 	 * There is no need to instantiate this class.
 	 */
@@ -54,30 +64,10 @@ public class Streams {
 	public static void copy(File source, File destination) throws FileNotFoundException, IOException {
 		if(source == null)
 			throw new NullPointerException("The source may not be null.");
-		if(destination == null)
-			throw new NullPointerException("The destination may not be null.");
 		FileInputStream sourceStream = new FileInputStream(source);
-		destination.getParentFile().mkdirs();
-		FileOutputStream destStream = new FileOutputStream(destination);
-		try {
-			FileChannel sourceChannel = sourceStream.getChannel();
-			FileChannel destChannel = destStream.getChannel();
-			destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
-		}
-		finally {
-			try {
-				sourceStream.close();
-			}
-			catch(IOException e) {
-				e.printStackTrace();
-			}
-			try {
-				destStream.close();
-			}
-			catch(IOException e) {
-				e.printStackTrace();
-			}
-		}
+		FileChannel sourceChannel = sourceStream.getChannel();
+		copy(sourceChannel, destination, sourceChannel.size());
+		close(sourceStream);
 	}
 
 	/**
@@ -96,37 +86,32 @@ public class Streams {
 	public static void copy(InputStream source, File destination, long size) throws IOException {
 		if(source == null)
 			throw new NullPointerException("The source may not be null.");
+		copy(Channels.newChannel(source), destination, size);
+	}
+
+	private static void copy(ReadableByteChannel source, File destination, long size) throws IOException {
+		if(source == null)
+			throw new NullPointerException("The source may not be null.");
 		if(destination == null)
 			throw new NullPointerException("The destination may not be null.");
 		if(size < 0)
 			throw new IllegalArgumentException("The size may not be negative.");
-		ReadableByteChannel sourceChannel = Channels.newChannel(source);
 		try {
 			destination.getParentFile().mkdirs();
 			destination.getAbsoluteFile().getParentFile().mkdirs();
 		}
 		catch(Exception e) {}
 		FileOutputStream destStream = new FileOutputStream(destination);
+		FileChannel destChannel = destStream.getChannel();
 		try {
-			FileChannel destChannel = destStream.getChannel();
-			destChannel.transferFrom(sourceChannel, 0, size);
+			destChannel.transferFrom(source, 0, size);
 		}
 		finally {
-			try {
-				source.close();
-			}
-			catch(IOException e) {
-				e.printStackTrace();
-			}
-			try {
-				destStream.close();
-			}
-			catch(IOException e) {
-				e.printStackTrace();
-			}
+			close(source);
+			close(destStream);
 		}
 	}
-
+	
 	/**
 	 * Copies a stream to a file. This method is equivalent to
 	 * <code>Streams.{@linkplain #copy(InputStream,File,long) copy}(source, destination, Long.MAX_VALUE)</code>.
@@ -180,18 +165,13 @@ public class Streams {
 	 */
     public static StringBuilder slurp(Reader reader) throws IOException {
 		StringBuilder ret = new StringBuilder();
-		char[] buf = new char[1 << 12];
+		char[] buf = new char[BUFFER_SIZE];
 		try {
 			for(int n; (n = reader.read(buf)) != -1;)
-				ret.append(new String(buf, 0, n));
+				ret.append(buf, 0, n);
 		}
 		finally {
-			try {
-				reader.close();
-			}
-			catch(IOException e) {
-				e.printStackTrace();
-			}
+			close(reader);
 		}
 		return ret;
 	}
@@ -273,5 +253,21 @@ public class Streams {
 	 */
 	public static StringBuilder slurp(URL url) throws IOException {
 		return slurp(url.openStream());
+	}
+
+	/**
+	 * Closes the given source or destination of data, capturing any thrown
+	 * exception.
+	 * 
+	 * @param closeable
+	 *            the source or destination to close
+	 */
+	public static void close(Closeable closeable) {
+		try {
+			closeable.close();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

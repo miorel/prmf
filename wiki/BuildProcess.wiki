@@ -1,5 +1,5 @@
-#summary How to create and run the MafiaBot
-#labels Featured,Phase-Deploy
+#summary How to compile, package, and run corleone
+#labels Phase-Deploy
 
 = The Basics =
 Packaged with all of the source code is a lovely file entitled "build.xml"; it is the one that will be doing all of the hard work for you. 

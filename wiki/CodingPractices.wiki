@@ -1,5 +1,5 @@
 #summary Some ideas which are endorsed by your BDFL
-#labels Featured,Phase-Implementation,Phase-Design
+#labels Phase-Implementation,Phase-Design
 
 = Declare things as what they're used not as what they are =
 
@@ -40,4 +40,4 @@ We can ask a `Person` object for its age in days or for its birthday. Now right 
 
 Solution? Make everything `private` unless it has a good reason not to be. If (and only if) you need to access some field outside the class, make a getter and possibly a setter method.
 
-To summarize, most of these suggestions summarize to a simple idea: *Write flexible code.* Because you'll almost never get it right the first time :) so you want to make changes as painless as possible.
+To summarize, most of these suggestions boil down to a simple idea: *Write flexible code.* Because you'll almost never get it right the first time :) so you want to make changes as painless as possible.

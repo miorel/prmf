@@ -1,4 +1,4 @@
-#summary Main page of the "SHARK ATTACK" project
+#summary Main page of the SHARK ATTACK project
 #labels Projects
 
 _Keep in mind that all of this is subject to change (but fairly certain)_
