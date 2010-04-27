@@ -1,4 +1,5 @@
 #summary People page for Willie Maddox
+#labels People
 
 || *Real name* || Willie George Maddox III ||
 || *Goes by* || Willie, Wilbur, Willis, Will, Willzie, William, Willur ||

@@ -46,33 +46,4 @@ public class Combinatorics {
 			ret = ret.multiply(BigInteger.valueOf(i));
 		return ret;
 	}
-
-//	// maybe this would be better in a NumberTheory class?
-//	public static UniversalIterator<BigInteger> primes() {
-//		UniversalIterator<BigInteger> ret = new AbstractUniversalIterator<BigInteger>() {
-//			private BigInteger current;
-//			
-//			@Override
-//			public void advance() {
-//				this.current = this.current.nextProbablePrime();
-//			}
-//
-//			@Override
-//			public BigInteger current() {
-//				return this.current;
-//			}
-//
-//			@Override
-//			public boolean isDone() {
-//				return false;
-//			}
-//
-//			@Override
-//			public void reset() {
-//				this.current = BigInteger.valueOf(2);
-//			}	
-//		};
-//		ret.reset();
-//		return ret;
-//	}
 }

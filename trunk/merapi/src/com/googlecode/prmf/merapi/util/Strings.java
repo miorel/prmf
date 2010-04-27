@@ -17,10 +17,13 @@
  */
 package com.googlecode.prmf.merapi.util;
 
+import static com.googlecode.prmf.merapi.util.Iterators.chars;
 import static com.googlecode.prmf.merapi.util.Iterators.iterator;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -321,30 +324,30 @@ public class Strings {
 		return join(Character.toString(separator), charSeqs);
 	}
 
-//	/**
-//	 * <p>
-//	 * Checks if the given text is a single line. A piece of text is a single
-//	 * line if it contains no line separator characters.
-//	 * <p>
-//	 * </p>
-//	 * Note that by this definition, a piece of text containing a single line
-//	 * separator and at the last position will be flagged as multi-line. If this
-//	 * is undesired, trim the text before passing it to this method.</p>
-//	 * 
-//	 * @param charSeq
-//	 *            the text to check
-//	 * @return whether the text contains any line separator characters
-//	 */
-//	public static boolean isSingleLine(CharSequence charSeq) {
-//		boolean ret = true;
-//		for(Character c: chars(charSeq))
-//			if(Character.getType(c.charValue()) == Character.LINE_SEPARATOR) {
-//				ret = false;
-//				break;
-//			}
-//		return ret;
-//	}
-//
+	/**
+	 * <p>
+	 * Checks if the given text is a single line. A piece of text is a single
+	 * line if it contains no line separator characters.
+	 * <p>
+	 * </p>
+	 * Note that by this definition, a piece of text containing a single line
+	 * separator and at the last position will be flagged as multi-line. If this
+	 * is undesired, trim the text before passing it to this method.</p>
+	 * 
+	 * @param charSeq
+	 *            the text to check
+	 * @return whether the text contains any line separator characters
+	 */
+	public static boolean isSingleLine(CharSequence charSeq) {
+		boolean ret = true;
+		for(Character c: chars(charSeq))
+			if(Character.getType(c.charValue()) == Character.LINE_SEPARATOR) {
+				ret = false;
+				break;
+			}
+		return ret;
+	}
+
 //	/**
 //	 * Escapes any strings in the given text that have a special meaning in XML.
 //	 * For example, the quote character (&quot;) is replaced with
@@ -363,23 +366,23 @@ public class Strings {
 //		m.appendTail(sb);
 //		return sb.toString();
 //	}
-//
-//	/**
-//	 * Translates a string into <code>application/x-www-form-urlencoded</code>
-//	 * format using the UTF-8 encoding scheme.
-//	 * 
-//	 * @param charSeq
-//	 *            the text to translate
-//	 * @return a translated string
-//	 */
-//	public static String encodeUtf8(CharSequence charSeq) {
-//		try {
-//			return URLEncoder.encode(charSeq.toString(), "UTF-8");
-//		}
-//		catch(UnsupportedEncodingException e) {
-//			throw new Error("The UTF-8 encoding is not supported!", e);
-//		}
-//	}
+
+	/**
+	 * Translates a string into <code>application/x-www-form-urlencoded</code>
+	 * format using the UTF-8 encoding scheme.
+	 * 
+	 * @param charSeq
+	 *            the text to translate
+	 * @return a translated string
+	 */
+	public static String encodeUtf8(CharSequence charSeq) {
+		try {
+			return URLEncoder.encode(charSeq.toString(), "UTF-8");
+		}
+		catch(UnsupportedEncodingException e) {
+			throw new Error("The UTF-8 encoding is not supported!", e);
+		}
+	}
 
 	/**
 	 * <p>

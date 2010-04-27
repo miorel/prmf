@@ -20,6 +20,7 @@ package com.googlecode.prmf.merapi.event;
 /**
  * Object representation of an event.
  * 
+ * @author Miorel-Lucian Palii
  * @param <T>
  *            type of listeners on which this event may be triggered
  */

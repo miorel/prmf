@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * Keeps a set of event listeners and distributes events to them.
  * 
+ * @author Miorel-Lucian Palii
  * @param <L>
  *            type of listeners managed
  */

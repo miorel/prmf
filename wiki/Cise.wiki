@@ -1,0 +1,30 @@
+#summary About the computing resources of the Department of Computer & Information Science & Engineering
+
+As students in the [http://www.cise.ufl.edu/ Department of Computer & Information Science & Engineering], or *CISE* for short, many of us have access to the computing resources it graciously provides:
+
+= *nix Shell Access =
+
+== CPU Servers ==
+
+|| *Machine* || *Output of `uname -a`* ||
+|| bay || SunOS bay 5.8 Generic_117350-39 sun4u sparc SUNW,Ultra-80 ||
+|| eclipse || SunOS eclipse 5.8 Generic_117350-39 sun4u sparc SUNW,Ultra-Enterprise ||
+|| rain || SunOS rain 5.8 Generic_117350-39 sun4u sparc SUNW,Sun-Fire-V240 ||
+|| sand || SunOS sand 5.8 Generic_117350-39 sun4u sparc SUNW,Sun-Fire-V240 ||
+|| storm || Linux storm 2.6.24-26-generic #1 SMP Tue Dec 1 17:55:03 UTC 2009 x86_64 GNU/Linux ||
+|| thunder || Linux thunder 2.6.28-18-generic #60-Ubuntu SMP Fri Mar 12 04:26:47 UTC 2010 x86_64 GNU/Linux ||
+
+_This section is a stub. Wanna improve it?_
+
+= Personal Website =
+
+Execute the following commands:
+
+{{{
+mkdir ~/public_html
+chmod go+x ~/public_html
+echo "Hello World!" > ~/public_html/hello.txt
+chmod go+r ~/public_html/hello.txt
+}}}
+
+_This section is a stub. Wanna improve it?_

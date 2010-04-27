@@ -19,6 +19,8 @@ package com.googlecode.prmf.merapi.event;
 
 /**
  * Label interface marking the implementer as a listener for events.
+ * 
+ * @author Miorel-Lucian Palii
  */
 public interface EventListener {
 }

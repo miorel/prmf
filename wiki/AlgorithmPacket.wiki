@@ -1,0 +1,9 @@
+#summary About our algorithm packet for ACM ICPC and other programming contests
+#labels Projects
+
+{{{
+svn co http://prmf.googlecode.com/svn/trunk/algo/
+cd algo
+pdflatex algo.tex
+pdflatex algo.tex
+}}}
