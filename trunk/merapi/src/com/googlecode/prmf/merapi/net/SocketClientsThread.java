@@ -29,7 +29,6 @@ import com.googlecode.prmf.merapi.nio.SelectingThread;
  * @author Miorel-Lucian Palii
  */
 public class SocketClientsThread extends SelectingThread {
-
 	/**
 	 * Allocates a new socket clients thread. The thread will use the system-wide
 	 * default selector provider.

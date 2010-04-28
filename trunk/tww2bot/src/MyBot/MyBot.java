@@ -6,43 +6,36 @@ public class MyBot extends PircBot {
 	private boolean joining = false;
 	private ArrayList<String> playerList = new ArrayList<String>();
 	private boolean inGame = false;
-	private String myName = new String("TestTWW2Bot");
-    private String ownName = new String("TWW2");
-	private String[] chans = {"#UFPT", "#TWW2"};
-	private int[] finchCount = new int[2];
+	private String myName = "TestTWW2Bot";
+    private String ownName = "TWW2";
+	private String[] chans = {"#ufpt", "#TWW2"};
+	private int[] finchCount;// = new int[2];
 	private long[] finchTime = new long[2];
     private long time = System.currentTimeMillis();
-    private int[] jokeInfo = new int[2];
-    private String[][] JOKE_MES = new String[6][2];
+    private int[] jokeInfo;// = new int[2];
+    private String[][] JOKE_MES;// = new String[6][2];
     //private ArrayList<String> opList = new ArrayList<String>();
     //private ArrayList<String> voiceList = new ArrayList<String>();
     private ArrayList<String> chansAmOp = new ArrayList<String>();
     
-    public MyBot() 
-    {
+    public MyBot() {
         this.setName(myName);
+    	JOKE_MES = new String[][] {
+    		new String[] {"yoojuss", "yoojuss lossduhgame!"},
+    		new String[] {"nobody", ""},
+    		new String[] {"orange", "Orange you glad I didn't program the whole joke?"},
+	    	new String[] {"under", "Ha ha! I made you say underwe... wait..."},
+	    	new String[] {"figs", "Figs your doorbell! It's broken!"},
+	    	new String[] {"TWW2Bot", getMyVersion()},
+    	};
     }
     
     public void onConnect()
     {
     	//opList.add(ownName);
     	//voiceList.add(ownName);
-    	jokeInfo[0] = 0;
-    	jokeInfo[1] = 0;
-    	JOKE_MES[0][0] = "yoojuss";
-    	JOKE_MES[0][1] = "yoojuss lossduhgame!";
-    	JOKE_MES[1][0] = "nobody";
-    	JOKE_MES[1][1] = "";
-    	JOKE_MES[2][0] = "orange";
-    	JOKE_MES[2][1] = "Orange you glad I didn't program the whole joke?";
-    	JOKE_MES[3][0] = "under";
-    	JOKE_MES[3][1] = "Ha ha! I made you say underwe... wait...";
-    	JOKE_MES[4][0] = "figs";
-    	JOKE_MES[4][1] = "Figs your doorbell! It's broken!";
-    	JOKE_MES[5][0] = "TWW2Bot";
-    	JOKE_MES[5][1] = getMyVersion();
-    	finchCount[0] = 0;
-    	finchCount[1] = 0;
+    	jokeInfo = new int[2];
+    	finchCount = new int[2];
     }
     
     public void onMessage(String channel, String sender, String login, String hostname, String message) 
@@ -109,7 +102,7 @@ public class MyBot extends PircBot {
         }
         
         //Version message
-        else if (message.equalsIgnoreCase("!Version"))
+        else if (message.equalsIgnoreCase("!version"))
         {
         	sendMessage(channel, getMyVersion());
         }
@@ -154,16 +147,15 @@ public class MyBot extends PircBot {
         else if (message.equalsIgnoreCase("!roll"))
         {
         	int roll = getRandom(1,20);
-        	sendMessage(channel, sender + " rolls a " + Integer.toString(roll));
+        	sendMessage(channel, sender + " rolls a " + roll);
         }
         
         //Just Joking around
         else if (message.equalsIgnoreCase("!joke"))
         {
         	int prevJoke = jokeInfo[0];
-        	do{
-        		jokeInfo[0] = getRandom(0,5);
-        	}while(prevJoke == jokeInfo[0]);
+        	do jokeInfo[0] = getRandom(0, 5);
+        	while(prevJoke == jokeInfo[0]);
         	jokeInfo[1] = 1;
         	sendMessage(channel, "Knock knock!");      		
         }
@@ -330,30 +322,11 @@ public class MyBot extends PircBot {
         	//	voiceList.remove(message.substring(13));
         }
     }
-    /**
-    public void onJoin(String channel, String sender, String login, String hostname) 
-    {
-    	if(sender.equalsIgnoreCase(myName))
-    	{
-    		sendMessage(channel, "Finchley Central");
-    		finchCount++;
-    		finchTime = System.currentTimeMillis();
-    	}
-    }
-    */
 
-    public void onOp(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
-    {
+    public void onOp(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
     	if(recipient.equalsIgnoreCase(myName))
     	{
     		chansAmOp.add(channel);
-    		/**	OPKICK
-    		sendMessage(channel, "NOW I AM IN CONTROL!");
-    		if(isOnList(ownName, getUserNicks(getUsers(channel))))
-    		{
-    			kick(channel, ownName);
-    		}
-    		*/
     	}
     } 
 
@@ -452,14 +425,7 @@ public class MyBot extends PircBot {
     
     public boolean isOnList(String name, String[] list)
     {
-    	for(int i=0; i < list.length; i++)
-    	{
-    		if(list[i].equalsIgnoreCase(name))
-    		{
-    			return true;
-    		}
-    	}
-    	return false;
+    	return isOnList(name, java.util.Arrays.asList(list));
     }
     
     public int stringArrayIndexOf(String[] array, String obj)
@@ -472,22 +438,15 @@ public class MyBot extends PircBot {
     	return -1;
     }
     
-    public boolean isOnList(String name, ArrayList<String> list)
+    public boolean isOnList(String name, List<String> list)
     {
-    	for(int i=0; i < list.size(); i++)
-    	{
-    		if(list.get(i).equalsIgnoreCase(name))
-    		{
-    			return true;
-    		}
-    	}
-    	return false;
+    	return list.contains(name);
     }
     
     public String getMyVersion()
     {
-    	String myV = "TWW2Bot Version 0.1 running ";
+    	String myV = "TWW2Bot version 0.1.1 running ";
     	String theirV = getVersion();
-    	return (myV + theirV);
+    	return myV + theirV;
     }
 }

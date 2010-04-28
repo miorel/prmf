@@ -90,7 +90,7 @@ public class Strings {
 //	 * the lazy, something like
 //	 * <code>regex(reverse(sort("the", "the game"))</code> will do the trick.
 //	 * (You'll need to
-//	 * <code>import static {@linkplain com.googlecode.lawu.util.Iterators}.*</code>.)
+//	 * <code>import static {@linkplain com.googlecode.prmf.merapi.util.Iterators}.*</code>.)
 //	 * </p>
 //	 * 
 //	 * @param charSeqs

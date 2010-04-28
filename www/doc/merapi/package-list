@@ -3,6 +3,9 @@ com.googlecode.prmf.merapi.event
 com.googlecode.prmf.merapi.math
 com.googlecode.prmf.merapi.net
 com.googlecode.prmf.merapi.net.event
+com.googlecode.prmf.merapi.net.irc
+com.googlecode.prmf.merapi.net.irc.cmd
+com.googlecode.prmf.merapi.net.irc.event
 com.googlecode.prmf.merapi.net.log
 com.googlecode.prmf.merapi.net.www
 com.googlecode.prmf.merapi.nio

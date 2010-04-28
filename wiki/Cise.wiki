@@ -2,7 +2,7 @@
 
 As students in the [http://www.cise.ufl.edu/ Department of Computer & Information Science & Engineering], or *CISE* for short, many of us have access to the computing resources it graciously provides:
 
-= *nix Shell Access =
+= `*`nix Shell Access =
 
 == CPU Servers ==
 

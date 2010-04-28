@@ -76,6 +76,7 @@ import com.googlecode.prmf.merapi.nio.Registrar;
  * </p>
  * 
  * @author Miorel-Lucian Palii
+ * @see SocketClientsThread
  */
 public abstract class SocketClient {
 	/**
