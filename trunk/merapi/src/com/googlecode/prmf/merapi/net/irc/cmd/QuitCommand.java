@@ -26,8 +26,8 @@ import com.googlecode.prmf.merapi.util.Iterators;
 import com.googlecode.prmf.merapi.util.iterators.UniversalIterator;
 
 /**
- * A command to quit IRC>
- * 
+ * A command to quit IRC.
+ *
  * @author Miorel-Lucian Palii
  */
 public class QuitCommand extends AbstractIrcCommand implements IncomingIrcCommand {
@@ -35,14 +35,13 @@ public class QuitCommand extends AbstractIrcCommand implements IncomingIrcComman
 
 	/**
 	 * Builds a quit command with the specified message.
-	 * 
+	 *
 	 * @param message
 	 *            the quit message
 	 */
 	public QuitCommand(String message) {
-		if(message != null && message.isEmpty())
-			message = null;
-		this.message = message;
+		// Replace an empty message with null.
+		this.message = message != null && message.isEmpty() ? null : message;
 		validateMessage(message, false);
 	}
 
@@ -55,7 +54,7 @@ public class QuitCommand extends AbstractIrcCommand implements IncomingIrcComman
 
 	/**
 	 * Gets this command's message.
-	 * 
+	 *
 	 * @return this command's message, or <code>null</code if it doesn't have
 	 *         one
 	 */
@@ -65,7 +64,7 @@ public class QuitCommand extends AbstractIrcCommand implements IncomingIrcComman
 
 	/**
 	 * Checks whether this command has a message.
-	 * 
+	 *
 	 * @return whether this command has a message
 	 */
 	public boolean hasMessage() {
@@ -84,7 +83,7 @@ public class QuitCommand extends AbstractIrcCommand implements IncomingIrcComman
 
 	/**
 	 * Builds an IRC quit command using the specified parameters.
-	 * 
+	 *
 	 * @param param
 	 *            the command parameters
 	 * @return an IRC quit command
@@ -93,14 +92,14 @@ public class QuitCommand extends AbstractIrcCommand implements IncomingIrcComman
 		validateParam(param, 0, 1);
 		return new QuitCommand(param.length == 0 ? null : param[0]);
 	}
-	
+
 	@Override
 	public IrcEvent<QuitCommand> getEvent(final IrcClient client, final Entity origin) {
 		return new AbstractIrcEvent<QuitCommand>(client, origin, this) {
 			@Override
 			protected void doTrigger(IrcEventListener listener) {
 				listener.quitEvent(this);
-			}		
+			}
 		};
 	}
 }

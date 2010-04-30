@@ -1,9 +1,122 @@
 #summary About our algorithm packet for ACM ICPC and other programming contests
 #labels Projects
 
+= Compiling the Packet =
+
+The algorithm packet was prepared using LaTeX. Assuming you have the `svn` and `pdflatex` commands (which you should if your system is _cool_), you can execute the following to build a pdf file:
+
 {{{
 svn co http://prmf.googlecode.com/svn/trunk/algo/
 cd algo
 pdflatex algo.tex
 pdflatex algo.tex
+pdflatex algo.tex
 }}}
+
+That is not a typo, you _do_ have to execute the last command three times. Though intermediate pdfs might be created, they will probably be broken. Multiple compilations of the LaTeX source ensure, among other things, that the table of contents is properly generated.
+
+To make someone else decide how many times to compile the source, get [http://iml.univ-mrs.fr/~beffara/soft/rubber/ Rubber]. Then you can:
+
+{{{
+svn co http://prmf.googlecode.com/svn/trunk/algo/
+cd algo
+rubber --pdf algo.tex
+}}}
+
+= Packet Table of Contents =
+
+Here is the table of contents of the latest version of the algorithm packet. (Developers: you can get this in Google Code wiki format by using the `get_toc.pl` script included with the packet source.)
+
+  # Regular expressions
+   # Syntax summary
+   # How many backslashes?
+   # Examples
+    # Collapse whitespace
+    # Find tigers!
+    # Check for a valid e-mail address (not comprehensive)
+    # Word count
+    # Collapse duplicate characters
+    # Increment all integers in some text
+    # Check if an integer is even
+    # Multiply by two
+   # Quantifiers: greedy vs. non-greedy
+  # Math
+   # Combinatorics
+    # Factorial
+    # Permutations
+    # Combinations
+    # Miscellaneous choosing
+   # Linear algebra
+    # Cramer's rule
+   # Geometry
+    # Pythagorean theorem and distance between two points
+    # Circle equation, given three points
+    # Polygon area, given vertex coordinates
+    # Polygon area on an integer grid (Pick's theorem)
+    # Quadrilateral area, given side lengths (Bretschneider's formula and Brahmagupta's formula)
+    # Triangle area, given side lengths (Heron's formula)
+    # Convex hull (Graham scan)
+    # Miscellaneous theorems
+   # Number theory
+    # Definitions
+    # Greatest common divisor and least common multiple
+    # The extended Euclidean algorithm
+    # Finding primes
+    # Prime factorization
+    # Number-theoretic functions
+    # Miscellaneous formulas
+  # Dynamic programming
+   # Introduction
+   # The knapsack problem
+    # Greedy solution when fractional items are allowed
+    # 0-1 knapsack
+    # Unbounded knapsack
+   # Longest common substring
+   # Longest common subsequence
+   # Longest increasing subsequence
+   # Maximum subsequence sum
+  # Graph theory
+   # Introduction
+   # Graph Representation
+    # Adjacency Matrix
+    # Adjacency List
+   # Basic Traversal techniques
+    # Breadth First Search
+    # Depth First Search
+   # Minimum Spanning Tree
+   # Shortest Path
+    # Dijkstra's single source shortest path
+    # Floyd Warshall All pairs shortest path
+   # Random graph theory stuff that doesn't fit anywhere else
+  # Miscellaneous
+   # Integer sequences
+    # Fibonacci numbers
+    # Mersenne primes
+    # Perfect numbers
+    # Triangular numbers
+    # Pentagonal numbers
+    # Hexagonal numbers
+    # Octahedral numbers
+    # Catalan numbers
+    # Carmichael numbers
+   # Strings
+    # Letter count (case-insensitive)
+   # Arrays
+    # Compare two arrays
+    # Reverse (in place)
+    # Next permutation (in place)
+   # Card games
+    # Poker hand ranking
+  # The key to success
+   # The contest started. What do I do?
+   # My submission wasn't accepted
+    # Did you read the problem?
+    # Does your code pass the examples?
+    # Compile error
+    # Runtime error
+    # Time limit exceeded
+    # Memory limit exceeded
+    # Excessive output
+    # Presentation error / Output format error
+    # Wrong answer
+   # Strategy

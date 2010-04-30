@@ -17,10 +17,6 @@
  */
 package com.googlecode.prmf.merapi.net.www;
 
-import java.io.IOException;
-import java.net.URL;
-
-import com.googlecode.prmf.merapi.util.Streams;
 import com.googlecode.prmf.merapi.util.Strings;
 
 /**
@@ -29,19 +25,15 @@ import com.googlecode.prmf.merapi.util.Strings;
  * 
  * @author Miorel-Lucian Palii
  */
-public class TinyUrl implements UrlShortener {
+public class TinyUrl extends AbstractUrlShortener {
 	/**
 	 * Constructs a new URL shortener.
 	 */
 	public TinyUrl() {
 	}
-	
+
 	@Override
-	public String shorten(CharSequence longUrl) throws IOException {
-		String longUrlStr = longUrl.toString();
-		if(longUrlStr.indexOf("://") < 0)
-			longUrlStr = "http://" + longUrl;
-		String requestUrl = String.format("http://tinyurl.com/api-create.php?url=%s", Strings.encodeUtf8(longUrlStr));
-		return Streams.slurp(new URL(requestUrl)).toString().trim();
+	protected String getRequestUrl(String longUrl) {
+		return String.format("http://tinyurl.com/api-create.php?url=%s", Strings.encodeUtf8(longUrl));
 	}
 }

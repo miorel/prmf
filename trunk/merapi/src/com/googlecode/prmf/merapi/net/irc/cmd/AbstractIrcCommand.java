@@ -22,7 +22,7 @@ import com.googlecode.prmf.merapi.util.Strings;
 /**
  * Some library methods facilitating validation in IRC commands. Subclass this
  * class to get them.
- * 
+ *
  * @author Miorel-Lucian Palii
  */
 public abstract class AbstractIrcCommand implements IrcCommand {
@@ -34,7 +34,7 @@ public abstract class AbstractIrcCommand implements IrcCommand {
 
 	/**
 	 * Validates an IRC nick.
-	 * 
+	 *
 	 * @param nick
 	 *            the nick to validate
 	 */
@@ -44,7 +44,7 @@ public abstract class AbstractIrcCommand implements IrcCommand {
 
 	/**
 	 * Validates an IRC channel name.
-	 * 
+	 *
 	 * @param channel
 	 *            the channel name to validate
 	 */
@@ -54,7 +54,7 @@ public abstract class AbstractIrcCommand implements IrcCommand {
 
 	/**
 	 * Validates an IRC "message" e.g.&nbsp;a part message, a kick message, etc.
-	 * 
+	 *
 	 * @param message
 	 *            the message to validate
 	 * @param required
@@ -66,7 +66,7 @@ public abstract class AbstractIrcCommand implements IrcCommand {
 
 	/**
 	 * Validates a parameter array.
-	 * 
+	 *
 	 * @param param
 	 *            the parameter array to validate
 	 * @param size
@@ -78,7 +78,7 @@ public abstract class AbstractIrcCommand implements IrcCommand {
 
 	/**
 	 * Validates a parameter array.
-	 * 
+	 *
 	 * @param param
 	 *            the parameter array to validate
 	 * @param minSize
@@ -93,12 +93,12 @@ public abstract class AbstractIrcCommand implements IrcCommand {
 			throw new IllegalArgumentException("The parameter array had unexpected size.");
 		for(String p: param)
 			if(p == null)
-				throw new NullPointerException("Null parameter not allowed.");	
+				throw new NullPointerException("Null parameter not allowed.");
 	}
 
 	/**
 	 * Validates some string.
-	 * 
+	 *
 	 * @param identifier
 	 *            a description of what is being validated for use in exception
 	 *            messages

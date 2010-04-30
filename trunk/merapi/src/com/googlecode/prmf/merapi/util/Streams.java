@@ -29,9 +29,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Stack;
 
 /**
  * Utility methods for manipulating streams and "streamable" objects.
@@ -40,6 +42,9 @@ import java.nio.channels.ReadableByteChannel;
  */
 public class Streams {
 	private static final int BUFFER_SIZE = 1 << 12;
+	
+	private static final Stack<char[]> bufferStore = new Stack<char[]>();
+	private static final int MAX_BUFFERS_TO_STORE = 4;
 	
 	/**
 	 * There is no need to instantiate this class.
@@ -59,7 +64,7 @@ public class Streams {
 	 *             cannot be opened for writing
 	 * @throws IOException
 	 *             if another I/O error occurs
-	 * @see #copy(InputStream, File)
+	 * @see #copy(InputStream,File)
 	 */
 	public static void copy(File source, File destination) throws FileNotFoundException, IOException {
 		if(source == null)
@@ -81,7 +86,7 @@ public class Streams {
 	 *            the maximum number of bytes to copy
 	 * @throws IOException
 	 *             if an I/O error occurs
-	 * @see #copy(InputStream, File)
+	 * @see #copy(InputStream,File)
 	 */
 	public static void copy(InputStream source, File destination, long size) throws IOException {
 		if(source == null)
@@ -122,7 +127,7 @@ public class Streams {
 	 *            where to write to
 	 * @throws IOException
 	 *             if an I/O error occurs
-	 * @see #copy(File, File)
+	 * @see #copy(File,File)
 	 */
 	public static void copy(InputStream source, File destination) throws IOException {
 		copy(source, destination, Long.MAX_VALUE);
@@ -142,6 +147,7 @@ public class Streams {
 	 * @see #slurp(Reader)
 	 * @see #slurp(String)
 	 * @see #slurp(URL)
+	 * @see #slurp(URLConnection)
 	 */
     public static StringBuilder slurp(InputStream stream) throws IOException {
     	return slurp(new InputStreamReader(stream));
@@ -162,17 +168,31 @@ public class Streams {
 	 * @see #slurp(InputStream)
 	 * @see #slurp(String)
 	 * @see #slurp(URL)
+	 * @see #slurp(URLConnection)
 	 */
     public static StringBuilder slurp(Reader reader) throws IOException {
 		StringBuilder ret = new StringBuilder();
-		char[] buf = new char[BUFFER_SIZE];
+		char[] buf;
+		
+		// Try getting a buffer from the store if possible.
+		synchronized(bufferStore) {
+			buf = bufferStore.isEmpty() ? new char[BUFFER_SIZE] : bufferStore.pop(); 
+		}
+		
 		try {
 			for(int n; (n = reader.read(buf)) != -1;)
 				ret.append(buf, 0, n);
 		}
 		finally {
 			close(reader);
+			
+			// Add it to the store unless we already have some.
+			synchronized(bufferStore) {
+				if(bufferStore.size() < MAX_BUFFERS_TO_STORE)
+					bufferStore.push(buf);
+			}
 		}
+		
 		return ret;
 	}
 
@@ -192,6 +212,7 @@ public class Streams {
 	 * @see #slurp(Reader)
 	 * @see #slurp(String)
 	 * @see #slurp(URL)
+	 * @see #slurp(URLConnection)
 	 */
 	public static StringBuilder slurp(File file) throws FileNotFoundException, IOException {
 		return slurp(new FileInputStream(file));
@@ -211,6 +232,7 @@ public class Streams {
 	 * @see #slurp(Reader)
 	 * @see #slurp(String)
 	 * @see #slurp(URL)
+	 * @see #slurp(URLConnection)
 	 */
 	public static StringBuilder slurp(FileDescriptor fd) throws IOException {
 		return slurp(new FileInputStream(fd));
@@ -231,6 +253,7 @@ public class Streams {
 	 * @see #slurp(InputStream)
 	 * @see #slurp(Reader)
 	 * @see #slurp(URL)
+	 * @see #slurp(URLConnection)
 	 */
 	public static StringBuilder slurp(String path) throws FileNotFoundException, IOException {
 		return slurp(new FileInputStream(path));
@@ -250,9 +273,30 @@ public class Streams {
 	 * @see #slurp(InputStream)
 	 * @see #slurp(Reader)
 	 * @see #slurp(String)
+	 * @see #slurp(URLConnection)
 	 */
 	public static StringBuilder slurp(URL url) throws IOException {
 		return slurp(url.openStream());
+	}
+	
+	/**
+	 * Reads the entire contents of a resource into a buffer.
+	 * 
+	 * @param connection
+	 *            a connection to the resource to read
+	 * @return a buffer containing the contents of the resource
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 * @see Iterators#lines(URLConnection)
+	 * @see #slurp(File)
+	 * @see #slurp(FileDescriptor)
+	 * @see #slurp(InputStream)
+	 * @see #slurp(Reader)
+	 * @see #slurp(String)
+	 * @see #slurp(URL)
+	 */
+	public static StringBuilder slurp(URLConnection connection) throws IOException {
+		return slurp(connection.getInputStream());
 	}
 
 	/**

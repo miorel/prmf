@@ -31,7 +31,7 @@ package com.googlecode.prmf.merapi.util.iterators;
  * propagate through to users of this iterator. Taking advantage of this is
  * discouraged.
  * </p>
- * 
+ *
  * @author Miorel-Lucian Palii
  * @param <T>
  *            type of elements in the list
@@ -39,7 +39,7 @@ package com.googlecode.prmf.merapi.util.iterators;
 public abstract class ListIterator<T> extends AbstractReversibleIterator<T> {
 	private final int begin;
 	private final int end;
-	private final int increment;	
+	private final int increment;
 
 	private int pointer;
 
@@ -49,26 +49,26 @@ public abstract class ListIterator<T> extends AbstractReversibleIterator<T> {
 	 * position is inclusive, the last position is not inclusive. This
 	 * constructor makes it straightforward for subclasses to implement the
 	 * {@link #reverse()} method, as in this example:
-	 * 
+	 *
 	 * <pre>
 	 * public class ExampleListIterator&lt;T&gt; extends ListIterator&lt;T&gt; {
 	 * 	private final ExampleList&lt;T&gt; list;
-	 * 
+	 *
 	 * 	public ExampleListIterator(ExampleList&lt;T&gt; list) {
 	 * 		this(list, false);
 	 * 	}
-	 * 
+	 *
 	 * 	protected ExampleListIterator(ExampleList&lt;T&gt; list, boolean reverse) {
 	 * 		super(list.begin(), list.end(), reverse);
 	 * 		this.list = list;
 	 * 	}
-	 * 
+	 *
 	 * 	public ReversibleIterator&lt;T&gt; reverse() {
 	 * 		return new ExampleListIterator&lt;T&gt;(list, true);
 	 * 	}
 	 * }
 	 * </pre>
-	 * 
+	 *
 	 * @param begin
 	 *            the first position in the range
 	 * @param end
@@ -77,17 +77,18 @@ public abstract class ListIterator<T> extends AbstractReversibleIterator<T> {
 	 *            whether or not to reverse the traversal order
 	 */
 	protected ListIterator(int begin, int end, boolean reverse) {
-		if(reverse) {
-			int tmp = begin;
-			begin = end;
-			end = tmp;
+		if(!reverse) {
+			this.begin = begin;
+			this.end = end;
 		}
-		this.begin = begin;
-		this.end = end;
+		else {
+			this.begin = end;
+			this.end = begin;
+		}
 		this.increment = begin < end ? 1 : -1;
 		reset();
 	}
-	
+
 	/**
 	 * Advances this iterator to the next position in the underlying list or
 	 * list-like structure.
@@ -101,27 +102,27 @@ public abstract class ListIterator<T> extends AbstractReversibleIterator<T> {
 	/**
 	 * Defines how this iterator accesses the element at the specified position
 	 * in the underlying list or list-like structure.
-	 * 
+	 *
 	 * @param position
 	 *            index of the element to return
 	 * @return the element at the specified position in the list
 	 */
 	protected abstract T get(int position);
-	
+
 	/**
 	 * Retrieves the current element in the underlying list or list-like
 	 * structure.
-	 * 
+	 *
 	 * @return the current list element
 	 */
 	@Override
 	public T current() {
 		return get(this.pointer);
 	}
-	
+
 	/**
 	 * Checks whether this iterator has reached the end of the list traversal.
-	 * 
+	 *
 	 * @return whether the end of the list traversal has been reached
 	 */
 	@Override

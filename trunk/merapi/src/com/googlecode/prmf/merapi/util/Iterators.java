@@ -25,14 +25,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Map.Entry;
 import java.util.regex.MatchResult;
 
 import org.w3c.dom.Node;
@@ -117,6 +120,7 @@ public class Iterators {
 	 *            the elements over which to iterate
 	 * @return an iterator over the elements
 	 * @see #iterator(List)
+	 * @see #iterator(Map)
 	 */
 	public static <T> ReversibleIterator<T> iterator(T... array) {
 		return new ArrayIterator<T>(array);
@@ -131,11 +135,29 @@ public class Iterators {
 	 *            the list over which to iterate
 	 * @return an iterator over the list
 	 * @see #iterator(Object...)
+	 * @see #iterator(Map)
 	 */
 	public static <T> ReversibleIterator<T> iterator(List<T> list) {
 		return new JListIterator<T>(list);
 	}
 
+	/**
+	 * Returns an iterator over the entries of a map.
+	 * 
+	 * @param map
+	 *            the map over whose entries to iterate
+	 * @param <K>
+	 *            the type of keys maintained by the map
+	 * @param <V>
+	 *            the type of mapped values
+	 * @return an iterator over the entries of the map
+	 * @see #iterator(Object...)
+	 * @see #iterator(List)
+	 */
+	public static <K,V> UniversalIterator<Entry<K,V>> iterator(Map<K,V> map) {
+		return adapt(map.entrySet());
+	}
+	
 	/**
 	 * Adapts a Gang of Four iterator to a <code>UniversalIterator</code>.
 	 * 
@@ -322,6 +344,7 @@ public class Iterators {
 	 * @see #lines(InputStream)
 	 * @see #lines(Scanner)
 	 * @see #lines(URL)
+	 * @see #lines(URLConnection)
 	 */
 	public static UniversalIterator<String> lines(Reader reader) {
 		return new StreamIterator(reader);
@@ -341,6 +364,7 @@ public class Iterators {
 	 * @see #lines(Reader)
 	 * @see #lines(Scanner)
 	 * @see #lines(URL)
+	 * @see #lines(URLConnection)
 	 */
 	public static UniversalIterator<String> lines(BufferedReader reader) {
 		return new StreamIterator(reader);
@@ -360,6 +384,7 @@ public class Iterators {
 	 * @see #lines(Reader)
 	 * @see #lines(Scanner)
 	 * @see #lines(URL)
+	 * @see #lines(URLConnection)
 	 */
 	public static UniversalIterator<String> lines(InputStream stream) {
 		return new StreamIterator(stream);
@@ -378,6 +403,7 @@ public class Iterators {
 	 * @see #lines(Reader)
 	 * @see #lines(Scanner)
 	 * @see #lines(URL)
+	 * @see #lines(URLConnection)
 	 */
 	public static UniversalIterator<String> lines(FileDescriptor fd) {
 		return new StreamIterator(fd);
@@ -398,6 +424,7 @@ public class Iterators {
 	 * @see #lines(Reader)
 	 * @see #lines(Scanner)
 	 * @see #lines(URL)
+	 * @see #lines(URLConnection)
 	 */
 	public static UniversalIterator<String> lines(File file) throws FileNotFoundException {
 		return new StreamIterator(file);
@@ -418,11 +445,34 @@ public class Iterators {
 	 * @see #lines(InputStream)
 	 * @see #lines(Reader)
 	 * @see #lines(Scanner)
+	 * @see #lines(URLConnection)
 	 */
 	public static UniversalIterator<String> lines(URL url) throws IOException {
 		return new StreamIterator(url);
 	}
 
+	/**
+	 * Returns an iterator over the lines of the resource on the specified URL
+	 * connection.
+	 * 
+	 * @param connection
+	 *            the input source
+	 * @return a line iterator
+	 * @throws IOException
+	 *             if an I/O exception occurs
+	 * @see Streams#slurp(URLConnection)
+	 * @see #lines(BufferedReader)
+	 * @see #lines(File)
+	 * @see #lines(FileDescriptor)
+	 * @see #lines(InputStream)
+	 * @see #lines(Reader)
+	 * @see #lines(Scanner)
+	 * @see #lines(URL)
+	 */
+	public static UniversalIterator<String> lines(URLConnection connection) throws IOException {
+		return new StreamIterator(connection);
+	}
+	
 	/**
 	 * Returns an iterator over the lines of the specified <code>Scanner</code>.
 	 * 
@@ -435,6 +485,7 @@ public class Iterators {
 	 * @see #lines(InputStream)
 	 * @see #lines(Reader)
 	 * @see #lines(URL)
+	 * @see #lines(URLConnection)
 	 */
 	public static UniversalIterator<String> lines(Scanner scanner) {
 		return new ScannerIterator(scanner);

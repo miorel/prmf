@@ -1,5 +1,7 @@
+com.googlecode.prmf.merapi.chem
 com.googlecode.prmf.merapi.dp
 com.googlecode.prmf.merapi.event
+com.googlecode.prmf.merapi.json
 com.googlecode.prmf.merapi.math
 com.googlecode.prmf.merapi.net
 com.googlecode.prmf.merapi.net.event

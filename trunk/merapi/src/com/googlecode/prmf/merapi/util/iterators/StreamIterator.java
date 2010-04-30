@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLConnection;
 
 import com.googlecode.prmf.merapi.util.Iterators;
 
@@ -123,6 +124,18 @@ public class StreamIterator extends LineIterator {
 	 */
 	public StreamIterator(URL url) throws IOException {
 		this(url.openStream());
+	}
+	
+	/**
+	 * Constructs an iterator that reads from the specified <code>URLConnection</code>.
+	 * 
+	 * @param connection
+	 *            the input source
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 */
+	public StreamIterator(URLConnection connection) throws IOException {
+		this(connection.getInputStream());
 	}
 
 	/**

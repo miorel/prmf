@@ -1,5 +1,8 @@
 This directory contains the LaTeX source for the algorithm packet.
 
-To generate a pdf, execute the command `pdflatex algo.tex' TWICE. The first
-time you do it, it will generate a table of contents, and the second time you
-do it, it will incorporate it into a pdf file.
+To generate a pdf, execute the command `pdflatex algo.tex' THREE times. This 
+ensures that all references are resolved, the table of contents is built, etc.
+
+Alternatively, look into the Rubber project:
+<http://iml.univ-mrs.fr/~beffara/soft/rubber/>
+Then you can `rubber --pdf algo.tex` instead.

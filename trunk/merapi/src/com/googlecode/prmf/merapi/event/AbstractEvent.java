@@ -19,20 +19,20 @@ package com.googlecode.prmf.merapi.event;
 
 /**
  * Sample {@link Event} implementation.
- * 
+ *
  * @author Miorel-Lucian Palii
  * @param <T>
  *            type of listeners on which this event may be triggered
  */
 public abstract class AbstractEvent<T extends EventListener> implements Event<T> {
 	private boolean consumed = false;
-	
+
 	/**
 	 * Default constructor, does nothing.
 	 */
 	public AbstractEvent() {
 	}
-	
+
 	@Override
 	public void consume() {
 		this.consumed = true;
@@ -52,7 +52,7 @@ public abstract class AbstractEvent<T extends EventListener> implements Event<T>
 	/**
 	 * Defines the specific trigger of this event. Implementations may assume
 	 * this method will not be called on consumed events.
-	 * 
+	 *
 	 * @param listener
 	 *            listener on which to trigger
 	 */

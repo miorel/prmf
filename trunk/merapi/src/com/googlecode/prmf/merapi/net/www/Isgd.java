@@ -17,10 +17,6 @@
  */
 package com.googlecode.prmf.merapi.net.www;
 
-import java.io.IOException;
-import java.net.URL;
-
-import com.googlecode.prmf.merapi.util.Streams;
 import com.googlecode.prmf.merapi.util.Strings;
 
 /**
@@ -29,16 +25,15 @@ import com.googlecode.prmf.merapi.util.Strings;
  * 
  * @author Miorel-Lucian Palii
  */
-public class Isgd implements UrlShortener {
+public class Isgd extends AbstractUrlShortener {
 	/**
 	 * Constructs a new URL shortener.
 	 */
 	public Isgd() {
 	}
-	
+
 	@Override
-	public String shorten(CharSequence longUrl) throws IOException {
-		String requestUrl = String.format("http://is.gd/api.php?longurl=%s", Strings.encodeUtf8(longUrl));
-		return Streams.slurp(new URL(requestUrl)).toString().trim();
+	protected String getRequestUrl(String longUrl) {
+		return String.format("http://is.gd/api.php?longurl=%s", Strings.encodeUtf8(longUrl));
 	}
 }

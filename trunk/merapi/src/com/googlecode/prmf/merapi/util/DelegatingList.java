@@ -159,4 +159,14 @@ public abstract class DelegatingList<T> implements List<T> {
 	public <U> U[] toArray(U[] a) {
 		return getDelegate().toArray(a);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return getDelegate().equals(obj);
+	}
+	
+	@Override
+	public int hashCode() {
+		return getDelegate().hashCode();
+	}
 }

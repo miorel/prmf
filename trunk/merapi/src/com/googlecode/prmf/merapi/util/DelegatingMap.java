@@ -20,6 +20,9 @@ package com.googlecode.prmf.merapi.util;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
+
+import com.googlecode.prmf.merapi.util.iterators.UniversalIterator;
 
 /**
  * A map that delegates its map-related methods to another map. The goal is to
@@ -31,7 +34,7 @@ import java.util.Set;
  * @param <V>
  *            the type of mapped values
  */
-public abstract class DelegatingMap<K,V> implements Map<K,V> {
+public abstract class DelegatingMap<K,V> implements Map<K,V>, Iterable<Entry<K,V>> {
 	/**
 	 * Default constructor, does nothing.
 	 */
@@ -103,5 +106,25 @@ public abstract class DelegatingMap<K,V> implements Map<K,V> {
 	@Override
 	public Collection<V> values() {
 		return getDelegate().values();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return getDelegate().equals(obj);
+	}
+	
+	@Override
+	public int hashCode() {
+		return getDelegate().hashCode();
+	}
+
+	/**
+	 * Returns an iterator over the entries in this map.
+	 * 
+	 * @return an iterator over the entries in this map
+	 */
+	@Override
+	public UniversalIterator<Entry<K,V>> iterator() {
+		return Iterators.adapt(entrySet());
 	}
 }

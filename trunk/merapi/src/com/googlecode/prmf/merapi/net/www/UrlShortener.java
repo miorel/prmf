@@ -34,6 +34,8 @@ public interface UrlShortener {
 	 * @return a shortened URL
 	 * @throws IOException
 	 *             if an I/O error occurs
+	 * @throws ApiException
+	 *             if an error occurs while using an external API
 	 */
-	public String shorten(CharSequence longUrl) throws IOException;
+	public String shorten(CharSequence longUrl) throws IOException, ApiException;
 }

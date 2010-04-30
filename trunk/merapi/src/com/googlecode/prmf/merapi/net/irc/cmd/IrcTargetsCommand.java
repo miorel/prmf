@@ -71,6 +71,6 @@ public abstract class IrcTargetsCommand extends AbstractIrcCommand {
 	
 	@Override
 	public UniversalIterator<String> getArguments() {
-		return iterator(Strings.join(" ", this.targets));
+		return iterator(Strings.join(" ", getTargets()));
 	}
 }
