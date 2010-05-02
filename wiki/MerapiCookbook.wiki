@@ -1,0 +1,14 @@
+#summary You gotta do the cooking by the book!
+
+<wiki:toc max_depth="1" />
+
+= Searching for Music =
+
+{{{
+Tinysong ts = new Tinysong();
+System.out.println(ts.search("never gonna give you up"));
+}}}
+
+prints out [http://tinysong.com/cBZX].
+
+_This article is a stub. It would be really awesome if your improved it._

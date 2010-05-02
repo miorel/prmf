@@ -1,8 +1,8 @@
 #summary Projects of the Programming Mafia
 #labels Featured,Projects
 
-  * [Corleone corleone], an IRC bot that moderates games of [http://en.wikipedia.org/wiki/Mafia_%28party_game%29 mafia]
-  * merapi, a multi-purpose Java library
-  * an [AlgorithMpacket algorithm packet] for ACM [http://icpc.baylor.edu/ ICPC] and other programming contests
-  * [SharkAttack SHARK ATTACK], a two-player battle game
-  * [TWW2Bot TWW2Bot], an IRC bot of questionable morality
+  * [Corleone], an IRC bot that moderates games of [http://en.wikipedia.org/wiki/Mafia_%28party_game%29 mafia]
+  * [Merapi], a multi-purpose Java library
+  * an [AlgorithmPacket algorithm packet] for ACM [http://icpc.baylor.edu/ ICPC] and other programming contests
+  * [SharkAttack Shark Attack], a two-player battle game
+  * [TWW2Bot], an IRC bot of questionable morality

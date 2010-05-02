@@ -36,10 +36,10 @@ public class JsonParser {
 	}
 
 	/**
-	 * Parses a character sequence in JSON format.
+	 * Parses text in JSON format.
 	 *
 	 * @param json
-	 *            a character sequence in JSON format
+	 *            text in JSON format
 	 * @return a Java object representation of the input
 	 * @throws JsonException
 	 *             if a problem occurs during parsing

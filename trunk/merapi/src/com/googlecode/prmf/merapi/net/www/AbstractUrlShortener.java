@@ -18,12 +18,6 @@
 package com.googlecode.prmf.merapi.net.www;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-
-import com.googlecode.prmf.merapi.util.Streams;
 
 /**
  * <p>
@@ -47,51 +41,29 @@ import com.googlecode.prmf.merapi.util.Streams;
  * @author Miorel-Lucian Palii
  */
 public abstract class AbstractUrlShortener implements UrlShortener {
+	private final ApiClient client;
+
 	/**
-	 * Default constructor, does nothing.
+	 * Default constructor.
 	 */
 	public AbstractUrlShortener() {
+		this.client = new ApiClient();
 	}
 
 	@Override
 	public String shorten(CharSequence longUrl) throws IOException, ApiException {
-		// Prepare long URL string.
+		// Get the long URL as a string.
 		String longUrlStr = longUrl.toString();
 		if(longUrlStr.indexOf("://") < 0) // Some services will croak if we don't do this.
 			longUrlStr = "http://" + longUrlStr;
 
-		// Get request URL.
+		// Get the request URL.
 		String requestUrl = getRequestUrl(longUrlStr);
 
-		// Get server response.
-		CharSequence serverResponse = null;
-		URLConnection conn = new URL(requestUrl).openConnection();
-		try {
-			serverResponse = Streams.slurp(conn);
-		}
-		catch(IOException e) {
-			String errMsg = null;
+		// Get the server response.
+		CharSequence serverResponse = this.client.getContent(requestUrl);
 
-			// Try to extract an error message.
-			if(conn instanceof HttpURLConnection) {
-				InputStream errStream = ((HttpURLConnection) conn).getErrorStream();
-				if(errStream != null)
-					try {
-						errMsg = Streams.slurp(errStream).toString();
-					}
-					catch(IOException ioe) {
-						// We're already in error mode, this one can be ignored.
-					}
-			}
-
-			// Report the error if message extraction was successful.
-			if(errMsg != null)
-				throw new ApiException("Server error! Response: " + errMsg);
-
-			// Otherwise propagate old error.
-			throw e;
-		}
-
+		// Parse it!
 		return parseServerResponse(serverResponse);
 	}
 

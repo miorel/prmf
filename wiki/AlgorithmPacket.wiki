@@ -23,7 +23,7 @@ cd algo
 rubber --pdf algo.tex
 }}}
 
-= Packet Table of Contents =
+= Table of Contents =
 
 Here is the table of contents of the latest version of the algorithm packet. (Developers: you can get this in Google Code wiki format by using the `get_toc.pl` script included with the packet source.)
 

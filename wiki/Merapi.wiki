@@ -1,0 +1,18 @@
+#summary Main page of the Merapi project, a multi-purpose Java library
+#labels Projects
+
+*Merapi* is an amalgam of Java classes which have little in common. What ties them together is the claim that they are reusable. (Note that this doesn't imply they are useful.)
+
+= History =
+
+The earliest incarnation of the project was called Sumatra, after [http://en.wikipedia.org/wiki/Sumatra the island]. Its goal was to reimplement classes in the Java API, optimizing them for programming contest practice sites, so that, for example, importing `sumatra.util.Scanner` instead of `java.util.Scanner` would be sufficient to improve [http://www.spoj.pl/ SPOJ] run time.
+
+The implied requirement of keeping the same interface as the Java API counterparts was eventually lifted, allowing the incorporation of many new classes, most notably an iterator framework that still remains at the core of the project. This is also when the project was open sourced. To mark these changes in direction (and because `sumatra` was not available as a name on Google Code, due to a conflict with [http://sumatra.sourceforge.net/ a SourceForge project]), a new name was chosen, Lawu, after the [http://en.wikipedia.org/wiki/Mount_Lawu Mount Lawu] stratovolcano.
+
+Up to this point, the project had a single developer, [MiorelPalii Miorel Palii]. The project was then added to the Programming Mafia repository. Presently, there's still only one developer. But now it's quite possible that others will join in the development! To celebrate (and because he wasn't all that happy with the name Lawu in the first place), Miorel proposed yet another name change. After discussion of several options, the winning entry was Merapi (after [http://en.wikipedia.org/wiki/Mount_Merapi another volcano] on Java), proposed by [PrestonMueller Preston Mueller].
+
+The name might be changed again in the future: there are plenty of elements of Indonesian geography left to choose from. But, as Preston pointed out, one of the things the current name has going for it is the fact that it has "API" as a substring, creating the potential for interesting backronyms. Therefore the project name discussion lies dormant. For now.
+
+= Documentation =
+
+The Merapi project boasts with its documentation coverage. Take a look at the [MerapiCookbook Merapi Cookbook] or browse the [http://prmf.googlecode.com/svn/www/doc/merapi/index.html Merapi Javadocs]!

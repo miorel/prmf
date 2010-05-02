@@ -28,12 +28,12 @@ import com.googlecode.prmf.merapi.util.Strings;
 /**
  * A {@link UrlShortener} that supports services powered by <a
  * href="http://bit.ly/">bit.ly</a>. Now using version 3.0 of the API!
- * 
+ *
  * @author Miorel-Lucian Palii
  */
 public class Bitly extends AbstractUrlShortener {
 	private static final int STATUS_CODE_OK = 200;
-	
+
 	private final String login;
 	private final String apiKey;
 	private final String domain;
@@ -43,7 +43,7 @@ public class Bitly extends AbstractUrlShortener {
 	/**
 	 * Constructs a new URL shortener using the specified login and API key,
 	 * which will return short URLs in the default domain.
-	 * 
+	 *
 	 * @param login
 	 *            the <code>bit.ly</code> login
 	 * @param apiKey
@@ -52,11 +52,11 @@ public class Bitly extends AbstractUrlShortener {
 	public Bitly(String login, String apiKey) {
 		this(login, apiKey, "bit.ly");
 	}
-		
+
 	/**
 	 * Constructs a new URL shortener using the specified login and API key,
 	 * which will return short URLs in the specified domain.
-	 * 
+	 *
 	 * @param login
 	 *            the <code>bit.ly</code> login
 	 * @param apiKey
@@ -82,10 +82,10 @@ public class Bitly extends AbstractUrlShortener {
 		this.domain = domain;
 		this.parser = new JsonParser();
 	}
-	
+
 	/**
 	 * Returns this shortener's login.
-	 * 
+	 *
 	 * @return the <code>bit.ly</code> login
 	 */
 	public String getLogin() {
@@ -94,7 +94,7 @@ public class Bitly extends AbstractUrlShortener {
 
 	/**
 	 * Returns this shortener's API key.
-	 * 
+	 *
 	 * @return the <code>bit.ly</code> API key
 	 */
 	public String getApiKey() {
@@ -103,34 +103,36 @@ public class Bitly extends AbstractUrlShortener {
 
 	/**
 	 * Returns the domain of this shortener's URLs.
-	 * 
+	 *
 	 * @return the domain
 	 */
 	public String getDomain() {
 		return this.domain;
 	}
 
-	/**
-	 * Parses a shortened URL from the server response.
-	 */
+	@Override
+	protected String getRequestUrl(String longUrl) {
+		return String.format("http://api.bit.ly/v3/shorten?uri=%s&format=json&login=%s&apiKey=%s&domain=%s",
+				Strings.encodeUtf8(longUrl), Strings.encodeUtf8(this.login), Strings.encodeUtf8(this.apiKey), Strings.encodeUtf8(this.domain));
+	}
+
 	@Override
 	protected String parseServerResponse(CharSequence serverResponse) throws ApiException {
-		System.err.println(serverResponse);
-		
-		String ret = null;
-		
-		// Parse response as JSON.
-		JsonObject jo;
+		// Parse JSON.
+		JsonValue val;
 		try {
-			JsonValue val = this.parser.parse(serverResponse);
-			if(!(val instanceof JsonObject))
-				throw new ApiException("The server response was not a JSON object.");
-			jo = (JsonObject) val;
+			val = this.parser.parse(serverResponse);
 		}
 		catch(JsonException e) {
 			throw new ApiException("Failed to parse the server response as JSON.", e);
 		}
 
+		// Convert to a JSON object.
+		if(!(val instanceof JsonObject))
+			throw new ApiException("The server response was not a JSON object.");
+		JsonObject jo = (JsonObject) val;
+
+		String shortUrl;
 		try {
 			// Report any errors.
 			int statusCode = ((JsonNumber) jo.get("status_code")).intValue();
@@ -138,23 +140,17 @@ public class Bitly extends AbstractUrlShortener {
 				String statusTxt = ((JsonString) jo.get("status_txt")).getValue();
 				throw new ApiException("API error: " + statusCode + " " + statusTxt);
 			}
-			
+
 			// Set the result.
-			ret = ((JsonString) jo.get("data", "url")).getValue();
+			shortUrl = ((JsonString) jo.get("data", "url")).getValue();
 		}
 		catch(RuntimeException e) {
 			throw new ApiException("The server response did not have the expected structure.", e);
 		}
-		
-		if(ret == null) // It shouldn't be null.
+
+		if(shortUrl == null) // It shouldn't be null.
 			throw new ApiException("The server response did not have the expected structure.");
-		
-		return ret;
-	}
-	
-	@Override
-	protected String getRequestUrl(String longUrl) {
-		return String.format("http://api.bit.ly/v3/shorten?uri=%s&format=json&login=%s&apiKey=%s&domain=%s",
-				Strings.encodeUtf8(longUrl), Strings.encodeUtf8(this.login), Strings.encodeUtf8(this.apiKey), Strings.encodeUtf8(this.domain));
+
+		return shortUrl;
 	}
 }

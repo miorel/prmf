@@ -17,6 +17,6 @@
  */
 
 /**
- * Network logging classes.
+ * Network logging classes. And by classes I mean class.
  */
 package com.googlecode.prmf.merapi.net.log;

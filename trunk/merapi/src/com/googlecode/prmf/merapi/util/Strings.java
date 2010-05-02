@@ -17,7 +17,6 @@
  */
 package com.googlecode.prmf.merapi.util;
 
-import static com.googlecode.prmf.merapi.util.Iterators.chars;
 import static com.googlecode.prmf.merapi.util.Iterators.iterator;
 
 import java.io.UnsupportedEncodingException;
@@ -115,15 +114,15 @@ public class Strings {
 	 * toLowerCase()} method.
 	 * </p>
 	 *
-	 * @param charSeq
+	 * @param text
 	 *            the text to change
 	 * @return a lower case copy of the text
 	 * @see String#toLowerCase()
 	 * @see #toTitleCase(CharSequence)
 	 * @see #toUpperCase(CharSequence)
 	 */
-	public static String toLowerCase(CharSequence charSeq) {
-		return charSeq.toString().toLowerCase();
+	public static String toLowerCase(CharSequence text) {
+		return text.toString().toLowerCase();
 	}
 
 	/**
@@ -139,15 +138,15 @@ public class Strings {
 	 * toUpperCase()} method.
 	 * </p>
 	 *
-	 * @param charSeq
+	 * @param text
 	 *            the text to change
 	 * @return an upper case copy of the text
 	 * @see String#toUpperCase()
 	 * @see #toLowerCase(CharSequence)
 	 * @see #toTitleCase(CharSequence)
 	 */
-	public static String toUpperCase(CharSequence charSeq) {
-		return charSeq.toString().toUpperCase();
+	public static String toUpperCase(CharSequence text) {
+		return text.toString().toUpperCase();
 	}
 
 	/**
@@ -161,15 +160,15 @@ public class Strings {
 	 * non-whitespace characters.
 	 * </p>
 	 *
-	 * @param charSeq
+	 * @param text
 	 *            the text to change
 	 * @return a title case copy of the text
 	 * @see #toTitleCase(CharSequence, int)
 	 * @see #toLowerCase(CharSequence)
 	 * @see #toUpperCase(CharSequence)
 	 */
-	public static String toTitleCase(CharSequence charSeq) {
-		return toTitleCase(charSeq, Integer.MAX_VALUE);
+	public static String toTitleCase(CharSequence text) {
+		return toTitleCase(text, Integer.MAX_VALUE);
 	}
 
 	/**
@@ -178,18 +177,18 @@ public class Strings {
 	 * single-argument version, except that any words beyond the limit will not
 	 * be capitalized. They will still be changed to lower case, however.
 	 *
-	 * @param charSeq
+	 * @param text
 	 *            the text to change
 	 * @param limit
 	 *            the maximum number of words to capitalize
 	 * @return a title case copy of the text
 	 * @see #toTitleCase(CharSequence)
 	 */
-	public static String toTitleCase(CharSequence charSeq, int limit) {
+	public static String toTitleCase(CharSequence text, int limit) {
 		if(limit < 0)
 			throw new IllegalArgumentException("The limit may not be negative.");
 		StringBuffer sb = new StringBuffer();
-		Matcher m = NON_WHITESPACE_PATTERN.matcher(toLowerCase(charSeq));
+		Matcher m = NON_WHITESPACE_PATTERN.matcher(toLowerCase(text));
 		for(int allowedChanges = limit; allowedChanges > 0 && m.find(); --allowedChanges)
 			m.appendReplacement(sb, m.group(1).toUpperCase() + m.group(2));
 		m.appendTail(sb);
@@ -215,32 +214,32 @@ public class Strings {
 	 * Returns a string containing the given text repeated a specified number of
 	 * times.
 	 *
-	 * @param charSeq
+	 * @param text
 	 *            the text to "multiply"
 	 * @param count
 	 *            the number of times to repeat the text
 	 * @return <code>charSeq</code> repeated <code>count</code> times
 	 * @see #multiply(char, int)
 	 */
-	public static String multiply(CharSequence charSeq, int count) {
+	public static String multiply(CharSequence text, int count) {
 		if(count < 0)
 			throw new IllegalArgumentException("Can't repeat a negative number of times.");
-		StringBuilder sb = new StringBuilder(charSeq.length() * count);
+		StringBuilder sb = new StringBuilder(text.length() * count);
 		for(int repsLeft = count; repsLeft > 0; --repsLeft)
-			sb.append(charSeq);
+			sb.append(text);
 		return sb.toString();
 	}
 
 	/**
 	 * Reverses the order of the characters in the given text.
 	 *
-	 * @param charSeq
+	 * @param text
 	 *            the text to reverse
 	 * @return a copy of the text with the order of the characters reversed
 	 * @see StringBuilder#reverse()
 	 */
-	public static String reverse(CharSequence charSeq) {
-		return new StringBuilder(charSeq).reverse().toString();
+	public static CharSequence reverse(CharSequence text) {
+		return new StringBuilder(text).reverse();
 	}
 
 	/**
@@ -334,14 +333,14 @@ public class Strings {
 	 * separator and at the last position will be flagged as multi-line. If this
 	 * is undesired, trim the text before passing it to this method.</p>
 	 *
-	 * @param charSeq
+	 * @param text
 	 *            the text to check
 	 * @return whether the text contains any line separator characters
 	 */
-	public static boolean isSingleLine(CharSequence charSeq) {
+	public static boolean isSingleLine(CharSequence text) {
 		boolean ret = true;
-		for(Character c: chars(charSeq))
-			if(Character.getType(c.charValue()) == Character.LINE_SEPARATOR) {
+		for(int i = text.length(); --i >= 0;)
+			if(Character.getType(text.charAt(i)) == Character.LINE_SEPARATOR) {
 				ret = false;
 				break;
 			}
@@ -395,13 +394,13 @@ public class Strings {
 	 * guarantee.
 	 * </p>
 	 *
-	 * @param charSeq
+	 * @param url
 	 *            the character sequence representation of the URL
 	 * @return an object representation of the URL
 	 */
-	public static URL toUrl(CharSequence charSeq) {
+	public static URL toUrl(CharSequence url) {
 		try {
-			return new URL(charSeq.toString());
+			return new URL(url.toString());
 		}
 		catch(MalformedURLException e) {
 			throw new Error("A verified URL generated a MalformedURLException.", e);
