@@ -1,22 +1,26 @@
 package MyBot;
-import PircAPI.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+
+import PircAPI.PircBot;
+import PircAPI.User;
 
 public class MyBot extends PircBot {
 	private boolean joining = false;
-	private ArrayList<String> playerList = new ArrayList<String>();
+	private List<String> playerList = new ArrayList<String>();
 	private boolean inGame = false;
 	private String myName = "TestTWW2Bot";
     private String ownName = "TWW2";
 	private String[] chans = {"#ufpt", "#TWW2"};
-	private int[] finchCount;// = new int[2];
+	private int[] finchCount;
 	private long[] finchTime = new long[2];
     private long time = System.currentTimeMillis();
-    private int[] jokeInfo;// = new int[2];
-    private String[][] JOKE_MES;// = new String[6][2];
-    //private ArrayList<String> opList = new ArrayList<String>();
-    //private ArrayList<String> voiceList = new ArrayList<String>();
-    private ArrayList<String> chansAmOp = new ArrayList<String>();
+    private int[] jokeInfo;
+    private String[][] JOKE_MES;
+    private List<String> chansAmOp = new ArrayList<String>();
     
     public MyBot() {
         this.setName(myName);
@@ -176,38 +180,31 @@ public class MyBot extends PircBot {
         
         
         
-        else if (message.equalsIgnoreCase("!uptime"))
-        {
-        	long passedTime = System.currentTimeMillis() - time;
-        	passedTime = passedTime / 1000;
-        	String prefix = "I have been active for ";
-        	String mes = toDayHourMinSec(passedTime, prefix, ".");
-        	sendMessage(channel, mes);
-        		
-        	
-        }
-        else if (message.equalsIgnoreCase("!downtime"))
-        {
-        	long passedTime = time;
-        	passedTime = passedTime / 1000;
-        	String prefix = "I have been inactive for ";
-        	String mes = toDayHourMinSec(passedTime, prefix, ".");
-        	sendMessage(channel, mes);
-        		
-        	
-        }
-        else if (message.equalsIgnoreCase("!hammertime"))
-        {
-        	sendMessage(channel, "Can't touch this.");
-        }
-        
-        else if (sender.equalsIgnoreCase(ownName) && isOnList(channel, chansAmOp))
-        {
-        	if(message.equalsIgnoreCase("!op"))
-        	{
-        		op(channel,sender);
-        	}
-        }
+		else if(message.equalsIgnoreCase("!uptime")) {
+			long passedTime = System.currentTimeMillis() - time;
+			passedTime = passedTime / 1000;
+			String prefix = "I have been active for ";
+			String mes = toDayHourMinSec(passedTime, prefix, ".");
+			sendMessage(channel, mes);
+
+		}
+		else if(message.equalsIgnoreCase("!downtime")) {
+			long passedTime = time;
+			passedTime = passedTime / 1000;
+			String prefix = "I have been inactive for ";
+			String mes = toDayHourMinSec(passedTime, prefix, ".");
+			sendMessage(channel, mes);
+
+		}
+		else if(message.equalsIgnoreCase("!hammertime")) {
+			sendMessage(channel, "Can't touch this.");
+		}
+
+		else if(sender.equalsIgnoreCase(ownName) && isOnList(channel, chansAmOp)) {
+			if(message.equalsIgnoreCase("!op")) {
+				op(channel, sender);
+			}
+		}
         
         
         
@@ -251,19 +248,15 @@ public class MyBot extends PircBot {
         
     }
     
-    public void onPrivateMessage(String sender, String login, String hostname, String message)
-    {
-    	if (sender.equalsIgnoreCase(ownName));
-        {
-        	if(message.equalsIgnoreCase("partall"))
-        	{
-        		String[] chans = getChannels();
-        		for(int i = 0; i<chans.length; i++)
-        		{
-        			if(!chans[i].equalsIgnoreCase("#TWW2"))
-        				partChannel(chans[i]);
-        		}
-        	}
+	public void onPrivateMessage(String sender, String login, String hostname, String message) {
+		if(sender.equalsIgnoreCase(ownName)) {
+			if(message.equalsIgnoreCase("partall")) {
+				String[] chans = getChannels();
+				for(int i = 0; i < chans.length; ++i) {
+					if(!chans[i].equalsIgnoreCase("#TWW2"))
+						partChannel(chans[i]);
+				}
+			}
         	
         	else if(message.equalsIgnoreCase("quitServer"))
         		quitServer();
@@ -308,18 +301,6 @@ public class MyBot extends PircBot {
         		int firstSpace = message.indexOf(' ', 4);
         		sendMessage(message.substring(4,firstSpace),message.substring(firstSpace + 1));
         	}
-        	
-        	//else if(message.substring(0,9).equalsIgnoreCase("oplistadd"))
-        	//	opList.add(message.substring(10));
-        		
-        	//else if(message.substring(0,9).equalsIgnoreCase("oplistrem"))
-        	//	opList.remove(message.substring(10));
-        		
-        	//else if(message.substring(0,12).equalsIgnoreCase("voicelistadd"))
-        	//	voiceList.add(message.substring(13));
-        		
-        	//else if(message.substring(0,12).equalsIgnoreCase("voicelistrem"))
-        	//	voiceList.remove(message.substring(13));
         }
     }
 
@@ -331,122 +312,81 @@ public class MyBot extends PircBot {
     } 
 
     	
-    public void onDeop(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) 
-    {
-    	if(recipient.equalsIgnoreCase(myName))
-    	{
-    		chansAmOp.remove(channel);
-    	}
-    }
+	public void onDeop(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+		if(recipient.equalsIgnoreCase(myName)) {
+			chansAmOp.remove(channel);
+		}
+	}
+
+	public void onDisconnect() {
+		dispose();
+	}
     
-    
-    public void onDisconnect()
-    {
-    	dispose();
-    }
-    
-    /**
+    /*
      * HELPER METHODS
      */
+	public String toDayHourMinSec(long passedTime, String prefix, String suffix) {
+		int days = (int) passedTime / 86400;
+		int hours = (int) passedTime % 86400 / 3600;
+		int mins = (int) passedTime % 3600 / 60;
+		int secs = (int) passedTime % 60;
+		boolean andSecs = false;
+		String mes = prefix;
+		if(days > 1) {
+			mes = mes + days + " days, ";
+			andSecs = true;
+		}
+		else if(days == 1) {
+			mes = mes + days + " day, ";
+			andSecs = true;
+		}
+		if(hours > 1) {
+			mes = mes + hours + " hours, ";
+			andSecs = true;
+		}
+		else if(hours == 1) {
+			mes = mes + hours + " hour, ";
+			andSecs = true;
+		}
+		if(mins > 1) {
+			mes = mes + mins + " minutes, ";
+			andSecs = true;
+		}
+		else if(mins == 1) {
+			mes = mes + mins + " minute, ";
+			andSecs = true;
+		}
+		if(andSecs) {
+			mes = mes + "and ";
+		}
+
+		mes += secs + (secs == 1 ? " second" : " seconds");
+		mes += suffix;
+
+		return mes;
+	}
     
-    
-    public String toDayHourMinSec(long passedTime, String prefix, String suffix)
-    {
-    	int days = (int)passedTime / 86400;
-        int hours = (int)passedTime % 86400 / 3600;
-        int mins = (int)passedTime % 3600 / 60;
-        int secs = (int)passedTime % 60;
-        boolean andSecs = false;
-        String mes = prefix;
-        if(days > 1) {
-        	mes = mes + days + " days, ";
-        	andSecs = true;
-        } else if (days == 1) {
-        	mes = mes + days + " day, ";
-        	andSecs = true;
-        }
-        if(hours > 1) {
-        	mes = mes + hours + " hours, ";
-        	andSecs = true;
-        } else if (hours == 1) {
-        	mes = mes + hours + " hour, ";
-        	andSecs = true;
-        }
-        if(mins > 1) {
-        	mes = mes + mins + " minutes, ";
-        	andSecs = true;
-        } else if (mins == 1) {
-        	mes = mes + mins + " minute, ";
-        	andSecs = true;
-        }
-        if(andSecs) {
-        	mes = mes + "and ";
-        }
-        
-        if (secs == 1) {
-        	mes = mes + secs + " second";
-        } else {
-        	mes = mes + secs + " seconds";
-        }
-        mes = mes + suffix;
-        
-        return mes;
+    private boolean containsIgnoreCase(String mes, String sub) {
+    	return mes.toLowerCase(Locale.ENGLISH).contains(sub.toLowerCase(Locale.ENGLISH));
     }
     
-    public boolean containsIgnoreCase(String mes, String sub)
-    {
-    	int lengthDiff = mes.length() - sub.length();
-    	for(int i = 0; i<=lengthDiff; i++)
-    	{
-    		if(mes.substring(i,i+sub.length()).equalsIgnoreCase(sub))
-    		{
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-    
-    public int getRandom(int low, int high)
-    {
-    	Random generator = new Random();
-        int roll = generator.nextInt(high - low + 1) + low;
-        return roll;
-    }
-        	
-    public String[] getUserNicks(User[] users)
-    {
-    	String[] nicks = new String[users.length];
-    	for(int i = 0; i < users.length; i++)
-    	{
-    		nicks[i] = users[i].getNick();
-    	}
-    	return nicks;
-    }
-    
-    public boolean isOnList(String name, String[] list)
-    {
-    	return isOnList(name, java.util.Arrays.asList(list));
-    }
-    
-    public int stringArrayIndexOf(String[] array, String obj)
-    {
-    	for(int i=0; i < array.length; i++)
-    	{
-    		if(array[i].equalsIgnoreCase(obj))
-    			return i;
-    	}
-    	return -1;
-    }
-    
-    public boolean isOnList(String name, List<String> list)
-    {
-    	return list.contains(name);
-    }
-    
-    public String getMyVersion()
-    {
-    	String myV = "TWW2Bot version 0.1.1 running ";
-    	String theirV = getVersion();
-    	return myV + theirV;
-    }
+	private int getRandom(int low, int high) {
+		Random generator = new Random();
+		int roll = generator.nextInt(high - low + 1) + low;
+		return roll;
+	}
+
+	private int stringArrayIndexOf(String[] array, String obj) {
+		return Arrays.asList(array).indexOf(obj);
+	}
+
+	private boolean isOnList(String name, List<String> list) {
+		return list.contains(name);
+	}
+
+	private String getMyVersion() {
+		String myV = "TWW2Bot version 0.1.2 running ";
+		String theirV = getVersion();
+		return myV + theirV;
+	}
 }

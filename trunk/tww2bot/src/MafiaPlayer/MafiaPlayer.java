@@ -1,6 +1,8 @@
 package MafiaPlayer;
-import PircAPI.*;
-import java.util.*;
+
+import java.util.ArrayList;
+
+import PircAPI.PircBot;
 
 public class MafiaPlayer extends PircBot {
     
@@ -15,13 +17,13 @@ public class MafiaPlayer extends PircBot {
     
     public void onMessage(String channel, String sender, String login, String hostname, String message) 
     {
- 		if(channel.equalsIgnoreCase("#UFPT"))
+ 		if(channel.equalsIgnoreCase("#ufpt"))
  		{
  			if(containsIgnoreCase(message, "Mafia game started by "))
  			{
  				gameStarter = message.substring(22, message.length() - 1);
  				mafiaBot = sender;
- 				sendMessage("#UFPT", "~join");
+ 				sendMessage("#ufpt", "~join");
  			} 
  			else if (containsIgnoreCase(message, "The game is now over"))
  			{
@@ -29,11 +31,11 @@ public class MafiaPlayer extends PircBot {
  			}
  			else if (containsIgnoreCase(message, "~nolynch") && sender.equalsIgnoreCase(gameStarter))
  			{
- 				sendMessage("#UFPT", "~nolynch");
+ 				sendMessage("#ufpt", "~nolynch");
  			}
  			else if (containsIgnoreCase(message, "~lynch") && sender.equalsIgnoreCase(gameStarter))
  			{
- 				sendMessage("#UFPT", message);
+ 				sendMessage("#ufpt", message);
  			}
  			
 		} else if (channel.equalsIgnoreCase("#TWW2") && message.equalsIgnoreCase("disconnect"))
@@ -51,7 +53,7 @@ public class MafiaPlayer extends PircBot {
 		} 
 		else if(containsIgnoreCase(message, "day:"))
 		{
-			sendMessage("#UFPT", message.substring(4));
+			sendMessage("#ufpt", message.substring(4));
 		}
     }
     
