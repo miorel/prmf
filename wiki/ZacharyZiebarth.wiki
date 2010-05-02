@@ -1,0 +1,6 @@
+#summary People page for Zachary Ziebarth
+
+|| *Real name* || Zachary Ziebarth ||
+|| *Goes by* || Zach or Zachary ||
+|| *Aliases* || zaz76, zieb76 (AIM) ||
+|| *Experience Level* || Java-noob ||
