@@ -38,6 +38,7 @@ public class Night implements MafiaGameState
 			changeNick(speaker,splitLine[2]);
 			return false;
 		}
+		//what why is this here ?_?
 		if (isNightOver())
 			return true;
 		
@@ -63,9 +64,9 @@ public class Night implements MafiaGameState
 		if (speaking == null)
 			return false;
 		
+		//TODO: just send the night action to the role, don't ask if it has one and then send~
 		if (speaking.getRole().hasNightAction())
 		{
-
 			boolean result = speaking.getRole().nightAction(action + " " + target, players);
 			inputOutputThread.sendMessage(speaking.toString(),
 					(result?"You successfully targetted " + target:"Your night action did not resolve"));
@@ -114,6 +115,7 @@ public class Night implements MafiaGameState
 			p.getRole().resetNightAction();
 	}
 	
+	//TODO: combine with resetActions{} somehow
 	public void resetLives()
 	{
 		for (Player p : players)
@@ -132,6 +134,7 @@ public class Night implements MafiaGameState
 	public void status()
 	{
 		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "It is now night!");
+		//TODO: report time left
 	}
 	
 	public void results()
@@ -140,8 +143,7 @@ public class Night implements MafiaGameState
 		{
 			if (p.getNightLives() == 0 && p.getTargetted())
 			{
-				// TODO p.toString() is cleaner than p + ""
-				inputOutputThread.sendMessage(p + "", "You were saved!");
+				inputOutputThread.sendMessage(p.toString(), "You were saved!");
 			}
 			if (p.getNightLives() < 0)
 			{

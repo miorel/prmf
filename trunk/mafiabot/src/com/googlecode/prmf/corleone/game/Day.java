@@ -51,6 +51,7 @@ public class Day implements MafiaGameState {
 		}
 		
 		int returnCode = parseMessage(line, speaker);
+		//TODO why do we have this part in a separate method? =\
 		if(returnCode >= 0) {
 			inputOutputThread.sendMessage(inputOutputThread.getChannel(), players[returnCode] + " was lynched :(");
 			players[returnCode].setAlive(false);
@@ -97,8 +98,9 @@ public class Day implements MafiaGameState {
     private int parseMessage(String instruc, String speaker)
     {
     	// TODO this method looks like a perfect application of Java enums
-    	int ret = -3;
-	    String[] instrucTokens = instruc.split(" ",5);
+    	//TODO listen to ^^^
+    	int ret = -3; //this is the default "nothing happens" return.
+	    String[] instrucTokens = instruc.split(" ",5); //split into parts, parts being speaker, type of action, place it was sent to, etc
 	    String command = instrucTokens[3]; //command is "lynch" "unvote" etc
 	    String target=""; //target of lynch etc
 	    if(command.equals(":~lynch"))
@@ -108,6 +110,7 @@ public class Day implements MafiaGameState {
 	    	else
 	    		return -3; //no lynch target = bad vote
 	    }
+	    //extract the player and the target from the message
 	    int speakerId = searchPlayers(speaker);
 	    int targetId = searchPlayers(target);
 	    
@@ -117,7 +120,7 @@ public class Day implements MafiaGameState {
 	    
 	    // TODO I hope you realize there are better ways to do this than a bunch of if/else statements.
 	    //TODO: change this to use the Class.forName() method. I think that's a much nicer solution than the one we have
-	    
+	    //change this to be similar to Pregame's receiveMessage()
 	    if( command.equals(":~lynch") )
 	    {
 	    	ret = processVote(speakerId, targetId);
@@ -133,6 +136,7 @@ public class Day implements MafiaGameState {
 	    }
 	    else if( command.equals(":~quit") )
 	    {
+	    	//TODO: check game status after this, make sure game isn't over
 	    	//kill speaker
 	    	players[speakerId].setAlive(false);
 	    	tracker.status(inputOutputThread);
@@ -167,14 +171,20 @@ public class Day implements MafiaGameState {
     public void status() {
     	inputOutputThread.sendMessage(inputOutputThread.getChannel(), "It is now day!");
     	
+    	//gives a list of players
     	if(players.length >= 1)
     		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "The following people are still alive:");
     	else
     	{
+    		//TODO: wtf, how is this even possible? someone copy/pasted this from pregame i think. fix it.
     		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "There is no one registered yet!");
     		return;
     	}
     	
+    	//wtf?
+    	//this block makes a list of all the players alive, then prints it
+    	//i'm not sure exactly how it works though, hopefully someone else will explain
+    	//TODO: someone else explain
 		Filter<Player> live = new Filter<Player>() {
 			@Override
 			public boolean keep(Player p) {
@@ -207,6 +217,7 @@ public class Day implements MafiaGameState {
     		this.voted=voted;
     	}
     	public void handle() {
+    		//just pass the vote to the tracker
     		tracker.newVote(voter, voted, inputOutputThread);
     	}
     }

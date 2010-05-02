@@ -14,6 +14,7 @@
  */
 package com.googlecode.prmf.corleone.game;
 
+//TODO: finchley central :D
 public interface Action {
 	public void handle();
 }

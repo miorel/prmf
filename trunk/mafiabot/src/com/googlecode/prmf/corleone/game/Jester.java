@@ -14,7 +14,8 @@
  */
 package com.googlecode.prmf.corleone.game;
 
-class Jester extends Role {
+//currently not in use
+public class Jester extends Role {
 	final private JesterTeam team;
 
 	public Jester(JesterTeam nteam) {

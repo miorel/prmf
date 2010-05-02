@@ -22,6 +22,8 @@ class Town extends Team {
 
 	@Override
 	public boolean hasWon(Player[] players) {
+	//TODO: this method works in the current game, but technically is incorrect.
+	//if possible, change it to check for threats to the town as opposed to non-town (survivors etc)
 		boolean result = true;
 		for(Player p: players) {
 			if(!p.getRole().getTeam().equals(this) && p.isAlive()) {

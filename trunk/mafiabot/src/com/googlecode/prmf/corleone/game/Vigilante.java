@@ -14,7 +14,8 @@
  */
 package com.googlecode.prmf.corleone.game;
 
-class Vigilante extends Role {
+//currently not in use
+public class Vigilante extends Role {
 	private final Town team;
 
 	public Vigilante(Town nteam) {

@@ -48,42 +48,42 @@ public class Pregame implements MafiaGameState {
 
 	public boolean receiveMessage(Game game, String line)
 	{
-			boolean ret = false;
-			String[] msg = line.split(" ", 4);
+			boolean endState = false;
+			String[] msg = line.split(" ");
 			String user = "";
+			
+			Action action = null;
 
 			//this is kind of a nasty solution...
 
 			if(msg[0].indexOf("!")>1)
 				user = msg[0].substring(1,msg[0].indexOf("!"));
 			
-			if(msg[1].startsWith("KICK") || msg[1].startsWith("PART") || msg[1].startsWith("QUIT") )
+			//interpret the command given~~~
+			if(msg[1].startsWith("PART") || msg[1].startsWith("QUIT"))
 			{
-				for(int i=0;i<players.size();++i)
-				{
-					if(players.get(i).getName().equals(user))
-					{
-						players.remove(i);
-						return false;
-					}
-				}
+				action = new QuitAction(user, game);
+			}
+			
+			if(msg[1].startsWith("KICK"))
+			{
+				action = new QuitAction(msg[3], game);
 			}
 			
 			if(msg[1].startsWith("NICK") )
 			{
-				changeNick(user,msg[2]);
-				return false;
+				action = new NickAction(user, game, msg[2].substring(1));
 			}
 			
 			String command = msg[3].toLowerCase();
 			
-			Action action = null;
+			
 			
 			//TODO: handle with Class.forName(), although I'm not sure how case sensitivity will work with that? =\
 			//then we can catch class not found exceptions with a message telling user to see ~help or something
 			if(command.equalsIgnoreCase(":~start"))
 			{
-				ret = true;
+				endState = true;
 				action = new StartAction(user, game);
 			}	
 			if(command.equalsIgnoreCase(":~join"))
@@ -100,9 +100,10 @@ public class Pregame implements MafiaGameState {
 			if (action != null)
 				action.handle();
 			
-			return ret;
+			return endState;
 	}	
-	private void changeNick(String oldNick , String newNick)
+	
+	/*private void changeNick(String oldNick , String newNick)
 	{
 		for(int i=0;i<players.size();++i)
 		{
@@ -112,7 +113,7 @@ public class Pregame implements MafiaGameState {
 				return;
 			}
 		}
-	}
+	}*/
 	
 	private void startGame(Game game)
 	{	
@@ -197,7 +198,6 @@ public class Pregame implements MafiaGameState {
 			}
 			try
 			{
-				//TODO there be warnings here, fix them
 				Class<?> tempAssigner = Class.forName("com.googlecode.prmf.Pregame$"+roleSplit[1]+"Assigner");
 				Method[] allMethods = tempAssigner.getMethods();
 				Method getTeam = allMethods[0];
@@ -293,6 +293,31 @@ public class Pregame implements MafiaGameState {
 			{
 				players.remove(index);
 				inputOutputThread.sendMessage(game.getIOThread().getChannel(), name + " has quit the game!");
+			}
+		}
+	}
+	
+	class NickAction implements Action
+	{
+		String name;
+		Game game;
+		String newName;
+		public NickAction(String name, Game game, String newName)
+		{
+			this.game = game;
+			this.name = name;
+			this.newName = newName;
+		}
+		
+		public void handle()
+		{
+			Player potential = new Player(name);
+			int index = players.indexOf(potential);
+			if(index == -1);
+				//do nothing
+			else
+			{
+				players.get(index).setName(newName);
 			}
 		}
 	}

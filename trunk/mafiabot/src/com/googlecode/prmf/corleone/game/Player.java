@@ -43,7 +43,7 @@ public class Player {
 	
 	public void endNight()
 	{
-		if (getNightLives() < 0)
+		if (getNightLives() < 0) //this means they were targetted to be killed more than targetted to be saved
 			setAlive(false);
 		resetNightLives();
 		targetted = false;

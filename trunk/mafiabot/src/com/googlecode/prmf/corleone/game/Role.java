@@ -24,11 +24,13 @@ public abstract class Role {
 	// aren't they technically simultaneous?
 	// eh i dont think so... if agent alters someone, that needs to happen before cop checks right?
 	boolean nightAction(String message, Player[] players) {
+		//this method makes sure the target for the night action is valid, then targets him
 		boolean toReturn = false;
 		if (!checkNightAction(message))
 			return toReturn;
 		String[] splitMessage = message.split(" ");
 		String targetName = splitMessage[1];
+		//TODO: you shouldn't be able to target dead people... but you can :O! I think
 		for (Player p : players)
 			if (p.getName().equals(targetName))
 			{
@@ -85,3 +87,4 @@ public abstract class Role {
 		return didNightAction;
 	}
 }
+

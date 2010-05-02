@@ -14,7 +14,7 @@
  */
 package com.googlecode.prmf.corleone.game;
 
-class Mafia extends Role {
+public class Mafia extends Role {
 	private MafiaTeam team;
 
 	public Mafia(MafiaTeam nteam) {
@@ -41,11 +41,14 @@ class Mafia extends Role {
 
 	@Override
 	public Player getTarget() {
+		//TODO: this seems silly
 		return super.getTarget();
 	}
 
 	@Override
 	public boolean checkNightAction(String message) {
+		//make sure night action is appropriate for a mafioso
+		//no pansy "attack" "hurt" "stab" "threaten" "extort", this is life and death ok?
 		String[] splitMessage = message.split(" ");
 		if(splitMessage.length >= 2 && splitMessage[0].equals(":~kill"))
 			return true;
@@ -57,10 +60,11 @@ class Mafia extends Role {
 		if (getTarget() == null)
 			return "You didn't give a target!";
 		StringBuilder toReturn = new StringBuilder();
-		if(getTeam().agreeOnTarget())
+		if(getTeam().agreeOnTarget()) //mafia better stay in line, this is a team game ok?
+			//if you dont agree, you dont get shit done
 		{
 			toReturn.append(getTarget()).append(" is the target");
-			getTarget().setNightLives(getTarget().getNightLives()-1);
+			getTarget().setNightLives(getTarget().getNightLives()-1); //if they agree, he loses a life!
 		}
 		else
 			toReturn.append("No target was selected.");

@@ -24,81 +24,75 @@ class MafiaTeam extends Team {
 	public String getName() {
 		return "MafiaTeam";
 	}
-	
+
 	@Override
-	public boolean hasWon(Player[] players)
-	{
-		//itt we check for victory
-		//if mafia make up at least 50% of the living players return true
+	public boolean hasWon(Player[] players) {
+		// itt we check for victory
+		// if mafia make up at least 50% of the living players return true
 		int nonMafia = 0, mafia = 0;
-		for (Player p : players)
-		{
+		for (Player p : players) {
 			if (!p.isAlive())
 				continue;
 			if (p.getRole().getTeam().equals(this))
-				// TODO the above line looks like a bug to me
-				// why is that a bug?
-				// because I don't think the equals() method works properly 
+			// TODO the above line looks like a bug to me
+			// why is that a bug?
+			// because I don't think the equals() method works properly
+			// well then, someone should fix equals() :D
 			{
 				++mafia;
 				System.err.println(p + " is a mafia");
 			}
-				
-			else
-			{
+
+			else {
 				++nonMafia;
 				System.err.println(p + " is not a mafia");
 			}
 		}
 		return nonMafia <= mafia;
 	}
-	
+
 	@Override
-	public String toString()
-	{
-		
+	public String toString() {
+	//gives a list of living mafiosos~
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("The current living mafia team members are: ");
 		for (Player p : getList())
-			if(p.isAlive())
-			toReturn.append(p + " ");
+			if (p.isAlive())
+				toReturn.append(p + " "); //TODO: replace with p.toString()
 		return toReturn.toString();
 	}
-	
-	public boolean agreeOnTarget()
-	{
+
+	public boolean agreeOnTarget() {
+		// all of the mafia must agree on the target before they are done with their night action
+		
 		Player target = null;
 		boolean agree = true;
-		for(Player p : getList())
-		{
+		for (Player p : getList()) {
 			if (!p.isAlive())
 				continue;
-			if(target == null)
-			{
+			//first time through, target should be null and that's OK, just get the target
+			if (target == null) {
 				target = p.getRole().getTarget();
-				if (target == null)
-				{
+				//if it's still null, ruh-roh!
+				if (target == null) {
 					agree = false;
 					break;
 				}
 			}
-			try
-			{ // TODO there be some useless parens on the next line
-				agree = (target.equals(p.getRole().getTarget()));
-			}
-			catch (Exception e)
-			{
+			try {
+				agree = target.equals(p.getRole().getTarget());
+			} catch (Exception e) {
 				System.out.println("still sucks");
 			}
-			
-			if(!agree)
+
+			if (!agree)
 				break;
 		}
-		if(agree)
+		if (agree)
 			for (Player p : getList())
 				p.getRole().setNightAction(true);
 		return agree;
-	
+
 	}
-	
+
 }

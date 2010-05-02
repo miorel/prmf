@@ -14,8 +14,8 @@
  */
 package com.googlecode.prmf.corleone.game;
 
-class Cop extends Role { // TODO make class public, why not
-	final private Town team; // TODO change to "private final"
+public class Cop extends Role {
+	final private Town team;
 
 	public Cop(Town nteam) {
 		setName("cop");
@@ -28,7 +28,8 @@ class Cop extends Role { // TODO make class public, why not
 	}
 	
 	@Override
-	public boolean checkNightAction(String message) {
+	public boolean checkNightAction(String message)
+	{
 		boolean result = false;
 		message = message.toLowerCase();
 		if (message.substring(2).startsWith("check"))
@@ -55,3 +56,4 @@ class Cop extends Role { // TODO make class public, why not
 	}
 
 }
+

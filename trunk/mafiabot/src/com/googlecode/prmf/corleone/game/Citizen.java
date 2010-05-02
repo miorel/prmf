@@ -14,8 +14,8 @@
  */
 package com.googlecode.prmf.corleone.game;
 
-class Citizen extends Role {
-	final private Town team; // TODO change to "private final"
+public class Citizen extends Role {
+	final private Town team; //TODO change to "private final"
 
 	public Citizen(Town nteam) {
 		setName("citizen");
@@ -55,3 +55,4 @@ class Citizen extends Role {
 		return toReturn.toString();
 	}
 }
+

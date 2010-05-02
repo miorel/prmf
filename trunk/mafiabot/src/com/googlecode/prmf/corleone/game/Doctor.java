@@ -14,9 +14,8 @@
  */
 package com.googlecode.prmf.corleone.game;
 
-class Doctor extends Role { // TODO make this public, why not
-	//TODO "private final" >>> "final private"
-	final private Town team;
+public class Doctor extends Role {
+	private final Town team;
 
 	public Doctor(Town nteam) {
 		setName("doctor");
@@ -58,3 +57,4 @@ class Doctor extends Role { // TODO make this public, why not
 	}
 
 }
+

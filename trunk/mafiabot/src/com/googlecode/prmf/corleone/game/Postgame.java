@@ -18,6 +18,7 @@ import java.util.LinkedList;
 
 import com.googlecode.prmf.corleone.connection.IOThread;
 
+//TODO: add some more cool stuff to this class! better results, game summaries, etc; lots of ways to go with this.
 public class Postgame implements MafiaGameState {
 	// TODO default visibility is almost as bad as public
 	IOThread inputOutputThread;
@@ -46,6 +47,7 @@ public class Postgame implements MafiaGameState {
 	
 	public void wrapUp()
 	{
+		//this prints a list of all the winners!
 		// TODO declare things as what they're used not what they are
 		LinkedList<Team> teamsWon = new LinkedList<Team>();
 		for(Player player : getPlayerList())

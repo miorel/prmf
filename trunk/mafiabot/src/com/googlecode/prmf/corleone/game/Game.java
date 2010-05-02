@@ -16,20 +16,21 @@ package com.googlecode.prmf.corleone.game;
 
 import com.googlecode.prmf.corleone.connection.IOThread;
 
-public class Game{
+public class Game {
 	private Player[] players;
 	private TimerThread timerThread;
-	private String gameStarter;
+	private String gameStarter; //TODO: change gameStarter to a Player, so it follows the Player around after he /NICKs
 	private IOThread inputOutputThread;
 	private MafiaGameState state;
-	
+
 	private Pregame pregame;
 	private Postgame postgame;
 	private boolean inProgress;
-	
-	public Game(String gameStarter, IOThread inputOutputThread)	{
+
+	public Game(String gameStarter, IOThread inputOutputThread) {
 		this.gameStarter = gameStarter;
 		this.inputOutputThread = inputOutputThread;
+		//TODO: the next two lines should be combined
 		pregame = new Pregame(gameStarter, inputOutputThread);
 		state = getPregame();
 		timerThread = new TimerThread(inputOutputThread);
@@ -37,6 +38,7 @@ public class Game{
 	}
 	
 	public void setProgress(boolean set) {
+
 		this.inProgress = set;
 	}
 
@@ -45,36 +47,44 @@ public class Game{
 	}
 
 	public void receiveMessage(String line) {
+		//ok, basically a game of mafia is ALWAYS in a state
+		//a state being which phase of the game is currently in progress: day, night, pregame, postgame
+		//so game has State state, which is one of those four phases
+		//and the message that game receives is always passed to the state
+		//the game doesn't actually do anything, since it makes no sense for the game to do something
+		//without consulting the state that is currently in progress
+		//so just pass it to the state, and let it figure out what to do
 		state.receiveMessage(this, line);
 	}
 
+	//TODO: implement dayStart/nightStart
+	//TODO: remove numMafia, that is never used
 	public Game(String gameStarter, IOThread inputOutputThread, boolean dayStart, int numMafia) {
 		this(gameStarter, inputOutputThread);
 	}
- 
+
 	public boolean isOver() {
 		boolean result = false;
 
-		for(Player player : getPlayerList()) {
-			if(player.getRole().getTeam().hasWon(players)){
+		//if anyone has won, the game is over ldo
+		for (Player player : getPlayerList()) {
+			if (player.getRole().getTeam().hasWon(players)) {
 				result = true;
 				break;
 			}
 		}
 		return result;
 	}
-	
-	public IOThread getIOThread()
-	{
+
+	public IOThread getIOThread() {
 		return inputOutputThread;
 	}
 
 	public String getGameStarter() {
 		return gameStarter;
 	}
-	
-	public TimerThread getTimerThread()
-	{
+
+	public TimerThread getTimerThread() {
 		return timerThread;
 	}
 
@@ -83,37 +93,37 @@ public class Game{
 		state.endState(this);
 	}
 
-	public MafiaGameState getState() { // TODO this method should be private
+	public MafiaGameState getState() {
 		return state;
 	}
-	
-	public void setState(MafiaGameState state)
-	{
-		if(isOver())
-		{
+
+	public void setState(MafiaGameState state) {
+		if (isOver()) {
 			state = new Postgame(inputOutputThread, getPlayerList());
-			for(int i=0;i<getPlayerList().length;++i) { // TODO rewrite using sexier foreach syntax
-				inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "+v "+players[i].getName());
+			//game is over, moderation is over... this could happen in postgame maybe?
+			for (int i = 0; i < getPlayerList().length; ++i) { // TODO rewrite using sexier foreach syntax
+				inputOutputThread.sendMessage("MODE", inputOutputThread.getChannel(), "+v " + players[i].getName());
 			}
-			inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "-m");
+			inputOutputThread.sendMessage("MODE", inputOutputThread.getChannel(), "-m");
 		}
 		this.state = state;
-		this.state.status();	
+		this.state.status();
 	}
-	
-	public Player[] getPlayerList()
-	{
-		if(isInProgress())
-		{
-			if (players == null)
+
+	public Player[] getPlayerList() {
+		if (isInProgress()) {
+			//if the game is in progress, the player list is finalized, so finalize it!
+			if (players == null) //this should only happen on 1st access after game starts
 				players = getPregame().getPlayerArray();
 			return players;
-		}	
+		}
+		//if the game isn't in progress yet, the player list hasn't been finalized, so get the current one from pregame
 		return getPregame().getPlayerArray();
 	}
-	
+
 	public void startTimer() {
 		// TODO the fact that you have to do it like this is just weird
+		// wat?
 		timerThread = new TimerThread(inputOutputThread);
 		getTimerThread().getTimer().start();
 	}
@@ -127,5 +137,5 @@ public class Game{
 	public Postgame getPostgame() {
 		return postgame;
 	}
-	
+
 }

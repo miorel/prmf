@@ -15,7 +15,7 @@
 package com.googlecode.prmf.corleone.game;
 
 class JesterTeam extends Team {
-
+	//currently not in use
 	public JesterTeam() {
 		setName("JesterTeam");
 	}
