@@ -1,4 +1,5 @@
 #summary People page for Zachary Ziebarth
+#labels People
 
 || *Real name* || Zachary Ziebarth ||
 || *Goes by* || Zach or Zachary ||
