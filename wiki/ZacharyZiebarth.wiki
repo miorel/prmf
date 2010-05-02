@@ -4,4 +4,3 @@
 || *Real name* || Zachary Ziebarth ||
 || *Goes by* || Zach or Zachary ||
 || *Aliases* || zaz76 (IRC), zieb76 (AIM) ||
-|| *Experience Level* || Java-noob ||
