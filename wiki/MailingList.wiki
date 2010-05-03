@@ -2,11 +2,11 @@
 
 We use the mailing list to co-ordinate our communication.
 
-# First go to http://groups.google.com/group/programming-mafia/
-# Click "Sign in and Apply for Memebership"
-# Enter a nickname you want to use (if you never used Groups before)
-# Select your mailing list frequency (digest, etc)
-# An admin will approve you shortly
+ # First go to http://groups.google.com/group/programming-mafia/
+ # Click "Sign in and Apply for Memebership"
+ # Enter a nickname you want to use (if you never used Groups before)
+ # Select your mailing list frequency (digest, etc)
+ # An admin will approve you shortly
 
 Now for some screenshots:
 
