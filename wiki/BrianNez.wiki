@@ -1,7 +1,12 @@
 #summary People page for Brian Nez
 #labels People
 
+== Basic Details ==
+
 || *Real name* || Brian Nez ||
-|| *Goes by* || Brian ||
 || *Aliases* || nez, nezb, brianez21 ||
 || *Technologies* || Java, PHP, Python ||
+
+== PRMF Projects this Person is Leading ==
+
+[JTrisApplet JTrisApplet]
