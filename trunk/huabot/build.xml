@@ -1,0 +1,23 @@
+<project name="huabot" default="dist-bin">
+	<target name="clean">
+		<delete dir="bin"/>
+		<delete dir="dist"/>
+	</target>
+
+	<target name="bin">
+		<mkdir dir="bin"/>
+		<javac srcdir="src" destdir="bin" classpath="lib/merapi-0.0.1.jar" includeAntRuntime="no"/>
+	</target>
+
+	<target name="dist-bin" depends="bin">
+		<mkdir dir="dist"/>
+		<jar destfile="dist/huabot.jar">
+			<manifest>
+				<attribute name="Main-Class" value="com.googlecode.prmf.huabot.Main"/>
+			</manifest>
+			<fileset dir="bin"/>
+			<zipfileset src="lib/merapi-0.0.1.jar" excludes="META-INF/**"/>
+		</jar>
+	</target>
+</project>
+

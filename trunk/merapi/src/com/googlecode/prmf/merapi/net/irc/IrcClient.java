@@ -51,7 +51,7 @@ import com.googlecode.prmf.merapi.nio.Registrar;
 
 /**
  * A client that speaks the IRC protocol.
- * 
+ *
  * @author Miorel-Lucian Palii
  */
 public class IrcClient extends LineOrientedClient {
@@ -64,10 +64,10 @@ public class IrcClient extends LineOrientedClient {
 	 * Regular expression for matching IRC command parameters.
 	 */
 	public static final String PARAM_REGEX = ":[\\S\\s]*|\\S+";
-	
+
 	private static final Pattern COMMAND_PATTERN = Pattern.compile(COMMAND_REGEX);
 	private static final Pattern PARAM_PATTERN = Pattern.compile(PARAM_REGEX);
-	
+
 	private static final Map<String,Method> IRC_STRING_COMMANDS = new HashMap<String,Method>();
 	static {
 		ResourceBundle ircStringCmds = ResourceBundle.getBundle(IrcCommands.class.getPackage().getName() + ".IrcCommandList");
@@ -83,9 +83,9 @@ public class IrcClient extends LineOrientedClient {
 				IRC_STRING_COMMANDS.put(cmd.toUpperCase(Locale.ENGLISH), m);
 		}
 	}
-	
+
 	private final EventManager<IrcEventListener> ircEventManager;
-	
+
 	private String desiredNick;
 	private String userName;
 	private String realName;
@@ -94,7 +94,7 @@ public class IrcClient extends LineOrientedClient {
 	 * Builds an IRC client that will connect to the specified address, register
 	 * with the specified registrar, and use a default provider to open
 	 * channels.
-	 * 
+	 *
 	 * @param address
 	 *            the address to connect to
 	 * @param registrar
@@ -108,7 +108,7 @@ public class IrcClient extends LineOrientedClient {
 	 * Builds an IRC client that will connect to the specified address, register
 	 * with the specified registrar, and use the specified provider to open
 	 * channels.
-	 * 
+	 *
 	 * @param address
 	 *            the address to connect to
 	 * @param registrar
@@ -137,7 +137,7 @@ public class IrcClient extends LineOrientedClient {
 
 	/**
 	 * Gets the client's desired nick (nickname).
-	 * 
+	 *
 	 * @return the client's desired nick
 	 * @see #setDesiredNick(String)
 	 */
@@ -150,9 +150,9 @@ public class IrcClient extends LineOrientedClient {
 	/**
 	 * Sets the client's desired nick (nickname). This may or may not be the
 	 * nick that ends up being used, depending on availability. The argument may
-	 * be <code>null</code> to choose a nick automatically. Currently this will
-	 * be the same as the {@linkplain #getUserName() username}.
-	 * 
+	 * be <code>null</code> to choose a nick automatically (which currently
+	 * means to use the {@linkplain #getUserName() username} as nick).
+	 *
 	 * @param desiredNick
 	 *            the new value; may be <code>null</code> to choose
 	 *            automatically
@@ -166,7 +166,7 @@ public class IrcClient extends LineOrientedClient {
 
 	/**
 	 * Gets the client's username.
-	 * 
+	 *
 	 * @return the client's username
 	 * @see #setUserName(String)
 	 */
@@ -191,7 +191,7 @@ public class IrcClient extends LineOrientedClient {
 	 * application or, if this cannot be accessed, a randomly-generated value.
 	 * Because the username is sent on connection and cannot be changed later,
 	 * make any desired changes before {@linkplain #start() starting}.
-	 * 
+	 *
 	 * @param userName
 	 *            the new value; may be <code>null</code> to choose
 	 *            automatically
@@ -205,7 +205,7 @@ public class IrcClient extends LineOrientedClient {
 
 	/**
 	 * Gets the contents of the client's "real name" field.
-	 * 
+	 *
 	 * @return the "real name"
 	 * @see #setRealName(String)
 	 */
@@ -219,7 +219,7 @@ public class IrcClient extends LineOrientedClient {
 	 * Sets the contents of the client's "real name" field. Because the real
 	 * name is sent on connection and cannot be changed latter, make any desired
 	 * changes before {@linkplain #start() starting}.
-	 * 
+	 *
 	 * @param realName
 	 *            the new value; may be <code>null</code> to use a blank one
 	 * @see #getRealName()
@@ -229,7 +229,7 @@ public class IrcClient extends LineOrientedClient {
 			throw new IllegalArgumentException("The real name may not be zero length, use null instead.");
 		this.realName = realName;
 	}
-	
+
 	@Override
 	protected void process(String line) {
 		Matcher m = COMMAND_PATTERN.matcher(line);
@@ -254,11 +254,11 @@ public class IrcClient extends LineOrientedClient {
 			throw new RuntimeException();
 		}
 	}
-	
+
 	@SuppressWarnings("unused")
 	private void processCommand(Entity origin, int command, String[] param) {
 	}
-	
+
 	private void processCommand(Entity origin, String command, String[] param) {
 		IncomingIrcCommand commandObj = null;
 		Method method = IRC_STRING_COMMANDS.get(command.toUpperCase(Locale.ENGLISH));
@@ -275,14 +275,14 @@ public class IrcClient extends LineOrientedClient {
 		}
 		if(commandObj == null) {
 			System.err.println("Can't parse " + command + " command.");
-			commandObj = new UnknownCommand(command, param);	
+			commandObj = new UnknownCommand(command, param);
 		}
 		distributeIrcEvent(commandObj.getEvent(this, origin));
 	}
 
 	/**
 	 * Adds an IRC listener to this client's listener set.
-	 * 
+	 *
 	 * @param listener
 	 *            the listener to add
 	 */
@@ -293,7 +293,7 @@ public class IrcClient extends LineOrientedClient {
 	/**
 	 * Distributes an IRC event to the IRC listeners registered with this
 	 * client.
-	 * 
+	 *
 	 * @param event
 	 *            the event to distribute
 	 */
@@ -303,7 +303,7 @@ public class IrcClient extends LineOrientedClient {
 
 	/**
 	 * Removes an IRC listener from this client's listener set.
-	 * 
+	 *
 	 * @param listener
 	 *            the listener to remove
 	 */
@@ -315,7 +315,7 @@ public class IrcClient extends LineOrientedClient {
 	 * Queues the specified command to be sent to the server. It will actually
 	 * be sent when the socket is ready for writing and the {@link #write()}
 	 * method is invoked.
-	 * 
+	 *
 	 * @param command
 	 *            the command to send
 	 */
