@@ -1,0 +1,35 @@
+#summary Project page for JTrisApplet
+
+= What is JTrisApplet? = 
+
+JTrisApplet is an online tetromino game. It's like the original puzzle classic Tetris, but with many more engaging features - the most notable being extensive multiplayer support. Built from the ground up with group play in mind. JTrisApplet has support for many competing players, multiple game-play modes, and in-game chat. Independent server architecture prevents cheating and keeps accurate track of high scores. The open-source Java platform supports Windows, Mac OS X, and Linux operating systems.
+
+The development of JTrisApplet is led by [BrianNez Brian Nez]. This software was initially created for the experience of learning object-oriented programming, but has now grown into a full open-source project.
+
+JTrisApplet is currently still under active development and is in no way complete. In fact, this is the fourth from-scratch rewrite I am doing of the project. It is in alpha -- the non-feature-complete development stage -- which means that this software is not intended for general use yet.
+
+= Features =
+
+== Innovative Features ==
+
+ * Online multiplayer support
+ * Server-side high score tracker
+ * Built-in chatroom
+
+== Technical Features ==
+
+ * Written for full cross platform compatibility with Linux, Windows, and Mac OS X
+ * Client-server architecture with standalone CLI server and UI-native client
+ * Multi-threaded client and server
+
+== Planned Features ==
+
+ * Ability to load and save configuration (both client and server) from a file
+ * File-based logs (not just to stdout)
+ * Ability to do Registrations on the server
+ * Ability to ban based on IP or IP-range (prevent abusive registrations, etc.)
+ * Maybe: Web-based interface
+ * Co-operative mode
+ * Tournament mode
+ * Double-player mode (both competitive and co-operative)
+ * 3D Special Effects (in OpenGL)
