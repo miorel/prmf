@@ -6,3 +6,4 @@
   * an [AlgorithmPacket algorithm packet] for ACM [http://icpc.baylor.edu/ ICPC] and other programming contests
   * [SharkAttack Shark Attack], a two-player battle game
   * [TWW2Bot], an IRC bot of questionable morality
+  * [JTrisApplet], an implementation of the Tetris game written in Java with plans to add online play
