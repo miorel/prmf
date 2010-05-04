@@ -246,7 +246,9 @@ public class Day implements MafiaGameState {
 			//unvoice the players since NO TALKING DURING THE NIGHT
 			inputOutputThread.sendMessage("MODE",inputOutputThread.getChannel(), "-v "+p.getName());
 		}
-		game.startTimer();
+		
+		if(!game.isOver())
+			game.startTimer();
 	}
 }
 

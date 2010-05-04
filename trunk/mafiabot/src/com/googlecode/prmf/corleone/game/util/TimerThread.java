@@ -33,7 +33,7 @@ public class TimerThread  implements Runnable{
 	}
 	
 	public TimerThread(IOThread inputThread) {
-		this(inputThread, 10000);
+		this(inputThread, 40*1000);
 	}
 	
 	public void run()
