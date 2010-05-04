@@ -2,7 +2,7 @@
 
 = What is JTrisApplet? = 
 
-JTrisApplet is an online tetromino game. It's like the original puzzle classic Tetris, but with many more engaging features - the most notable being extensive multiplayer support. Built from the ground up with group play in mind. JTrisApplet has support for many competing players, multiple game-play modes, and in-game chat. Independent server architecture prevents cheating and keeps accurate track of high scores. The open-source Java platform supports Windows, Mac OS X, and Linux operating systems.
+JTrisApplet is an online tetromino game. It's like the original puzzle classic Tetris, but with many more engaging features - the most notable being extensive multiplayer support. Built from the ground up with group play in mind. JTrisApplet has support for many competing players, multiple game-play modes, and in-game chat. Independent server architecture provides superior admin benefits (compared to user-hosted games) and keeps accurate track of player accounts and their associated game scores. The open-source Java platform supports Windows, Mac OS X, and Linux operating systems.
 
 The development of JTrisApplet is led by [BrianNez Brian Nez]. This software was initially created for the experience of learning object-oriented programming, but has now grown into a full open-source project.
 
