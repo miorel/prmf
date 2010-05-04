@@ -124,7 +124,7 @@ public class MafiaListener implements Listener {
 			Scanner prof = null;
 			try{
 				
-				prof = new Scanner(new File("../profiles.txt"));
+				prof = new Scanner(new File("profiles.txt"));
 				if(msg[3].equalsIgnoreCase(":~load"))
 				{
 					StringBuilder currProfile = new StringBuilder();
