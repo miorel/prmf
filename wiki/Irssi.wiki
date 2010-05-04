@@ -1,0 +1,27 @@
+#summary The self-proclaimed client of the future
+
+Ever wonder how some people can be in the IRC channel _all_ the time? They're probably connected from a server. And they're probably using Irssi.
+
+*Irssi* ([http://www.irssi.org/]) is "a terminal based IRC client for UNIX systems." It's a different experience from the graphical client you may be used to, but it's worth a try.
+
+= Installing on [Cise CISE] systems =
+
+The following sequence of commands installs Irssi in your home directory. It even cleans up after itself. This was tested on `thunder` (and should therefore work on `storm` as well). It didn't work on `eclipse` because of a missing dependency (and will therefore probably _not_ work on the older Sun machines, either).
+
+{{{
+cd /tmp
+wget http://www.irssi.org/files/irssi-0.8.15.tar.bz2
+tar xjf irssi-0.8.15.tar.bz2
+cd irssi-0.8.15
+./configure --prefix=$HOME
+make
+make install
+cd ..
+rm -rf irssi-0.8.15 irssi-0.8.15.tar.bz2
+}}}
+
+After installation completes, the executable is `bin/irssi` in your home directory. If your path environment variable includes your personal `bin`, all you have to do is run `irssi` on the command line!
+
+= Using =
+
+Check out [http://quadpoint.org/articles/irssi A Guide to Efficiently Using Irssi and Screen], an excellent tutorial which covers Irssi basics as well as how you too can always be on IRC.

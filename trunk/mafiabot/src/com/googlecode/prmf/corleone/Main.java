@@ -12,7 +12,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.connection;
+package com.googlecode.prmf.corleone;
+
+import com.googlecode.prmf.corleone.connection.DisconnectListener;
+import com.googlecode.prmf.corleone.connection.IOThread;
+import com.googlecode.prmf.corleone.connection.Listener;
+import com.googlecode.prmf.corleone.connection.MafiaListener;
+import com.googlecode.prmf.corleone.connection.PingListener;
+import com.googlecode.prmf.corleone.connection.SettingsFileParser;
 
 public class Main {
 	public static void main(String[] arg) {

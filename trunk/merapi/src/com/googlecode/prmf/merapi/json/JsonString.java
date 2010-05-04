@@ -21,42 +21,42 @@ import static com.googlecode.prmf.merapi.util.Iterators.chars;
 
 /**
  * A JavaScript Object Notation (JSON) character sequence.
- * 
+ *
  * @author Miorel-Lucian Palii
  */
 public class JsonString implements JsonValue {
 	private String value;
-	
+
 	/**
 	 * Initializes a JSON string with the empty string.
 	 */
 	public JsonString() {
 		this("");
 	}
-	
+
 	/**
 	 * Initializes a JSON string with the specified value.
-	 * 
+	 *
 	 * @param value
 	 *            this object's initial value
 	 */
 	public JsonString(CharSequence value) {
 		setValue(value);
 	}
-	
+
 	/**
 	 * Updates this JSON string's value.
-	 * 
+	 *
 	 * @param value
 	 *            the new value
 	 */
 	public void setValue(CharSequence value) {
 		this.value = value.toString();
 	}
-	
+
 	/**
 	 * Returns the character sequence wrapped by this object.
-	 * 
+	 *
 	 * @return the character sequence
 	 */
 	public String getValue() {
@@ -67,12 +67,12 @@ public class JsonString implements JsonValue {
 	public int hashCode() {
 		return this.value.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		return obj == this || (obj instanceof JsonString && this.value.equals(((JsonString) obj).value));
 	}
-	
+
 	@Override
 	public String toJson() {
 		StringBuilder sb = new StringBuilder();

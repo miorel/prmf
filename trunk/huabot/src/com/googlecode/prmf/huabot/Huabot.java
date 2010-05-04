@@ -20,7 +20,7 @@ import com.googlecode.prmf.merapi.util.Strings;
 
 public class Huabot extends AbstractIrcEventListener {
 	private static final String COMMAND_TRIGGER = "~"; // what a message must start with to be considered a command
-	private static final Pattern COMMAND_PATTERN = Pattern.compile("\\s*" + Pattern.quote(COMMAND_TRIGGER) + "\\s*(\\w+)\\s*([\\s\\S]*)");
+	private static final Pattern COMMAND_PATTERN = Pattern.compile("\\s*" + Pattern.quote(COMMAND_TRIGGER) + "\\s*(\\w+)\\s+([\\s\\S]*)");
 
 	public Huabot() {
 	}

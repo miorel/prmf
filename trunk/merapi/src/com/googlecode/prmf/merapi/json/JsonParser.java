@@ -311,9 +311,9 @@ public class JsonParser {
 						sb.append('\t');
 						break;
 					case 'u': // Unicode escape
-						end += 4;
+						end += 4; // Moves cursor to last character in escape.
 						if(end < json.length())
-							sb.append((char) Integer.parseInt(json.subSequence(end - 4, end).toString().toLowerCase(Locale.ENGLISH), 16));
+							sb.append(Character.toChars(Integer.parseInt(json.subSequence(end - 3, end + 1).toString().toLowerCase(Locale.ENGLISH), 16)));
 						else
 							throw new JsonException("Reached end of input while parsing JSON string.");
 						break;

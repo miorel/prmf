@@ -18,15 +18,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.googlecode.prmf.corleone.game.Player;
+import com.googlecode.prmf.merapi.util.Iterators;
+import com.googlecode.prmf.merapi.util.Strings;
 
 public abstract class Team {
-	private List<Player> list;
+	private List<Player> list; // TODO make fields final where appropriate
 	private String name;
-	
+
 	public Team() {
 		list = new LinkedList<Player>();
 	}
-	
+
 	// TODO why is an array of players passed as an argument?
 	//
 	//most win conditions don't just involve the team in isolation, but rather the team with respect to the rest of the game
@@ -34,50 +36,34 @@ public abstract class Team {
 	//
 	// if this information is needed, it should be passed elsewhere methinks
 	public abstract boolean hasWon(Player[] players);
-	
-	public String getName()
-	{
+
+	public String getName() {
 		return name;
 	}
-	
+
 	// TODO why is changing the team's name allowed? seems like this belongs in the constructor and nowhere else
-	public void setName(String name)
-	{
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	
 	public void addPlayer(Player p) {
 		getList().add(p);
 	}
-	
 
 	public boolean contains(Player player) {
 		return getList().contains(player);
 	}
-	
-	public List<Player> getList()
-	{
+
+	public List<Player> getList() {
 		return list;
 	}
-	
-	public String getPlayers()
-	{
-		StringBuilder toRet = new StringBuilder();
-		for (Player p : list)
-		{
-			if (toRet.length() > 0)
-			{
-				toRet.append(", ");
-			}
-			toRet.append(p);
-		}
-		return toRet.toString();
+
+	public String getPlayers() {
+		return Strings.join(", ", Iterators.iterator(list));
 	}
-	
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return name;
-	}	
+	}
 }

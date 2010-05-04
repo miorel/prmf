@@ -252,9 +252,9 @@ public class Strings {
 	 *            the objects to join
 	 * @return a single string representing all the objects, joined by the
 	 *         separator
-	 * @see #join(char,Object...)
+	 * @see #join(char,CharSequence...)
 	 * @see #join(char,Iterator)
-	 * @see #join(CharSequence,Object...)
+	 * @see #join(CharSequence,CharSequence...)
 	 */
 	public static String join(CharSequence separator, Iterator<?> objects) {
 		StringBuilder sb = new StringBuilder();
@@ -279,8 +279,8 @@ public class Strings {
 	 *            the objects to join
 	 * @return a single string representing all the objects, joined by the
 	 *         separator
-	 * @see #join(char,Object...)
-	 * @see #join(CharSequence,Object...)
+	 * @see #join(char,CharSequence...)
+	 * @see #join(CharSequence,CharSequence...)
 	 * @see #join(CharSequence,Iterator)
 	 */
 	public static String join(char separator, Iterator<?> objects) {
@@ -288,39 +288,39 @@ public class Strings {
 	}
 
 	/**
-	 * Joins the string representations of a group of objects into a single
-	 * string, using the given separator.
+	 * Joins several character sequences into a single string, using the given
+	 * separator.
 	 *
 	 * @param separator
 	 *            the separator between adjacent joined objects
-	 * @param objects
-	 *            the objects to join
+	 * @param charSeqs
+	 *            the sequences to join
 	 * @return a single string representing all the objects, joined by the
 	 *         separator
-	 * @see #join(char,Object...)
+	 * @see #join(char,CharSequence...)
 	 * @see #join(char,Iterator)
 	 * @see #join(CharSequence,Iterator)
 	 */
-	public static String join(CharSequence separator, Object... objects) {
-		return join(separator, iterator(objects));
+	public static String join(CharSequence separator, CharSequence... charSeqs) {
+		return join(separator, iterator(charSeqs));
 	}
 
 	/**
-	 * Joins the string representations of a group of objects into a single
-	 * string, using the given separator.
+	 * Joins several character sequences into a single string, using the given
+	 * separator.
 	 *
 	 * @param separator
 	 *            the separator between adjacent joined objects
-	 * @param objects
-	 *            the objects to join
+	 * @param charSeqs
+	 *            the sequences to join
 	 * @return a single string representing all the objects, joined by the
 	 *         separator
 	 * @see #join(char,Iterator)
-	 * @see #join(CharSequence,Object...)
+	 * @see #join(CharSequence,CharSequence...)
 	 * @see #join(CharSequence,Iterator)
 	 */
-	public static String join(char separator, Object... objects) {
-		return join(Character.toString(separator), objects);
+	public static String join(char separator, CharSequence... charSeqs) {
+		return join(Character.toString(separator), charSeqs);
 	}
 
 	/**

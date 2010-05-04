@@ -17,7 +17,6 @@ package com.googlecode.prmf.corleone.game.team;
 import com.googlecode.prmf.corleone.game.Player;
 
 public class MafiaTeam extends Team {
-
 	public MafiaTeam() {
 		setName("MafiaTeam");
 	}
@@ -36,10 +35,10 @@ public class MafiaTeam extends Team {
 			if (!p.isAlive())
 				continue;
 			if (p.getRole().getTeam().equals(this))
-			// TODO the above line looks like a bug to me
-			// why is that a bug?
-			// because I don't think the equals() method works properly
-			// well then, someone should fix equals() :D
+				// TODO the above line looks like a bug to me
+				// why is that a bug?
+				// because I don't think the equals() method works properly
+				// well then, someone should fix equals() :D
 			{
 				++mafia;
 				System.err.println(p + " is a mafia");
@@ -55,7 +54,7 @@ public class MafiaTeam extends Team {
 
 	@Override
 	public String toString() {
-	//gives a list of living mafiosos~
+		//gives a list of living mafiosos~
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append("The current living mafia team members are: ");
 		for (Player p : getList())
@@ -66,7 +65,7 @@ public class MafiaTeam extends Team {
 
 	public boolean agreeOnTarget() {
 		// all of the mafia must agree on the target before they are done with their night action
-		
+
 		Player target = null;
 		boolean agree = true;
 		for (Player p : getList()) {

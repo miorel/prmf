@@ -22,22 +22,22 @@ import java.math.BigInteger;
 
 /**
  * A numeric value in JavaScript Object Notation (JSON).
- * 
+ *
  * @author Miorel-Lucian Palii
  */
 public class JsonNumber implements JsonValue {
 	private BigDecimal value;
-	
+
 	/**
 	 * Initializes a JSON number with a value of zero.
 	 */
 	public JsonNumber() {
 		this(BigDecimal.ZERO);
 	}
-	
+
 	/**
 	 * Initializes a JSON number with the specified value.
-	 * 
+	 *
 	 * @param value
 	 *            this object's initial value
 	 */
@@ -47,17 +47,17 @@ public class JsonNumber implements JsonValue {
 
 	/**
 	 * Initializes a JSON number with the specified value.
-	 * 
+	 *
 	 * @param value
 	 *            this object's initial value
 	 */
 	public JsonNumber(BigInteger value) {
 		setValue(value);
 	}
-	
+
 	/**
 	 * Initializes a JSON number with the specified value.
-	 * 
+	 *
 	 * @param value
 	 *            this object's initial value
 	 */
@@ -67,7 +67,7 @@ public class JsonNumber implements JsonValue {
 
 	/**
 	 * Updates this JSON boolean's value.
-	 * 
+	 *
 	 * @param value
 	 *            the new value
 	 */
@@ -79,7 +79,7 @@ public class JsonNumber implements JsonValue {
 
 	/**
 	 * Updates this JSON boolean's value.
-	 * 
+	 *
 	 * @param value
 	 *            the new value
 	 */
@@ -89,17 +89,17 @@ public class JsonNumber implements JsonValue {
 
 	/**
 	 * Updates this JSON boolean's value.
-	 * 
+	 *
 	 * @param value
 	 *            the new value
 	 */
 	public void setValue(long value) {
 		setValue(BigInteger.valueOf(value));
 	}
-	
+
 	/**
 	 * Updates this JSON boolean's value.
-	 * 
+	 *
 	 * @param value
 	 *            the new value
 	 */
@@ -112,7 +112,7 @@ public class JsonNumber implements JsonValue {
 	 * may result in a loss of precision if the value cannot be exactly
 	 * represented as a <code>int</code> e.g. if it has a non-zero fractional
 	 * part or its magnitude is too great.
-	 * 
+	 *
 	 * @return the numeric value
 	 */
 	public int intValue() {
@@ -124,7 +124,7 @@ public class JsonNumber implements JsonValue {
 	 * may result in a loss of precision if the value cannot be exactly
 	 * represented as a <code>long</code> e.g. if it has a non-zero fractional
 	 * part or its magnitude is too great.
-	 * 
+	 *
 	 * @return the numeric value
 	 */
 	public long longValue() {
@@ -135,7 +135,7 @@ public class JsonNumber implements JsonValue {
 	 * Returns this JSON number's value, converted to a <code>double</code>.
 	 * This may result in a loss of precision if the value cannot be exactly
 	 * represented as a <code>double</code> e.g. if its magnitude is too great.
-	 * 
+	 *
 	 * @return the numeric value
 	 */
 	public double doubleValue() {
@@ -147,7 +147,7 @@ public class JsonNumber implements JsonValue {
 	 * This may result in a loss of precision if the value cannot be exactly
 	 * represented as a <code>BigInteger</code> e.g. if it has a non-zero
 	 * fractional part.
-	 * 
+	 *
 	 * @return the numeric value
 	 */
 	public BigInteger bigIntegerValue() {
@@ -156,7 +156,7 @@ public class JsonNumber implements JsonValue {
 
 	/**
 	 * Returns this JSON number's value.
-	 * 
+	 *
 	 * @return the numeric value
 	 */
 	public BigDecimal bigDecimalValue() {
@@ -167,12 +167,12 @@ public class JsonNumber implements JsonValue {
 	public String toJson() {
 		return this.value.stripTrailingZeros().toString().replaceFirst("[Ee]\\+?", "e");
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return toJson().hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		boolean ret = false;
@@ -184,7 +184,7 @@ public class JsonNumber implements JsonValue {
 		}
 		return ret;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "JSON number: " + toJson();

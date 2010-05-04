@@ -18,14 +18,14 @@ import com.googlecode.prmf.corleone.game.Player;
 import com.googlecode.prmf.corleone.game.team.Town;
 
 public class Citizen extends Role {
-	final private Town team; //TODO change to "private final"
+	private final Town team;
 
 	public Citizen(Town nteam) {
 		setName("citizen");
 		team = nteam;
 		setNightAction(true);
 	}
-	
+
 	@Override
 	public void resetNightAction() {
 		setNightAction(true);
@@ -38,7 +38,7 @@ public class Citizen extends Role {
 
 	public void nightAction(Player target) {
 	}
-	
+
 	@Override
 	public boolean hasNightAction() {
 		return false;
@@ -48,7 +48,7 @@ public class Citizen extends Role {
 	public Town getTeam() {
 		return this.team;
 	}
-	
+
 	@Override
 	public String description() {
 		return String.format("You are a %s! As a %s, you have no special powers. You win when all threats to the town are eliminated.", getName(), getName());

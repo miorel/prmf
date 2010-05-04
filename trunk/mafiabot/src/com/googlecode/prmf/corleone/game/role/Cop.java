@@ -14,10 +14,12 @@
  */
 package com.googlecode.prmf.corleone.game.role;
 
+import java.util.Locale;
+
 import com.googlecode.prmf.corleone.game.team.Town;
 
 public class Cop extends Role {
-	final private Town team;
+	private final Town team;
 
 	public Cop(Town nteam) {
 		setName("cop");
@@ -28,17 +30,16 @@ public class Cop extends Role {
 	public Town getTeam() {
 		return this.team;
 	}
-	
+
 	@Override
-	public boolean checkNightAction(String message)
-	{
+	public boolean checkNightAction(String message) {
 		boolean result = false;
-		message = message.toLowerCase();
-		if (message.substring(2).startsWith("check"))
+		message = message.toLowerCase(Locale.ENGLISH);
+		if(message.substring(2).startsWith("check"))
 			result = true;
 		return result;
 	}
-	
+
 	@Override
 	public String resolveNightAction() {
 		if (getTarget() == null)
@@ -50,7 +51,7 @@ public class Cop extends Role {
 
 	@Override
 	public String description() {
-		return String.format("You are a %s! As a %s, you have the ability to investigate players to determine whether or not they are mafia. You win when all threats to the town are eliminated.", getName(), getName());
+		return String.format("You are a %1$s! As a %1$s, you have the ability to investigate players to determine whether or not they are mafia. You win when all threats to the town are eliminated.", getName());
 	}
 
 }

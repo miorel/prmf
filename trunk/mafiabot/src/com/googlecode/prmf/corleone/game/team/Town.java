@@ -17,15 +17,14 @@ package com.googlecode.prmf.corleone.game.team;
 import com.googlecode.prmf.corleone.game.Player;
 
 public class Town extends Team {
-
 	public Town() {
 		setName("Town");
 	}
 
 	@Override
 	public boolean hasWon(Player[] players) {
-	//TODO: this method works in the current game, but technically is incorrect.
-	//if possible, change it to check for threats to the town as opposed to non-town (survivors etc)
+		//TODO: this method works in the current game, but technically is incorrect.
+		//if possible, change it to check for threats to the town as opposed to non-town (survivors etc)
 		boolean result = true;
 		for(Player p: players) {
 			if(!p.getRole().getTeam().equals(this) && p.isAlive()) {
@@ -34,6 +33,5 @@ public class Town extends Team {
 			}
 		}
 		return result;
-
 	}
 }

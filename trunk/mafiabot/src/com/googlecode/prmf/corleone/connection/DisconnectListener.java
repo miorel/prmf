@@ -14,19 +14,23 @@
  */
 package com.googlecode.prmf.corleone.connection;
 
+import com.googlecode.prmf.corleone.Main;
+
 public class DisconnectListener implements Listener {
+	@Override
 	public void receiveLine(String line, IOThread inputOutputThread) {
 		String msg[] = line.split(" ");
 		if(msg[0].equals("ERROR"))
 			try {
 				Main.main(new String[0]);
 			}
-			catch(Exception e) {
-				System.out.println(e);
-				System.out.println("Oops. (DisconnectListener)");
-			}
+		catch(Exception e) {
+			System.out.println(e);
+			System.out.println("Oops. (DisconnectListener)");
+		}
 	}
 
+	@Override
 	public void timerMessage() {
 	}
 }

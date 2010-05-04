@@ -28,12 +28,13 @@ public class MafiaListener implements Listener {
 	}
 
 	// TODO: need to clean this massive pile of if/else up
+	@Override
 	public void receiveLine(String in, IOThread inputThread) {
 		String[] msg = in.split(" ", 4);
 		String user = "";
 		if(msg[0].indexOf("!") > 1)
 			user = msg[0].substring(1,msg[0].indexOf("!"));
-		
+
 		if(msg.length >= 2 && game != null && (msg[1].startsWith("KICK") || msg[1].startsWith("PART") || msg[1].startsWith("QUIT"))) {
 			game.receiveMessage(in);
 			return;
@@ -42,7 +43,7 @@ public class MafiaListener implements Listener {
 			game.receiveMessage(in);
 			return;
 		}
-		
+
 		if (msg.length >= 2 && !msg[1].equals("PRIVMSG"))
 			return;
 		if (msg.length >= 4 && msg[2].equals(botName) && msg[3].startsWith(":~"))
@@ -51,22 +52,22 @@ public class MafiaListener implements Listener {
 			msg[3] = msg[3].toLowerCase();
 		//TODO: consider changing this to just pass any message that starts with a tilde
 		//then the current game state can handle it or ignore it
-		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && (game == null || game.getPostgame() != null)) 
+		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && (game == null || game.getPostgame() != null))
 		{
 			game = new Game(user, inputThread);
 			inputThread.sendMessage(inputThread.getChannel(), "Mafia game started by " + user + "!");
 			game.receiveMessage(":" + user + "! PRIVMSG " + inputThread.getChannel() + " :~join"); // TODO H4X is bad
-			
+
 		}
 		else if(msg.length >= 4 && msg[3].equals(":~stats") && game != null)
 		{
 			game.getState().status();
 		}
-		else if(msg.length >= 4 && msg[3].equals(":~join") && game != null) 
+		else if(msg.length >= 4 && msg[3].equals(":~join") && game != null)
 		{
 			game.receiveMessage(in);
 		}
-		else if(msg.length >= 4 && msg[3].equals(":~end") && game != null) 
+		else if(msg.length >= 4 && msg[3].equals(":~end") && game != null)
 		{
 			if(user.equals(game.getGameStarter()))
 			{
@@ -85,7 +86,7 @@ public class MafiaListener implements Listener {
 				game.invokeEndState();
 			}
 		}
-		
+
 		//TODO: why does game not handle all of this? just pass the message IMO
 		else if(msg.length >= 4 && msg[3].equals(":~start") && game != null)
 		{
@@ -123,7 +124,7 @@ public class MafiaListener implements Listener {
 		{
 			Scanner prof = null;
 			try{
-				
+
 				prof = new Scanner(new File("profiles.txt"));
 				if(msg[3].equalsIgnoreCase(":~load"))
 				{
@@ -147,7 +148,7 @@ public class MafiaListener implements Listener {
 						for(int i=0;i<roleMsg.length;++i)
 							roleMsg[i] = roleMsg[i].trim(); // TODO what does this do exactly?
 						String[] msgLoad = msg[3].split(" ",2);
-						String profDesired = msgLoad[1]; 
+						String profDesired = msgLoad[1];
 						if(profDesired.equalsIgnoreCase(profMsg[1]))
 						{
 							game.getPregame().loadRoleProfile(roleMsg);

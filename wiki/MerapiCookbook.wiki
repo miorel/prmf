@@ -2,13 +2,99 @@
 
 <wiki:toc max_depth="1" />
 
-= Searching for Music =
+= URL shortening =
+
+== [http://tinyurl.com/ TinyURL] ==
+
+{{{
+UrlShortener shortener = new TinyUrl();
+System.out.println(shortener.shorten("http://www.youtube.com/watch?v=mg8_cKxJZJY"));
+}}}
+
+prints
+
+ [http://tinyurl.com/cn6k5r]
+
+== [http://is.gd/ is.gd] ==
+
+{{{
+UrlShortener shortener = new Isgd();
+System.out.println(shortener.shorten("http://www.youtube.com/watch?v=f06aZ0yoJv8"));
+}}}
+
+prints
+
+ [http://is.gd/bT7rA]
+
+== [http://bit.ly/ bit.ly] ==
+
+Using this service requires an API key.
+
+{{{
+UrlShortener shortener = new Bitly("bitlyapidemo", "R_0da49e0a9118ff35f52f629d2d71bf07");
+System.out.println(shortener.shorten("http://www.youtube.com/watch?v=oHg5SJYRHA0"));
+}}}
+
+might print
+
+ [http://bit.ly/bqmt9h]
+
+if the demo account didn't constantly exceed the rate limit.
+
+== [http://j.mp/ j.mp] ==
+
+This service is powered by bit.ly so you can use the same API key.
+
+{{{
+UrlShortener shortener = new Jmp("bitlyapidemo", "R_0da49e0a9118ff35f52f629d2d71bf07");
+System.out.println(shortener.shorten("http://www.youtube.com/watch?v=Tx1XIm6q4r4"));
+}}}
+
+might print
+
+ [http://j.mp/br6YxA]
+
+if the demo account didn't constantly exceed the rate limit.
+
+= Searching for music =
+
+== Get a URL ==
 
 {{{
 Tinysong ts = new Tinysong();
-System.out.println(ts.search("never gonna give you up"));
+System.out.println(ts.topUrl("never gonna give you up"));
 }}}
 
-prints out [http://tinysong.com/cBZX].
+prints
 
-_This article is a stub. It would be really awesome if your improved it._
+ [http://tinysong.com/cBZX]
+
+== Get the top result == 
+
+{{{
+Tinysong ts = new Tinysong();
+TinysongResult res = ts.topResult("poker face");
+System.out.printf("%s by %s on %s <%s>%n",res.getSongName(), res.getArtistName(), res.getAlbumName(), res.getUrl());
+}}}
+
+prints
+
+ Poker Face (Jody Den Broeder Remix) by Lady Gaga on Poker Face <[http://tinysong.com/6HF0]>
+
+== Get several results ==
+
+{{{
+Tinysong ts = new Tinysong();
+for(TinysongResult res: ts.topUrl("basshunter", 8))
+	System.out.printf("%s by %s on %s <%s>%n",res.getSongName(), res.getArtistName(), res.getAlbumName(), res.getUrl());
+}}}
+
+prints
+
+ Buffalo Soldier by Bob Marley on Best Of Bob Marley <[http://tinysong.com/6Ifn]><br/>
+ One Love by Bob Marley on One Love <http://tinysong.com/fJc><br/>
+ I Shot The Sheriff by Bob Marley on Bob Marley Digitally Remastered <[http://tinysong.com/6Ifu]><br/>
+ Soul Rebel by Bob Marley on Bob Marley and Pete Tosh <[http://tinysong.com/6Ifo]><br/>
+ Trenchtown Rock by Bob Marley on Bob Marley and Pete Tosh <[http://tinysong.com/6Ifp]>
+
+_This article is a stub. It would be really awesome if you improved it._

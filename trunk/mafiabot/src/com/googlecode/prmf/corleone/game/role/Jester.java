@@ -19,7 +19,7 @@ import com.googlecode.prmf.corleone.game.team.JesterTeam;
 
 //currently not in use
 public class Jester extends Role {
-	final private JesterTeam team;
+	private final JesterTeam team;
 
 	public Jester(JesterTeam nteam) {
 		setName("jester");
@@ -28,10 +28,9 @@ public class Jester extends Role {
 
 	public void nightAction(Player target) {
 	}
-	
+
 	@Override
-	public boolean checkNightAction(String message)
-	{
+	public boolean checkNightAction(String message) {
 		return false;
 	}
 

@@ -13,7 +13,7 @@
 		<mkdir dir="dist"/>
 		<jar destfile="dist/MafiaBot.jar">
 			<manifest>
-				<attribute name="Main-Class" value="com.googlecode.prmf.corleone.connection.Main"/>
+				<attribute name="Main-Class" value="com.googlecode.prmf.corleone.Main"/>
 			</manifest>
 			<fileset dir="bin"/>
 			<zipfileset src="lib/merapi-0.0.1.jar" excludes="META-INF/**"/>

@@ -40,9 +40,8 @@ public class Game {
 		timerThread = new TimerThread(inputOutputThread);
 		setProgress(false);
 	}
-	
-	public void setProgress(boolean set) {
 
+	public void setProgress(boolean set) {
 		this.inProgress = set;
 	}
 
@@ -62,7 +61,7 @@ public class Game {
 	}
 
 	//TODO: implement dayStart/nightStart
-	
+
 	public boolean isOver() {
 		boolean result = false;
 
@@ -137,10 +136,8 @@ public class Game {
 	public Postgame getPostgame() {
 		return postgame;
 	}
-	public void invokeEndState()
-	{
+
+	public void invokeEndState() {
 		state.endState(this);
 	}
-	
-
 }

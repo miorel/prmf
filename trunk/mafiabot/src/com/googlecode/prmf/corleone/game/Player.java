@@ -32,7 +32,7 @@ public class Player {
 		votedFor = -1;
 		targetted = false;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		boolean ret = false;
@@ -42,10 +42,9 @@ public class Player {
 		}
 		return ret;
 	}
-	
-	public void endNight()
-	{
-		if (getNightLives() < 0) //this means they were targetted to be killed more than targetted to be saved
+
+	public void endNight() {
+		if (getNightLives() < 0) //this means they were targeted to be killed more than targeted to be saved
 			setAlive(false);
 		resetNightLives();
 		targetted = false;
@@ -58,9 +57,8 @@ public class Player {
 	public Role getRole() {
 		return role;
 	}
-	
-	public void setRole(Role role)
-	{
+
+	public void setRole(Role role) {
 		this.role = role;
 	}
 
