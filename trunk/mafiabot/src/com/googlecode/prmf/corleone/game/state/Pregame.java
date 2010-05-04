@@ -27,6 +27,7 @@ import com.googlecode.prmf.corleone.game.role.Cop;
 import com.googlecode.prmf.corleone.game.role.Doctor;
 import com.googlecode.prmf.corleone.game.role.Mafia;
 import com.googlecode.prmf.corleone.game.role.Role;
+import com.googlecode.prmf.corleone.game.team.JesterTeam;
 import com.googlecode.prmf.corleone.game.team.MafiaTeam;
 import com.googlecode.prmf.corleone.game.team.Team;
 import com.googlecode.prmf.corleone.game.team.Town;
@@ -36,6 +37,7 @@ import com.googlecode.prmf.corleone.game.util.Assigner;
 public class Pregame implements MafiaGameState {
 	private MafiaTeam mafiaTeam;
 	private Town town;
+	private JesterTeam jesterTeam;
 	private String startName;
 	private boolean profileLoaded;
 	private List<Player> players;
@@ -393,6 +395,13 @@ public class Pregame implements MafiaGameState {
 		public Town getTeam()
 		{
 			return town;
+		}
+	}
+	class JesterTeamAssigner implements Assigner
+	{
+		public JesterTeam getTeam()
+		{
+			return jesterTeam;
 		}
 	}
 }
