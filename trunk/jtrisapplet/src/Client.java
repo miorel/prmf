@@ -22,6 +22,5 @@ public class Client {
 		Board b = new Board();
 		
 		
-		
 	}
 }
