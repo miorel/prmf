@@ -189,7 +189,6 @@ public class Pregame implements MafiaGameState {
 	
 	public void loadRoleProfile(String[] roleMsg)
 	{
-		//Method not working yet
 		roles.clear();
 		for(int i=0;i<roleMsg.length;++i)
 		{
