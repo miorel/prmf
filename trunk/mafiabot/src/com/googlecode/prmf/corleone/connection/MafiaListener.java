@@ -80,6 +80,10 @@ public class MafiaListener implements Listener {
 		else if(msg.length >= 4 && msg[3].equals(":~quit") && game != null)
 		{
 			game.receiveMessage(in);
+			if(game.isOver())
+			{
+				game.invokeEndState();
+			}
 		}
 		
 		//TODO: why does game not handle all of this? just pass the message IMO

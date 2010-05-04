@@ -137,5 +137,10 @@ public class Game {
 	public Postgame getPostgame() {
 		return postgame;
 	}
+	public void invokeEndState()
+	{
+		state.endState(this);
+	}
+	
 
 }
