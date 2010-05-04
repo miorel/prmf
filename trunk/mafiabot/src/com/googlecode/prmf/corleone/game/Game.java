@@ -62,11 +62,7 @@ public class Game {
 	}
 
 	//TODO: implement dayStart/nightStart
-	//TODO: remove numMafia, that is never used
-	public Game(String gameStarter, IOThread inputOutputThread, boolean dayStart, int numMafia) {
-		this(gameStarter, inputOutputThread);
-	}
-
+	
 	public boolean isOver() {
 		boolean result = false;
 
