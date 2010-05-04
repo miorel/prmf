@@ -124,24 +124,16 @@ public class MafiaListener implements Listener {
 			Scanner prof = null;
 			try{
 				
-				prof = new Scanner(new File("profiles.txt"));
+				prof = new Scanner(new File("../profiles.txt"));
 				if(msg[3].equalsIgnoreCase(":~load"))
 				{
-					//int profileNum = 1;
 					StringBuilder currProfile = new StringBuilder();
 					currProfile.append("List of saved profiles: ");
 					while(prof.hasNextLine())
 					{
 						String profileLine = prof.nextLine();
 						String profMsg[] = profileLine.split(" ",3);
-						//String roleMsg[] = profMsg[2].split(",");
 						currProfile.append(" "+ profMsg[1]);
-						/**
-						for(int i=0;i<roleMsg.length;++i)
-						{
-							currProfile.append(" "+roleMsg[i].trim());
-						}
-						**/
 					}
 					inputThread.sendMessage(user, currProfile.toString());
 				}
@@ -155,8 +147,8 @@ public class MafiaListener implements Listener {
 						for(int i=0;i<roleMsg.length;++i)
 							roleMsg[i] = roleMsg[i].trim(); // TODO what does this do exactly?
 						String[] msgLoad = msg[3].split(" ",2);
-						String ProfDesired = msgLoad[1]; // TODO this variable's name should not start with uppercase
-						if(ProfDesired.equalsIgnoreCase(profMsg[1]))
+						String profDesired = msgLoad[1]; 
+						if(profDesired.equalsIgnoreCase(profMsg[1]))
 						{
 							game.getPregame().loadRoleProfile(roleMsg);
 							break;
@@ -169,9 +161,6 @@ public class MafiaListener implements Listener {
 				e.printStackTrace();
 				inputThread.sendMessage(inputThread.getChannel(), "profiles.txt file not found");
 			}
-
-			
-
 		}
 	}
 

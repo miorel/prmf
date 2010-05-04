@@ -21,10 +21,10 @@
 	</target>
 
 	<target name="run" description="Runs the jar file" depends="jar" >
-		<copy file="src/com/googlecode/prmf/corleone/connection/profiles.txt" tofile="profiles.txt"/>
-		<copy file="src/com/googlecode/prmf/corleone/connection/profiles.txt" tofile="dist/profiles.txt"/>
-		<copy file="src/com/googlecode/prmf/corleone/connection/settings.txt" tofile="settings.txt"/>
-		<copy file="src/com/googlecode/prmf/corleone/connection/settings.txt" tofile="dist/settings.txt"/>
+		<copy file="profiles.txt" tofile="profiles.txt"/>
+		<copy file="profiles.txt" tofile="dist/profiles.txt"/>
+		<copy file="settings.txt" tofile="settings.txt"/>
+		<copy file="settings.txt" tofile="dist/settings.txt"/>
 		<java jar="dist/MafiaBot.jar" fork="true"/>
 	</target>
 
