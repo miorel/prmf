@@ -32,6 +32,8 @@ Since it gets annoying to type /connect irc.freenode.net and identify yourself t
 
 First make sure you are connected to the server and have your nick set properly. Then, do the following (replace "password" with your password):
 
-`/SERVER ADD -auto -network freenode irc.freenode.net 6667 password
-/CHANNEL ADD -auto #ufpt freenode
-/save`
+`/SERVER ADD -auto -network freenode irc.freenode.net 6667 password`
+
+`/CHANNEL ADD -auto #ufpt freenode`
+
+`/save`
