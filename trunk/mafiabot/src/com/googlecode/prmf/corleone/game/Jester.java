@@ -39,10 +39,6 @@ public class Jester extends Role {
 
 	@Override
 	public String description() {
-		//TODO reimplement using String.format()
-		StringBuilder toReturn = new StringBuilder();
-		toReturn.append("You are a ").append(getName()).append("! ");
-		toReturn.append("As a ").append(getName()).append(", you have no special powers. You win if and only if you are lynched by the town.");
-		return toReturn.toString();
+		return String.format("You are a %s! As a %s, you have no special powers. You win if and only if you are lynched by the town.", getName(), getName());
 	}
 }

@@ -48,11 +48,7 @@ public class Cop extends Role {
 
 	@Override
 	public String description() {
-		//TODO reimplement using String.format()
-		StringBuilder toReturn = new StringBuilder();
-		toReturn.append("You are a ").append(getName()).append("! ");
-		toReturn.append("As a ").append(getName()).append(", you have the ability to investigate players to determine whether or not they are mafia. You win when all threats to the town are eliminated.");
-		return toReturn.toString();
+		return String.format("You are a %s! As a %s, you have the ability to investigate players to determine whether or not they are mafia. You win when all threats to the town are eliminated.", getName(), getName());
 	}
 
 }

@@ -39,10 +39,6 @@ public class Vigilante extends Role {
 	
 	@Override
 	public String description() {
-		//TODO reimplement with String.format()
-		StringBuilder toReturn = new StringBuilder();
-		toReturn.append("You are a ").append(getName()).append("! ");
-		toReturn.append("As a ").append(getName()).append(", you have the ability to kill a player at night. Bear in mind you can only do this once, so choose wisely. You win when all threats to the town are eliminated.");
-		return toReturn.toString();
+		return String.format("You are a %s! As a %s, you have the ability to kill a player at night. Bear in mind you can only do this once, so choose wisely. You win when all threats to the town are eliminated.", getName(), getName());
 	}
 }
