@@ -12,11 +12,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.state;
 
 import java.util.LinkedList;
 
 import com.googlecode.prmf.corleone.connection.IOThread;
+import com.googlecode.prmf.corleone.game.Game;
+import com.googlecode.prmf.corleone.game.Player;
+import com.googlecode.prmf.corleone.game.team.Team;
 
 //TODO: add some more cool stuff to this class! better results, game summaries, etc; lots of ways to go with this.
 public class Postgame implements MafiaGameState {

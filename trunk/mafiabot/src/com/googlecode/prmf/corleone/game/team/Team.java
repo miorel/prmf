@@ -12,10 +12,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.team;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import com.googlecode.prmf.corleone.game.Player;
 
 public abstract class Team {
 	private List<Player> list;

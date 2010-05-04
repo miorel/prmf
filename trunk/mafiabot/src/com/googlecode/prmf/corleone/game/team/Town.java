@@ -12,33 +12,28 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.team;
 
-//currently not in use
-public class Jester extends Role {
-	final private JesterTeam team;
+import com.googlecode.prmf.corleone.game.Player;
 
-	public Jester(JesterTeam nteam) {
-		setName("jester");
-		team = nteam;
-	}
+public class Town extends Team {
 
-	public void nightAction(Player target) {
-	}
-	
-	@Override
-	public boolean checkNightAction(String message)
-	{
-		return false;
+	public Town() {
+		setName("Town");
 	}
 
 	@Override
-	public JesterTeam getTeam() {
-		return this.team;
-	}
+	public boolean hasWon(Player[] players) {
+	//TODO: this method works in the current game, but technically is incorrect.
+	//if possible, change it to check for threats to the town as opposed to non-town (survivors etc)
+		boolean result = true;
+		for(Player p: players) {
+			if(!p.getRole().getTeam().equals(this) && p.isAlive()) {
+				result = false;
+				break;
+			}
+		}
+		return result;
 
-	@Override
-	public String description() {
-		return String.format("You are a %s! As a %s, you have no special powers. You win if and only if you are lynched by the town.", getName(), getName());
 	}
 }

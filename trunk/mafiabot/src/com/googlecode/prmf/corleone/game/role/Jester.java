@@ -12,45 +12,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.role;
 
-public class Doctor extends Role {
-	private final Town team;
+import com.googlecode.prmf.corleone.game.Player;
+import com.googlecode.prmf.corleone.game.team.JesterTeam;
 
-	public Doctor(Town nteam) {
-		setName("doctor");
+//currently not in use
+public class Jester extends Role {
+	final private JesterTeam team;
+
+	public Jester(JesterTeam nteam) {
+		setName("jester");
 		team = nteam;
 	}
 
-	@Override
-	public Town getTeam() {
-		return this.team;
+	public void nightAction(Player target) {
 	}
 	
 	@Override
 	public boolean checkNightAction(String message)
 	{
-		boolean result = false;
-		message = message.toLowerCase();
-		if (message.substring(2).startsWith("heal"))
-			result = true;
-		return result;
+		return false;
 	}
-	
+
 	@Override
-	public String resolveNightAction()
-	{
-		if (getTarget() == null)
-			return "You didn't give a target!";
-		StringBuilder sb = new StringBuilder();
-		getTarget().setNightLives(getTarget().getNightLives() + 1);
-		return sb.toString();
+	public JesterTeam getTeam() {
+		return this.team;
 	}
 
 	@Override
 	public String description() {
-		return String.format("You are a %s! As a %s, you have the ability to heal a player every night. Note that you cannot heal yourself. You win when all threats to the town are eliminated.", getName(), getName());
+		return String.format("You are a %s! As a %s, you have no special powers. You win if and only if you are lynched by the town.", getName(), getName());
 	}
-
 }
-

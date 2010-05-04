@@ -12,26 +12,19 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.team;
 
-class Town extends Team {
+import com.googlecode.prmf.corleone.game.Player;
 
-	public Town() {
-		setName("Town");
+public class JesterTeam extends Team {
+	//currently not in use
+	public JesterTeam() {
+		setName("JesterTeam");
 	}
-
+	
 	@Override
 	public boolean hasWon(Player[] players) {
-	//TODO: this method works in the current game, but technically is incorrect.
-	//if possible, change it to check for threats to the town as opposed to non-town (survivors etc)
-		boolean result = true;
-		for(Player p: players) {
-			if(!p.getRole().getTeam().equals(this) && p.isAlive()) {
-				result = false;
-				break;
-			}
-		}
-		return result;
-
+		// TODO after each lynch, check if it's a jester who just got lynched~
+		return false;
 	}
 }

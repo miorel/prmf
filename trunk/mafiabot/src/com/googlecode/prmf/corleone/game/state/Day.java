@@ -12,13 +12,17 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.state;
 
 import static com.googlecode.prmf.merapi.util.Iterators.filter;
 import static com.googlecode.prmf.merapi.util.Iterators.iterator;
 import static com.googlecode.prmf.merapi.util.Iterators.map;
 
 import com.googlecode.prmf.corleone.connection.IOThread;
+import com.googlecode.prmf.corleone.game.Game;
+import com.googlecode.prmf.corleone.game.Player;
+import com.googlecode.prmf.corleone.game.util.Action;
+import com.googlecode.prmf.corleone.game.util.VoteTracker;
 import com.googlecode.prmf.merapi.dp.Iterator;
 import com.googlecode.prmf.merapi.util.Filter;
 import com.googlecode.prmf.merapi.util.Mapper;

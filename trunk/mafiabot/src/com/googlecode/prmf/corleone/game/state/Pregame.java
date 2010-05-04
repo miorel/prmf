@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.state;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,6 +20,18 @@ import java.util.Collections;
 import java.util.List;
 
 import com.googlecode.prmf.corleone.connection.IOThread;
+import com.googlecode.prmf.corleone.game.Game;
+import com.googlecode.prmf.corleone.game.Player;
+import com.googlecode.prmf.corleone.game.role.Citizen;
+import com.googlecode.prmf.corleone.game.role.Cop;
+import com.googlecode.prmf.corleone.game.role.Doctor;
+import com.googlecode.prmf.corleone.game.role.Mafia;
+import com.googlecode.prmf.corleone.game.role.Role;
+import com.googlecode.prmf.corleone.game.team.MafiaTeam;
+import com.googlecode.prmf.corleone.game.team.Team;
+import com.googlecode.prmf.corleone.game.team.Town;
+import com.googlecode.prmf.corleone.game.util.Action;
+import com.googlecode.prmf.corleone.game.util.Assigner;
 
 public class Pregame implements MafiaGameState {
 	private MafiaTeam mafiaTeam;

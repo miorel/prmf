@@ -12,7 +12,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.util;
+
+import com.googlecode.prmf.corleone.game.team.Team;
 
 // TODO sup hua, this has nothing to do with any problems in the code
 // you know how you got 64bit Eclipse to work on your comp?

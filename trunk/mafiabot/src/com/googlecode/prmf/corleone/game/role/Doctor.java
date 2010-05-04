@@ -12,14 +12,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.role;
 
-//currently not in use
-public class Vigilante extends Role {
+import com.googlecode.prmf.corleone.game.team.Town;
+
+public class Doctor extends Role {
 	private final Town team;
 
-	public Vigilante(Town nteam) {
-		setName("vigilante");
+	public Doctor(Town nteam) {
+		setName("doctor");
 		team = nteam;
 	}
 
@@ -29,16 +30,29 @@ public class Vigilante extends Role {
 	}
 	
 	@Override
-	public boolean checkNightAction(String message) {
+	public boolean checkNightAction(String message)
+	{
 		boolean result = false;
 		message = message.toLowerCase();
-		if (message.substring(2).startsWith("attack"))
+		if (message.substring(2).startsWith("heal"))
 			result = true;
 		return result;
 	}
 	
 	@Override
-	public String description() {
-		return String.format("You are a %s! As a %s, you have the ability to kill a player at night. Bear in mind you can only do this once, so choose wisely. You win when all threats to the town are eliminated.", getName(), getName());
+	public String resolveNightAction()
+	{
+		if (getTarget() == null)
+			return "You didn't give a target!";
+		StringBuilder sb = new StringBuilder();
+		getTarget().setNightLives(getTarget().getNightLives() + 1);
+		return sb.toString();
 	}
+
+	@Override
+	public String description() {
+		return String.format("You are a %s! As a %s, you have the ability to heal a player every night. Note that you cannot heal yourself. You win when all threats to the town are eliminated.", getName(), getName());
+	}
+
 }
+

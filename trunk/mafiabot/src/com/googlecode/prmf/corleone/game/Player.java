@@ -14,6 +14,8 @@
  */
 package com.googlecode.prmf.corleone.game;
 
+import com.googlecode.prmf.corleone.game.role.Role;
+
 public class Player {
 	private String name;
 	private Role role;

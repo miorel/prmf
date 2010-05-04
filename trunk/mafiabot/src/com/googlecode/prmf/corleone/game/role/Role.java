@@ -12,7 +12,10 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.role;
+
+import com.googlecode.prmf.corleone.game.Player;
+import com.googlecode.prmf.corleone.game.team.Team;
 
 public abstract class Role {
 	private Team team;
@@ -23,7 +26,7 @@ public abstract class Role {
 	// TODO implement some sort of priority system, so the bot knows which roles' night actions come first
 	// aren't they technically simultaneous?
 	// eh i dont think so... if agent alters someone, that needs to happen before cop checks right?
-	boolean nightAction(String message, Player[] players) {
+	public boolean nightAction(String message, Player[] players) {
 		//this method makes sure the target for the night action is valid, then targets him
 		boolean toReturn = false;
 		if (!checkNightAction(message))
@@ -47,7 +50,7 @@ public abstract class Role {
 		setNightAction(false);
 	}
 
-	boolean hasNightAction() {
+	public boolean hasNightAction() {
 		return true;
 	}
 

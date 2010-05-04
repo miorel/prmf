@@ -15,6 +15,10 @@
 package com.googlecode.prmf.corleone.game;
 
 import com.googlecode.prmf.corleone.connection.IOThread;
+import com.googlecode.prmf.corleone.game.state.MafiaGameState;
+import com.googlecode.prmf.corleone.game.state.Postgame;
+import com.googlecode.prmf.corleone.game.state.Pregame;
+import com.googlecode.prmf.corleone.game.util.TimerThread;
 
 public class Game {
 	private Player[] players;

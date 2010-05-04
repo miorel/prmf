@@ -12,9 +12,10 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.corleone.game;
+package com.googlecode.prmf.corleone.game.util;
 
 import com.googlecode.prmf.corleone.connection.IOThread;
+import com.googlecode.prmf.corleone.game.Player;
 
 ///TODO: I'm thinking this class needs to be totally redone... the player object should probably track its own votes
 //and it can report back to this when status updates are needed, or something like that
