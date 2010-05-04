@@ -17,13 +17,17 @@ package com.googlecode.prmf.corleone.game;
 import com.googlecode.prmf.corleone.game.role.Role;
 
 public class Player {
+	public static enum causesOfDeath {
+		LYNCH, NIGHTKILL, QUIT, NOTDEAD
+	}
+	
 	private String name;
 	private Role role;
-
 	private boolean isAlive;
 	private int votedFor;
 	private int nightLives;
 	private boolean targetted;
+	private causesOfDeath deathCause;
 
 	public Player(String name) {
 		setName(name);
@@ -31,6 +35,7 @@ public class Player {
 		role = null;
 		votedFor = -1;
 		targetted = false;
+		deathCause = causesOfDeath.NOTDEAD;
 	}
 
 	@Override
@@ -107,5 +112,15 @@ public class Player {
 
 	public boolean getTargetted() {
 		return targetted;
+	}
+	
+	public void setCauseOfDeath(causesOfDeath death)
+	{
+		deathCause = death;
+	}
+	
+	public causesOfDeath getCauseOfDeath()
+	{
+		return deathCause;
 	}
 }

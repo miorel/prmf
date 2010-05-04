@@ -23,8 +23,20 @@ public class JesterTeam extends Team {
 	}
 	
 	@Override
+	public String getName() {
+		return "JesterTeam";
+	}
+	
+	@Override
 	public boolean hasWon(Player[] players) {
-		// TODO after each lynch, check if it's a jester who just got lynched~
+		for(Player player : players)
+		{
+			if(player.getCauseOfDeath().equals(Player.causesOfDeath.LYNCH))
+			{
+				System.err.println("JesterTeam has won the game");
+				return true;
+			}
+		}
 		return false;
 	}
 }

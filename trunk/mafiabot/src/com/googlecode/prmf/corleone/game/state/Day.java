@@ -59,6 +59,7 @@ public class Day implements MafiaGameState {
 		if(returnCode >= 0) {
 			inputOutputThread.sendMessage(inputOutputThread.getChannel(), players[returnCode] + " was lynched :(");
 			players[returnCode].setAlive(false);
+			players[returnCode].setCauseOfDeath(Player.causesOfDeath.LYNCH);
 			ret = true;
 		}
 		else if(returnCode == -2) {
