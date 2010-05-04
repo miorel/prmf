@@ -25,3 +25,13 @@ After installation completes, the executable is `bin/irssi` in your home directo
 = Using =
 
 Check out [http://quadpoint.org/articles/irssi A Guide to Efficiently Using Irssi and Screen], an excellent tutorial which covers Irssi basics as well as how you too can always be on IRC.
+
+= Auto-join to our IRC channel =
+
+Since it gets annoying to type /connect irc.freenode.net and identify yourself to NickServ every time you want to join our IRC channel, you can tell Irssi to add these settings to your config channel.
+
+First make sure you are connected to the server and have your nick set properly. Then, do the following:
+
+`/SERVER ADD -auto -network freenode irc.freenode.net 6667 <password>
+/CHANNEL ADD -auto #ufpt freenode
+/save`
