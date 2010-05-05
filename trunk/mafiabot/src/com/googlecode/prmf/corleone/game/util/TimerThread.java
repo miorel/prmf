@@ -31,29 +31,36 @@ public class TimerThread  implements Runnable{
 		this.inputThread = inputThread;
 		timer = new Thread(this, "Timer");
 	}
-	
+
 	public TimerThread(IOThread inputThread) {
 		this(inputThread, 40*1000);
 	}
-	
+
 	public void run()
 	{
+		System.err.println("Thread created");
 		try {
 			Thread.sleep(daytime);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			System.err.println("Thread interrupted");
+			return;
 		}
 
 		// TODO instead of returning if the thread is interrupted why not just
 		// say to send the message and cease the timer if the thread is NOT
 		// interrupted
+		/**
 		if(Thread.interrupted())
+		{
+			System.err.println("Thread interrupted");
 			return;
-
+		}
+		 **/
 		inputThread.sendMessage(inputThread.getChannel(), "The town was not able to reach a consensus.");
 		inputThread.ceaseTimer();
 	}
-	
+
 	// TODO this method should not exist
 	public Thread getTimer()
 	{

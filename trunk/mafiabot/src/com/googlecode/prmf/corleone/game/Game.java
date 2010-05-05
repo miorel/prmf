@@ -106,6 +106,7 @@ public class Game {
 			inputOutputThread.sendMessage("MODE", inputOutputThread.getChannel(), "-m");
 		}
 		this.state = state;
+		getTimerThread().getTimer().interrupt();
 		this.state.status();
 	}
 
