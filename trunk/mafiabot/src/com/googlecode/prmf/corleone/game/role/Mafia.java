@@ -24,9 +24,9 @@ public class Mafia extends Role {
 		setName("mafia");
 		team = nteam;
 		setTarget(null);
-		setNightAction(false);
+		super.setNightAction(false);
 	}
-	
+
 	@Override
 	public boolean nightAction(String message, Player[] players)
 	{

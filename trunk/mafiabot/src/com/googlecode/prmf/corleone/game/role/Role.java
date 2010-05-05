@@ -34,8 +34,10 @@ public abstract class Role {
 		String[] splitMessage = message.split(" ");
 		String targetName = splitMessage[1];
 		//TODO: you shouldn't be able to target dead people... but you can :O! I think
+		//causesOfDeath isnt fully used around the code yet, it needs to be properly set when someone dies during night
+		//but for now we can maybe start using it instead of isAlive , it seems pointless to have both..even though we need causesOfDeath for certain roles.
 		for (Player p : players)
-			if (p.getName().equals(targetName))
+			if (p.getName().equals(targetName) && p.getCauseOfDeath().equals(Player.causesOfDeath.NOTDEAD))
 			{
 				this.target = p;
 				toReturn = true;
@@ -43,9 +45,9 @@ public abstract class Role {
 				break;
 			}
 		return toReturn;
-			
+
 	}
-	
+
 	public void resetNightAction() {
 		setNightAction(false);
 	}

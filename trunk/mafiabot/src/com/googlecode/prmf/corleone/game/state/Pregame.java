@@ -23,10 +23,10 @@ import com.googlecode.prmf.corleone.connection.IOThread;
 import com.googlecode.prmf.corleone.game.Game;
 import com.googlecode.prmf.corleone.game.Player;
 import com.googlecode.prmf.corleone.game.role.Citizen;
-import com.googlecode.prmf.corleone.game.role.Cop;
 import com.googlecode.prmf.corleone.game.role.Doctor;
 import com.googlecode.prmf.corleone.game.role.Mafia;
 import com.googlecode.prmf.corleone.game.role.Role;
+import com.googlecode.prmf.corleone.game.role.Vigilante;
 import com.googlecode.prmf.corleone.game.team.JesterTeam;
 import com.googlecode.prmf.corleone.game.team.MafiaTeam;
 import com.googlecode.prmf.corleone.game.team.Team;
@@ -57,10 +57,10 @@ public class Pregame implements MafiaGameState {
 		dayStart = true;
 		this.inputOutputThread = inputOutputThread;
 		profileLoaded = false;
-		
+
 	}
-	
-	//TODO: make a less hackish solution to the 
+
+	//TODO: make a less hackish solution to the
 	public Pregame()
 	{
 		mafiaTeam = new MafiaTeam();
@@ -70,61 +70,61 @@ public class Pregame implements MafiaGameState {
 
 	public boolean receiveMessage(Game game, String line)
 	{
-			boolean endState = false;
-			String[] msg = line.split(" ");
-			String user = "";
-			
-			Action action = null;
+		boolean endState = false;
+		String[] msg = line.split(" ");
+		String user = "";
 
-			//this is kind of a nasty solution...
+		Action action = null;
 
-			if(msg[0].indexOf("!")>1)
-				user = msg[0].substring(1,msg[0].indexOf("!"));
-			
-			//interpret the command given~~~
-			if(msg[1].startsWith("PART") || msg[1].startsWith("QUIT"))
-			{
-				action = new QuitAction(user, game);
-			}
-			
-			if(msg[1].startsWith("KICK"))
-			{
-				action = new QuitAction(msg[3], game);
-			}
-			
-			if(msg[1].startsWith("NICK") )
-			{
-				action = new NickAction(user, game, msg[2].substring(1));
-			}
-			
-			String command = msg[3].toLowerCase();
-			
-			
-			
-			//TODO: handle with Class.forName(), although I'm not sure how case sensitivity will work with that? =\
-			//then we can catch class not found exceptions with a message telling user to see ~help or something
-			if(command.equalsIgnoreCase(":~start"))
-			{
-				endState = true;
-				action = new StartAction(user, game);
-			}	
-			if(command.equalsIgnoreCase(":~join"))
-			{
-				action = new JoinAction(user, game);
-			}
-			
-			if(command.equalsIgnoreCase(":~quit"))
-			{
-				action = new QuitAction(user, game);
-				
-			}	
-			
-			if (action != null)
-				action.handle();
-			
-			return endState;
-	}	
-	
+		//this is kind of a nasty solution...
+
+		if(msg[0].indexOf("!")>1)
+			user = msg[0].substring(1,msg[0].indexOf("!"));
+
+		//interpret the command given~~~
+		if(msg[1].startsWith("PART") || msg[1].startsWith("QUIT"))
+		{
+			action = new QuitAction(user, game);
+		}
+
+		if(msg[1].startsWith("KICK"))
+		{
+			action = new QuitAction(msg[3], game);
+		}
+
+		if(msg[1].startsWith("NICK") )
+		{
+			action = new NickAction(user, game, msg[2].substring(1));
+		}
+
+		String command = msg[3].toLowerCase();
+
+
+
+		//TODO: handle with Class.forName(), although I'm not sure how case sensitivity will work with that? =\
+		//then we can catch class not found exceptions with a message telling user to see ~help or something
+		if(command.equalsIgnoreCase(":~start"))
+		{
+			endState = true;
+			action = new StartAction(user, game);
+		}
+		if(command.equalsIgnoreCase(":~join"))
+		{
+			action = new JoinAction(user, game);
+		}
+
+		if(command.equalsIgnoreCase(":~quit"))
+		{
+			action = new QuitAction(user, game);
+
+		}
+
+		if (action != null)
+			action.handle();
+
+		return endState;
+	}
+
 	/*private void changeNick(String oldNick , String newNick)
 	{
 		for(int i=0;i<players.size();++i)
@@ -136,30 +136,30 @@ public class Pregame implements MafiaGameState {
 			}
 		}
 	}*/
-	
+
 	private void startGame(Game game)
-	{	
+	{
 		game.setProgress(true);
 		if(!profileLoaded)
 		{
 			defaultStart();
 			return;
 		}
-		
+
 		Collections.shuffle(roles);
-		
+
 		// TODO the following would be slicker with two iterators
 		for(int a = 0; a < players.size(); ++a)
 		{
 			Player p = players.get(a);
-			
+
 			p.setRole(roles.get(a));
 			p.getRole().getTeam().addPlayer(p); //this seems kinda sloppy, any better way of doing this?
-												//yes, do it from within setRole()
+			//yes, do it from within setRole()
 			inputOutputThread.sendMessage(players.get(a).getName(), p.getRole().description());
 		}
 	}
-	
+
 	private void defaultStart()
 	{
 		int numMafia = (int)Math.ceil(players.size()/4.0);
@@ -168,8 +168,8 @@ public class Pregame implements MafiaGameState {
 		{
 			mafiaRoles.add(new Mafia(mafiaTeam));
 		}
-		
-		townRoles.add(new Cop(town));
+
+		townRoles.add(new Vigilante(town));
 		townRoles.add(new Doctor(town));
 		//create the Town team
 		for(int a = 0; a < (players.size() - numMafia-2); ++a)
@@ -178,25 +178,25 @@ public class Pregame implements MafiaGameState {
 		}
 		roles.addAll(mafiaRoles);
 		roles.addAll(townRoles);
-		
+
 		Collections.shuffle(roles);
-		
+
 		// TODO code duplication for the lose
 		for(int a = 0; a < players.size(); ++a)
 		{
 			Player p = players.get(a);
-			
+
 			p.setRole(roles.get(a));
 			p.getRole().getTeam().addPlayer(p); //this seems kinda sloppy, any better way of doing this?
-												//yes, do it from within setRole()
-			
+			//yes, do it from within setRole()
+
 		}
 		for (Player p : players)
 		{
 			inputOutputThread.sendMessage(p.getName(), p.getRole().description());
 		}
 	}
-	
+
 	public void loadRoleProfile(String[] roleMsg)
 	{
 		roles.clear();
@@ -242,31 +242,31 @@ public class Pregame implements MafiaGameState {
 			}
 		}
 	}
-	
+
 	public Player[] getPlayerArray() // it's a player array now, hope you're happy ;p
 	{
 		return players.toArray(new Player[0]);
 	}
-	
+
 	public boolean getDayStart()
 	{
 		return dayStart;
 	}
-	
+
 	public void setDayStart(boolean day)
 	{
 		dayStart = day;
 	}
-	
+
 	public void status()
 	{
-    	if(players.size() >= 1)
-    		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "The following people are registered");
-    	else
-    	{
-    		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "There is no one registered yet!");
-    		return;
-    	}
+		if(players.size() >= 1)
+			inputOutputThread.sendMessage(inputOutputThread.getChannel(), "The following people are registered");
+		else
+		{
+			inputOutputThread.sendMessage(inputOutputThread.getChannel(), "There is no one registered yet!");
+			return;
+		}
 		StringBuilder playersIn = new StringBuilder();
 		for (Player p : players)
 		{
@@ -277,7 +277,7 @@ public class Pregame implements MafiaGameState {
 		inputOutputThread.sendMessage(inputOutputThread.getChannel(), playersIn.toString());
 		inputOutputThread.sendMessage(inputOutputThread.getChannel(), (dayStart?"This game is currently set to day start":"This game is currently set to night start"));
 	}
-	
+
 	class JoinAction implements Action
 	{
 		String name;
@@ -287,7 +287,7 @@ public class Pregame implements MafiaGameState {
 			this.name = name;
 			this.game = game;
 		}
-		
+
 		public void handle()
 		{
 			Player potential = new Player(name);
@@ -301,7 +301,7 @@ public class Pregame implements MafiaGameState {
 				inputOutputThread.sendMessage(game.getIOThread().getChannel(), name + " has already joined the game!");
 		}
 	}
-	
+
 	class QuitAction implements Action
 	{
 		String name;
@@ -311,7 +311,7 @@ public class Pregame implements MafiaGameState {
 			this.name = name;
 			this.game = game;
 		}
-		
+
 		public void handle()
 		{
 			Player potential = new Player(name);
@@ -325,7 +325,7 @@ public class Pregame implements MafiaGameState {
 			}
 		}
 	}
-	
+
 	class NickAction implements Action
 	{
 		String name;
@@ -337,20 +337,20 @@ public class Pregame implements MafiaGameState {
 			this.name = name;
 			this.newName = newName;
 		}
-		
+
 		public void handle()
 		{
 			Player potential = new Player(name);
 			int index = players.indexOf(potential);
 			if(index == -1);
-				//do nothing
+			//do nothing
 			else
 			{
 				players.get(index).setName(newName);
 			}
 		}
 	}
-	
+
 	class StartAction implements Action
 	{
 		String name;
@@ -360,10 +360,10 @@ public class Pregame implements MafiaGameState {
 			this.name = name;
 			this.game = game;
 		}
-		
+
 		public void handle()
 		{
-			if(name.equals(startName))		
+			if(name.equals(startName))
 			{
 				inputOutputThread.sendMessage(game.getIOThread().getChannel(), "The game has begun!");
 				startGame(game);
@@ -393,12 +393,12 @@ public class Pregame implements MafiaGameState {
 				inputOutputThread.sendMessage(game.getIOThread().getChannel(),  "Only " + startName + " can start the game!");
 		}
 	}
-	
+
 	public void endState(Game game)
 	{
-		
+
 	}
-	
+
 	class MafiaTeamAssigner implements Assigner
 	{
 		public MafiaTeam getTeam()
