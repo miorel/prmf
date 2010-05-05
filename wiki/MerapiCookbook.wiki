@@ -85,7 +85,7 @@ prints
 
 {{{
 Tinysong ts = new Tinysong();
-for(TinysongResult res: ts.topUrl("basshunter", 8))
+for(TinysongResult res: ts.topUrl("bob marley", 8))
 	System.out.printf("%s by %s on %s <%s>%n",res.getSongName(), res.getArtistName(), res.getAlbumName(), res.getUrl());
 }}}
 
