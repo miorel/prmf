@@ -417,7 +417,9 @@ public class Pregame implements MafiaGameState {
 	{
 		public JesterTeam getTeam()
 		{
-			return jesterTeam;
+			JesterTeam toRet = jesterTeam;
+			jesterTeam = new JesterTeam();
+			return toRet;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 3 normal3 Citizen:Town,Citizen:Town, Mafia:MafiaTeam
 3 vanilla3 Doctor:Town,Cop:Town,Mafia:MafiaTeam
 3 testjest Doctor:Town,Mafia:MafiaTeam,Jester:JesterTeam
+3 testjest2 Jester:JesterTeam,Jester:JesterTeam,Mafia:MafiaTeam
 3 testvil Doctor:Town,Mafia:MafiaTeam,Vigilante:Town
 4 normal4 Citizen:Town,Citizen:Town,Citizen:Town,Mafia:MafiaTeam
 4 vanilla4 Citizen:Town,Doctor:Town,Cop:Town,Mafia:MafiaTeam

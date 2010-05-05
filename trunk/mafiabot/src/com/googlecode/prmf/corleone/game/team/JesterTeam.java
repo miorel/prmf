@@ -29,7 +29,7 @@ public class JesterTeam extends Team {
 	
 	@Override
 	public boolean hasWon(Player[] players) {
-		for(Player player : players)
+		for(Player player : getList())
 		{
 			if(player.getCauseOfDeath().equals(Player.causesOfDeath.LYNCH))
 			{
