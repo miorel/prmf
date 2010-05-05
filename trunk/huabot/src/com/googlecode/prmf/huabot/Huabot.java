@@ -61,7 +61,7 @@ public class Huabot extends AbstractIrcEventListener {
 		if(m.matches()) {
 			// We got ourselves a command!
 			String cmd = m.group(1).toLowerCase(Locale.ENGLISH);
-			String[] arg = m.group(2).split("\\s+");
+			String[] arg = m.group(2).trim().split("\\s+");
 
 			if(cmd.equals("version")) {
 				privmsg(client, channel, "This is huabot, REWRITE edition.");
@@ -80,7 +80,7 @@ public class Huabot extends AbstractIrcEventListener {
 			if(cmd.equals("tinysong")) {
 				Tinysong ts = new Tinysong();
 
-				String query = Strings.join(" ", (Object[]) arg);
+				String query = Strings.join(" ", arg);
 				String response = null;
 				try {
 					TinysongResult result = ts.topResult(query);

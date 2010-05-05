@@ -26,56 +26,77 @@ import com.googlecode.prmf.merapi.util.Iterators;
 import com.googlecode.prmf.merapi.util.iterators.UniversalIterator;
 
 /**
- * A command to quit IRC.
+ * A command to leave an IRC channel.
  *
  * @author Miorel-Lucian Palii
  */
-public class QuitCommand extends IrcOptionalMessageCommand implements IncomingIrcCommand {
+public class PartCommand extends IrcOptionalMessageCommand implements IncomingIrcCommand {
+	private final String channel;
+
 	/**
-	 * Builds a quit command with the specified message.
+	 * Builds a channel part command with the specified message.
 	 *
+	 * @param channel
+	 *            the channel to part
 	 * @param message
-	 *            the quit message
+	 *            the part message
 	 */
-	public QuitCommand(String message) {
+	public PartCommand(String channel, String message) {
 		super(message);
+		if(channel == null)
+			throw new NullPointerException("The channel may not be null.");
+		if(channel.isEmpty())
+			throw new IllegalArgumentException("The channel may not be zero length.");
+		this.channel = channel;
 	}
 
 	/**
-	 * Builds a quit command with no message.
+	 * Builds a channel part command with no message.
+	 *
+	 * @param channel
+	 *            the channel to part
 	 */
-	public QuitCommand() {
-		super();
+	public PartCommand(String channel) {
+		this(channel, null);
+	}
+
+	/**
+	 * Gets the channel to part.
+	 *
+	 * @return the channel to part
+	 */
+	public String getChannel() {
+		return this.channel;
 	}
 
 	@Override
 	public UniversalIterator<String> getArguments() {
-		return hasMessage() ? Iterators.iterator(getMessage()) : Iterators.<String>iterator();
+		return hasMessage() ? Iterators.iterator(this.channel, getMessage()) : Iterators.iterator(this.channel);
 	}
 
 	@Override
 	public String getCommand() {
-		return "QUIT";
+		return "PART";
 	}
 
 	/**
-	 * Builds an IRC quit command using the specified parameters.
+	 * Builds an IRC channel part command using the specified parameters.
 	 *
 	 * @param param
 	 *            the command parameters
-	 * @return an IRC quit command
+	 * @return an IRC channel part command
 	 */
-	public static QuitCommand build(String[] param) {
-		validateParam(param, 0, 1);
-		return new QuitCommand(param.length == 0 ? null : param[0]);
+	public static PartCommand build(String[] param) {
+		validateParam(param, 1, 2);
+		return new PartCommand(param[0], param.length == 1 ? null : param[1]);
 	}
 
 	@Override
-	public IrcEvent<QuitCommand> getEvent(final IrcClient client, final Entity origin) {
-		return new AbstractIrcEvent<QuitCommand>(client, origin, this) {
+	public IrcEvent<PartCommand> getEvent(final IrcClient client, final Entity origin) {
+		return new AbstractIrcEvent<PartCommand>(client, origin, this) {
 			@Override
 			protected void doTrigger(IrcEventListener listener) {
-				listener.quitEvent(this);
+				listener.partEvent(this);
 			}
 		};
 	}

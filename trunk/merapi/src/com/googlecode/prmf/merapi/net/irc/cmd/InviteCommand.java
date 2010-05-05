@@ -28,7 +28,7 @@ import com.googlecode.prmf.merapi.util.iterators.UniversalIterator;
 
 /**
  * A channel invitation command.
- * 
+ *
  * @author Miorel-Lucian Palii
  */
 public class InviteCommand extends AbstractIrcCommand implements IncomingIrcCommand {
@@ -36,9 +36,9 @@ public class InviteCommand extends AbstractIrcCommand implements IncomingIrcComm
 	private final String channel;
 
 	/**
-	 * Builds a command indicating that the specified nick was invited to the
+	 * Builds a command indicating that the specified nick is invited to the
 	 * specified channel.
-	 * 
+	 *
 	 * @param nick
 	 *            the nick of the user being invited
 	 * @param channel
@@ -53,7 +53,7 @@ public class InviteCommand extends AbstractIrcCommand implements IncomingIrcComm
 
 	/**
 	 * Gets the channel the user is being invited to.
-	 * 
+	 *
 	 * @return the channel the user is being invited to
 	 */
 	public String getChannel() {
@@ -62,7 +62,7 @@ public class InviteCommand extends AbstractIrcCommand implements IncomingIrcComm
 
 	/**
 	 * Gets the nick of the user being invited.
-	 * 
+	 *
 	 * @return the invited user
 	 */
 	public String getNick() {
@@ -85,13 +85,13 @@ public class InviteCommand extends AbstractIrcCommand implements IncomingIrcComm
 			@Override
 			protected void doTrigger(IrcEventListener listener) {
 				listener.inviteEvent(this);
-			}		
+			}
 		};
 	}
 
 	/**
 	 * Builds a channel invitation command using the specified parameters.
-	 * 
+	 *
 	 * @param param
 	 *            the command parameters
 	 * @return a channel invitation command

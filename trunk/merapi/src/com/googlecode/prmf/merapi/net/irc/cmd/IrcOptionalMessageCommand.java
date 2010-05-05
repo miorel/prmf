@@ -17,43 +17,56 @@
  */
 package com.googlecode.prmf.merapi.net.irc.cmd;
 
-import static com.googlecode.prmf.merapi.util.Iterators.iterator;
-
+import com.googlecode.prmf.merapi.util.Iterators;
 import com.googlecode.prmf.merapi.util.iterators.UniversalIterator;
 
 /**
- * An IRC command that takes a target and a message.
+ * An IRC command that may or may not have message!
  *
  * @author Miorel-Lucian Palii
  */
-public abstract class IrcTargetMessageCommand extends IrcMessageCommand {
-	private final String target;
+public abstract class IrcOptionalMessageCommand extends AbstractIrcCommand {
+	private final String message;
 
 	/**
-	 * Builds an IRC target/message command.
+	 * Builds a command with the specified message.
 	 *
-	 * @param target
-	 *            the command's target
 	 * @param message
-	 *            the command's message
+	 *            the message
 	 */
-	public IrcTargetMessageCommand(String target, String message) {
-		super(message);
-		validateString("target", target, false, false);
-		this.target = target;
+	public IrcOptionalMessageCommand(String message) {
+		this.message = message;
+		validateMessage(message, false);
 	}
 
 	/**
-	 * Gets the command's target.
-	 *
-	 * @return the command's target
+	 * Builds a command with no message.
 	 */
-	public String getTarget() {
-		return this.target;
+	public IrcOptionalMessageCommand() {
+		this(null);
+	}
+
+	/**
+	 * Gets this command's message.
+	 *
+	 * @return this command's message, or <code>null</code if it doesn't have
+	 *         one
+	 */
+	public String getMessage() {
+		return this.message;
+	}
+
+	/**
+	 * Checks whether this command has a message.
+	 *
+	 * @return whether this command has a message
+	 */
+	public boolean hasMessage() {
+		return this.message == null;
 	}
 
 	@Override
 	public UniversalIterator<String> getArguments() {
-		return iterator(this.target, getMessage());
+		return hasMessage() ? Iterators.iterator(this.message) : Iterators.<String>iterator();
 	}
 }

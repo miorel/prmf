@@ -18,6 +18,7 @@
 package com.googlecode.prmf.merapi.net.irc;
 
 import static com.googlecode.prmf.merapi.net.irc.IrcCommands.nick;
+import static com.googlecode.prmf.merapi.net.irc.IrcCommands.pass;
 import static com.googlecode.prmf.merapi.net.irc.IrcCommands.pong;
 import static com.googlecode.prmf.merapi.net.irc.IrcCommands.user;
 import static com.googlecode.prmf.merapi.util.Iterators.adapt;
@@ -58,12 +59,12 @@ public class IrcClient extends LineOrientedClient {
 	/**
 	 * Regular expression for matching an IRC command.
 	 */
-	public static final String COMMAND_REGEX = "\\s*(?::(\\S+)\\s+)?(\\S+)\\s*(.*)";
+	public static final String COMMAND_REGEX = "(?::([^ ]+) )?([^ ]+) ?(.*)";
 
 	/**
 	 * Regular expression for matching IRC command parameters.
 	 */
-	public static final String PARAM_REGEX = ":[\\S\\s]*|\\S+";
+	public static final String PARAM_REGEX = ":.*|[^ ]+";
 
 	private static final Pattern COMMAND_PATTERN = Pattern.compile(COMMAND_REGEX);
 	private static final Pattern PARAM_PATTERN = Pattern.compile(PARAM_REGEX);
@@ -90,10 +91,12 @@ public class IrcClient extends LineOrientedClient {
 	private String userName;
 	private String realName;
 
+	private String connectionPassword;
+
 	/**
 	 * Builds an IRC client that will connect to the specified address, register
 	 * with the specified registrar, and use a default provider to open
-	 * channels.
+	 * socket channels.
 	 *
 	 * @param address
 	 *            the address to connect to
@@ -107,14 +110,14 @@ public class IrcClient extends LineOrientedClient {
 	/**
 	 * Builds an IRC client that will connect to the specified address, register
 	 * with the specified registrar, and use the specified provider to open
-	 * channels.
+	 * socket channels.
 	 *
 	 * @param address
 	 *            the address to connect to
 	 * @param registrar
 	 *            the registrar which will dictate network activity
 	 * @param provider
-	 *            the provider to use for opening channels, or <code>null</code>
+	 *            the provider to use for opening socket channels, or <code>null</code>
 	 *            to use the default provider
 	 */
 	public IrcClient(SocketAddress address, Registrar registrar, SelectorProvider provider) {
@@ -129,6 +132,10 @@ public class IrcClient extends LineOrientedClient {
 		addNetworkEventListener(new AbstractNetworkEventListener() {
 			@Override
 			public void connected(ConnectedEvent event) {
+				String pass = getConnectionPassword();
+				if(pass != null)
+					pass(IrcClient.this, pass);
+
 				nick(IrcClient.this, getDesiredNick());
 				user(IrcClient.this, getUserName(), getRealName());
 			}
@@ -228,6 +235,31 @@ public class IrcClient extends LineOrientedClient {
 		if(realName != null && realName.isEmpty())
 			throw new IllegalArgumentException("The real name may not be zero length, use null instead.");
 		this.realName = realName;
+	}
+
+	/**
+	 * Gets the password associated with the client's connection.
+	 *
+	 * @return the connection password
+	 * @see #setConnectionPassword(String)
+	 */
+	public String getConnectionPassword() {
+		return this.connectionPassword;
+	}
+
+	/**
+	 * Sets the password for the client's connection. Because the password must
+	 * be provided on connection, set this value before {@linkplain #start()
+	 * starting}.
+	 *
+	 * @param connectionPassword
+	 *            the new value; may be <code>null</code> to use a blank one
+	 * @see #getConnectionPassword()
+	 */
+	public void setConnectionPassword(String connectionPassword) {
+		if(connectionPassword != null && connectionPassword.isEmpty())
+			throw new IllegalArgumentException("The server password may not be zero length, use null instead.");
+		this.connectionPassword = connectionPassword;
 	}
 
 	@Override

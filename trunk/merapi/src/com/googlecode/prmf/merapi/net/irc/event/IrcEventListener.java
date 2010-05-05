@@ -19,11 +19,13 @@ package com.googlecode.prmf.merapi.net.irc.event;
 
 import com.googlecode.prmf.merapi.event.EventListener;
 import com.googlecode.prmf.merapi.net.irc.cmd.CtcpCommand;
+import com.googlecode.prmf.merapi.net.irc.cmd.ErrorCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.InviteCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.JoinCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.KickCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.NickCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.NoticeCommand;
+import com.googlecode.prmf.merapi.net.irc.cmd.PartCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.PingCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.PrivmsgCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.QuitCommand;
@@ -31,21 +33,21 @@ import com.googlecode.prmf.merapi.net.irc.cmd.UnknownCommand;
 
 /**
  * A listener for IRC protocol events (commands).
- * 
+ *
  * @author Miorel-Lucian Palii
  */
 public interface IrcEventListener extends EventListener {
 	/**
 	 * Invoked when someone changes IRC nicks.
-	 * 
+	 *
 	 * @param event
 	 *            an event object
 	 */
 	public void nickEvent(IrcEvent<NickCommand> event);
-	
+
 	/**
 	 * Invoked on a ping.
-	 * 
+	 *
 	 * @param event
 	 *            an event object
 	 */
@@ -53,7 +55,7 @@ public interface IrcEventListener extends EventListener {
 
 	/**
 	 * Invoked on receipt of a notice.
-	 * 
+	 *
 	 * @param event
 	 *            an event object
 	 */
@@ -62,7 +64,7 @@ public interface IrcEventListener extends EventListener {
 	/**
 	 * Invoked on receipt of a private message. This is a misnomer, since IRC
 	 * private messages can be sent to an entire channel.
-	 * 
+	 *
 	 * @param event
 	 *            an event object
 	 */
@@ -70,7 +72,7 @@ public interface IrcEventListener extends EventListener {
 
 	/**
 	 * Invoked on receipt of an invitation to join a channel.
-	 * 
+	 *
 	 * @param event
 	 *            an event object
 	 */
@@ -78,7 +80,7 @@ public interface IrcEventListener extends EventListener {
 
 	/**
 	 * Invoked when someone quits the IRC network.
-	 * 
+	 *
 	 * @param event
 	 *            an event object
 	 */
@@ -86,7 +88,7 @@ public interface IrcEventListener extends EventListener {
 
 	/**
 	 * Invoked when someone gets kicked from a channel.
-	 * 
+	 *
 	 * @param event
 	 *            an event object
 	 */
@@ -94,7 +96,7 @@ public interface IrcEventListener extends EventListener {
 
 	/**
 	 * Invoked when an unrecognized command is received.
-	 * 
+	 *
 	 * @param event
 	 *            an event object
 	 */
@@ -102,18 +104,35 @@ public interface IrcEventListener extends EventListener {
 
 	/**
 	 * Invoked when someone joins a channel.
-	 * 
+	 *
 	 * @param event
 	 *            an event object
 	 */
 	public void joinEvent(IrcEvent<JoinCommand> event);
 
 	/**
+	 * Invoked when someone leaves a channel.
+	 *
+	 * @param event
+	 *            an event object
+	 */
+	public void partEvent(IrcEvent<PartCommand> event);
+
+	/**
 	 * Invoked when an unrecognized client-to-client protocol (CTCP) command is
 	 * received.
-	 * 
+	 *
 	 * @param event
 	 *            an event object
 	 */
 	public void unknwonCtcpEvent(IrcEvent<CtcpCommand> event);
+
+	/**
+	 * Invoked when an IRC error is received. This probably means the client is
+	 * about to be disconnected.
+	 *
+	 * @param event
+	 *            an event object
+	 */
+	public void errorEvent(IrcEvent<ErrorCommand> event);
 }

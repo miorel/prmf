@@ -26,6 +26,7 @@ import com.googlecode.prmf.merapi.net.irc.cmd.JoinCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.KickCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.NickCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.NoticeCommand;
+import com.googlecode.prmf.merapi.net.irc.cmd.PartCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.PassCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.PongCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.PrivmsgCommand;
@@ -48,7 +49,7 @@ import com.googlecode.prmf.merapi.net.irc.cmd.WhoisCommand;
  * </pre>
  * to get the IRC commands you've always wanted!
  * </p>
- * 
+ *
  * @author Miorel-Lucian Palii
  * @see IrcClient
  */
@@ -61,7 +62,7 @@ public class IrcCommands {
 
 	/**
 	 * Tells the client to pong the specified targets.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param targets
@@ -73,7 +74,7 @@ public class IrcCommands {
 
 	/**
 	 * Tells the client to pong the specified targets.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param targets
@@ -85,7 +86,7 @@ public class IrcCommands {
 
 	/**
 	 * Tells the client to send the specified password to the IRC server.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param password
@@ -97,7 +98,7 @@ public class IrcCommands {
 
 	/**
 	 * Tells the client to quit IRC with no message.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 */
@@ -107,7 +108,7 @@ public class IrcCommands {
 
 	/**
 	 * Tells the client to quit IRC with the specified message.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param message
@@ -119,7 +120,7 @@ public class IrcCommands {
 
 	/**
 	 * Tells the client to invite the given nick to the specified channel.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param nick
@@ -133,7 +134,7 @@ public class IrcCommands {
 
 	/**
 	 * Tells the client to attempt joining the specified channel with no key.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param channel
@@ -146,7 +147,7 @@ public class IrcCommands {
 	/**
 	 * Tells the client to attempt joining the specified channel with the given
 	 * key.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param channel
@@ -159,8 +160,35 @@ public class IrcCommands {
 	}
 
 	/**
+	 * Tells the client to part the specified channel with no message.
+	 *
+	 * @param client
+	 *            the IRC client
+	 * @param channel
+	 *            the channel to part
+	 */
+	public static void part(IrcClient client, String channel) {
+		client.send(new PartCommand(channel));
+	}
+
+	/**
+	 * Tells the client to part the specified channel with the specified
+	 * message.
+	 *
+	 * @param client
+	 *            the IRC client
+	 * @param channel
+	 *            the channel to part
+	 * @param message
+	 *            the part message
+	 */
+	public static void part(IrcClient client, String channel, String message) {
+		client.send(new PartCommand(channel, message));
+	}
+
+	/**
 	 * Tells the client to change IRC nicks.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param nick
@@ -172,7 +200,7 @@ public class IrcCommands {
 
 	/**
 	 * Tells the client to send a whois query on the specified nick.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param nick
@@ -185,7 +213,7 @@ public class IrcCommands {
 	/**
 	 * Tells the client to kick the specified nick from the channel with no
 	 * message.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param channel
@@ -200,7 +228,7 @@ public class IrcCommands {
 	/**
 	 * Tells the client to kick the specified nick from the channel with the
 	 * given message.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param channel
@@ -217,7 +245,7 @@ public class IrcCommands {
 	/**
 	 * Tells the client to send the specified message to the specified target.
 	 * The target may be a channel or a nick.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param target
@@ -233,7 +261,7 @@ public class IrcCommands {
 	 * Tells the client to send a service query message to the specified target.
 	 * This is the same as a private message except the target must be a
 	 * service.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param target
@@ -245,11 +273,11 @@ public class IrcCommands {
 	public static void squery(IrcClient client, String target, String message) {
 		client.send(new SqueryCommand(target, message));
 	}
-	
+
 	/**
 	 * Tells the client to send a notice to the specified target. The target may
 	 * be a channel or a nick.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param target
@@ -264,7 +292,7 @@ public class IrcCommands {
 	/**
 	 * Tells the client to send a user identification command with the specified
 	 * user name and real name and a default initial user mode.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param userName
@@ -279,7 +307,7 @@ public class IrcCommands {
 	/**
 	 * Tells the client to send a user identification command with the specified
 	 * user name, initial user mode, and real name.
-	 * 
+	 *
 	 * @param client
 	 *            the IRC client
 	 * @param userName

@@ -118,11 +118,41 @@ public class Strings {
 	 *            the text to change
 	 * @return a lower case copy of the text
 	 * @see String#toLowerCase()
+	 * @see #toLowerCaseFirst(CharSequence)
 	 * @see #toTitleCase(CharSequence)
 	 * @see #toUpperCase(CharSequence)
 	 */
 	public static String toLowerCase(CharSequence text) {
 		return text.toString().toLowerCase();
+	}
+
+	/**
+	 * Changes the first character in the given text to lower case.
+	 *
+	 * @param text
+	 *            the text to change
+	 * @return an copy of the text with the first character changed to lower
+	 *         case
+	 * @see #toLowerCase(CharSequence)
+	 * @see #toUpperCaseFirst(CharSequence)
+	 */
+	public static String toLowerCaseFirst(CharSequence text) {
+		String ret;
+		int n = text.length();
+		switch(n) {
+		case 0:
+			ret = "";
+			break;
+		case 1:
+			ret = toLowerCase(text);
+			break;
+		default:
+			CharSequence first = text.subSequence(0, 1);
+			CharSequence rest = text.subSequence(1, n);
+			ret = toLowerCase(first) + rest;
+			break;
+		}
+		return ret;
 	}
 
 	/**
@@ -142,11 +172,41 @@ public class Strings {
 	 *            the text to change
 	 * @return an upper case copy of the text
 	 * @see String#toUpperCase()
+	 * @see #toUpperCaseFirst(CharSequence)
 	 * @see #toLowerCase(CharSequence)
 	 * @see #toTitleCase(CharSequence)
 	 */
 	public static String toUpperCase(CharSequence text) {
 		return text.toString().toUpperCase();
+	}
+
+	/**
+	 * Changes the first character in the given text to upper case.
+	 *
+	 * @param text
+	 *            the text to change
+	 * @return an copy of the text with the first character changed to upper
+	 *         case
+	 * @see #toUpperCase(CharSequence)
+	 * @see #toLowerCaseFirst(CharSequence)
+	 */
+	public static String toUpperCaseFirst(CharSequence text) {
+		String ret;
+		int n = text.length();
+		switch(n) {
+		case 0:
+			ret = "";
+			break;
+		case 1:
+			ret = toUpperCase(text);
+			break;
+		default:
+			CharSequence first = text.subSequence(0, 1);
+			CharSequence rest = text.subSequence(1, n);
+			ret = toUpperCase(first) + rest;
+			break;
+		}
+		return ret;
 	}
 
 	/**
@@ -163,33 +223,13 @@ public class Strings {
 	 * @param text
 	 *            the text to change
 	 * @return a title case copy of the text
-	 * @see #toTitleCase(CharSequence, int)
 	 * @see #toLowerCase(CharSequence)
 	 * @see #toUpperCase(CharSequence)
 	 */
 	public static String toTitleCase(CharSequence text) {
-		return toTitleCase(text, Integer.MAX_VALUE);
-	}
-
-	/**
-	 * Changes the given text to title case, capitalizing words up to the
-	 * specified limit. That is, this method behaves just like the
-	 * single-argument version, except that any words beyond the limit will not
-	 * be capitalized. They will still be changed to lower case, however.
-	 *
-	 * @param text
-	 *            the text to change
-	 * @param limit
-	 *            the maximum number of words to capitalize
-	 * @return a title case copy of the text
-	 * @see #toTitleCase(CharSequence)
-	 */
-	public static String toTitleCase(CharSequence text, int limit) {
-		if(limit < 0)
-			throw new IllegalArgumentException("The limit may not be negative.");
 		StringBuffer sb = new StringBuffer();
 		Matcher m = NON_WHITESPACE_PATTERN.matcher(toLowerCase(text));
-		for(int allowedChanges = limit; allowedChanges > 0 && m.find(); --allowedChanges)
+		while(m.find())
 			m.appendReplacement(sb, m.group(1).toUpperCase() + m.group(2));
 		m.appendTail(sb);
 		return sb.toString();
@@ -204,7 +244,7 @@ public class Strings {
 	 * @param count
 	 *            the number of times to repeat the characters
 	 * @return <code>character</code> repeated <code>count</code> times
-	 * @see #multiply(CharSequence, int)
+	 * @see #multiply(CharSequence,int)
 	 */
 	public static String multiply(char character, int count) {
 		return multiply(Character.toString(character), count);
@@ -219,7 +259,7 @@ public class Strings {
 	 * @param count
 	 *            the number of times to repeat the text
 	 * @return <code>charSeq</code> repeated <code>count</code> times
-	 * @see #multiply(char, int)
+	 * @see #multiply(char,int)
 	 */
 	public static String multiply(CharSequence text, int count) {
 		if(count < 0)
@@ -367,16 +407,17 @@ public class Strings {
 //	}
 
 	/**
-	 * Translates a string into <code>application/x-www-form-urlencoded</code>
-	 * format using the UTF-8 encoding scheme.
+	 * Encodes text into <code>application/x-www-form-urlencoded</code>
+	 * format using the UTF-8 scheme.
 	 *
-	 * @param charSeq
+	 * @param text
 	 *            the text to translate
-	 * @return a translated string
+	 * @return an encoded string
+	 * @see URLEncoder#encode(String,String)
 	 */
-	public static String encodeUtf8(CharSequence charSeq) {
+	public static String encodeUtf8(CharSequence text) {
 		try {
-			return URLEncoder.encode(charSeq.toString(), "UTF-8");
+			return URLEncoder.encode(text.toString(), "UTF-8");
 		}
 		catch(UnsupportedEncodingException e) {
 			throw new Error("The UTF-8 encoding is not supported!", e);
@@ -406,4 +447,9 @@ public class Strings {
 			throw new Error("A verified URL generated a MalformedURLException.", e);
 		}
 	}
+
+//	public static CharSequence chop(CharSequence text) {
+//		int end = Math.max(text.length() - 1, 0);
+//		return text.subSequence(0, end);
+//	}
 }

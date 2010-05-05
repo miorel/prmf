@@ -22,61 +22,47 @@ import com.googlecode.prmf.merapi.net.irc.IrcClient;
 import com.googlecode.prmf.merapi.net.irc.event.AbstractIrcEvent;
 import com.googlecode.prmf.merapi.net.irc.event.IrcEvent;
 import com.googlecode.prmf.merapi.net.irc.event.IrcEventListener;
-import com.googlecode.prmf.merapi.util.Iterators;
-import com.googlecode.prmf.merapi.util.iterators.UniversalIterator;
 
 /**
- * A command to quit IRC.
+ * An IRC command signaling an error.
  *
  * @author Miorel-Lucian Palii
  */
-public class QuitCommand extends IrcOptionalMessageCommand implements IncomingIrcCommand {
+public class ErrorCommand extends IrcMessageCommand implements IncomingIrcCommand {
 	/**
-	 * Builds a quit command with the specified message.
+	 * Builds an IRC error command with the specified message.
 	 *
 	 * @param message
-	 *            the quit message
+	 *            the error message
 	 */
-	public QuitCommand(String message) {
+	public ErrorCommand(String message) {
 		super(message);
-	}
-
-	/**
-	 * Builds a quit command with no message.
-	 */
-	public QuitCommand() {
-		super();
-	}
-
-	@Override
-	public UniversalIterator<String> getArguments() {
-		return hasMessage() ? Iterators.iterator(getMessage()) : Iterators.<String>iterator();
 	}
 
 	@Override
 	public String getCommand() {
-		return "QUIT";
-	}
-
-	/**
-	 * Builds an IRC quit command using the specified parameters.
-	 *
-	 * @param param
-	 *            the command parameters
-	 * @return an IRC quit command
-	 */
-	public static QuitCommand build(String[] param) {
-		validateParam(param, 0, 1);
-		return new QuitCommand(param.length == 0 ? null : param[0]);
+		return "ERROR";
 	}
 
 	@Override
-	public IrcEvent<QuitCommand> getEvent(final IrcClient client, final Entity origin) {
-		return new AbstractIrcEvent<QuitCommand>(client, origin, this) {
+	public IrcEvent<ErrorCommand> getEvent(final IrcClient client, final Entity origin) {
+		return new AbstractIrcEvent<ErrorCommand>(client, origin, this) {
 			@Override
 			protected void doTrigger(IrcEventListener listener) {
-				listener.quitEvent(this);
+				listener.errorEvent(this);
 			}
 		};
+	}
+
+	/**
+	 * Builds an error command using the specified parameters.
+	 *
+	 * @param param
+	 *            the command parameters
+	 * @return an error command
+	 */
+	public static ErrorCommand build(String[] param) {
+		validateParam(param, 1);
+		return new ErrorCommand(param[0]);
 	}
 }

@@ -18,20 +18,22 @@
 package com.googlecode.prmf.merapi.net.irc.event;
 
 import com.googlecode.prmf.merapi.net.irc.cmd.CtcpCommand;
+import com.googlecode.prmf.merapi.net.irc.cmd.ErrorCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.InviteCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.JoinCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.KickCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.NickCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.NoticeCommand;
+import com.googlecode.prmf.merapi.net.irc.cmd.PartCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.PingCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.PrivmsgCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.QuitCommand;
 import com.googlecode.prmf.merapi.net.irc.cmd.UnknownCommand;
 
 /**
- * Basic implementation of the {@link IrcEventListener} interface providing
- * empty implementations for all the methods.
- * 
+ * Basic {@link IrcEventListener} providing empty implementations for all the
+ * methods.
+ *
  * @author Miorel-Lucian Palii
  */
 public abstract class AbstractIrcEventListener implements IrcEventListener {
@@ -70,8 +72,16 @@ public abstract class AbstractIrcEventListener implements IrcEventListener {
 	@Override
 	public void joinEvent(IrcEvent<JoinCommand> event) {
 	}
-	
+
+	@Override
+	public void partEvent(IrcEvent<PartCommand> event) {
+	}
+
 	@Override
 	public void unknwonCtcpEvent(IrcEvent<CtcpCommand> event) {
+	}
+
+	@Override
+	public void errorEvent(IrcEvent<ErrorCommand> event) {
 	}
 }

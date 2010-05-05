@@ -22,38 +22,35 @@ import static com.googlecode.prmf.merapi.util.Iterators.iterator;
 import com.googlecode.prmf.merapi.util.iterators.UniversalIterator;
 
 /**
- * An IRC command that takes a target and a message.
+ * An IRC command that takes a message.
  *
  * @author Miorel-Lucian Palii
  */
-public abstract class IrcTargetMessageCommand extends IrcMessageCommand {
-	private final String target;
+public abstract class IrcMessageCommand extends AbstractIrcCommand {
+	private final String message;
 
 	/**
-	 * Builds an IRC target/message command.
+	 * Builds an IRC message command.
 	 *
-	 * @param target
-	 *            the command's target
 	 * @param message
 	 *            the command's message
 	 */
-	public IrcTargetMessageCommand(String target, String message) {
-		super(message);
-		validateString("target", target, false, false);
-		this.target = target;
+	public IrcMessageCommand(String message) {
+		validateMessage(message, true);
+		this.message = message;
 	}
 
 	/**
-	 * Gets the command's target.
+	 * Gets the command's message.
 	 *
-	 * @return the command's target
+	 * @return the command's message
 	 */
-	public String getTarget() {
-		return this.target;
+	public String getMessage() {
+		return this.message;
 	}
 
 	@Override
 	public UniversalIterator<String> getArguments() {
-		return iterator(this.target, getMessage());
+		return iterator(this.message);
 	}
 }
