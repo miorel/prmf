@@ -48,6 +48,7 @@ public class Pregame implements MafiaGameState {
 	private boolean dayStart;
 
 	public Pregame(String startName, IOThread inputOutputThread) {
+		this();
 		this.startName = startName;
 		players = new ArrayList<Player>();
 		townRoles = new ArrayList<Role>();
@@ -56,7 +57,14 @@ public class Pregame implements MafiaGameState {
 		dayStart = true;
 		this.inputOutputThread = inputOutputThread;
 		profileLoaded = false;
+		
+	}
+	
+	//TODO: make a less hackish solution to the 
+	public Pregame()
+	{
 		mafiaTeam = new MafiaTeam();
+		jesterTeam = new JesterTeam();
 		town = new Town();
 	}
 
@@ -200,8 +208,11 @@ public class Pregame implements MafiaGameState {
 			try
 			{
 				//that's how!
-				Class<?> clsBook = Pregame.class.getClassLoader().loadClass("com.googlecode.prmf.Pregame");
+				String[] shit = Pregame.class.getPackage().toString().split(" ");
+				Class<?> clsBook = Pregame.class.getClassLoader().loadClass(shit[1] + ".Pregame");
+				System.err.println("clsbook is " + clsBook.toString());
 				pregame = (Pregame)clsBook.newInstance();
+				System.err.println("pregame is " + pregame);
 
 			}
 			catch (Exception e)
@@ -211,12 +222,17 @@ public class Pregame implements MafiaGameState {
 			}
 			try
 			{
-				Class<?> tempAssigner = Class.forName("com.googlecode.prmf.Pregame$"+roleSplit[1]+"Assigner");
+				String[] shit = Pregame.class.getPackage().toString().split(" ");
+				Class<?> tempAssigner = Class.forName(shit[1]+ ".Pregame$"+roleSplit[1]+"Assigner");
 				Method[] allMethods = tempAssigner.getMethods();
 				Method getTeam = allMethods[0];
+				System.err.println("getTeam is " + getTeam);
 				Object obj = tempAssigner.getDeclaredConstructor(new Class[]{Pregame.class}).newInstance(new Object[]{pregame});
+				System.err.println("obj " + obj);
 				Team specificTeam = (Team)(getTeam.invoke(obj));
-				roles.add( (Role)Class.forName("com.googlecode.prmf."+roleSplit[0]).getConstructor(specificTeam.getClass()).newInstance(specificTeam) );
+				System.err.println("specTeam " + getTeam.invoke(obj));
+				System.err.println("roleSplit[0] " + roleSplit[0]);
+				roles.add( (Role)Class.forName("com.googlecode.prmf.corleone.game.role."+roleSplit[0]).getConstructor(specificTeam.getClass()).newInstance(specificTeam) );
 				profileLoaded = true;
 			}
 			catch(Exception e)
