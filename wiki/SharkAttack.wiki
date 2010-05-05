@@ -16,5 +16,14 @@ Both players will have up to 6 ufptmons, which will in turn have 4 moves/attacks
 = Current issues =
 
   * Picking a language to use for this project. [JosephThuemler Joseph Thuemler] has suggested that we use something other than Java so that we may expand our horizons.
-  ** The language generally suggested - multiple times - is Python. Familiarity with pygame and some knowledge of python would be nice.
   * Starting the programming planning.
+
+= Python =
+ This language was generally suggested multiple times. Familiarity with pygame and some knowledge of python would be nice.
+  * Nez's recommended tutorial - http://www.korokithakis.net/tutorials/python
+  * The python.org tutorial - http://docs.python.org/tutorial/
+  * Find a million more. You're programmers. Use the tubes. ;)
+
+ As far as python resources go, these are a select few that would be useful:
+  * pygame - http://www.pygame.org/
+  * pyglet - http://www.pyglet.org/
