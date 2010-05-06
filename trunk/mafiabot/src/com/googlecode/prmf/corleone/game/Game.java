@@ -99,6 +99,7 @@ public class Game {
 	public void setState(MafiaGameState state) {
 		if (isOver()) {
 			state = new Postgame(inputOutputThread, getPlayerList());
+			inProgress = false;
 			//game is over, moderation is over... this could happen in postgame maybe?
 			for (int i = 0; i < getPlayerList().length; ++i) { // TODO rewrite using sexier foreach syntax
 				inputOutputThread.sendMessage("MODE", inputOutputThread.getChannel(), "+v " + players[i].getName());

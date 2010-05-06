@@ -52,7 +52,7 @@ public class MafiaListener implements Listener {
 			msg[3] = msg[3].toLowerCase();
 		//TODO: consider changing this to just pass any message that starts with a tilde
 		//then the current game state can handle it or ignore it
-		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && (game == null || game.getPostgame() != null))
+		if(msg.length >= 4 && msg[3].equalsIgnoreCase(":~mafia") && (game == null || !game.isInProgress()))
 		{
 			game = new Game(user, inputThread);
 			inputThread.sendMessage(inputThread.getChannel(), "Mafia game started by " + user + "!");
