@@ -317,7 +317,9 @@ public class Pregame implements MafiaGameState {
 			Player potential = new Player(name);
 			int index = players.indexOf(potential);
 			if(index == -1)
-				inputOutputThread.sendMessage(game.getIOThread().getChannel(), name + " is not part of the game!");
+			{
+				//inputOutputThread.sendMessage(game.getIOThread().getChannel(), name + " is not part of the game!");
+			}
 			else
 			{
 				players.remove(index);
