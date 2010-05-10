@@ -72,7 +72,6 @@ public class Postgame implements MafiaGameState {
 			inputOutputThread.sendMessage(inputOutputThread.getChannel(),ret.toString());
 		}
 
-		ret = new StringBuilder();
 		LinkedList<String> playersRoles = roleReveal();
 		inputOutputThread.sendMessage(inputOutputThread.getChannel(),Strings.join(", ", Iterators.iterator(playersRoles)));
 	}
