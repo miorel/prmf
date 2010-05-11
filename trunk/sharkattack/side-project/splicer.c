@@ -9,6 +9,7 @@ select sprites from a spritesheet and return their locations.
 Useful sources:
 http://www.libpng.org/pub/png/libpng-1.4.0-manual.pdf
 http://www.piko3d.com/?page_id=68
+http://tunginobi.spheredev.org/site/node/88
 
 The printf statements are only there for debugging purpose, I want the actual
 end product to just take in a filename and return an array of box structs indicating
@@ -20,12 +21,21 @@ the locations and sizes of each sprite on the sheet.
 #include <stdlib.h>
 #include <assert.h>
 
+png_bytepp read_png();
+
 struct box
 {
 	int x,y,w,h;
 };
 
-void splicer(const char* file_name) 
+
+main()
+{
+	png_bytepp png_rows = read_png("spritesheet.png");
+
+}
+
+png_bytepp read_png(const char* file_name)
 {
 	FILE *fp = fopen(file_name, "rb");
 	if(fp)
@@ -34,7 +44,8 @@ void splicer(const char* file_name)
 	}
 	else
 	{
-		printf("-Error loading file\n\t");
+		printf("-Error loading file\n");
+		return;
 	}
 	
 	const int header_signature_size = 8;
@@ -47,7 +58,8 @@ void splicer(const char* file_name)
 	}
 	else
 	{
-		printf("-Error reading Header data\n\t");
+		printf("-Error reading Header data\n");
+		return;
 	}
 	
 	int is_png = png_sig_cmp(header, 0, header_signature_size);
@@ -59,10 +71,15 @@ void splicer(const char* file_name)
 	else
 		printf("-File is PNG format\n\t");
 		
+	free(header);
+
 	png_structp png_ptr = png_create_read_struct(
 							 PNG_LIBPNG_VER_STRING, NULL,NULL,NULL);
 	if(png_ptr == NULL)
-		printf("-Allocation of png_struct failed\n\t");
+	{
+		printf("-Allocation of png_struct failed\n");
+		return;
+	}
 	else
 		printf("-Allocated png_struct\n\t");
 		
@@ -71,6 +88,7 @@ void splicer(const char* file_name)
 	{
 		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 		printf("-Allocation of info struct failed\n\t");
+		return;
 	}
 	else
 	{
@@ -81,7 +99,8 @@ void splicer(const char* file_name)
 	if(info_ptr == NULL)
 	{
 		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-		printf("-Allocation of end_info struct failed\n\t");
+		printf("-Allocation of end_info struct failed\n");
+		return;
 	}
 	else
 	{
@@ -132,16 +151,26 @@ void splicer(const char* file_name)
 		printf("-File set to be stripped from 16-bit depth to 8-bit depth\n\t");
 	}
 	
-	png_bytep rows = malloc(img_height * sizeof(png_bytep));
+	png_bytepp rows = malloc(img_height * sizeof(png_bytep));
 	char* data = malloc(img_height * img_width * channels * bit_depth / 8);
 	printf("-Allocated memory for row bytes\n\t");
 	
 	const unsigned int stride = img_width * channels * bit_depth / 8 ;
 	printf("-Determined row size in bytes to be %u\n\t",stride);
-}
 
-main()
-{
-	splicer("spritesheet.png");
-	splicer("16-bit.png");
+	int i;
+	for(i=0;i<img_height;++i)
+	{
+		rows[i] = &data[i*stride];
+	}
+	printf("-Assigned row addresses in memory\n\t");
+
+	png_read_image(png_ptr, rows);
+	printf("-Saved image in memory\n");
+
+	fclose(fp);
+	fp = NULL;
+	png_destroy_read_struct(&png_ptr,&info_ptr,&end_ptr);
+
+	return rows;
 }
