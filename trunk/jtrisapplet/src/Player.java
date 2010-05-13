@@ -15,15 +15,10 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-import java.util.*;
-
-public class Client {
+public class Player {
 	
-	private Connection con;
-	private Board board;
-	private ArrayList<Player> players;
-	
-	public Client() {
+	public Player() {
+		
 	}
-
+	
 }
