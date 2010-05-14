@@ -35,7 +35,7 @@ If this is the first time you're doing this, you have to `Create a new repositor
 
 http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/create_new_repo.png
 
-Enter the repository location: http://prmf.googlecode.com/svn/
+Enter the repository location: https://prmf.googlecode.com/svn/
 
 http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/svn_repo_location.png
 
