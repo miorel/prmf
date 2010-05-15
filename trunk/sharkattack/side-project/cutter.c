@@ -1,7 +1,5 @@
 /*
-Sprite Splicer
-
-This is a work in progress which is likely to never be completed though.
+Sprite cutter
 
 It is going to be an implementation of libpng which is able to
 select sprites from a spritesheet and return their locations.
@@ -11,12 +9,14 @@ http://www.libpng.org/pub/png/libpng-1.4.0-manual.pdf
 http://www.libpng.org/pub/png/book/toc.html
 http://www.piko3d.com/?page_id=68
 http://tunginobi.spheredev.org/site/node/88
+http://fydo.net/gamedev/dynamic-arrays
+Miorel
 
 The printf statements are only there for debugging purpose, I want the actual
 end product to just take in a filename and return an array of box structs indicating
 the locations and sizes of each sprite on the sheet.
 
-From testing I have found that libpng will detect if a image contains an alpha layer
+From observation I have found that libpng will detect if a image contains an alpha layer
 and return 4 bytes per pixel instead of 3 (RGBA instead of RGB info)
 A fully transperant pixel is shown as x x x 0
 */
@@ -25,19 +25,25 @@ A fully transperant pixel is shown as x x x 0
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <time.h>
 
 typedef struct box* boxp;
 typedef struct color* colorp;
 typedef struct pixel* pixelp;
+typedef struct queue* queuep;
 
 png_bytepp read_png();
 boxp solve();
 struct color get_pixel();
-void get_background_color();
-void set_bg_processed();
 char color_compare();
 char get_next_seed();
+void get_background_color();
+void set_bg_processed();
+void flood_seed();
+void set_box_processed();
+boxp get_next_box();
+void enqueue();
+pixel pop();
+char empty();
 
 png_uint_32 img_width;
 png_uint_32 img_height;
@@ -45,7 +51,10 @@ png_uint_32 bit_depth;
 png_uint_32 channels;
 png_uint_32 color_type;
 unsigned long long stride;
-	
+unsigned int num_boxes;
+boxp boxes;
+
+
 struct box
 {
 	int x,y,w,h;
@@ -61,12 +70,18 @@ struct pixel
 	int i,j;
 };
 
+struct queue
+{
+	pixel* data;
+	int size;
+	int num_elem;
+};
+
 main(int argc, char* args)
 {
-
 	png_bytepp png_rows = read_png("test_images/spritesheet.png");
 	assert(channels == 3 || channels == 4);
-	//print_picture(png_rows,1);
+	//print_picture(png_rows,2);
 
 	struct color bg_color =  { 0, 0, 0, 0};
 	get_background_color(png_rows, &bg_color);
@@ -75,44 +90,84 @@ main(int argc, char* args)
 	char **processed_pixels = malloc(img_height * sizeof(char*));
 	int i,j;
 	for(i=0;i<img_height;++i)
-		processed_pixels[i] = calloc(stride, sizeof(char));
+		processed_pixels[i] = calloc(stride / channels, sizeof(char));
 
 	set_bg_processed(png_rows,processed_pixels,&bg_color);
 	
 	struct pixel current_seed = { 0 , 0 };
+
+	num_boxes = 0;
 	while( get_next_seed(processed_pixels, &current_seed) )
 	{
-		processed_pixels[current_seed.i][current_seed.j] = 1;
-		//there is a bug here, though it correctly finds the first sprite and sets it as the first seed.. 
-		//its not going to next row...after completing the first
-		printf("(%d %d) ,",current_seed.i,current_seed.j);
-	}
-/**
-	for(i=0;i<img_height;++i)
-	{
-		free(processed_pixels[i]);
-		free(png_rows[i]);
+		flood_seed(processed_pixels,current_seed,get_next_box());
 	}
 
-	free(processed_pixels);
-//	free(png_rows);
-**/
+}
 
+void enqueue(queuep q, pixel p)
+{
+	
+}
+
+pixel pop(queuep q)
+{
+	pixel r = q->data[q->size - 1];
+	q->size-=1;
+	return r;
+}
+
+char empty(queuep q)
+{
+	char r = (q->size == 0 ? 1 : 0);
+	return r;
+}
+
+boxp get_next_box()
+{
+	/*
+		I will realloc every time I need a new box for now..
+		spritesheets rarely contain more than 30 sprites anyway.
+	*/
+	boxes = realloc(boxes,(num_boxes+1)*sizeof(struct box));
+	return &boxes[num_boxes++];
 }
 
 char get_next_seed(char **processed_pixels, pixelp p)
 {
+
 	int row_size = stride / channels;
-	int i=p->i,j=p->j;
-	for(;i<img_height;++i)
-		for(;j<row_size;++j)
-			if( !processed_pixels[i][j] )
+	int i, j;
+	for(i=p->i;i<img_height;++i)
+	{
+		for(j=(i==p->i?p->j:0);j<row_size;++j)
+		{
+			if( processed_pixels[i][j] == 0)
 			{
 				p->i = i;
 				p->j = j;
 				return 1;
 			}
+		}
+	}
 	return 0;
+}
+
+void set_box_processed(char **processed_pixels, boxp bp)
+{
+	int i,j;
+	for(i=bp->y;i<bp->y+bp->h;++i)
+	{
+		for(j=bp->x;j<bp->x+bp->w;++j)
+		{
+			processed_pixels[i][j] = 1;
+		}
+	}
+}
+
+void flood_seed(char **processed_pixels, pixelp seed,boxp bp)
+{
+	queue q = { 0 , 0 ,0 };
+	set_box_processed(processed_pixels, bp);
 }
 
 char color_compare(int r,int g,int b, int a, colorp color_comp)
@@ -125,8 +180,13 @@ char color_compare(int r,int g,int b, int a, colorp color_comp)
 
 void set_bg_processed(png_bytepp png_rows, char **processed_pixels, colorp bg_color)
 {
-	//this will also help avoid the event where e.g. BG is white and there is White inside of a sprite .. causing it to be seeded twice or other
-	// strange errors.
+	/*
+		At this point..making a grid[][] with 1's for bg color and 0 otherwise would make using the real image useless
+		this is the last method where actual image data will be used.
+
+		this will also help avoid the event where e.g. BG is white and there is White inside of a sprite ..
+		causing it to be seeded twice or other strange errors.
+	*/
 	int i,j;
 	for(i=0;i<img_height;++i)
 	{
@@ -165,10 +225,8 @@ struct color get_pixel(png_bytepp png_rows, int i, int j)
 	pixel.r = png_rows[i][j];
 	pixel.g = png_rows[i][j+1];
 	pixel.b = png_rows[i][j+2];
-	if( channels == 4 )
-		pixel.a = png_rows[i][j+3];
-	else 
-		pixel.a = 255;
+	pixel.a = (channels == 4 ? png_rows[i][j+3] : 255);
+
 	return pixel;
 }
 
