@@ -27,9 +27,11 @@ A fully transperant pixel is shown as x x x 0
 #include <assert.h>
 
 typedef struct box* boxp;
+typedef boxp* boxpp;
 typedef struct color* colorp;
 typedef struct pixel* pixelp;
 typedef struct queue* queuep;
+typedef struct box_list* box_listp;
 
 png_bytepp read_png();
 boxp solve();
@@ -42,8 +44,9 @@ void flood_seed();
 void set_box_processed();
 boxp get_next_box();
 void enqueue();
-pixel pop();
+struct pixel pop();
 char empty();
+box_listp cutter();
 
 png_uint_32 img_width;
 png_uint_32 img_height;
@@ -51,9 +54,6 @@ png_uint_32 bit_depth;
 png_uint_32 channels;
 png_uint_32 color_type;
 unsigned long long stride;
-unsigned int num_boxes;
-boxp boxes;
-
 
 struct box
 {
@@ -72,14 +72,29 @@ struct pixel
 
 struct queue
 {
-	pixel* data;
+	pixelp data;
 	int size;
 	int num_elem;
 };
 
-main(int argc, char* args)
+struct box_list
 {
-	png_bytepp png_rows = read_png("test_images/spritesheet.png");
+	boxpp data;
+	int size;
+	int num_elem;
+};
+
+main(int argc,char *args[])
+{
+	if(argc == 2)
+		cutter(args[1]);
+	else
+		cutter("test_images/spritesheet.png");
+}
+
+box_listp cutter(const char* filename)
+{
+	png_bytepp png_rows = read_png(filename);
 	assert(channels == 3 || channels == 4);
 	//print_picture(png_rows,2);
 
@@ -96,45 +111,62 @@ main(int argc, char* args)
 	
 	struct pixel current_seed = { 0 , 0 };
 
-	num_boxes = 0;
+	struct box_list boxes= {0,0,0};
 	while( get_next_seed(processed_pixels, &current_seed) )
 	{
-		flood_seed(processed_pixels,current_seed,get_next_box());
+		flood_seed(processed_pixels,current_seed,get_next_box(&boxes));
 	}
 
 }
 
-void enqueue(queuep q, pixel p)
+void enqueue(queuep q, struct pixel p)
 {
-	
+	/*
+		I have this queue putting new items at the end of the array, and popping from the front.
+	*/
+	if(q->num_elem == q->size)
+	{
+		q->size = ( q->data == NULL ? 50 : q->size*2 );
+		q->data = realloc( q->data, q->size*sizeof(struct pixel));
+	}
+	q->data[q->num_elem++] = p;
 }
 
-pixel pop(queuep q)
+struct pixel pop(queuep q)
 {
-	pixel r = q->data[q->size - 1];
-	q->size-=1;
+	assert( q->data != NULL );
+	struct pixel r = q->data[0];
+	int i;
+	for(i=0;i<q->num_elem-1;++i)
+	{
+		q->data[i] = q->data[i+1];
+	}
+	q->num_elem -= 1;
 	return r;
 }
 
 char empty(queuep q)
 {
-	char r = (q->size == 0 ? 1 : 0);
-	return r;
+	return (q->num_elem == 0 ? 1 : 0);
 }
 
-boxp get_next_box()
+boxp get_next_box(box_listp blp)
 {
 	/*
-		I will realloc every time I need a new box for now..
-		spritesheets rarely contain more than 30 sprites anyway.
+		I have this box_list set up like a dynamic array except without any get and set methods..
+		it's only function is to return the address of the next availible box structure.
 	*/
-	boxes = realloc(boxes,(num_boxes+1)*sizeof(struct box));
-	return &boxes[num_boxes++];
+	if( blp->num_elem == blp->size )
+	{
+			blp->size = (blp->data == NULL ? 15 : blp->size*2);
+			blp->data = realloc(blp->data, blp->size*sizeof( struct box ));
+	}
+	blp->data[blp->num_elem] = calloc(1,sizeof(struct box));
+	return blp->data[blp->num_elem++];
 }
 
 char get_next_seed(char **processed_pixels, pixelp p)
 {
-
 	int row_size = stride / channels;
 	int i, j;
 	for(i=p->i;i<img_height;++i)
@@ -164,9 +196,30 @@ void set_box_processed(char **processed_pixels, boxp bp)
 	}
 }
 
-void flood_seed(char **processed_pixels, pixelp seed,boxp bp)
+void flood_seed(char **processed_pixels, pixelp seed, boxp bp)
 {
-	queue q = { 0 , 0 ,0 };
+	struct queue q = { 0 , 0 ,0 };
+	//clockwise from top-left (being (x,y) = (-1,-1))
+	char dx[] = { -1,0,1,1,1,0,-1,-1};
+	char dy[] = { -1,-1,-1,0,1,1,1,0};
+
+	enqueue(&q,*seed);
+	while( !empty(&q) )
+	{
+		struct pixel curr_pixel = pop(&q);
+		int i;
+		for(i=0;i<8;++i)
+		{
+			if(processed_pixels[curr_pixel.i+dx[i]][curr_pixel.j+dy[i]] == 0)
+			{
+				struct pixel new_pixel = { curr_pixel.i+dx[i], curr_pixel.j+dy[i] };
+				enqueue(&q, new_pixel);
+				processed_pixels[new_pixel.i][new_pixel.j] = 1;
+				// add this pixel to a dynamic array here .. array not implemented yet
+			}
+		}
+	}
+	// find min dimentions of box and save to 'bp' here
 	set_box_processed(processed_pixels, bp);
 }
 
@@ -413,6 +466,5 @@ png_bytepp read_png(const char* file_name)
 
 	return rows;
 }
-
 
 
