@@ -26,12 +26,17 @@ A fully transperant pixel is shown as x x x 0
 #include <stdlib.h>
 #include <assert.h>
 
-typedef struct box* boxp;
-typedef boxp* boxpp;
-typedef struct color* colorp;
-typedef struct pixel* pixelp;
-typedef struct queue* queuep;
-typedef struct box_list* box_listp;
+#include "types.h"
+#define QUEUE_TYPE struct pixel
+#define QUEUE_IDENTIFIER pixel
+#include "cutter_queue.h"
+
+#define DYNARR_TYPE struct pixel
+#define DYNARR_IDENTIFIER pixel
+#include "cutter_dynarr.h"
+#define DYNARR_TYPE struct box
+#define DYNARR_IDENTIFIER box
+#include "cutter_dynarr.h"
 
 png_bytepp read_png();
 boxp solve();
@@ -42,11 +47,7 @@ void get_background_color();
 void set_bg_processed();
 void flood_seed();
 void set_box_processed();
-boxp get_next_box();
-void enqueue();
-struct pixel pop();
-char empty();
-box_listp cutter();
+struct box_dynarr cutter();
 
 png_uint_32 img_width;
 png_uint_32 img_height;
@@ -54,35 +55,6 @@ png_uint_32 bit_depth;
 png_uint_32 channels;
 png_uint_32 color_type;
 unsigned long long stride;
-
-struct box
-{
-	int x,y,w,h;
-};
-
-struct color
-{
-	unsigned char r,g,b,a;
-};
-
-struct pixel
-{
-	int i,j;
-};
-
-struct queue
-{
-	pixelp data;
-	int size;
-	int num_elem;
-};
-
-struct box_list
-{
-	boxpp data;
-	int size;
-	int num_elem;
-};
 
 main(int argc,char *args[])
 {
@@ -92,7 +64,7 @@ main(int argc,char *args[])
 		cutter("test_images/spritesheet.png");
 }
 
-box_listp cutter(const char* filename)
+struct box_dynarr cutter(const char* filename)
 {
 	png_bytepp png_rows = read_png(filename);
 	assert(channels == 3 || channels == 4);
@@ -111,58 +83,12 @@ box_listp cutter(const char* filename)
 	
 	struct pixel current_seed = { 0 , 0 };
 
-	struct box_list boxes= {0,0,0};
+	struct box_dynarr boxes= {NULL,0,0};
 	while( get_next_seed(processed_pixels, &current_seed) )
 	{
-		flood_seed(processed_pixels,current_seed,get_next_box(&boxes));
+		flood_seed(processed_pixels,current_seed,box_dynarr_slot(&boxes));
 	}
 
-}
-
-void enqueue(queuep q, struct pixel p)
-{
-	/*
-		I have this queue putting new items at the end of the array, and popping from the front.
-	*/
-	if(q->num_elem == q->size)
-	{
-		q->size = ( q->data == NULL ? 50 : q->size*2 );
-		q->data = realloc( q->data, q->size*sizeof(struct pixel));
-	}
-	q->data[q->num_elem++] = p;
-}
-
-struct pixel pop(queuep q)
-{
-	assert( q->data != NULL );
-	struct pixel r = q->data[0];
-	int i;
-	for(i=0;i<q->num_elem-1;++i)
-	{
-		q->data[i] = q->data[i+1];
-	}
-	q->num_elem -= 1;
-	return r;
-}
-
-char empty(queuep q)
-{
-	return (q->num_elem == 0 ? 1 : 0);
-}
-
-boxp get_next_box(box_listp blp)
-{
-	/*
-		I have this box_list set up like a dynamic array except without any get and set methods..
-		it's only function is to return the address of the next availible box structure.
-	*/
-	if( blp->num_elem == blp->size )
-	{
-			blp->size = (blp->data == NULL ? 15 : blp->size*2);
-			blp->data = realloc(blp->data, blp->size*sizeof( struct box ));
-	}
-	blp->data[blp->num_elem] = calloc(1,sizeof(struct box));
-	return blp->data[blp->num_elem++];
 }
 
 char get_next_seed(char **processed_pixels, pixelp p)
@@ -198,29 +124,35 @@ void set_box_processed(char **processed_pixels, boxp bp)
 
 void flood_seed(char **processed_pixels, pixelp seed, boxp bp)
 {
-	struct queue q = { 0 , 0 ,0 };
+	struct pixel_dynarr dynp = {NULL,0,0};
+	struct pixel_queue q = {NULL , 0 ,0 };
 	//clockwise from top-left (being (x,y) = (-1,-1))
 	char dx[] = { -1,0,1,1,1,0,-1,-1};
 	char dy[] = { -1,-1,-1,0,1,1,1,0};
-
-	enqueue(&q,*seed);
-	while( !empty(&q) )
+	
+	pixel_queue_enqueue(&q,*seed);
+	while( !pixel_queue_empty(&q) )
 	{
-		struct pixel curr_pixel = pop(&q);
+		struct pixel curr_pixel = pixel_queue_
+		
+		pop(&q);
 		int i;
 		for(i=0;i<8;++i)
 		{
 			if(processed_pixels[curr_pixel.i+dx[i]][curr_pixel.j+dy[i]] == 0)
 			{
 				struct pixel new_pixel = { curr_pixel.i+dx[i], curr_pixel.j+dy[i] };
-				enqueue(&q, new_pixel);
+				pixel_queue_enqueue(&q, new_pixel);
 				processed_pixels[new_pixel.i][new_pixel.j] = 1;
-				// add this pixel to a dynamic array here .. array not implemented yet
+				*pixel_dynarr_slot(&dynp) = new_pixel;
 			}
 		}
 	}
-	// find min dimentions of box and save to 'bp' here
+	// Find and set bounds of box here
 	set_box_processed(processed_pixels, bp);
+	
+	pixel_dynarr_destroy( &dynp );
+	pixel_queue_destroy( &q );
 }
 
 char color_compare(int r,int g,int b, int a, colorp color_comp)
@@ -466,5 +398,6 @@ png_bytepp read_png(const char* file_name)
 
 	return rows;
 }
+
 
 
