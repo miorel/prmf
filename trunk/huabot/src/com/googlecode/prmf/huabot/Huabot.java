@@ -21,7 +21,8 @@ import com.googlecode.prmf.merapi.util.Strings;
 public class Huabot extends AbstractIrcEventListener {
 	private static final String COMMAND_TRIGGER = "~"; // what a message must start with to be considered a command
 	private static final Pattern COMMAND_PATTERN = Pattern.compile("\\s*" + Pattern.quote(COMMAND_TRIGGER) + "\\s*(\\w+)\\s+([\\s\\S]*)");
-
+	private static final Pattern NAME = Pattern.compile("(\\w++)");
+	private static final Pattern KARMA = Pattern.compile(NAME + "\\+\\+.*|\\+\\+" + NAME +".*|" + NAME+ "--.*|--" + NAME + ".*");
 	public Huabot() {
 	}
 
@@ -58,6 +59,7 @@ public class Huabot extends AbstractIrcEventListener {
 
 	private void reactToMessage(IrcClient client, String channel, Entity sender, String message) {
 		Matcher m = COMMAND_PATTERN.matcher(message);
+		Matcher k = KARMA.matcher(message); // k for karma :D!
 		if(m.matches()) {
 			// We got ourselves a command!
 			String cmd = m.group(1).toLowerCase(Locale.ENGLISH);
@@ -94,6 +96,18 @@ public class Huabot extends AbstractIrcEventListener {
 				}
 
 				privmsg(client, channel, response);
+			}
+		}
+		if (k.matches()){
+			String action = k.group(); //get the match obv
+			if (action != null){ //this should never be null
+				Pattern getName = Pattern.compile(".*?" + NAME + ".*"); //used to extract the name from the karma
+				Pattern negative = Pattern.compile(".*?--.*"); //-- vs ++
+				Matcher n = getName.matcher(action);
+				if (n.matches()){ //this should always be true
+					Matcher nOrNot = negative.matcher(action); //checks if karma was posiitve or negative
+					privmsg(client, channel, String.format("%s just got %s karma'd", n.group(1), nOrNot.matches()?"negative":"positive"));	
+				}
 			}
 		}
 	}
