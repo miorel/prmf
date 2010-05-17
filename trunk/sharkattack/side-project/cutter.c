@@ -133,9 +133,7 @@ void flood_seed(char **processed_pixels, pixelp seed, boxp bp)
 	pixel_queue_enqueue(&q,*seed);
 	while( !pixel_queue_empty(&q) )
 	{
-		struct pixel curr_pixel = pixel_queue_
-		
-		pop(&q);
+		struct pixel curr_pixel = pixel_queue_pop(&q);
 		int i;
 		for(i=0;i<8;++i)
 		{
