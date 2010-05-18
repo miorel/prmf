@@ -1,12 +1,16 @@
 package com.googlecode.prmf.huabot;
 
-import static com.googlecode.prmf.merapi.net.irc.IrcCommands.privmsg;
-
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.googlecode.prmf.merapi.net.irc.IrcCommands.*;
 
 import com.googlecode.prmf.merapi.net.irc.Entity;
 import com.googlecode.prmf.merapi.net.irc.IrcClient;
@@ -16,14 +20,36 @@ import com.googlecode.prmf.merapi.net.irc.event.AbstractIrcEventListener;
 import com.googlecode.prmf.merapi.net.irc.event.IrcEvent;
 import com.googlecode.prmf.merapi.net.www.Tinysong;
 import com.googlecode.prmf.merapi.net.www.TinysongResult;
+import com.googlecode.prmf.merapi.util.Pair;
 import com.googlecode.prmf.merapi.util.Strings;
 
 public class Huabot extends AbstractIrcEventListener {
 	private static final String COMMAND_TRIGGER = "~"; // what a message must start with to be considered a command
-	private static final Pattern COMMAND_PATTERN = Pattern.compile("\\s*" + Pattern.quote(COMMAND_TRIGGER) + "\\s*(\\w+)\\s+([\\s\\S]*)");
-	private static final Pattern NAME = Pattern.compile("(\\w++)");
-	private static final Pattern KARMA = Pattern.compile(NAME + "\\+\\+.*|\\+\\+" + NAME +".*|" + NAME+ "--.*|--" + NAME + ".*");
+	private static final Pattern COMMAND_PATTERN = Pattern.compile("\\s*" + Pattern.quote(COMMAND_TRIGGER) + "\\s*(\\w+)\\s*(.*)", Pattern.DOTALL);
+
+	private static final List<Pair<Pattern,Integer>> KARMA_PATTERNS = new ArrayList<Pair<Pattern,Integer>>();
+	static {
+		String entityRegex = "(\\w+)";
+		String[] modifiers = {"+", "-"};
+		int[] dks = {1, -1};
+		
+		for(int i = 0; i < modifiers.length; ++i) {
+			Integer dk = Integer.valueOf(dks[i]);
+			String modifier = "(?:" + Pattern.quote(modifiers[i]) + "){2,}";
+			
+			KARMA_PATTERNS.add(new Pair<Pattern,Integer>(Pattern.compile("(?<!\\S)" + modifier + entityRegex), dk)); // pre-notation
+			KARMA_PATTERNS.add(new Pair<Pattern,Integer>(Pattern.compile(entityRegex + modifier + "(?!\\S)"), dk)); // post-notation
+		}
+	}
+	
+	private final Map<String,Integer> karma;
+	
+	/**
+	 * Default constructor.
+	 */
 	public Huabot() {
+		this.karma = new HashMap<String,Integer>();
+		// Perhaps later this will be filled with some initial values from a file or database. 
 	}
 
 	@Override
@@ -57,13 +83,26 @@ public class Huabot extends AbstractIrcEventListener {
 		}
 	}
 
+	private int getKarma(String entity) {
+		Integer k = this.karma.get(entity.toLowerCase(Locale.ENGLISH));
+		return k == null ? 0 : k.intValue();
+	}
+
+	private void setKarma(String entity, int karma) {
+		this.karma.put(entity.toLowerCase(Locale.ENGLISH), Integer.valueOf(karma));
+	}
+
+	private void changeKarma(String entity, int changeInKarma) {
+		setKarma(entity, getKarma(entity) + changeInKarma);
+	}
+	
 	private void reactToMessage(IrcClient client, String channel, Entity sender, String message) {
-		Matcher m = COMMAND_PATTERN.matcher(message);
-		Matcher k = KARMA.matcher(message); // k for karma :D!
-		if(m.matches()) {
+		Matcher cmdMatcher = COMMAND_PATTERN.matcher(message);
+
+		if(cmdMatcher.matches()) {
 			// We got ourselves a command!
-			String cmd = m.group(1).toLowerCase(Locale.ENGLISH);
-			String[] arg = m.group(2).trim().split("\\s+");
+			String cmd = cmdMatcher.group(1).toLowerCase(Locale.ENGLISH);
+			String[] arg = cmdMatcher.group(2).trim().split("\\s+");
 
 			if(cmd.equals("version")) {
 				privmsg(client, channel, "This is huabot, REWRITE edition.");
@@ -82,31 +121,45 @@ public class Huabot extends AbstractIrcEventListener {
 			if(cmd.equals("tinysong")) {
 				Tinysong ts = new Tinysong();
 
-				String query = Strings.join(" ", arg);
 				String response = null;
-				try {
-					TinysongResult result = ts.topResult(query);
-					if(result != null)
-						response = String.format("Top result for \"%s\": %s by %s <%s>", query, result.getSongName(), result.getArtistName(), result.getUrl());
-					else
-						response = String.format("There were no search results for \"%s\" :/", query);
-				}
-				catch(Exception e) {
-					response = "There was an error. " + e.getMessage();
+				if(arg.length == 0)
+					response = "Some search terms would be nice.";
+				else {
+					String query = Strings.join(" ", arg);
+					try {
+						TinysongResult result = ts.topResult(query);
+						if(result != null)
+							response = String.format("Top result for \"%s\": %s by %s <%s>", query, result.getSongName(), result.getArtistName(), result.getUrl());
+						else
+							response = String.format("There were no search results for \"%s\" :/", query);
+					}
+					catch(Exception e) {
+						response = "There was an error. " + e.getMessage();
+					}
 				}
 
 				privmsg(client, channel, response);
 			}
+			
+			if(cmd.equals("karma")) {
+				if(arg.length == 0)
+					privmsg(client, channel, "Whose karma would you like to query?");
+				else {
+					String entity = arg[0];
+					privmsg(client, channel, String.format("%s has %d karma.", entity, Integer.valueOf(getKarma(entity))));
+				}
+			}
 		}
-		if (k.matches()){
-			String action = k.group(); //get the match obv
-			if (action != null){ //this should never be null
-				Pattern getName = Pattern.compile(".*?" + NAME + ".*"); //used to extract the name from the karma
-				Pattern negative = Pattern.compile(".*?--.*"); //-- vs ++
-				Matcher n = getName.matcher(action);
-				if (n.matches()){ //this should always be true
-					Matcher nOrNot = negative.matcher(action); //checks if karma was posiitve or negative
-					privmsg(client, channel, String.format("%s just got %s karma'd", n.group(1), nOrNot.matches()?"negative":"positive"));	
+		else {
+			// This was not a command. Do other kinds of text processing.
+			
+			// Process karma!
+			for(Pair<Pattern,Integer> pair: KARMA_PATTERNS) {
+				int dk = pair.getSecond().intValue();
+				Matcher karmaMatcher = pair.getFirst().matcher(message);
+				while(karmaMatcher.find()) {
+					String karmaTarget = karmaMatcher.group(1);
+					changeKarma(karmaTarget, dk);
 				}
 			}
 		}
