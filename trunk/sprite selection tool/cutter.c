@@ -63,7 +63,7 @@ main(int argc,char *args[])
 	if(argc == 2)
 		cutter(args[1]);
 	else
-		cutter("test_images/spritesheet.png");
+		cutter("test_images/easy_input.png");
 }
 
 struct box_dynarr cutter(const char* filename)
