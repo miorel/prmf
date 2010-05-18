@@ -14,7 +14,12 @@
  */
 package com.googlecode.prmf.corleone.game.state;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 import com.googlecode.prmf.corleone.connection.IOThread;
 import com.googlecode.prmf.corleone.game.Game;
@@ -49,6 +54,22 @@ public class Postgame implements MafiaGameState {
 		inputOutputThread.sendMessage(inputOutputThread.getChannel(), "The game is now over");
 	}
 
+	public void allTimeResults()
+	{
+		try
+		{
+			Scanner s = new Scanner(new File("results.txt"));
+			while (s.hasNextLine())
+			{
+				String[] singleTeamResults = s.nextLine().split("\\s+");
+				inputOutputThread.sendMessage(inputOutputThread.getChannel(), String.format("%s has won %s games", singleTeamResults[0].substring(0,singleTeamResults[0].length()-1), singleTeamResults[1]));
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+
+		}
+	}
 	public void wrapUp()
 	{
 		//this prints a list of all the winners!
@@ -70,10 +91,50 @@ public class Postgame implements MafiaGameState {
 			//TODO don't + when you append()
 			ret.append(team.getName() + " consisting of: " + team.getPlayers() +" has won!");
 			inputOutputThread.sendMessage(inputOutputThread.getChannel(),ret.toString());
+			addWin(team.getName());
 		}
 
 		LinkedList<String> playersRoles = roleReveal();
 		inputOutputThread.sendMessage(inputOutputThread.getChannel(),Strings.join(", ", Iterators.iterator(playersRoles)));
+		allTimeResults();
+	}
+
+	public void addWin(String teamName)
+	{
+		try
+		{
+			Scanner s = new Scanner(new File("results.txt"));
+			StringBuilder toPrint = new StringBuilder();
+			boolean added = false;
+			while (s.hasNext())
+			{
+				String[] singleTeamResults = s.nextLine().trim().split("\\s+");
+				singleTeamResults[0] = singleTeamResults[0].substring(0,singleTeamResults[0].length()-1);
+				if (teamName.equals(singleTeamResults[0]))
+				{
+					added = true;
+					int curWins = Integer.parseInt(singleTeamResults[1]);
+					++curWins;
+					singleTeamResults[1] = Integer.toString(curWins);
+				}
+				toPrint.append(String.format("%s: %s\n", singleTeamResults[0], singleTeamResults[1]));
+			}
+			if (!added)
+			{
+				toPrint.append(String.format("%s: %s\n", teamName, "1"));
+			}
+			File f = new File("results.txt");
+			f.delete();
+			FileWriter outFile = new FileWriter("results.txt");
+			PrintWriter out = new PrintWriter(outFile);
+			out.print(toPrint.toString());
+			out.close();
+		}
+		//Gotta catch 'em all!
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public Player[] getPlayerList()
