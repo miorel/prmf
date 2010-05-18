@@ -1,5 +1,6 @@
 /*
-Sprite cutter
+Sprite selection tool
+by Rodrigo Salazar
 
 It is going to be an implementation of libpng which is able to
 select sprites from a spritesheet and return their locations.
@@ -48,6 +49,7 @@ void set_bg_processed();
 void flood_seed();
 void set_box_processed();
 struct box_dynarr cutter();
+void set_box_bounds();
 
 png_uint_32 img_width;
 png_uint_32 img_height;
@@ -86,7 +88,7 @@ struct box_dynarr cutter(const char* filename)
 	struct box_dynarr boxes= {NULL,0,0};
 	while( get_next_seed(processed_pixels, &current_seed) )
 	{
-		flood_seed(processed_pixels,current_seed,box_dynarr_slot(&boxes));
+		flood_seed(processed_pixels,&current_seed,box_dynarr_slot(&boxes));
 	}
 
 }
@@ -112,6 +114,7 @@ char get_next_seed(char **processed_pixels, pixelp p)
 
 void set_box_processed(char **processed_pixels, boxp bp)
 {
+	printf("Debug: 'set_box_processed' box x:%d y:%d w:%d h:%d\n", bp->x,bp->y,bp->w,bp->h);
 	int i,j;
 	for(i=bp->y;i<bp->y+bp->h;++i)
 	{
@@ -120,6 +123,36 @@ void set_box_processed(char **processed_pixels, boxp bp)
 			processed_pixels[i][j] = 1;
 		}
 	}
+}
+
+void set_box_bounds(struct pixel_dynarr* dynp, boxp bp)
+{
+	int minx=(stride/channels),miny=img_height,maxx=0,maxy=0;
+	int i;
+	for(i=0;i<dynp->num_elem;++i)
+	{
+		if(minx > dynp->data[i].i)
+		{
+			minx = dynp->data[i].i;
+		}
+		else if(maxx < dynp->data[i].i)
+		{
+			maxx = dynp->data[i].i;
+		}
+		
+		if(miny > dynp->data[i].j)
+		{
+			miny = dynp->data[i].j;
+		}		
+		else if(maxy < dynp->data[i].j)
+		{		
+			maxy = dynp->data[i].j;
+		}	
+	}
+	bp->w = maxx - minx;
+	bp->h = maxy - miny;
+	bp->y = miny;
+	bp->x = minx;
 }
 
 void flood_seed(char **processed_pixels, pixelp seed, boxp bp)
@@ -137,16 +170,21 @@ void flood_seed(char **processed_pixels, pixelp seed, boxp bp)
 		int i;
 		for(i=0;i<8;++i)
 		{
-			if(processed_pixels[curr_pixel.i+dx[i]][curr_pixel.j+dy[i]] == 0)
+			//printf("Debug: %d %d\n", curr_pixel.i+dx[i],curr_pixel.j+dy[i]);
+			if(curr_pixel.i+dx[i] >= 0 && curr_pixel.i+dx[i] <= img_height && curr_pixel.j+dy[i] >= 0 && curr_pixel.j+dy[i] <= (stride / channels) )
 			{
-				struct pixel new_pixel = { curr_pixel.i+dx[i], curr_pixel.j+dy[i] };
-				pixel_queue_enqueue(&q, new_pixel);
-				processed_pixels[new_pixel.i][new_pixel.j] = 1;
-				*pixel_dynarr_slot(&dynp) = new_pixel;
+				//printf("\tMeets contraints\n");
+				if(processed_pixels[curr_pixel.i+dx[i]][curr_pixel.j+dy[i]] == 0)
+				{
+					struct pixel new_pixel = { curr_pixel.i+dx[i], curr_pixel.j+dy[i] };
+					pixel_queue_enqueue(&q, new_pixel);
+					processed_pixels[new_pixel.i][new_pixel.j] = 1;
+					*pixel_dynarr_slot(&dynp) = new_pixel;
+				}
 			}
 		}
 	}
-	// Find and set bounds of box here
+	set_box_bounds(&dynp, bp);
 	set_box_processed(processed_pixels, bp);
 	
 	pixel_dynarr_destroy( &dynp );
@@ -155,6 +193,15 @@ void flood_seed(char **processed_pixels, pixelp seed, boxp bp)
 
 char color_compare(int r,int g,int b, int a, colorp color_comp)
 {
+	/*
+		Possibly add option here for softness, since a color is represented as RGB
+		we can think of this as a 3d vector and say that the closeness of the
+		color is defined by the distance between the vectors, ||A-B||
+
+		Some spritesheets have some very minor artifacts in the background .. 
+		which this *might* account for if ever implemented
+	*/
+
 	if( color_comp->r == r && color_comp->g == g && color_comp->b == b && color_comp->a == a )
 		return 0;
 	else

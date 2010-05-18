@@ -29,6 +29,9 @@ inline void QUEUENAME(QUEUE_IDENTIFIER,queue_enqueue) ( struct QUEUENAME(QUEUE_I
 
 inline QUEUE_TYPE QUEUENAME(QUEUE_IDENTIFIER,queue_pop) (struct QUEUENAME(QUEUE_IDENTIFIER,queue) * q)
 {
+	/*
+		This is the definition of how not to design a queue, will improve shortly
+	*/
 	assert( q->data != NULL && q->num_elem > 0);
 	QUEUE_TYPE r = q->data[0];
 	int i;
