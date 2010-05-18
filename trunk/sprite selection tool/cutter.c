@@ -11,6 +11,7 @@ http://www.libpng.org/pub/png/book/toc.html
 http://www.piko3d.com/?page_id=68
 http://tunginobi.spheredev.org/site/node/88
 http://fydo.net/gamedev/dynamic-arrays
+http://www.flyingyogi.com/fun/spritelib.html
 Miorel
 
 The printf statements are only there for debugging purpose, I want the actual
