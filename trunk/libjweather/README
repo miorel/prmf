@@ -1,0 +1,5 @@
+libjweather will be a Java library providing access to weather data from a
+variety of APIs. The goal is uniform access, though we'll see how
+straightforard that is.
+
+The name was inspired by libgweather.

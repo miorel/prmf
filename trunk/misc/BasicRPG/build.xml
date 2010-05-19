@@ -1,0 +1,23 @@
+<project name="BasicRPG" default="dist-bin">
+	<target name="clean">
+		<delete dir="bin"/>
+		<delete dir="dist"/>
+	</target>
+
+	<target name="bin">
+		<mkdir dir="bin"/>
+		<javac srcdir="src" destdir="bin" includeAntRuntime="no"/>
+	</target>
+
+	<target name="dist-bin" depends="bin">
+		<mkdir dir="dist"/>
+		<jar destfile="dist/BasicRPG.jar">
+			<manifest>
+				<attribute name="Main-Class" value="rpg.Main"/>
+			</manifest>
+			<fileset dir="bin"/>
+			<fileset dir="res"/>
+		</jar>
+	</target>
+</project>
+

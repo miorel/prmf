@@ -1,10 +1,14 @@
-SHELL=/bin/bash
-
+# space-separated list of LaTeX source files
 SRC=algo.tex
-RES=icpc.png
-OTHER=Makefile README get_toc.pl
-ALL=$(SRC) $(RES) $(OTHER)
 
+# non-LaTeX resources that are incorporated in the pdf
+RES=icpc.png
+
+# other files that belong in a source archive
+OTHER=Makefile README get_toc.pl
+
+ALL=$(SRC) $(RES) $(OTHER)
+SHELL=/bin/bash
 PDFLATEX_CMD=pdflatex $(SRC)
 
 pdf: algo.pdf
