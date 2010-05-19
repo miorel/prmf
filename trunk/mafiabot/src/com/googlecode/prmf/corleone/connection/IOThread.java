@@ -14,8 +14,6 @@
  */
 package com.googlecode.prmf.corleone.connection;
 
-import static com.googlecode.prmf.merapi.util.Iterators.iterator;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -23,8 +21,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import com.googlecode.prmf.merapi.util.Strings;
 
 public class IOThread extends Thread {
 	private Socket soc;
@@ -84,9 +80,9 @@ public class IOThread extends Thread {
 	
 	// TODO reimplement this method using sendMessage()
 	public void sendPONG(String[] msg) {
-		msg[0] = "PONG";
-		
-		String concat = Strings.join(' ', iterator(msg)); 
+		String concat = "PONG";
+		for(int i = 1; i < msg.length; ++i)
+			concat += " " + msg[i];
 		
 		printStream.println(concat);
 		System.out.println(">>>> " + concat);

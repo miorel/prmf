@@ -14,23 +14,21 @@
  */
 package com.googlecode.prmf.corleone.connection;
 
-import static com.googlecode.prmf.merapi.util.Iterators.lines;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.ParseException;
+import java.util.Scanner;
 
 public class SettingsFileParser {
-	private InputStream in;
+	private Scanner in;
 	private String channel;
 	private String botName;
 	private String server;
 	private int port;
 
 	public SettingsFileParser(String filename) throws FileNotFoundException {
-		this.in = new FileInputStream(new File(filename));
+		this.in = new Scanner(new FileInputStream(new File(filename)));
 	}
 	
 	public SettingsFileParser() throws FileNotFoundException {
@@ -39,7 +37,8 @@ public class SettingsFileParser {
 
 	public void parseFile() throws ParseException {
 		int numSettings = 0;
-		for(String line: lines(in)) {
+		while(in.hasNextLine()) {
+			String line = in.nextLine();
 
 			// TODO do the following using a regular expression!
 			int start = 0;

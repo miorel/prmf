@@ -25,8 +25,6 @@ import com.googlecode.prmf.corleone.connection.IOThread;
 import com.googlecode.prmf.corleone.game.Game;
 import com.googlecode.prmf.corleone.game.Player;
 import com.googlecode.prmf.corleone.game.team.Team;
-import com.googlecode.prmf.merapi.util.Iterators;
-import com.googlecode.prmf.merapi.util.Strings;
 
 //TODO: add some more cool stuff to this class! better results, game summaries, etc; lots of ways to go with this.
 public class Postgame implements MafiaGameState {
@@ -95,7 +93,14 @@ public class Postgame implements MafiaGameState {
 		}
 
 		LinkedList<String> playersRoles = roleReveal();
-		inputOutputThread.sendMessage(inputOutputThread.getChannel(),Strings.join(", ", Iterators.iterator(playersRoles)));
+		
+		String playersRolesString = "";
+		for(String pr: playersRoles) {
+			if(playersRolesString.length() > 0) playersRolesString += ", ";
+			playersRolesString += pr;
+		}
+		
+		inputOutputThread.sendMessage(inputOutputThread.getChannel(), playersRolesString);
 		allTimeResults();
 	}
 

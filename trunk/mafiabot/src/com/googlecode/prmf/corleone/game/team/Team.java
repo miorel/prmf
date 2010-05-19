@@ -18,8 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.googlecode.prmf.corleone.game.Player;
-import com.googlecode.prmf.merapi.util.Iterators;
-import com.googlecode.prmf.merapi.util.Strings;
 
 public abstract class Team {
 	private List<Player> list; // TODO make fields final where appropriate
@@ -59,7 +57,12 @@ public abstract class Team {
 	}
 
 	public String getPlayers() {
-		return Strings.join(", ", Iterators.iterator(list));
+		String ret = "";
+		for(Player p: list) {
+			if(ret.length() > 0) ret += ", ";
+			ret += p.getName();
+		}
+		return ret;
 	}
 
 	@Override
