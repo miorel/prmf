@@ -15,17 +15,35 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-public class Server {
+import java.util.*;
+import java.io.*;
+import java.text.*;
+
+public class Logging {
 	
-	private Logging log;
-	private Configuration config;
+	private PrintStream log;
+	private boolean open;
+	private Date date;
+	private DateFormat dateFormat;
 	
-	public Server(Logging log, Configuration config) {
+	public Logging(PrintStream log) {
+		date = new Date();
+		dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		this.log = log;
-		this.config = config;
+		open = true;
+		Write("--- New Session Started ---");
 	}
 	
-	public void Start() {
+	public boolean Write(String str) {
+		if(!open) return false;
+		log.println(dateFormat.format(date) + " | " + str);
+		return true;
+	}
+	
+	public void Close() {
+		Write("--- Session has ended ---");
+		open = false;
+		log.close();
 	}
 	
 }

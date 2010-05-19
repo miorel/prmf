@@ -15,17 +15,10 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-public class Server {
+public class Configuration {
 	
-	private Logging log;
-	private Configuration config;
-	
-	public Server(Logging log, Configuration config) {
-		this.log = log;
-		this.config = config;
-	}
-	
-	public void Start() {
+	public Configuration(String filename) {
+		
 	}
 	
 }

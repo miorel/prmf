@@ -15,10 +15,51 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
+import java.io.*;
+
 public class ServerCLI {
 	
 	public static void main(String[] args) {
+		
+		Logging log;
+		Configuration config;
+		Server server;
+		
+		/* Greet the user */
 		System.out.println("JTrisApplet Server");
+		System.out.println("Version 4");
+		
+		/* Process command line argument for logging destination */
+		if(args.length == 0) {
+			System.out.println("Logging to stdout");
+			log = new Logging(System.out);
+		} else if(args.length == 1) {
+			System.out.println("Logging to file: " + args[0]);
+			try {
+				PrintStream logIO = new PrintStream(new File(args[0]));
+				log = new Logging(logIO);
+			} catch(FileNotFoundException e) {
+				System.out.println("File not found.");
+				return;
+			}
+		} else {
+			System.out.println("Invalid command line arguments.");
+			return;
+		}
+		
+		/* Create the configuration object */
+		log.Write("Building configuration data: jtaserv.cfg");
+		config = new Configuration("jtaserv.cfg");
+		
+		/* Create and start the server */
+		log.Write("Bringing up the server");
+		server = new Server(log, config);
+		server.Start();
+		
+		/* Execution has finished */
+		System.out.println("Flushing log");
+		log.Close();
+		
 	}
 	
 }
