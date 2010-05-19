@@ -15,10 +15,118 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
+import java.io.*;
+import java.net.*;
+
 public class Connection {
 	
-	public Connection() {
-		
+	private String hostname;
+	private int port;
+	private boolean connected;
+	
+	private Socket socket;
+	private PrintWriter out;
+	private BufferedReader in;
+	
+	public Connection(final String hostname, final int port) {
+		this.hostname = hostname;
+		this.port = port;
+	}
+	
+	/* Connect to remote server */
+	public boolean Connect() {
+		try {
+			socket = new Socket(hostname, port);
+			out = new PrintWriter(socket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			connected = true;
+		} catch(UnknownHostException e) {
+			connected = false;
+		} catch(IOException e) {
+			connected = false;
+		}
+		return connected;
+	}
+	
+	/* Disconnect from the remote server */
+	public void Disconnect() {
+		out.close();
+		try {
+			in.close();
+			socket.close();
+		} catch(IOException e) {
+			;; // We are disconnecting, no need to care if socket I/O was broken
+		}
+		connected = false;
+	}
+	
+	/* Login to the remote server */
+	public boolean Login(String username, String password) {
+		Send(new String[] {Protocol.C_LOGIN, username});
+		String challenge = Read(Protocol.S_CHAL);
+		String response = Sha1.Encode(challenge + username + password);
+		Send(new String[] {Protocol.C_AUTH, response});
+		String confirm = Read(Protocol.S_CONFIRM);
+		if(confirm.equals(Protocol.TRUE))
+			return true;
+		else
+			return false;
+	}
+	
+	/* Send method for raw data */
+	private void Send(String str) {
+		str = Netstrings.encode(str);
+		out.println(str);
+	}
+	
+	/* Send method for command and arguments */
+	private void Send(String[] strs) {
+		String cmd = "";
+		for(String str : strs) {
+			cmd = cmd + " " + str;
+		}
+		Send(cmd);
+	}
+	
+	/* Read method for raw data */
+	private String Read() {
+		String str = null;
+		try {
+			str = in.readLine();
+			str = Netstrings.decode(str);
+		} catch(IOException e) {
+			Disconnect();
+		}
+		return str;
+	}
+	
+	/* Read method for expected command followed by one argument */
+	private String Read(String cmd) {
+		String str = Read();
+		String[] strs = str.split(" ", 2);
+		if(cmd.equals(strs[0]))
+			return strs[1];
+		else
+			return null;
+	}
+	
+	/* Read method for expected command followed by multiple arguments */
+	private String[] ReadMulti(String cmd) {
+		String str = Read(cmd);
+		String[] strs = str.split(" ");
+		if(cmd.equals(strs[0]))
+			return strs;
+		else
+			return null;
+	}
+	
+	/* Read method for expected command followed by a specific number of arguments */
+	private String[] ReadMulti(String cmd, int num) {
+		String[] strs = ReadMulti(cmd);
+		if(strs == null || strs.length != num)
+			return null;
+		else
+			return strs;
 	}
 	
 }

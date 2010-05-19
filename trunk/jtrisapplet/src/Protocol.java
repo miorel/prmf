@@ -15,16 +15,18 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-import java.util.*;
-
-public class Client {
+public class Protocol {
 	
-	private Connection con;
-	private Board board;
-	private ArrayList<Player> players;
+	/* Commands sent by client */
+	public static final String C_LOGIN = "login";
+	public static final String C_AUTH = "auth";
 	
-	public Client() {
-		
-	}
-
+	/* Commands sent by server */
+	public static final String S_CHAL = "chal";
+	public static final String S_CONFIRM = "confirm";
+	
+	/* Valid by both client and server */
+	public static final String TRUE = "true";
+	public static final String FALSE = "false";
+	
 }

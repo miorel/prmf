@@ -15,16 +15,10 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-import java.util.*;
-
-public class Client {
+public class ServerCLI {
 	
-	private Connection con;
-	private Board board;
-	private ArrayList<Player> players;
-	
-	public Client() {
-		
+	public static void main(String[] args) {
+		System.out.println("JTrisApplet Server");
 	}
-
+	
 }
