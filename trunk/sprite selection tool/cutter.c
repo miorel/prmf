@@ -1,9 +1,10 @@
-/*
+/**
 Sprite selection tool
 by Rodrigo Salazar
 
-It is going to be an implementation of libpng which is able to
-select sprites from a spritesheet and return their locations.
+Will allow for the automatic retrieval of individual sprite locations from a given sprite-sheet in PNG
+image format. This would alleviate the tedious work of manually entering coordinates of sprites
+when writing programs which use large sprite-sheet images.
 
 Useful sources:
 http://www.libpng.org/pub/png/libpng-1.4.0-manual.pdf
@@ -12,16 +13,10 @@ http://www.piko3d.com/?page_id=68
 http://tunginobi.spheredev.org/site/node/88
 http://fydo.net/gamedev/dynamic-arrays
 http://www.flyingyogi.com/fun/spritelib.html
-Miorel
-
-The printf statements are only there for debugging purpose, I want the actual
-end product to just take in a filename and return an array of box structs indicating
-the locations and sizes of each sprite on the sheet.
-
-From observation I have found that libpng will detect if a image contains an alpha layer
-and return 4 bytes per pixel instead of 3 (RGBA instead of RGB info)
-A fully transperant pixel is shown as x x x 0
-*/
+www.cs.toronto.edu/~jepson/csc2503/segmentation.pdf (pg.19 possible solution for our basic problem)
+Miorel P.
+Preston M.
+**/
 
 #include <png.h>
 #include <stdio.h>
@@ -64,7 +59,7 @@ main(int argc,char *args[])
 	if(argc == 2)
 		cutter(args[1]);
 	else
-		cutter("test_images/easy_input.png");
+		cutter("test_images/easy_input.PNG");
 }
 
 struct box_dynarr cutter(const char* filename)
@@ -73,7 +68,7 @@ struct box_dynarr cutter(const char* filename)
 	assert(channels == 3 || channels == 4);
 	//print_picture(png_rows,2);
 
-	struct color bg_color =  { 0, 0, 0, 0};
+	struct color bg_color;
 	get_background_color(png_rows, &bg_color);
 	printf("Background color found to be %d %d %d %d\n",bg_color.r,bg_color.g,bg_color.b,bg_color.a);
 
@@ -84,7 +79,7 @@ struct box_dynarr cutter(const char* filename)
 
 	set_bg_processed(png_rows,processed_pixels,&bg_color);
 	
-	struct pixel current_seed = { 0 , 0 };
+	struct pixel current_seed = {0,0};
 
 	struct box_dynarr boxes= {NULL,0,0};
 	while( get_next_seed(processed_pixels, &current_seed) )
@@ -92,10 +87,24 @@ struct box_dynarr cutter(const char* filename)
 		flood_seed(processed_pixels,&current_seed,box_dynarr_slot(&boxes));
 	}
 
+	printf("Debug: found %d sprites\n",boxes.num_elem);
+
+	//Free image and char array from memory before exiting
+	return boxes;
 }
 
 char get_next_seed(char **processed_pixels, pixelp p)
 {
+	/*
+		Very obvious practicality flaw with this method, if a sprite is 1 pixel higher than the rest and is in the same row as the other,
+		then it will be parsed first and added to the list first..making it very difficult for the user of the program to know the order
+		of the sprites he is interested in, making the program effectively useless. The only solutions to this are to either sort the list
+		before the end of the programs execution, sorting based on something I haven't thought of yet, or to edit this method so that the 
+		order of seeds arrive in the correct order, the previous is probably the easier and safer task.
+	*/
+
+	//printf("Debug: pixel: %d %d\n",p->i,p->j);
+
 	int row_size = stride / channels;
 	int i, j;
 	for(i=p->i;i<img_height;++i)
@@ -115,12 +124,13 @@ char get_next_seed(char **processed_pixels, pixelp p)
 
 void set_box_processed(char **processed_pixels, boxp bp)
 {
-	printf("Debug: 'set_box_processed' box x:%d y:%d w:%d h:%d\n", bp->x,bp->y,bp->w,bp->h);
+	//printf("Debug: 'set_box_processed' box x:%d y:%d w:%d h:%d\n", bp->x,bp->y,bp->w,bp->h);
 	int i,j;
-	for(i=bp->y;i<bp->y+bp->h;++i)
+	for(i=bp->y; i < (bp->y + bp->h);++i)
 	{
-		for(j=bp->x;j<bp->x+bp->w;++j)
+		for(j=bp->x; j < (bp->x + bp->w); ++j)
 		{
+			assert( i < img_height && j < (stride / channels) );
 			processed_pixels[i][j] = 1;
 		}
 	}
@@ -128,26 +138,29 @@ void set_box_processed(char **processed_pixels, boxp bp)
 
 void set_box_bounds(struct pixel_dynarr* dynp, boxp bp)
 {
+	/*
+		Must consider option of adding padding to box (optional).
+	*/
 	int minx=(stride/channels),miny=img_height,maxx=0,maxy=0;
 	int i;
 	for(i=0;i<dynp->num_elem;++i)
 	{
-		if(minx > dynp->data[i].i)
+		if(minx > dynp->data[i].j)
 		{
-			minx = dynp->data[i].i;
+			minx = dynp->data[i].j;
 		}
-		else if(maxx < dynp->data[i].i)
+		else if(maxx < dynp->data[i].j)
 		{
-			maxx = dynp->data[i].i;
+			maxx = dynp->data[i].j;
 		}
 		
-		if(miny > dynp->data[i].j)
+		if(miny > dynp->data[i].i)
 		{
-			miny = dynp->data[i].j;
+			miny = dynp->data[i].i;
 		}		
-		else if(maxy < dynp->data[i].j)
+		else if(maxy < dynp->data[i].i)
 		{		
-			maxy = dynp->data[i].j;
+			maxy = dynp->data[i].i;
 		}	
 	}
 	bp->w = maxx - minx;
@@ -158,6 +171,16 @@ void set_box_bounds(struct pixel_dynarr* dynp, boxp bp)
 
 void flood_seed(char **processed_pixels, pixelp seed, boxp bp)
 {
+	/*
+		This is the very first approach to solving this problem, I don't see it failing with images that aren't too much trouble.
+		Another approach involves building a minimum spanning tree around connected areas 
+		(very different from this approach which looks at the image from the top down), including an algorithm would decide whether or not
+		to create an edge between nearby connected regions (based on the average of the weighted edges in the min span tree)... 
+		this 2nd approach is listed in the source list.
+	*/
+
+	//printf("Debug: current_seed: %d %d\n",seed->i,seed->j);
+
 	struct pixel_dynarr dynp = {NULL,0,0};
 	struct pixel_queue q = {NULL , 0 ,0 };
 	//clockwise from top-left (being (x,y) = (-1,-1))
@@ -200,7 +223,7 @@ char color_compare(int r,int g,int b, int a, colorp color_comp)
 		color is defined by the distance between the vectors, ||A-B||
 
 		Some spritesheets have some very minor artifacts in the background .. 
-		which this *might* account for if ever implemented
+		which this *might* account for if ever implemented, another solution is setting a minimum box size.
 	*/
 
 	if( color_comp->r == r && color_comp->g == g && color_comp->b == b && color_comp->a == a )
@@ -212,10 +235,14 @@ char color_compare(int r,int g,int b, int a, colorp color_comp)
 void set_bg_processed(png_bytepp png_rows, char **processed_pixels, colorp bg_color)
 {
 	/*
-		At this point..making a grid[][] with 1's for bg color and 0 otherwise would make using the real image useless
-		this is the last method where actual image data will be used.
+		From observation I have found that libpng will detect if a image contains an alpha layer
+		and return 4 bytes per pixel instead of 3 (RGBA instead of RGB info)
+		A fully transperant pixel is shown as x x x 0
 
-		this will also help avoid the event where e.g. BG is white and there is White inside of a sprite ..
+		At this point..making a grid[][] with 1's for bg color and 0 otherwise would make using the real image useless
+		this is the last method where actual image data will be used, after this only a boolean array will be used.
+
+		This will also help avoid the event where e.g. BG is white and there is White inside of a sprite ..
 		causing it to be seeded twice or other strange errors.
 	*/
 	int i,j;
@@ -227,10 +254,7 @@ void set_bg_processed(png_bytepp png_rows, char **processed_pixels, colorp bg_co
 			if( !color_compare( png_rows[i][j], png_rows[i][j+1],png_rows[i][j+2], channels == 4 ? png_rows[i][j+3] : 255, bg_color )  )
 			{
 				int pixel_j = j / channels;
-				//printf("debug: setting %d %d to processed ... \n ",i, pixel_j);
-				//assert( pixel_j >= 0);
 				processed_pixels[i][pixel_j] = 1;
-				//printf("\tdone\n");
 			}
 		}
 	}
@@ -305,6 +329,11 @@ void get_background_color(png_bytepp png_rows, colorp bg_color)
 
 png_bytepp read_png(const char* file_name)
 {
+	/*
+		The printf statements are only there for debugging purpose, I want the actual
+		end product to just take in a filename and return an array of box structs indicating
+		the locations and sizes of each sprite on the sheet.
+	*/
 	FILE *fp = fopen(file_name, "rb");
 	if(fp)
 	{
