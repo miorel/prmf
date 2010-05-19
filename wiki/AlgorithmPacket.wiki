@@ -1,31 +1,71 @@
 #summary About our algorithm packet for ACM ICPC and other programming contests
 #labels Projects
 
-= Compiling the Packet =
+<wiki:toc max_depth="2" />
 
-The algorithm packet was prepared using LaTeX. Assuming you have the `svn` and `pdflatex` commands (which you should if your system is _cool_), you can execute the following to build a pdf file:
-
-{{{
-svn co http://prmf.googlecode.com/svn/trunk/algo/
-cd algo
-pdflatex algo.tex
-pdflatex algo.tex
-pdflatex algo.tex
-}}}
-
-That is not a typo, you _do_ have to execute the last command three times. Though intermediate pdfs might be created, they will probably be broken. Multiple compilations of the LaTeX source ensure, among other things, that the table of contents is properly generated.
-
-To make someone else decide how many times to compile the source, get [http://iml.univ-mrs.fr/~beffara/soft/rubber/ Rubber]. Then you can:
+= Synopsis =
 
 {{{
+# Get the latest source
 svn co http://prmf.googlecode.com/svn/trunk/algo/
 cd algo
-rubber --pdf algo.tex
+
+# Compile a pdf
+make pdf
+
+# Prepare a source archive
+make zip
+
+# Print the packet's table of contents in Google Code wiki format
+./get_toc.pl
+
+# Remove the pdf, zip, and any temporary files
+make clean
 }}}
 
-= Table of Contents =
+= About =
 
-Here is the table of contents of the latest version of the algorithm packet. (Developers: you can get this in Google Code wiki format by using the `get_toc.pl` script included with the packet source.)
+The algorithm packet contains mathematical formulae, implementations of common algorithms, and other resources which may be useful in an algorithmic programming competition. It was designed for the [http://www.acm.org/ Association of Computing Machinery] [http://icpc.baylor.edu/ International Collegiate Programming Contest], but may be useful in other contests.
+
+The packet was prepared using LaTeX.
+
+= Downloading =
+
+Most people just want to _use_ the algorithm packet. If you're in that category, [http://code.google.com/p/prmf/downloads/list?q=label:AlgorithmPacket get a pdf from the Downloads page].
+
+= Compiling =
+
+For a variety of reasons, you might wish to compile the algorithm packet yourself. To do so, you'll need the source. One option is to [http://code.google.com/p/prmf/downloads/list?q=label:AlgorithmPacket download a source archive]. If you've gotta have the latest and greatest, or if you plan on making changes to the packet, you should get the source from the repository. Execute `svn co http://prmf.googlecode.com/svn/trunk/algo/` at the command line (or [http://subversion.apache.org/packages.html use a client program or plugin]).
+
+The packet source comes with a Makefile, so assuming you have the `make` and `pdflatex` commands (which you _should_ if your system is cool), you can execute `make pdf` in the source directory to compile a pdf!
+
+= Developing = 
+
+_This section is a stub. Please improve it!_
+
+== Preparing a source archive ==
+
+{{{
+make zip
+}}} 
+
+== Cleaning after yourself ==
+
+{{{
+make clean
+}}}
+
+== Adding files ==
+
+You'll have to edit the Makefile. Good luck.
+
+== Rubber ==
+
+The Makefile has an optional dependency on the [http://iml.univ-mrs.fr/~beffara/soft/rubber/ Rubber] project. This is a wrapper for the LaTeX commands that compiles documents "the right number of times." If you don't have Rubber, `make pdf` will perform _three_ passes over the source (to resolve all the references, build a table of contents, etc.). You're therefore encouraged to install Rubber to save some compile time, because "the right number of times" will usually be less than three.
+
+= Packet table of contents =
+
+If you want to "try before you buy" here is the table of contents of the algorithm packet. (This was obtained using the `get_toc.pl` script included with the packet source.)
 
   # Regular expressions
    # Syntax summary

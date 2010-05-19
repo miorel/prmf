@@ -1,11 +1,28 @@
 #summary A quick introduction to the inner workings of TWW2Bot
 #labels Projects
 
+<wiki:toc max_depth="1" />
+
+= Synopsis =
+
+{{{
+# Get the latest source
+svn co http://prmf.googlecode.com/svn/trunk/tww2bot/
+cd tww2bot
+
+# Compile and package the project
+ant dist-bin
+
+# Run the bot
+cd dist
+java -jar TWW2Bot.jar
+}}}
+
 = Introduction =
 
 *TWW2Bot* is the robot alter ego of [TJBoyd TJ Boyd] (aka TWW2). It is written in Java, using the [http://www.jibble.org/pircbot.php PircBot API] and will only compile if !PircBot is downloaded and placed in the same directory. TJ plans to add a master list of valid commands to this page when he gets around to it, but won't mind if you do it for him. A lot of channel op features have been commented out because they're not really necessary in the context that TWW2Bot is generally used. The bot was developed using the "as long as it works" principle of software engineering, so TJ wants you to feel free to laugh at how badly coded it is.
 
-= Valid Commands =
+= Commands =
 
 == !help ==
 == !roll ==

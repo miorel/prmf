@@ -1,8 +1,11 @@
 This directory contains the LaTeX source for the algorithm packet.
 
-To generate a pdf, execute the command `pdflatex algo.tex' THREE times. This 
-ensures that all references are resolved, the table of contents is built, etc.
+On systems that have the make and pdflatex commands, execute `make pdf' to
+compile a pdf file.
 
-Alternatively, look into the Rubber project:
+There is an optional dependency on the Rubber project:
 <http://iml.univ-mrs.fr/~beffara/soft/rubber/>
-Then you can `rubber --pdf algo.tex` instead.
+The build process will try to use Rubber if it is available, generally
+resulting in fewer passes of the source and, consequently, faster compilation.
+You are therefore encouraged to install Rubber if you will be actively editing
+the algorithm packet.

@@ -1,0 +1,28 @@
+#summary List of cool Eclipse plugins
+
+<wiki:toc max_depth="1" />
+
+= Subversion integration = 
+
+Update site: Subclipse - [http://subclipse.tigris.org/update_1.6.x]<br/>
+Components: all of the required ones under `Subclipse`
+
+= C/C++ development =
+
+Update site: Galileo repository - [http://download.eclipse.org/releases/galileo]<br/>
+Component: `Programming Languages`, `Eclipse C/C++ Development Tools`
+
+= Perl development =
+
+Update site: EPIC - [http://e-p-i-c.sf.net/updates]<br/>
+Component: `EPIC Main Components`, `EPIC`
+
+= Python development =
+
+Update site: PyDev - [http://pydev.org/updates]<br/>
+Component: `PyDev`, `PyDev for Eclipse`
+
+= Ruby development =
+
+Update site: Galileo repository - [http://download.eclipse.org/releases/galileo]<br/>
+Component: `Programming Languages`, `Dynamic Languages Toolkit - Ruby Development Tools`

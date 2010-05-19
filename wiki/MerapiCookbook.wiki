@@ -92,7 +92,7 @@ for(TinysongResult res: ts.topUrl("bob marley", 8))
 prints
 
  Buffalo Soldier by Bob Marley on Best Of Bob Marley <[http://tinysong.com/6Ifn]><br/>
- One Love by Bob Marley on One Love <http://tinysong.com/fJc><br/>
+ One Love by Bob Marley on One Love <[http://tinysong.com/fJc]><br/>
  I Shot The Sheriff by Bob Marley on Bob Marley Digitally Remastered <[http://tinysong.com/6Ifu]><br/>
  Soul Rebel by Bob Marley on Bob Marley and Pete Tosh <[http://tinysong.com/6Ifo]><br/>
  Trenchtown Rock by Bob Marley on Bob Marley and Pete Tosh <[http://tinysong.com/6Ifp]>

@@ -1,9 +1,7 @@
 package MyBot;
 
 public class MyBotMain {
-
 	public static void main(String[] arg) throws Exception {
-
 		// Now start our bot up.
 		MyBot bot = new MyBot();
 
@@ -12,10 +10,5 @@ public class MyBotMain {
 
 		// Connect to the IRC server.
 		bot.connect("irc.freenode.net");
-
-		// Join my channels.
-		bot.joinChannel("#TWW2");
-
 	}
-
 }
