@@ -22,8 +22,8 @@
 % media, included here under fair use, for depiction in a non-commercial,
 % educational material, related to the ACM ICPC.
 % 
-% All other content is licensed under Creative Commons Attribution-Share Alike
-% version 3 or later. <http://creativecommons.org/licenses/by-sa/3.0/>
+% All other content is licensed under the GNU Free Documentation License
+% version 1.3 or later. <http://www.gnu.org/licenses/fdl.html>
 %
 
 \documentclass[a4paper,12pt]{article}
@@ -205,100 +205,6 @@ You could accomplish the same by just looking at the last character. But, this c
 \begin{lstlisting}
 boolean isEven(String number) {
 	return number.matches("-?\\d*[02468]");
-}
-\end{lstlisting}
-
-\subsubsection{Multiply by two}
-Behold yet another ``because I can'' example. All I need are the methods of the \verb/String/ class (though it'll be rather slow):
-\begin{lstlisting}
-String multiplyByTwo(String number) {
-	number = number.replaceAll("^0*", "0");
-	number = number.replaceAll("9", "i");
-	number = number.replaceAll("8", "g");
-	number = number.replaceAll("7", "e");
-	number = number.replaceAll("6", "c");
-	number = number.replaceAll("5", "a");
-	number = number.replaceAll("4", "8");
-	number = number.replaceAll("3", "6");
-	number = number.replaceAll("2", "4");
-	number = number.replaceAll("1", "2");
-	number = number.replaceAll("a", "z0");
-	number = number.replaceAll("c", "z2");
-	number = number.replaceAll("e", "z4");
-	number = number.replaceAll("g", "z6");
-	number = number.replaceAll("i", "z8");
-	while(number.indexOf("z") >= 0) {
-		number = number.replaceAll("0z", "1");
-		number = number.replaceAll("1z", "2");
-		number = number.replaceAll("2z", "3");
-		number = number.replaceAll("3z", "4");
-		number = number.replaceAll("4z", "5");
-		number = number.replaceAll("5z", "6");
-		number = number.replaceAll("6z", "7");
-		number = number.replaceAll("7z", "8");
-		number = number.replaceAll("8z", "9");
-		number = number.replaceAll("9z", "z0");
-	}
-	number = number.replaceAll("^0+(.)", "$1");
-	return number;
-}
-\end{lstlisting}
-
-\noindent Here's a version which makes use of the \verb/Pattern/ and \verb/Matcher/ classes, although whether or not this is better code is debatable.
-\begin{lstlisting}
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-Pattern digit08z = Pattern.compile("([0-8])z");
-Pattern digit19 = Pattern.compile("([1-9])");
-Pattern digitLet = Pattern.compile("([acegi])");
-
-String multiplyByTwo(String number) {
-	number = number.replaceAll("^0*", "0");
-	Matcher m = digit19.matcher(number);
-	StringBuffer buf = new StringBuffer();
-	while(m.find()) {
-		int dig = m.group(1).charAt(0);
-		dig = (dig - '0') * 2 + (dig < '5' ? '0' : 'a' - 10);
-		m.appendReplacement(buf, "" + (char) dig);
-	}
-	m.appendTail(buf);
-	m = digitLet.matcher(buf.toString());
-	buf.setLength(0);
-	while(m.find()) {
-		int dig = m.group(1).charAt(0);
-		m.appendReplacement(buf, "z" + (dig - 'a'));
-	}
-	m.appendTail(buf);
-	number = buf.toString();
-	while(number.indexOf("z") >= 0) {
-		m = digit08z.matcher(number);
-		buf.setLength(0);
-		while(m.find()) {
-			int dig = m.group(1).charAt(0);
-			m.appendReplacement(buf, "" + (dig - '0' + 1));
-		}
-		m.appendTail(buf);
-		number = buf.toString().replaceAll("9z", "z0");
-	}
-	number = number.replaceAll("^0+(.)", "$1");
-	return number;
-}
-\end{lstlisting}
-
-\noindent For comparison, here's the Perl equivalent:
-\begin{lstlisting}[language=Perl]
-sub multiply_by_two {
-	local $_ = shift;
-	s/^0*/0/;
-	y/123456789/2468acegi/;
-	s/([acegi])/'z'.(ord($1)-ord('a'))/eg;
-	while(/z/) {
-		s/([0-8])z/$1+1/eg;
-		s/9z/z0/g;
-	}
-	s/^0+(.)/$1/;
-	return $_;
 }
 \end{lstlisting}
 
@@ -1549,7 +1455,7 @@ This response usually comes from a judge with a sense of humor. Make sure you've
 Such a response might mean that you have the right answer and it's just printed incorrectly. Or it might not. But what it almost certainly means is that you did not RTFP and/or check your answers for the example inputs.
 
 \subsubsection{Wrong answer}
-This is the catch-all of wrong submissions. Check edge cases like $0$, $1$, and the largest possible test case. Avoid floating-point arithmetic if integer arithmetic will suffice (example: if you need to sort points with integer coordinates by distances, just sort by the square of the distances, which will be an integer). Make sure you don't overflow.
+This is the catch-all of wrong submissions. Check edge cases like $0$, $1$, and the largest possible test case. Avoid floating-point arithmetic if integer arithmetic will suffice (example: if you need to sort points with integer coordinates by distance from the origin, just sort by the square of the distance, which will be an integer). Make sure you don't overflow.
 
 \subsection{Strategy}
 By now, you've honed your team into a mean contest-winning machine. With that, there's only one thing left to say, namely:\\[0.5cm]

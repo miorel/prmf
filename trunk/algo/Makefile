@@ -9,7 +9,7 @@ OTHER=Makefile README get_toc.pl
 
 ALL=$(SRC) $(RES) $(OTHER)
 SHELL=/bin/bash
-PDFLATEX_CMD=pdflatex $(SRC)
+PDFLATEX_CMD=pdflatex -interaction=nonstopmode $(SRC)
 
 pdf: algo.pdf
 
@@ -19,9 +19,9 @@ clean:
 	rm -f algo.{aux,log,pdf,toc,zip}
 
 algo.pdf: $(SRC) $(RES)
-	rubber --pdf $(SRC) || ($(PDFLATEX_CMD); $(PDFLATEX_CMD); $(PDFLATEX_CMD))
+	if (which rubber >& /dev/null) then (rubber --pdf $(SRC)) else ($(PDFLATEX_CMD) && $(PDFLATEX_CMD) && $(PDFLATEX_CMD)) fi
 
 algo.zip: $(ALL)
-	zip -r algo.zip $(ALL)
+	zip -9 -r algo.zip $(ALL)
 
-.PHONY: clean
+.PHONY: pdf zip clean
