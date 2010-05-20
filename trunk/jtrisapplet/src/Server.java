@@ -26,6 +26,7 @@ public class Server {
 	}
 	
 	public void Start() {
+		log.Write("Server started on port ");
 	}
 	
 }

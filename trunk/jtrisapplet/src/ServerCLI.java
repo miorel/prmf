@@ -26,8 +26,7 @@ public class ServerCLI {
 		Server server;
 		
 		/* Greet the user */
-		System.out.println("JTrisApplet Server");
-		System.out.println("Version 4");
+		System.out.println("JTrisApplet Server Version 4");
 		
 		/* Process command line argument for logging destination */
 		if(args.length == 0) {
@@ -39,17 +38,25 @@ public class ServerCLI {
 				PrintStream logIO = new PrintStream(new File(args[0]));
 				log = new Logging(logIO);
 			} catch(FileNotFoundException e) {
-				System.out.println("File not found.");
+				System.out.println("Unable to open log file");
 				return;
 			}
 		} else {
-			System.out.println("Invalid command line arguments.");
+			System.out.println("Too many command line arguments");
 			return;
 		}
 		
 		/* Create the configuration object */
 		log.Write("Building configuration data: jtaserv.cfg");
-		config = new Configuration("jtaserv.cfg");
+		try {
+			config = new Configuration(new BufferedReader(new FileReader(new File("jtaserv.cfg"))));
+		} catch(IOException e) {
+			log.Write("I/O Exception while reading configuration file");
+			return;
+		} catch(IllegalArgumentException e) {
+			log.Write("Error or invalid line in configuration file");
+			return;
+		}
 		
 		/* Create and start the server */
 		log.Write("Bringing up the server");
@@ -57,7 +64,6 @@ public class ServerCLI {
 		server.Start();
 		
 		/* Execution has finished */
-		System.out.println("Flushing log");
 		log.Close();
 		
 	}
