@@ -22,6 +22,7 @@ Preston M.
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <math.h>
 
 #include "types.h"
 #define QUEUE_TYPE struct pixel
@@ -35,11 +36,13 @@ Preston M.
 #define DYNARR_IDENTIFIER box
 #include "cutter_dynarr.h"
 
+#define COLOR_TOLERANCE 50
 png_bytepp read_png();
 boxp solve();
 struct color get_pixel();
 char color_compare();
 char get_next_seed();
+char is_color_nearby();
 void get_background_color();
 void set_bg_processed();
 void flood_seed();
@@ -84,7 +87,7 @@ struct box_dynarr cutter(const char* filename)
 	struct box_dynarr boxes= {NULL,0,0};
 	while( get_next_seed(processed_pixels, &current_seed) )
 	{
-		flood_seed(processed_pixels,&current_seed,box_dynarr_slot(&boxes));
+		flood_seed(processed_pixels,png_rows,&bg_color,&current_seed,box_dynarr_slot(&boxes));
 	}
 
 	printf("Debug: found %d sprites\n",boxes.num_elem);
@@ -124,7 +127,7 @@ char get_next_seed(char **processed_pixels, pixelp p)
 
 void set_box_processed(char **processed_pixels, boxp bp)
 {
-	//printf("Debug: 'set_box_processed' box x:%d y:%d w:%d h:%d\n", bp->x,bp->y,bp->w,bp->h);
+	printf("Debug: 'set_box_processed' box x:%d y:%d w:%d h:%d\n", bp->x,bp->y,bp->w,bp->h);
 	int i,j;
 	for(i=bp->y; i < (bp->y + bp->h);++i)
 	{
@@ -169,7 +172,12 @@ void set_box_bounds(struct pixel_dynarr* dynp, boxp bp)
 	bp->x = minx;
 }
 
-void flood_seed(char **processed_pixels, pixelp seed, boxp bp)
+char is_color_nearby(png_bytepp png_rows,struct pixel_dynarr * dynp, struct color * candidate, int i, int j,int search_dist)
+{
+	return 0;
+}
+
+void flood_seed(char **processed_pixels, png_bytepp png_rows,struct color * bg_colorp, pixelp seed, boxp bp)
 {
 	/*
 		This is the very first approach to solving this problem, I don't see it failing with images that aren't too much trouble.
@@ -195,11 +203,20 @@ void flood_seed(char **processed_pixels, pixelp seed, boxp bp)
 		for(i=0;i<8;++i)
 		{
 			//printf("Debug: %d %d\n", curr_pixel.i+dx[i],curr_pixel.j+dy[i]);
-			if(curr_pixel.i+dx[i] >= 0 && curr_pixel.i+dx[i] <= img_height && curr_pixel.j+dy[i] >= 0 && curr_pixel.j+dy[i] <= (stride / channels) )
+			if(curr_pixel.i+dx[i] >= 0 && curr_pixel.i+dx[i] < img_height && curr_pixel.j+dy[i] >= 0 && curr_pixel.j+dy[i] < (stride / channels) )
 			{
 				//printf("\tMeets contraints\n");
 				if(processed_pixels[curr_pixel.i+dx[i]][curr_pixel.j+dy[i]] == 0)
 				{
+					struct color comp = get_pixel(png_rows,curr_pixel.i+dx[i],curr_pixel.j+dy[i]);
+					if( !color_compare(comp.r,comp.g,comp.b,comp.a,bg_colorp, COLOR_TOLERANCE ) ) //fails tolerance test
+					{
+						if( !is_color_nearby(png_rows,&dynp,&comp,curr_pixel.i+dx[i],curr_pixel.j+dy[i], 6 ) )
+						{
+							processed_pixels[ curr_pixel.i+dx[i]][curr_pixel.j+dy[i]] = 1;
+							continue;
+						}
+					}
 					struct pixel new_pixel = { curr_pixel.i+dx[i], curr_pixel.j+dy[i] };
 					pixel_queue_enqueue(&q, new_pixel);
 					processed_pixels[new_pixel.i][new_pixel.j] = 1;
@@ -215,18 +232,19 @@ void flood_seed(char **processed_pixels, pixelp seed, boxp bp)
 	pixel_queue_destroy( &q );
 }
 
-char color_compare(int r,int g,int b, int a, colorp color_comp)
+char color_compare(int r,int g,int b, int a, colorp color_comp, int tolerance)
 {
 	/*
-		Possibly add option here for softness, since a color is represented as RGB
-		we can think of this as a 3d vector and say that the closeness of the
-		color is defined by the distance between the vectors, ||A-B||
-
-		Some spritesheets have some very minor artifacts in the background .. 
-		which this *might* account for if ever implemented, another solution is setting a minimum box size.
+		distance between 2 colors is a comparison in similarity between colors , ||A-B||
+		Added a value called color_tolerance , helps distinguish between background and images in troublesome images
+		not sure how effective it is overall, it could possibly cause problems.
+		
+		Another possible solution I thought about was min and max box sizes..
+		if a sprite reaches upwards of 10% of image area
+		it can cause a restart and increase in color_tolerance .. but this needs testing.
 	*/
-
-	if( color_comp->r == r && color_comp->g == g && color_comp->b == b && color_comp->a == a )
+	double color_dist = sqrt( pow((r-color_comp->r),2) +pow((g-color_comp->g),2)+pow((b-color_comp->b),2));
+	if( color_dist < COLOR_TOLERANCE )
 		return 0;
 	else
 		return 1;
@@ -251,7 +269,7 @@ void set_bg_processed(png_bytepp png_rows, char **processed_pixels, colorp bg_co
 		for(j=0;j<stride;j+=channels)
 		{
 
-			if( !color_compare( png_rows[i][j], png_rows[i][j+1],png_rows[i][j+2], channels == 4 ? png_rows[i][j+3] : 255, bg_color )  )
+			if( !color_compare( png_rows[i][j], png_rows[i][j+1],png_rows[i][j+2], channels == 4 ? png_rows[i][j+3] : 255, bg_color,0 )  )
 			{
 				int pixel_j = j / channels;
 				processed_pixels[i][pixel_j] = 1;
