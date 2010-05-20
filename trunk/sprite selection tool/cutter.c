@@ -244,7 +244,7 @@ char color_compare(int r,int g,int b, int a, colorp color_comp, int tolerance)
 		it can cause a restart and increase in color_tolerance .. but this needs testing.
 	*/
 	double color_dist = sqrt( pow((r-color_comp->r),2) +pow((g-color_comp->g),2)+pow((b-color_comp->b),2));
-	if( color_dist < COLOR_TOLERANCE )
+	if( color_dist <= COLOR_TOLERANCE )
 		return 0;
 	else
 		return 1;
