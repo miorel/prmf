@@ -1,0 +1,9 @@
+2010-05-20  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* craigcrawler.pl: Updated file to use warnings and strict pragmas.
+
+2010-05-20  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* craigcrawler.pl: Added a perl file to work off of for the new
+	  craigslist bot project!
+

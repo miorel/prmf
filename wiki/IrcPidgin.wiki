@@ -1,0 +1,22 @@
+#summary IRC Pidgin tutorial
+
+http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/start.png
+
+http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/add_account.png
+
+http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/account_created.png
+
+http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/add_chat_menu.png
+
+http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/add_chat.png
+
+http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/chat_added.png
+
+http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/advanced_account_settings.png
+
+http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/preferences.png
+
+http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/tray_icon_idle.png
+
+http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/tray_icon_new_message.png
+

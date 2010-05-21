@@ -1,12 +1,12 @@
 #summary Members of the Programming Mafia
 #labels Featured,People
-  * [keskpeart Kes Peart]
   * [MauricioBellAlbero Mauricio Bell'Albero]
   * [TJBoyd TJ Boyd]
   * [WalterCornnell Walter Cornnell]
   * [WillieMaddox Willie Maddox]
   * [BrianNez Brian Nez]
   * [MiorelPalii Miorel Palii]
+  * [KesPeart Kes Peart]
   * [RodrigoSalazar Rodrigo Salazar]
   * [JosephThuemler Joe Thuemler]
   * [ZacharyZiebarth Zachary Ziebarth]

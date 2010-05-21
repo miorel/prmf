@@ -1,4 +1,7 @@
 #!/usr/bin/perl
 
-$hello = "hello there\n";
+use warnings;
+use strict;
+
+my $hello = "hello there\n";
 print $hello;
