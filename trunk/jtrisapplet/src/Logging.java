@@ -31,17 +31,17 @@ public class Logging {
 		dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		this.log = log;
 		open = true;
-		Write("--- New Session Started ---");
+		write("--- New Session Started ---");
 	}
 	
-	public boolean Write(String str) {
+	public boolean write(String str) {
 		if(!open) return false;
 		log.println(dateFormat.format(date) + " | " + str);
 		return true;
 	}
 	
-	public void Close() {
-		Write("--- Session has ended ---");
+	public void close() {
+		write("--- Session Ended Gracefully ---");
 		open = false;
 		log.close();
 	}

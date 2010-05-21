@@ -26,11 +26,12 @@ public class ServerCLI {
 		Server server;
 		
 		/* Greet the user */
-		System.out.println("JTrisApplet Server Version 4");
+		System.out.println("JTrisApplet Server Version 4 Release 0");
 		
 		/* Process command line argument for logging destination */
 		if(args.length == 0) {
-			System.out.println("Logging to stdout");
+			System.out.println("Copyright (C) 2010 Brian Nezvadovitz");
+			System.out.println("This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions. See COPYING for details.");
 			log = new Logging(System.out);
 		} else if(args.length == 1) {
 			System.out.println("Logging to file: " + args[0]);
@@ -47,24 +48,27 @@ public class ServerCLI {
 		}
 		
 		/* Create the configuration object */
-		log.Write("Building configuration data: jtaserv.cfg");
+		log.write("Reading configuration data: jtaserv.cfg");
 		try {
-			config = new Configuration(new BufferedReader(new FileReader(new File("jtaserv.cfg"))));
+			config = new Configuration(new BufferedReader(new FileReader("jtaserv.cfg")));
 		} catch(IOException e) {
-			log.Write("I/O Exception while reading configuration file");
+			log.write("I/O Exception while reading configuration file");
 			return;
 		} catch(IllegalArgumentException e) {
-			log.Write("Error or invalid line in configuration file");
+			log.write("Error or invalid line in configuration file");
+			if(e.getMessage() != null) {
+				log.write("Exception: " + e.getMessage());
+			}
 			return;
 		}
 		
 		/* Create and start the server */
-		log.Write("Bringing up the server");
+		log.write("Bringing up the server...");
 		server = new Server(log, config);
-		server.Start();
+		server.start();
 		
 		/* Execution has finished */
-		log.Close();
+		log.close();
 		
 	}
 	

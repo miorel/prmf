@@ -17,6 +17,8 @@
 
 public class Protocol {
 	
+	public static final int PROTO_VERSION = 4000;
+	
 	/* Commands sent by client */
 	public static final String C_LOGIN = "login";
 	public static final String C_AUTH = "auth";

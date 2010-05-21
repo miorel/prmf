@@ -34,7 +34,7 @@ public class Connection {
 	}
 	
 	/* Connect to remote server */
-	public boolean Connect() {
+	public boolean connect() {
 		try {
 			socket = new Socket(hostname, port);
 			out = new PrintWriter(socket.getOutputStream(), true);
@@ -49,7 +49,7 @@ public class Connection {
 	}
 	
 	/* Disconnect from the remote server */
-	public void Disconnect() {
+	public void disconnect() {
 		out.close();
 		try {
 			in.close();
@@ -61,12 +61,12 @@ public class Connection {
 	}
 	
 	/* Login to the remote server */
-	public boolean Login(String username, String password) {
-		Send(new String[] {Protocol.C_LOGIN, username});
-		String challenge = Read(Protocol.S_CHAL);
+	public boolean login(String username, String password) {
+		send(new String[] {Protocol.C_LOGIN, username});
+		String challenge = read(Protocol.S_CHAL);
 		String response = Sha1.Encode(challenge + username + password);
-		Send(new String[] {Protocol.C_AUTH, response});
-		String confirm = Read(Protocol.S_CONFIRM);
+		send(new String[] {Protocol.C_AUTH, response});
+		String confirm = read(Protocol.S_CONFIRM);
 		if(confirm.equals(Protocol.TRUE))
 			return true;
 		else
@@ -74,35 +74,35 @@ public class Connection {
 	}
 	
 	/* Send method for raw data */
-	private void Send(String str) {
+	private void send(String str) {
 		str = Netstrings.encode(str);
 		out.println(str);
 	}
 	
 	/* Send method for command and arguments */
-	private void Send(String[] strs) {
+	private void send(String[] strs) {
 		String cmd = "";
 		for(String str : strs) {
 			cmd = cmd + " " + str;
 		}
-		Send(cmd);
+		send(cmd);
 	}
 	
 	/* Read method for raw data */
-	private String Read() {
+	private String read() {
 		String str = null;
 		try {
 			str = in.readLine();
 			str = Netstrings.decode(str);
 		} catch(IOException e) {
-			Disconnect();
+			disconnect();
 		}
 		return str;
 	}
 	
 	/* Read method for expected command followed by one argument */
-	private String Read(String cmd) {
-		String str = Read();
+	private String read(String cmd) {
+		String str = read();
 		String[] strs = str.split(" ", 2);
 		if(cmd.equals(strs[0]))
 			return strs[1];
@@ -111,8 +111,8 @@ public class Connection {
 	}
 	
 	/* Read method for expected command followed by multiple arguments */
-	private String[] ReadMulti(String cmd) {
-		String str = Read(cmd);
+	private String[] readMulti(String cmd) {
+		String str = read(cmd);
 		String[] strs = str.split(" ");
 		if(cmd.equals(strs[0]))
 			return strs;
@@ -121,8 +121,8 @@ public class Connection {
 	}
 	
 	/* Read method for expected command followed by a specific number of arguments */
-	private String[] ReadMulti(String cmd, int num) {
-		String[] strs = ReadMulti(cmd);
+	private String[] readMulti(String cmd, int num) {
+		String[] strs = readMulti(cmd);
 		if(strs == null || strs.length != num)
 			return null;
 		else

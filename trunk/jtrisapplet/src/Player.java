@@ -15,10 +15,18 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-public class Player {
+import java.net.*;
+
+public class Player implements Runnable {
 	
-	public Player() {
+	private Socket socket;
+	
+	public Player(Socket socket) {
 		
+	}
+	
+	public void run() {
+		System.out.println("started!");
 	}
 	
 }
