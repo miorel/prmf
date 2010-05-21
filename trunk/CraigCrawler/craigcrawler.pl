@@ -5,6 +5,10 @@ use strict;
 use LWP::Simple;
 
 my $url = "http://craigslist.org";
-my $content = get($url);
-
-print $content; 
+my @page = split /\n/, get($url);
+foreach (@page)
+{
+	#Trying to print the relevent websites, broken!
+	$_ =~ /<a href=http:\/\/([a-zA-Z]+)\.craigslist\.org\/>([a-zA-Z]+)</a>/;
+	print $1." ".$2."\n";
+}
