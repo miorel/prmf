@@ -1,0 +1,23 @@
+README file for JTrisApplet
+==============================
+
+JTrisApplet is an online tetromino game. It's like the original puzzle classic Tetris, but with many more engaging features - the most notable being extensive multiplayer support. For more information on JTrisApplet, please go to: <http://code.google.com/p/prmf/wiki/JTrisApplet>
+
+To compile:
+	$ cd src
+	$ javac *.java
+
+To run server:
+	$ java ServerCLI [logfile.txt]
+
+To run client:
+	$ appletviewer Applet.html
+
+Server configuration files:
+	Main configuration file: jtaserv.cfg
+	User database: jtausers.cfg
+	High score database: jtascore.cfg
+	Initialization script: jtaserv.rc
+
+Copyright (C) 2010 Brian Nezvadovitz
+Please see the file COPYING for the full license.

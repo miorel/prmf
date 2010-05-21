@@ -26,7 +26,8 @@ public class ServerCLI {
 		Server server;
 		
 		/* Greet the user */
-		System.out.println("JTrisApplet Server Version 4 Release 0");
+		System.out.println("JTrisApplet Server");
+		System.out.println("Version 4 Release 0");
 		
 		/* Process command line argument for logging destination */
 		if(args.length == 0) {
