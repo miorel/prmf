@@ -1,0 +1,30 @@
+2010-05-20  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* Makefile: Improved build process.
+	* algo.tex: Algorithm packet is now under the GNU Free Documentation
+	  License. Changed header to reflect this.
+
+2010-05-19  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* Makefile: Compiling now requires less typing.
+	* README, algo.tex, toc.pl: Minor improvements.
+
+2010-04-30  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* README: Updated instructions.
+	* toc.pl: Created script for extracting the algorithm packet table
+	  of contents in Google Code wiki format.
+
+2010-04-27  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* algo.tex: Added header to algorithm packet source.
+
+2010-04-19  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* README: Created instructions for compiling the algorithm packet.
+	* icpc.png: Imported ACM ICPC logo from <http://icpc.baylor.edu/>.
+
+2010-03-31  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* algo.tex: Algorithm packet LaTeX source added to repository.
+

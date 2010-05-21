@@ -12,7 +12,7 @@ my $fh;
 
 unless(-f $file) {
 	print STDERR "Couldn't find file: $file\n";
-	print STDERR "Please execute `make pdf` to generate it.\n";
+	print STDERR "Please execute `make` to generate it.\n";
 	exit 1;
 }
 

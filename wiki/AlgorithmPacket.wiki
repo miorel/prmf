@@ -1,25 +1,25 @@
 #summary About our algorithm packet for ACM ICPC and other programming contests
 #labels Projects
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="2"/>
 
 = Synopsis =
 
 {{{
 # Get the latest source
-svn co http://prmf.googlecode.com/svn/trunk/algo/
+svn co https://prmf.googlecode.com/svn/trunk/algo/
 cd algo
 
 # Compile a pdf
-make pdf
+make
 
 # Prepare a source archive
-make zip
+make dist
 
 # Print the packet's table of contents in Google Code wiki format
-./get_toc.pl
+./toc.pl
 
-# Remove the pdf, zip, and any temporary files
+# Remove the pdf, source archive, and any temporary files
 make clean
 }}}
 
@@ -35,37 +35,31 @@ Most people just want to _use_ the algorithm packet. If you're in that category,
 
 = Compiling =
 
-For a variety of reasons, you might wish to compile the algorithm packet yourself. To do so, you'll need the source. One option is to [http://code.google.com/p/prmf/downloads/list?q=label:AlgorithmPacket download a source archive]. If you've gotta have the latest and greatest, or if you plan on making changes to the packet, you should get the source from the repository. Execute `svn co http://prmf.googlecode.com/svn/trunk/algo/` at the command line (or [http://subversion.apache.org/packages.html use a client program or plugin]).
+For a variety of reasons, you might wish to compile the algorithm packet yourself. To do so, you'll need the source. One option is to [http://code.google.com/p/prmf/downloads/list?q=label:AlgorithmPacket download a source archive]. If you've gotta have the latest and greatest, or if you plan on making changes to the packet, you should get the source from the repository. Execute `svn co https://prmf.googlecode.com/svn/trunk/algo/` at the command line (or [http://subversion.apache.org/packages.html use a client program or plugin]).
 
-The packet source comes with a Makefile, so assuming you have the `make` and `pdflatex` commands (which you _should_ if your system is cool), you can execute `make pdf` in the source directory to compile a pdf!
+The packet source comes with a Makefile, so assuming you have the `make` and `pdflatex` commands (which you _should_ if your system is cool), you can execute `make` in the source directory to compile a pdf!
 
 = Developing = 
 
-_This section is a stub. Please improve it!_
-
 == Preparing a source archive ==
 
-{{{
-make zip
-}}} 
+Run `make dist`. Only files explicitly listed in the Makefile are included in the archive, so if something's missing you know what you forgot to do.
 
-== Cleaning after yourself ==
+== Cleaning up ==
 
-{{{
-make clean
-}}}
+Run `make clean` to delete rebuildable files (the pdf and the source archive) and temporary files (LaTeX build logs, intermediate outputs, etc.).
 
 == Adding files ==
 
-You'll have to edit the Makefile. Good luck.
+As mentioned before, if you add a file to the project, you'll have to edit the Makefile. The simplest changes should only require updating one of the file list variables.
 
-== Rubber ==
+== Faster compilations ==
 
-The Makefile has an optional dependency on the [http://iml.univ-mrs.fr/~beffara/soft/rubber/ Rubber] project. This is a wrapper for the LaTeX commands that compiles documents "the right number of times." If you don't have Rubber, `make pdf` will perform _three_ passes over the source (to resolve all the references, build a table of contents, etc.). You're therefore encouraged to install Rubber to save some compile time, because "the right number of times" will usually be less than three.
+The Makefile has an optional dependency on the [http://iml.univ-mrs.fr/~beffara/soft/rubber/ Rubber] project. This is a wrapper for the LaTeX commands that compiles documents "the right number of times." If you don't have Rubber, `make` will perform _three_ passes over the source (to resolve all the references, build a table of contents, etc.). You're therefore encouraged to install Rubber to save some compile time, because "the right number of times" will usually be less than three.
 
 = Packet table of contents =
 
-If you want to "try before you buy" here is the table of contents of the algorithm packet. (This was obtained using the `get_toc.pl` script included with the packet source.)
+If you want to "try before you buy" here is the table of contents of the algorithm packet. (This was obtained using the `toc.pl` script included with the packet source.)
 
   # Regular expressions
    # Syntax summary
@@ -78,7 +72,6 @@ If you want to "try before you buy" here is the table of contents of the algorit
     # Collapse duplicate characters
     # Increment all integers in some text
     # Check if an integer is even
-    # Multiply by two
    # Quantifiers: greedy vs. non-greedy
   # Math
    # Combinatorics

@@ -5,18 +5,11 @@ SRC=algo.tex
 RES=icpc.png
 
 # other files that belong in a source archive
-OTHER=Makefile README get_toc.pl
+OTHER=ChangeLog Makefile README toc.pl
 
 ALL=$(SRC) $(RES) $(OTHER)
 SHELL=/bin/bash
 PDFLATEX_CMD=pdflatex -interaction=nonstopmode $(SRC)
-
-pdf: algo.pdf
-
-zip: algo.zip
-
-clean:
-	rm -f algo.{aux,log,pdf,toc,zip}
 
 algo.pdf: $(SRC) $(RES)
 	if (which rubber >& /dev/null) then (rubber --pdf $(SRC)) else ($(PDFLATEX_CMD) && $(PDFLATEX_CMD) && $(PDFLATEX_CMD)) fi
@@ -24,4 +17,9 @@ algo.pdf: $(SRC) $(RES)
 algo.zip: $(ALL)
 	zip -9 -r algo.zip $(ALL)
 
-.PHONY: pdf zip clean
+dist: algo.zip
+
+clean:
+	rm -f algo.{aux,log,pdf,toc,zip}
+
+.PHONY: clean dist

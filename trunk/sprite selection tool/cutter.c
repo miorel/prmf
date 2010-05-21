@@ -14,8 +14,8 @@ http://tunginobi.spheredev.org/site/node/88
 http://fydo.net/gamedev/dynamic-arrays
 http://www.flyingyogi.com/fun/spritelib.html
 www.cs.toronto.edu/~jepson/csc2503/segmentation.pdf (pg.19 possible solution for our basic problem)
-Miorel P.
-Preston M.
+Miorel-Lucian Palii
+Preston Mueller
 **/
 
 #include <png.h>
@@ -62,7 +62,7 @@ main(int argc,char *args[])
 	if(argc == 2)
 		cutter(args[1]);
 	else
-		cutter("test_images/easy_input.PNG");
+		cutter("test_images/easy_input.png");
 }
 
 struct box_dynarr cutter(const char* filename)
@@ -184,16 +184,16 @@ void flood_seed(char **processed_pixels, png_bytepp png_rows,struct color * bg_c
 		Another approach involves building a minimum spanning tree around connected areas 
 		(very different from this approach which looks at the image from the top down), including an algorithm would decide whether or not
 		to create an edge between nearby connected regions (based on the average of the weighted edges in the min span tree)... 
-		this 2nd approach is listed in the source list.
+		This 2nd approach is listed in the source list.
 	*/
 
 	//printf("Debug: current_seed: %d %d\n",seed->i,seed->j);
 
-	struct pixel_dynarr dynp = {NULL,0,0};
-	struct pixel_queue q = {NULL , 0 ,0 };
+	struct pixel_dynarr dynp = {NULL, 0, 0};
+	struct pixel_queue q = {NULL, 0, 0};
 	//clockwise from top-left (being (x,y) = (-1,-1))
-	char dx[] = { -1,0,1,1,1,0,-1,-1};
-	char dy[] = { -1,-1,-1,0,1,1,1,0};
+	char dx[] = {-1,0,1,1,1,0,-1,-1};
+	char dy[] = {-1,-1,-1,0,1,1,1,0};
 	
 	pixel_queue_enqueue(&q,*seed);
 	while( !pixel_queue_empty(&q) )
@@ -255,13 +255,13 @@ void set_bg_processed(png_bytepp png_rows, char **processed_pixels, colorp bg_co
 	/*
 		From observation I have found that libpng will detect if a image contains an alpha layer
 		and return 4 bytes per pixel instead of 3 (RGBA instead of RGB info)
-		A fully transperant pixel is shown as x x x 0
+		A fully transparent pixel is shown as x x x 0
 
 		At this point..making a grid[][] with 1's for bg color and 0 otherwise would make using the real image useless
 		this is the last method where actual image data will be used, after this only a boolean array will be used.
 
-		This will also help avoid the event where e.g. BG is white and there is White inside of a sprite ..
-		causing it to be seeded twice or other strange errors.
+		This will also help avoid the case in which there is a background color pixel inside a sprite causing it to be
+		seeded twice or other strange errors.
 	*/
 	int i,j;
 	for(i=0;i<img_height;++i)
@@ -382,16 +382,15 @@ png_bytepp read_png(const char* file_name)
 	int is_png = png_sig_cmp(header, 0, header_signature_size);
 	if( is_png )
 	{
-		printf("-File is not of PNG format\n\t");
+		printf("-File is not in PNG format\n\t");
 		return;
 	}
 	else
-		printf("-File is PNG format\n\t");
+		printf("-File is in PNG format\n\t");
 		
 	free(header);
 
-	png_structp png_ptr = png_create_read_struct(
-							 PNG_LIBPNG_VER_STRING, NULL,NULL,NULL);
+	png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if(png_ptr == NULL)
 	{
 		printf("-Allocation of png_struct failed\n");
@@ -442,26 +441,26 @@ png_bytepp read_png(const char* file_name)
 					(int)img_width,(int)img_height,(int)bit_depth,(int)channels,(int)color_type);
 	
 	switch (color_type) {
-        case PNG_COLOR_TYPE_PALETTE:
-            png_set_palette_to_rgb(png_ptr);
-            channels = 3; 
-            printf("-Color type set to be converted from PALETTE to RGB\n\t");          
-            break;
-        case PNG_COLOR_TYPE_GRAY:
-            if (bit_depth < 8)
-            png_set_gray_1_2_4_to_8(png_ptr);
-            bit_depth = 8;
+		case PNG_COLOR_TYPE_PALETTE:
+			png_set_palette_to_rgb(png_ptr);
+			channels = 3; 
+			printf("-Color type set to be converted from PALETTE to RGB\n\t");
+			break;
+		case PNG_COLOR_TYPE_GRAY:
+			if (bit_depth < 8)
+				png_set_gray_1_2_4_to_8(png_ptr);
+			bit_depth = 8;
 			printf("-Color type set to be expanded to low-bit GRAY to 8-bit\n\t");  
-            break;
-    }
+			break;
+	}
 
 
 	if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) 
 	{
-        png_set_tRNS_to_alpha(png_ptr);
-        channels+=1;
+		png_set_tRNS_to_alpha(png_ptr);
+		channels+=1;
 		printf("-All tRNS Chunks set to be expanded to alpha channels\n\t");
-    }
+	}
 	if(bit_depth == 16)
 	{
 		png_set_strip_16(png_ptr);
@@ -491,6 +490,4 @@ png_bytepp read_png(const char* file_name)
 
 	return rows;
 }
-
-
 

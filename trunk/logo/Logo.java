@@ -35,9 +35,9 @@ public class Logo {
 	private static final Color textColor = Color.WHITE;
 
 	private static final int size = 512;
-	private static final int circleDiameter = 448;
-	private static final int circleThickness = 84;
-	private static final int rectangleHeight = 96;
+	private static final int circleDiameter = (int) Math.round(((float) size) * 5 / 6);
+	private static final int circleThickness = (int) Math.round(((float) size) / 7);
+	private static final int rectangleHeight = (int) Math.round(((float) size) / 5);
 
 	private static final String title = "PRMF";
 
@@ -87,7 +87,7 @@ public class Logo {
 		try {
 			ImageIO.write(img, "png", new File("logo.png"));
 		}
-		catch (IOException e) {
+		catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
