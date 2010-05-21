@@ -2,6 +2,9 @@
 
 use warnings;
 use strict;
+use LWP::Simple;
 
-my $hello = "hello there\n";
-print $hello;
+my $url = "http://craigslist.org";
+my $content = get($url);
+
+print $content; 
