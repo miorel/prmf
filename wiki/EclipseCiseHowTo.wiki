@@ -3,29 +3,13 @@
 
 [http://www.eclipse.org/ Eclipse] is the recommended IDE for our projects. This page explains how to get Eclipse working on the CISE Linux computers in the dungeon.
 
-Usually we'd start by installing Eclipse. Fortunately, this is already done for you on CISE systems. Rejoice, because this is about the only step that will be straightforward. Then, start up Eclipse:
+Usually we'd start by installing Eclipse. Fortunately, this is already done for you on CISE systems. Rejoice! Then, start up Eclipse:
 
 http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/start.png
 
-Next we need to install [http://subclipse.tigris.org/ Subclipse] which will allow us to checkout projects from [http://subversion.apache.org/ Subversion] repositories such as the one of the Programming Mafia.
+Next, install Subclipse.
 
-Go to `Help`, `Software Updates`, `Find and Install`. You'll want to `Search for new features to install`.
-
-http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/new_features.png
-
-Now normally we'd install from a remote site, but surprise surprise this doesn't work properly on CISE computers. So you'll need to download an archived version of the update site from: http://subclipse.tigris.org/files/documents/906/45156/site-1.4.8.zip This is the proper Subclipse version to use with Subversion 1.5, which is what is installed on CISE systems at the time of this writing.
-
-Once the download completes, create a `New Archived Site`:
-
-http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/new_archived_site.png
-
-Find the `site-1.4.8.zip` file you just downloaded and give the update site a better name like "Subclipse 1.4". While you're at, let Eclipse `Automatically select mirrors` for you. Then go ahead and `Finish`.
-
-Again not surprisingly, you can't actually install every Subclipse feature on CISE computers. But no worries, because you don't actually need every feature. Make the installation window look like the screenshot below:
-
-http://prmf.googlecode.com/svn/wiki/img/eclipse/cise/install_subclipse.png
-
-Proceed with the installation. You'll have to accept a license agreement, confirm installation of unsigned features, and restart Eclipse. Congratulations, you now have Subclipse installed!
+_A summary of how to install Subclipse should go here._
 
 Time to add some projects. Go to `File`, `New`, `Project`, `SVN`, `Checkout Projects from SVN`:
 

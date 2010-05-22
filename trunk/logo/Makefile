@@ -1,7 +1,7 @@
 SHELL=/bin/bash
 
 logo.png: Logo.class SaccoVanzettiWebBold.ttf
-	java Logo
+	java Logo 1024
 
 Logo.class: Logo.java
 	javac Logo.java

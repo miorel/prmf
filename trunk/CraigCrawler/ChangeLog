@@ -1,21 +1,32 @@
+2010-05-21  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* craigcrawler.pl: Answered in the comments a question Rodrigo posted in the
+	  comments.
+
+2010-05-21  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* craigcrawler.pl: Set a layout for the first couple methods we will need to
+	  get started with this project, used pseudo-pseudo-code to describe the
+	  methods.
+
+2010-05-21  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* craigcrawler.pl: Added a couple lines of code, need to think about how we
+	  are going to get all the interesting links from the page or whether we
+	  should just pull every link and spider the entire website, checking each
+	  to see if its a person listing or not. Will discuss later!
+
+2010-05-21  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* .project: Updated CraigCrawler with Eclipse project settings (EPIC Perl
+	plugin).
+
 2010-05-20  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* craigcrawler.pl: Updated file to use warnings and strict pragmas.
+	* COPYING: Added license to project.
 
 2010-05-20  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Added a perl file to work off of for the new
+	* craigcrawler.pl: Added a Perl file to work off of for the new
 	  craigslist bot project!
-	  
-2010-05-20	Rodrigo Salazar <rsala004@ufl.edu>
-
-	* craigcrawler.pl: Added a couple lines of code 
-	
-2010-05-21	Rodrigo Salazar <rsala004@ufl.edu>
-
-	* craigcrawler.pl: Added broken regex code!
-	
-2010-05-21	Rodrigo Salazar <rsala004@ufl.edu>
-
-	* craigcrawler.pl: Set a layout for the first couple methods we will need to
-	get started with this project, used pseudo-pseudo-code to describe the methods.

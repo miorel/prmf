@@ -29,32 +29,40 @@ import javax.imageio.ImageIO;
  * @author Miorel-Lucian Palii
  */
 public class Logo {
-	private static final Color backgroundColor = new Color(0, 0, 0, 0);
-	private static final Color circleColor = Color.RED;
-	private static final Color rectangleColor = Color.BLUE;
-	private static final Color textColor = Color.WHITE;
+	public static void main(String[] arg) {
+		int size;
+		if(arg.length > 0) {
+			size = Integer.parseInt(arg[0]);
+			if(size < 128) {
+				System.err.println("Warning: small size. Expect errors!");
+				System.err.println("Recommend rendering a larger image then scaling down.");
+			}
+		}
+		else {
+			System.err.println("No image size specified, using default.");
+			size = 512;
+		}
 
-	private static final int size = 512;
-	private static final int circleDiameter = (int) Math.round(((float) size) * 5 / 6);
-	private static final int circleThickness = (int) Math.round(((float) size) / 7);
-	private static final int rectangleHeight = (int) Math.round(((float) size) / 5);
+		Color backgroundColor = new Color(0, 0, 0, 0);
+		Color circleColor = Color.RED;
+		Color rectangleColor = Color.BLUE;
+		Color textColor = Color.WHITE;
 
-	private static final String title = "PRMF";
+		int circleDiameter = (int) Math.round(((float) size) * 5 / 6);
+		int circleThickness = (int) Math.round(((float) size) / 7);
+		int rectangleHeight = (int) Math.round(((float) size) / 5);
 
-	private static final Font font;
-	static {
-		Font tmpFont = null;
+		String title = "PRMF";
+
+		Font font = null;
 		try {
-			tmpFont = Font.createFont(Font.TRUETYPE_FONT, new File("SaccoVanzettiWebBold.ttf")).deriveFont(80.0f);
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("SaccoVanzettiWebBold.ttf")).deriveFont(((float) size) * 5 / 32);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		font = tmpFont;
-	}
 
-	public static void main(String[] arg) {
 		BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D g = (Graphics2D) img.getGraphics();

@@ -12,28 +12,60 @@ The first time you start up Pidgin you'll see a screen like this one, prompting 
 
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/start.png
 
-The protocol should be IRC, of course. Our channel is on the Freenode network: server `irc.freenode.net`. The username can be anything you want: you don't have to register anywhere at this time, so anything that's not already taken is fine (and if it _is_, you'll just get renamed). Hit `Add` when done.
+The protocol should be IRC, of course. Our channel is on the Freenode network: server `irc.freenode.net`. You don't have to register at this time, so just pick any username you want: anything that's not taken will work (and if it _is_ taken, you'll just get automatically renamed on connection). Hit `Add` when done.
 
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/add_account.png
 
 If everything went according to plan, you should see a buddy list window like the one below. It says you're "Available" but otherwise it's not particularly exciting.
 
-If you weren't able to connect, you may need to change the port. See the [IrcPidgin#Advanced_settings "Advanced" settings].
+If you weren't able to connect, you may need to change the connection port. See [#&quot;Advanced&quot;_settings "Advanced" settings].
 
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/account_created.png
 
+= Joining the channel =
+
+So far you've connected to an IRC network. Though IRC can be used for one-on-one conversations, most communication occurs in chatrooms called channels.
+
+To join our channel, go to `Buddies`, `Add Chat`. Don't be tempted by `Join a Chat`: that's a one-time join, and you wouldn't want to have to manually do that every time you log in! As you'll see, there's an autojoin feature you can enable when you add a chat.
+
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/add_chat_menu.png
 
+IRC channel names typically start with `#` (hash, pound, number sign -- whatever you want to call it). Our channel is `#ufpt`. There is no password.
+
+The alias and group don't really matter. Set them if you want or leave them empty. I do, however, recommend enabling the autojoin and persistent (remain in chat after window is closed) options.
+
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/add_chat.png
+
+Your buddy list window should look more interesting now. But you're actually not in the channel yet! So far you've just added the channel to your buddy list. This time only, you'll have to double click the channel name to join. (That's because you're already connected, so autojoin on connect doesn't come into effect unless you disconnect first.)
 
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/chat_added.png
 
 = "Advanced" settings =
 
+I called these advanced because Pidgin does. They're actually quite straightforward.
+
+Find the `Advanced` tab when you modify an account to access a few more settings. (The account may needed to be disconnected for the settings to be editable.)
+
+This is where you can change the connection port. Some places block port 6667 (the default) so change to 8001 if you're having problems connecting.
+
+You can also set a username here. This refers not to your IRC nickname but to the username you have on your own computer. Its purpose is to distinguish users connecting from the same machine. But there's no obligation to report the actual value, so I usually don't.
+
+The real name is simply the "historical" title of the field because in practice few people use it for that. Post something interesting or funny or just tell readers they [http://en.wikipedia.org/wiki/The_Game_%28mind_game%29 lost the game]. It's up to you.
+
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/advanced_account_settings.png
+
+= Preferences =
+
+You can access a detailed set of preferences from the `Tools` menu. I like having a tray icon:
 
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/preferences.png
 
+It might look something like this when idle:
+
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/tray_icon_idle.png
 
+But it will change when you get a new message:
+
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/tray_icon_new_message.png
+
+You can also set other types of notifications, like sounds, flashing, etc. I'll let you figure out these and other features on your own. Happy chatting!

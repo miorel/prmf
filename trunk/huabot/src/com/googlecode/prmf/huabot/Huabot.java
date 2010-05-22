@@ -182,24 +182,23 @@ public class Huabot extends AbstractIrcEventListener {
 				out.println(name + " " + val);
 			}
 			
-		} catch(FileNotFoundException e) {
-			System.out.println("Could not find " + fileName + ": data was not saved.");
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("Could not open " + fileName + ": data was not saved.");
 		}
 	}
 	
 	private Map<String,Integer> readMapFromFile(String fileName) {
-		
 		Map<String,Integer> ret = new HashMap<String,Integer>();
-		
+
 		try {
 			Scanner fIn = new Scanner(new FileInputStream(fileName));
-			while(fIn.hasNextLine())
-			{
+			while(fIn.hasNextLine()) {
 				String[] line = fIn.nextLine().split(" ");
 				ret.put(line[0].toLowerCase(Locale.ENGLISH), Integer.valueOf(Integer.parseInt(line[1])));
 			}
-		} catch (FileNotFoundException e){
-			
+		}
+		catch(FileNotFoundException e) {	
 		}
 		
 		return ret;

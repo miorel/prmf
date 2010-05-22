@@ -1,11 +1,11 @@
 #summary List of cool Eclipse plugins
 
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="1"/>
 
 = Subversion integration = 
 
 Update site: Subclipse - [http://subclipse.tigris.org/update_1.6.x]<br/>
-Components: all of the required ones under `Subclipse`
+Components: get all of them for good measure
 
 = C/C++ development =
 
@@ -19,7 +19,7 @@ Component: `EPIC Main Components`, `EPIC`
 
 = Python development =
 
-Update site: PyDev - [http://pydev.org/updates]<br/>
+Update site: !PyDev - [http://pydev.org/updates]<br/>
 Component: `PyDev`, `PyDev for Eclipse`
 
 = Ruby development =

@@ -1,14 +1,21 @@
 #summary Accelerated Eclipse Guide
-#labels Phase-Implementation,Featured
+#labels Phase-Implementation
 
-Here's an accelerated guide to setting up Eclipse to work with our version control system. If you are working on the CISE systems in the dungeon, there is a more specific [EclipseCiseHowTo Eclipse CISE How-to], complete with screenshots!
+Eclipse is the recommended IDE for Programming Mafia projects.
+
+= Install Eclipse =
 
   * download and install [http://www.eclipse.org/ Eclipse]
+
+= Install Subclipse =
+
   * install [http://subclipse.tigris.org/ Subclipse]
    * fire up Eclipse
    * go to Help, Software Updates, Find and Install
    * continue following the [http://subclipse.tigris.org/servlets/ProjectProcess?pageID=p4wYuA online instructions]
-   * if something breaks (as often happens on CISE systems), you can install Subclipse from an archived site rather than a remote site: download [http://subclipse.tigris.org/files/documents/906/47423/site-1.6.10.zip site-1.6.10.zip]
+
+= Add a project = 
+
   * in Eclipse, create a new project
    * select New, Project..., SVN, Checkout Projects from SVN
    * add the repository location: [https://prmf.googlecode.com/svn/]

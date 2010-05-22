@@ -1,9 +1,15 @@
-2010-05-20  Miorel-Lucian Palii  <mlpalii@gmail.com>
+2010-05-22  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* Logo.java: The font size for the title is now also calculated from the
+	  image size, which makes it possible to set the image size via a
+	  command-line argument.
+
+2010-05-20  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* Logo.java: Changed some logo proportions.
 	* README: Removed some redundant information.
 
-2010-05-20  Miorel-Lucian Palii  <mlpalii@gmail.com>
+2010-05-20  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* Logo.java, Makefile, README: Created logo generator based on London
 	  Underground roundel signs.
