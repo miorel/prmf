@@ -1,14 +1,18 @@
 package com.googlecode.prmf.huabot;
 
+import java.io.*;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Scanner;
 
 import static com.googlecode.prmf.merapi.net.irc.IrcCommands.*;
 
@@ -26,7 +30,8 @@ import com.googlecode.prmf.merapi.util.Strings;
 public class Huabot extends AbstractIrcEventListener {
 	private static final String COMMAND_TRIGGER = "~"; // what a message must start with to be considered a command
 	private static final Pattern COMMAND_PATTERN = Pattern.compile("\\s*" + Pattern.quote(COMMAND_TRIGGER) + "\\s*(\\w+)\\s*(.*)", Pattern.DOTALL);
-
+	
+	private static final String KARMA_FILE = "karma.txt";
 	private static final List<Pair<Pattern,Integer>> KARMA_PATTERNS = new ArrayList<Pair<Pattern,Integer>>();
 	static {
 		String entityRegex = "(\\w+)";
@@ -48,8 +53,7 @@ public class Huabot extends AbstractIrcEventListener {
 	 * Default constructor.
 	 */
 	public Huabot() {
-		this.karma = new HashMap<String,Integer>();
-		// Perhaps later this will be filled with some initial values from a file or database. 
+		this.karma = readMapFromFile(KARMA_FILE);
 	}
 
 	@Override
@@ -90,6 +94,7 @@ public class Huabot extends AbstractIrcEventListener {
 
 	private void setKarma(String entity, int karma) {
 		this.karma.put(entity.toLowerCase(Locale.ENGLISH), Integer.valueOf(karma));
+		writeMapToFile(this.karma, KARMA_FILE);
 	}
 
 	private void changeKarma(String entity, int changeInKarma) {
@@ -163,5 +168,40 @@ public class Huabot extends AbstractIrcEventListener {
 				}
 			}
 		}
+	}
+
+	private void writeMapToFile(Map<String,Integer> theMap, String fileName) {
+		try {
+			PrintStream out = new PrintStream(new FileOutputStream(fileName));
+			Set<String> names = theMap.keySet();
+			Iterator<String> nameIterator = names.iterator();
+			
+			while(nameIterator.hasNext()) {
+				String name = nameIterator.next();
+				Integer val = theMap.get(name);
+				out.println(name + " " + val);
+			}
+			
+		} catch(FileNotFoundException e) {
+			System.out.println("Could not find " + fileName + ": data was not saved.");
+		}
+	}
+	
+	private Map<String,Integer> readMapFromFile(String fileName) {
+		
+		Map<String,Integer> ret = new HashMap<String,Integer>();
+		
+		try {
+			Scanner fIn = new Scanner(new FileInputStream(fileName));
+			while(fIn.hasNextLine())
+			{
+				String[] line = fIn.nextLine().split(" ");
+				ret.put(line[0].toLowerCase(Locale.ENGLISH), Integer.valueOf(Integer.parseInt(line[1])));
+			}
+		} catch (FileNotFoundException e){
+			
+		}
+		
+		return ret;
 	}
 }
