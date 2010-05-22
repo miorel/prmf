@@ -18,7 +18,7 @@ http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/add_account.png
 
 If everything went according to plan, you should see a buddy list window like the one below. It says you're "Available" but otherwise it's not particularly exciting.
 
-If you weren't able to connect, you may need to change the port. See the [#"Advanced"_settings "Advanced" settings].
+If you weren't able to connect, you may need to change the port. See the [IrcPidgin#Advanced_settings "Advanced" settings].
 
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/account_created.png
 
