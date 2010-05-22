@@ -1,8 +1,24 @@
 #summary IRC Pidgin tutorial
 
+Pidgin is an instant messaging client that supports multiple protocols, including Google Talk, AIM, and MSN. This tutorial will show you how to to use Pidgin to connect to the University of Florida Programming Team IRC channel, which is a common hang-out spot for Programming Mafia members.
+
+= Before we begin =
+
+...you'll need to install Pidgin, of course. See the [http://www.pidgin.im/ Pidgin website].
+
+= Setting up an account =
+
+The first time you start up Pidgin you'll see a screen like this one, prompting you to add an account, so let's do it!
+
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/start.png
 
+The protocol should be IRC, of course. Our channel is on the Freenode network: server `irc.freenode.net`. The username can be anything you want: you don't have to register anywhere at this time, so anything that's not already taken is fine (and if it _is_, you'll just get renamed). Hit `Add` when done.
+
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/add_account.png
+
+If everything went according to plan, you should see a buddy list window like the one below. It says you're "Available" but otherwise it's not particularly exciting.
+
+If you weren't able to connect, you may need to change the port. See the [#"Advanced"_settings "Advanced" settings].
 
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/account_created.png
 
@@ -12,6 +28,8 @@ http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/add_chat.png
 
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/chat_added.png
 
+= "Advanced" settings =
+
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/advanced_account_settings.png
 
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/preferences.png
@@ -19,4 +37,3 @@ http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/preferences.png
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/tray_icon_idle.png
 
 http://prmf.googlecode.com/svn/wiki/img/irc/pidgin/tray_icon_new_message.png
-
