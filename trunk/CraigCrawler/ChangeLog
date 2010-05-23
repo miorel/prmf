@@ -1,3 +1,10 @@
+2010-05-23	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* craigcrawler.pl: Implemented basic spider method, which works somewhat!
+	Problems: There are a TON of pages! All of 1 city took 15 minutes.
+			  Script terminated itself after completing it's first city.
+	* ChangeLog: organized changelog
+	
 2010-05-21  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* craigcrawler.pl: Answered in the comments a question Rodrigo posted in the
@@ -28,5 +35,5 @@
 
 2010-05-20  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Added a Perl file to work off of for the new
-	  craigslist bot project!
+	* craigcrawler.pl: Added a perl file to work off of for the new
+	  craigslist bot project
