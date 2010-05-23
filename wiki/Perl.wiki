@@ -1,0 +1,82 @@
+#summary How to Perl!
+
+= Perl Basics =
+
+This is a basic introduction to Perl aimed at helping anyone understand the CraigCrawler project.
+
+== Our basic Perl program ==
+
+{{{
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+
+use LWP::Simple;
+
+my $url = "http://craigslist.org";
+}}}
+
+The first line contains the location of your perl installation, standard for most installations is usr/bin/perl, even in Windows.
+
+Next we follow with our use commands, these are very similar to #includes in C. 
+In our example we include warning and strict as its usually a good idea for any beginner to make use of these when learning Perl. We also include a nice library called LWP which is a Perl Web library which includes subroutines such as 'get'.
+
+Next we made a variable called url, we did this by using the 'money sign' or stylized S which stands for 'Scalar'. Scalar variables can hold numerics, strings, and references to other variables (or nothing at all).
+
+Aside from Scalar variables we also have the 2 additional basic types, Arrays and Hashes.
+----
+== Arrays ==
+Arrays are created by appending the stylized A prefix to your desired variable name, for example here is the creation of an empty array in Perl.
+{{{
+@my_array = ();
+}}}
+We can initialize an array using by using parenthesis or the qw operator, for example:
+{{{
+@names = ("Rod","Cow","Blue","Food");
+@years = qw/12 421 523 7457 1236 3346 45345 3463/;
+}}}
+Notice that we did not use parenthesis or commas and it is perfectly valid (for numbers). You might be familiar with regex in Perl and have used the // syntax before, this is because the slash is only used a delimiter for the function qw...If we use the // syntax without an explicit operator then it defaults to m which is used for 'matching' for regexp.
+
+Here are some more examples and their equivalents. ( The # denotes a comment line)
+{{{
+$str = q/Hello, World/;    #equiv. to $str = 'Hello World' , we used the q operator
+@strarr = qw/Hello World/;  #equiv. to @strarr = ("Hello","World), we used the qw operator
+$delim = qq!Hello World!; #special delimiters used, equiv. to $delim = "Hello World", we used the qq operator
+}}}
+
+Accessing an Array's contents in Perl is similar in syntax to most languages, except for the fact that we can access an array backwards as well.
+{{{
+@my_arr = ("a","v","33");
+print $my_arr[0]; #prints a
+print $my_arr[-1]; #prints 33, backwards access
+}}}
+----
+== Hashes ==
+
+We can create a Hash using the % symbol and assign a list of keys and values similarly to how we use an array.
+{{{
+%links = ("google","http://google.com","amazon","http://amazon.com");
+}}}
+
+Except that this is difficult to read so we use the => operator which is equiv. to the comma operator, this will help to differentiate between keys and values in our initialization of a hash.
+
+{{{
+%links = (
+          "google" => "http://google.com",
+           "amazon" => "http://amazon.com"
+          );
+}}}
+
+We access data in a hash using the following syntax: $hashname{key}, It is important to notice that the Scalar $ symbol was used, this is because the value we intend to get from this is to be interpreted as a scalar.
+
+We can set new keys as follows:
+{{{
+%links = (); #empty hash created
+$links{UF} = "http://ufl.edu";
+}}}
+
+There are a couple of important functions related to Hashes, such as 'keys' and 'values'. These functions return lists of the keys and values for a given hash and its important to be aware of them when you need it.
+
+http://perldoc.perl.org/functions/keys.html<br>
+http://perldoc.perl.org/functions/values.html
