@@ -127,7 +127,7 @@ public class Huabot extends AbstractIrcEventListener {
 				Tinysong ts = new Tinysong();
 
 				String response = null;
-				if(arg.length == 0)
+				if(arg.length == 0 || arg[0].length() == 0)
 					response = "Some search terms would be nice.";
 				else {
 					String query = Strings.join(" ", arg);
@@ -147,13 +147,22 @@ public class Huabot extends AbstractIrcEventListener {
 			}
 			
 			if(cmd.equals("karma")) {
-				if(arg.length == 0)
-					privmsg(client, channel, "Whose karma would you like to query?");
+				if(arg.length == 0 || arg[0].length() == 0) {
+					String top = topAndBotKarma(true);
+					String bot = topAndBotKarma(false);
+					if(top == null){
+						privmsg(client, channel, "There is no registered karma!");
+					} else {
+						privmsg(client, channel, String.format("The highest registered karma is %s with %d and the lowest registered karma is %s with %d.",top,Integer.valueOf(getKarma(top)),bot,Integer.valueOf(getKarma(bot))));
+					}
+				}
 				else {
 					String entity = arg[0];
 					privmsg(client, channel, String.format("%s has %d karma.", entity, Integer.valueOf(getKarma(entity))));
 				}
 			}
+			
+			
 		}
 		else {
 			// This was not a command. Do other kinds of text processing.
@@ -198,9 +207,32 @@ public class Huabot extends AbstractIrcEventListener {
 				ret.put(line[0].toLowerCase(Locale.ENGLISH), Integer.valueOf(Integer.parseInt(line[1])));
 			}
 		}
-		catch(FileNotFoundException e) {	
+		catch(FileNotFoundException e) {
 		}
 		
 		return ret;
+	}
+	
+	private String topAndBotKarma(boolean top)
+	{
+		Set<String> names = this.karma.keySet();
+		if(names.isEmpty()){
+			return(null);
+		} 
+		
+		Iterator<String> nameIterator = names.iterator();
+		String name = nameIterator.next();
+		int val = getKarma(name);
+		while(nameIterator.hasNext()) {
+			String test = nameIterator.next();
+			if(top && getKarma(test) > val) {
+				name = test;
+				val = getKarma(test);
+			} else if(getKarma(test) < val) {
+				name = test;
+				val = getKarma(test);
+			}
+		}
+		return(name);
 	}
 }
