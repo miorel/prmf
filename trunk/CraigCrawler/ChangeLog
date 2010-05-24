@@ -1,3 +1,8 @@
+2010-05-24	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* craigcrawler.pl: Made some progress on what to spider and what not to spider, but broke the spider in the process.
+	Added some very messy code.
+	
 2010-05-23	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* craigcrawler.pl: Implemented basic spider method, which works somewhat!
