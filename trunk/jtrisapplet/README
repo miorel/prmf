@@ -1,7 +1,12 @@
 README file for JTrisApplet
 ==============================
 
-JTrisApplet is an online tetromino game. It's like the original puzzle classic Tetris, but with many more engaging features - the most notable being extensive multiplayer support. For more information on JTrisApplet, please go to: <http://code.google.com/p/prmf/wiki/JTrisApplet>
+JTrisApplet is an online tetromino game. It's like the original puzzle classic
+Tetris, but with many more engaging features - the most notable being extensive
+multiplayer support.
+
+For more information on JTrisApplet, please go to:
+http://code.google.com/p/prmf/wiki/JTrisApplet
 
 To compile:
 	$ cd src
@@ -20,4 +25,5 @@ Server configuration files:
 	Initialization script: jtaserv.rc
 
 Copyright (C) 2010 Brian Nezvadovitz
-Please see the file COPYING for the full license.
+Licensed under the GNU General Public License version 3. Please see the file
+COPYING for the full license text.
