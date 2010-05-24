@@ -1,5 +1,10 @@
 2010-05-24	Rodrigo Salazar <rsala004@ufl.edu>
 
+	* craigcrawler.pl: Added a statement to remove leading slashes in directory links.
+	Attempted to change one of the 'bad' patterns, currently a broken pattern which doesn't 'compile'.
+	
+2010-05-24	Rodrigo Salazar <rsala004@ufl.edu>
+
 	* craigcrawler.pl: Made some progress on what to spider and what not to spider, but broke the spider in the process.
 	Added some very messy code.
 	
@@ -40,5 +45,5 @@
 
 2010-05-20  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Added a perl file to work off of for the new
-	  craigslist bot project
+	* craigcrawler.pl: Added a Perl file to work off of for the new
+	  craigslist bot project!
