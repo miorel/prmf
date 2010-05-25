@@ -1,5 +1,10 @@
 2010-05-24	Rodrigo Salazar <rsala004@ufl.edu>
 
+	* craigcrawler.pl: Erased dont_spider method because I decided its a horrible way to check for bad links.
+	It might be better just to be more specific with our original pattern.. Added a list of problems to tackle!
+	
+2010-05-24	Rodrigo Salazar <rsala004@ufl.edu>
+
 	* craigcrawler.pl: Added a statement to remove leading slashes in directory links.
 	Attempted to change one of the 'bad' patterns, currently a broken pattern which doesn't 'compile'.
 	
