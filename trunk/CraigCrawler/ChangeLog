@@ -1,3 +1,9 @@
+2010-05-27	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* craigcrawler.pl: Changed main pattern, added additional pattern for directories, added bad_pattern array since
+	I was not able to combine them into 1 super-pattern. Bug created somehow .. if spider reaches max recursion depth it freezes.
+	Still not able to get spider to go all the way down to listings pages.
+	
 2010-05-24	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* craigcrawler.pl: Erased dont_spider method because I decided its a horrible way to check for bad links.

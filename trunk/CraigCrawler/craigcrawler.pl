@@ -5,15 +5,18 @@ use strict;
 use LWP::Simple;
 
 #Current problems: (In order of priority)
-#1.Main regex pattern is bad, it doesnt filter out actual adpages, blog.craigslist,craigslist.org/ABOUT, etc..
+#1.Main regex pattern is bad, could be way cooler..and more functional, still broken
 #2.organization of data gathered 
-#3.Very slow, need to possibly have a few threads downloading at once
+#3.Very slow, need to possibly have a few threads downloading at once .. project will get more interesting as well
 #4.code is not very slick
 
 my $url = "http://craigslist.org";
-my $pattern = qr/<a href=\"([^\"]*craigslist.org[^\"]*)\">([^<]*)<\/a>/;
+my $pattern = qr/<a href=\"([^\"]*craigslist\.org[^\"]*)\">([^<]*)<\/a>/; #.org, not sure if we want .ca ... etc
+my $pattern2 = qr/<a href=\"([^\"]*)\">([^<]*)<\/a>/; #for local directories ex. "/books" or "books/"
+my @bad_patterns = (qr/https/, qr/blog/, qr/\/about\//, qr/geo\./);#geo means foreign craigslist
+
 my %list = ();
-my $max_depth = 8;
+my $max_depth = 20;
 
 spider($url,0);
 print scalar keys %list," found";
@@ -28,8 +31,15 @@ sub spider
 	my $page = get($seed) or print "Could not download page ".$seed."\n" && return;
 	
 	#Find all valid links in the page and add it to our map.
-	while($page =~ /$pattern/gi)
+	scan: while($page =~ /$pattern/gi || $page =~ /$pattern2/gi )
 	{
+		foreach my $bad (@bad_patterns)
+		{
+			if($1 =~ /$bad/)
+			{
+				next scan;
+			}
+		}
 		my $curr_link = $1;
 		my $page_name = $2;
 	    if(!exists $list{$curr_link})
