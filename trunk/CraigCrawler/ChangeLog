@@ -1,5 +1,13 @@
 2010-05-27	Rodrigo Salazar <rsala004@ufl.edu>
 
+	* craigcrawler.pl: Cleaned up the code some more, possibly got 2nd pattern working, but still overall broken.
+	Code runs without errors, but not as intended .. (Ad pages still not being reached).
+	Added one more pattern to 'bad_pattern' array. 
+	Need to rethink what is going on... Pattern2 seems redundant with Pattern1 (seeing this as I write changelog)
+
+
+2010-05-27	Rodrigo Salazar <rsala004@ufl.edu>
+
 	* craigcrawler.pl: Changed main pattern, added additional pattern for directories, added bad_pattern array since
 	I was not able to combine them into 1 super-pattern. Bug created somehow .. if spider reaches max recursion depth it freezes.
 	Still not able to get spider to go all the way down to listings pages.
