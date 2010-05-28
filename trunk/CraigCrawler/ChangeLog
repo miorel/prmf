@@ -1,3 +1,9 @@
+2010-05-28	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* craigcrawler.pl: Deleted 'pattern' and 'pattern2', decided to go with a general link pattern and
+	then sieve it down from there. Program seems to work much better now, possibly as intended? needs debugging.
+	Cleaned up the code significantly and major improvements made!
+
 2010-05-27	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* craigcrawler.pl: Cleaned up the code some more, possibly got 2nd pattern working, but still overall broken.
