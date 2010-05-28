@@ -1,8 +1,7 @@
 package com.googlecode.prmf.huabot;
 
-import static com.googlecode.prmf.merapi.net.irc.IrcCommands.privmsg;
-import static com.googlecode.prmf.merapi.util.Iterators.iterator;
-import static com.googlecode.prmf.merapi.util.Iterators.lines;
+import static com.googlecode.prmf.merapi.net.irc.IrcCommands.*;
+import static com.googlecode.prmf.merapi.util.Iterators.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,11 +10,9 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -113,7 +110,7 @@ public class Huabot extends AbstractIrcEventListener {
 			String[] arg = cmdMatcher.group(2).trim().split("\\s+");
 
 			if(cmd.equals("version")) {
-				privmsg(client, channel, "This is huabot, REWRITE edition (prmf revision 370).");
+				privmsg(client, channel, "This is huabot, REWRITE edition (prmf revision 371).");
 			}
 
 			if(cmd.equals("date")) {
@@ -203,29 +200,25 @@ public class Huabot extends AbstractIrcEventListener {
 		}
 	}
 
-	private void writeMapToFile(Map<String,Integer> theMap, String fileName) {
+	private void writeMapToFile(Map<String,Integer> map, String filename) {
 		try {
-			PrintStream out = new PrintStream(new File(fileName));
-			Set<String> names = theMap.keySet();
-			Iterator<String> nameIterator = names.iterator();
-			
-			while(nameIterator.hasNext()) {
-				String name = nameIterator.next();
-				Integer val = theMap.get(name);
-				out.println(name + " " + val);
+			PrintStream out = new PrintStream(new File(filename));
+			for(Entry<String,Integer> entry: iterator(map)) {
+				String entity = entry.getKey();
+				int karma = entry.getValue().intValue();
+				out.println(entity + " " + karma);
 			}
-			
 		}
 		catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private Map<String,Integer> readMapFromFile(String fileName) {
+	private Map<String,Integer> readMapFromFile(String filename) {
 		Map<String,Integer> ret = new HashMap<String,Integer>();
 
 		try {
-			for(String line: lines(new File(fileName))) {
+			for(String line: lines(new File(filename))) {
 				String[] arr = line.split("\\s+");
 				ret.put(arr[0], Integer.valueOf(Integer.parseInt(arr[1])));
 			}
