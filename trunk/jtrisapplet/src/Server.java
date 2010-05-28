@@ -24,16 +24,22 @@ public class Server {
 	private Logging log;
 	private Configuration config;
 	private Vector<Player> players;
+	private boolean running;
 	
 	public Server(Logging log, Configuration config) {
 		this.log = log;
 		this.config = config;
 		players = new Vector<Player>();
+		running = false;
 	}
 	
 	public void start() {
 		Socket socket;
 		ServerSocket servsock;
+		if(running) {
+			log.write("Unable to start server -- already running");
+			return;
+		}
 		try {
 			servsock = new ServerSocket(config.getPort());
 		} catch(IOException e) {
@@ -42,17 +48,23 @@ public class Server {
 			return;
 		}
 		log.write("Server started on port " + config.getPort());
+		running = true;
 		try {
-			while((socket = servsock.accept()) != null) {
+			while((socket = servsock.accept()) != null || !running) {
 				Player p = new Player(socket);
 				Thread cur = new Thread(p);
 				cur.setDaemon(true);
 				players.addElement(p);
 				cur.start();
 			}
+			log.write("Closing server socket");
+			servsock.close();
 		} catch(IOException e) {
 			log.write("I/O exception while trying to accept socket");
 			log.write(e.toString());
+		} finally {
+			log.write("Server is cleaning up");
+			running = false;
 		}
 	}
 	
