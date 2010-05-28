@@ -1,6 +1,12 @@
 package com.googlecode.prmf.huabot;
 
-import java.io.*;
+import static com.googlecode.prmf.merapi.net.irc.IrcCommands.privmsg;
+import static com.googlecode.prmf.merapi.util.Iterators.iterator;
+import static com.googlecode.prmf.merapi.util.Iterators.lines;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,11 +16,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Scanner;
-
-import static com.googlecode.prmf.merapi.net.irc.IrcCommands.*;
 
 import com.googlecode.prmf.merapi.net.irc.Entity;
 import com.googlecode.prmf.merapi.net.irc.IrcClient;
@@ -88,13 +92,12 @@ public class Huabot extends AbstractIrcEventListener {
 	}
 
 	private int getKarma(String entity) {
-		Integer k = this.karma.get(entity.toLowerCase(Locale.ENGLISH));
+		Integer k = this.karma.get(entity);
 		return k == null ? 0 : k.intValue();
 	}
 
 	private void setKarma(String entity, int karma) {
-		this.karma.put(entity.toLowerCase(Locale.ENGLISH), Integer.valueOf(karma));
-		writeMapToFile(this.karma, KARMA_FILE);
+		this.karma.put(entity, Integer.valueOf(karma));
 	}
 
 	private void changeKarma(String entity, int changeInKarma) {
@@ -110,17 +113,17 @@ public class Huabot extends AbstractIrcEventListener {
 			String[] arg = cmdMatcher.group(2).trim().split("\\s+");
 
 			if(cmd.equals("version")) {
-				privmsg(client, channel, "This is huabot, REWRITE edition.");
+				privmsg(client, channel, "This is huabot, REWRITE edition (prmf revision 370).");
 			}
 
 			if(cmd.equals("date")) {
 				privmsg(client, channel, String.format("Today's date is %s.",
-					DateFormat.getDateInstance(DateFormat.LONG).format(new Date())));
+						DateFormat.getDateInstance(DateFormat.LONG).format(new Date())));
 			}
 
 			if(cmd.equals("time")) {
 				privmsg(client, channel, String.format("The current time is %s.",
-					DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(new Date())));
+						DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(new Date())));
 			}
 
 			if(cmd.equals("tinysong")) {
@@ -134,7 +137,8 @@ public class Huabot extends AbstractIrcEventListener {
 					try {
 						TinysongResult result = ts.topResult(query);
 						if(result != null)
-							response = String.format("Top result for \"%s\": %s by %s <%s>", query, result.getSongName(), result.getArtistName(), result.getUrl());
+							response = String.format("Top result for \"%s\": %s by %s <%s>",
+									query, result.getSongName(), result.getArtistName(), result.getUrl());
 						else
 							response = String.format("There were no search results for \"%s\" :/", query);
 					}
@@ -148,13 +152,14 @@ public class Huabot extends AbstractIrcEventListener {
 			
 			if(cmd.equals("karma")) {
 				if(arg.length == 0 || arg[0].length() == 0) {
-					String top = topAndBotKarma(true);
-					String bot = topAndBotKarma(false);
-					if(top == null){
+					Pair<String,String> topAndBottomKarma = topAndBottomKarma();
+					String top = topAndBottomKarma.getFirst();
+					String bottom = topAndBottomKarma.getSecond();
+					if(top == null)
 						privmsg(client, channel, "There is no registered karma!");
-					} else {
-						privmsg(client, channel, String.format("The highest registered karma is %s with %d and the lowest registered karma is %s with %d.",top,Integer.valueOf(getKarma(top)),bot,Integer.valueOf(getKarma(bot))));
-					}
+					else
+						privmsg(client, channel, String.format("Karma extremes: top is %s with %d, bottom is %s with %d.",
+								top, Integer.valueOf(getKarma(top)), bottom, Integer.valueOf(getKarma(bottom))));
 				}
 				else {
 					String entity = arg[0];
@@ -166,22 +171,41 @@ public class Huabot extends AbstractIrcEventListener {
 		}
 		else {
 			// This was not a command. Do other kinds of text processing.
-			
+			String nick = sender.getNick();
+
 			// Process karma!
+			boolean karmaUpdated = false;
+			boolean reprimandedForSelfPlus = false; // Don't self plus! It's bad karma.
 			for(Pair<Pattern,Integer> pair: KARMA_PATTERNS) {
 				int dk = pair.getSecond().intValue();
 				Matcher karmaMatcher = pair.getFirst().matcher(message);
 				while(karmaMatcher.find()) {
 					String karmaTarget = karmaMatcher.group(1);
-					changeKarma(karmaTarget, dk);
+					boolean change = true;
+					
+					// Self-plus is case insensitive, rest isn't anymore.
+					if(dk > 0 && karmaTarget.equalsIgnoreCase(nick)) {
+						if(!reprimandedForSelfPlus) {
+							privmsg(client, channel, nick + ": It's not cool to self-plus.");
+							reprimandedForSelfPlus = true;
+						}
+						change = false;
+					}
+
+					if(change) {
+						changeKarma(karmaTarget, dk);
+						karmaUpdated = true;
+					}
 				}
 			}
+			if(karmaUpdated)
+				writeMapToFile(this.karma, KARMA_FILE);
 		}
 	}
 
 	private void writeMapToFile(Map<String,Integer> theMap, String fileName) {
 		try {
-			PrintStream out = new PrintStream(new FileOutputStream(fileName));
+			PrintStream out = new PrintStream(new File(fileName));
 			Set<String> names = theMap.keySet();
 			Iterator<String> nameIterator = names.iterator();
 			
@@ -193,7 +217,7 @@ public class Huabot extends AbstractIrcEventListener {
 			
 		}
 		catch(FileNotFoundException e) {
-			System.out.println("Could not open " + fileName + ": data was not saved.");
+			e.printStackTrace();
 		}
 	}
 	
@@ -201,38 +225,37 @@ public class Huabot extends AbstractIrcEventListener {
 		Map<String,Integer> ret = new HashMap<String,Integer>();
 
 		try {
-			Scanner fIn = new Scanner(new FileInputStream(fileName));
-			while(fIn.hasNextLine()) {
-				String[] line = fIn.nextLine().split(" ");
-				ret.put(line[0].toLowerCase(Locale.ENGLISH), Integer.valueOf(Integer.parseInt(line[1])));
+			for(String line: lines(new File(fileName))) {
+				String[] arr = line.split("\\s+");
+				ret.put(arr[0], Integer.valueOf(Integer.parseInt(arr[1])));
 			}
 		}
-		catch(FileNotFoundException e) {
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 		
 		return ret;
 	}
 	
-	private String topAndBotKarma(boolean top)
-	{
-		Set<String> names = this.karma.keySet();
-		if(names.isEmpty()){
-			return(null);
-		} 
+	private Pair<String,String> topAndBottomKarma() {
+		String top = null;
+		String bottom = null;
+		int topKarma = 0;
+		int bottomKarma = 0;
 		
-		Iterator<String> nameIterator = names.iterator();
-		String name = nameIterator.next();
-		int val = getKarma(name);
-		while(nameIterator.hasNext()) {
-			String test = nameIterator.next();
-			if(top && getKarma(test) > val) {
-				name = test;
-				val = getKarma(test);
-			} else if(getKarma(test) < val) {
-				name = test;
-				val = getKarma(test);
+		for(Entry<String,Integer> entry: iterator(this.karma)) {
+			String entity = entry.getKey();
+			int karma = entry.getValue().intValue();
+			if(top == null || karma > topKarma) {
+				top = entity;
+				topKarma = karma;
+			}
+			if(bottom == null || karma < bottomKarma) {
+				bottom = entity;
+				bottomKarma = karma;
 			}
 		}
-		return(name);
+		
+		return new Pair<String,String>(top, bottom);
 	}
 }
