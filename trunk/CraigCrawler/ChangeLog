@@ -1,3 +1,8 @@
+2010-05-29	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* craigcrawler.pl: Fixed bug with multiple slashes appearing. Spider no longer visits ad-listings so to scan faster.
+	All ad-links and ad-descriptions are stored in a separate table now. Added a basic pattern to match ad listings.
+	
 2010-05-28	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* craigcrawler.pl: Deleted 'pattern' and 'pattern2', decided to go with a general link pattern and
