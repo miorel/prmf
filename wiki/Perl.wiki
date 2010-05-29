@@ -80,3 +80,112 @@ There are a couple of important functions related to Hashes, such as 'keys' and 
 
 http://perldoc.perl.org/functions/keys.html<br>
 http://perldoc.perl.org/functions/values.html
+
+== Common Regex ==
+I am sure most of you reading have some basic experience with regex, so this section will attempt to refresh you.
+
+Our goal usually is to make as concise a pattern as possibly to avoid complicating other code, which is actually very difficult.
+
+heres a basic pattern, we can store single patterns in scalar variables or multiple patterns in arrays, as excepted.
+{{{
+$is_http = "http";
+}}}
+While this might be fine its better to store your pattern by using the qr operator which is actually regex-quote, it actually compiles the pattern the same way m// would.
+{{{
+$is_http = qr/http/;
+}}}
+Here we created a pattern for 'http', it can be used to match anything containing the letters http exactly, anywhere in the string.
+
+There are many special characters that can be used in reg-exps, for example the '.' matches any character in its place, for example the pattern "r.d" will be able to match rod,rad,rzd,r(d, etc.
+
+other commonly used less general special characters include
+{{{
+\d #matches any number character
+\w #matches any word character, (which includes letters and numbers)
+\s #matches any whitespace character (which includes tabs spaces newlines.. etc)
+}}}
+
+Including special characters there are regex operators which allow you to match multiple given sequences or characters, the most commonly used one is the '*' operator which matches the preceding character or sequence 0 or more times.. for example:
+{{{
+$aah = qr/aa*/;
+}}}
+
+the previous pattern matches any one or more 'a' sequences, the first a is mandatory and the * is applied to the character preceding it, meaning that it will attempt to match 0 or more of these characters. (Note: if it encounters aaaaa, it may first match aa before it matches aaaaa, to change this look into greedy matching.)
+
+other common operators include
+{{{
+? #match 0 or 1 of the previous group or character
++ #match 1 or more of the previous group or character
+^ #this operator is used to denote that the Following character must appear FIRST
+$ #this operator is used to denote that the Preceding character must appear LAST
+}}}
+
+All of these operators can be applied to more than one character by the use of grouping, which is just indicated with the use of parentheses.
+
+for example, here we try to make sure that the matched string begins with 'http'
+{{{
+$html_link = qr/^(http)/;
+}}}
+Now the ^ operator is applied to the entire group, the other operators can be used in the same manner.
+
+when you have a pattern made you can use it to match or replace .. etc.
+
+for example, say we have a set of words we want to use our regex on.. we can test this using the matching operator as follows:
+{{{
+$my_set_words = "///eflkjcknaaaaaaaaaasdjsdsdf";
+if($my_set_words =~ /$aah/)
+{
+   print "yep, it matched\n";
+}
+}}}
+(Note the default operator for the // is m , which is the matching operator)
+
+The next important operator is the [..] operator which matches any of the characters in the box, if we include a ^ character first then it indicates match any characters except the ones in the box..for example
+{{{
+$pat1 = qr/[abc]+/; #matches sequence of characters a,b,c .. such as bccaaabc
+$par2 = qr/[^abc123]+/; #matchs any sequence of characters not containing abc123 
+}}}
+
+Here is an example of the s/// operator (note it takes an extra parameter)
+We will replace all leading slashes with the letter 'w'
+{{{
+$my_set_words =~ s/^\//w/;
+}}}
+(Note: since I am using '/' as my delimiter and I want to match it within my regex I need to use an escape character on it so that it is not interpreted as the end of the first regex parameter.)
+We can also leave the 2nd pattern completely blank to erase the leading slashes all together, for example
+{{{
+#my_set_words =~ s/^\///;
+}}}
+
+When matching regex patterns there are several regex parameters we can include,for example the i parameter is included if we want to ignore case when matching.
+for example:
+$name = "Rodrigo";
+$letter_r = qr/^r/;
+print "starts with R" if ($name =~ /$letter_r/i);
+
+Anothor important parameter is the g, which continues the next match where we left off. This is very important when you want to make multiple matches on a single thing.
+
+For example lets say we want to find all links on a website
+{{{
+$website = gets("http://craigslist.org"); #download source HTML for website.
+$pattern = qr"<a href=\"[^\"]+\">[^<]*</a>"; #used " as delimiter for qr operator
+while( $website =~ /$pattern/gi ) #multiple matching with no case-sensitivity
+{
+print "found link\n";
+}
+}}}
+
+What if we wanted to print out the links we found? We can use grouping/storing to designate parts of the match for later use, we will reuse our html pattern for example:
+{{{
+$pattern = qr"<a href=\"([^\"]+)\">([^<]*)</a>"; 
+}}}
+Here we now have parenthesis around the information of interest, when we match we can now access the information using $1 for the first group (the link) and $2 for the 2nd group (the link name)
+
+heres an altered form of the while loop described above:
+{{{
+while( $website =~ /$pattern/gi ) #multiple matching with no case-sensitivity
+{
+print $1." ".$2; # when working with strings, the '.' operator indicates concatenation.
+#this prints the link followed by the link name.
+}
+}}}
