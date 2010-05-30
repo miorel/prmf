@@ -1,4 +1,8 @@
-2010-05-29	Rodrigo Salazar <rsala004@ufl.edu>
+2010-05-30	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* craigcrawler.pl: Created basic code for the multithreaded spider, it currently locks up very quickly.
+	
+2010-05-30	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* craigcrawler.pl: Wrote up a very basic plan for how the threads will download and update the links list.
 	
