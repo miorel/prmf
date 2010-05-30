@@ -3,6 +3,7 @@
 use warnings;
 use strict;
 use LWP::Simple;
+use Digest::MD5 qw(md5_base64);
 
 #Current problems: (In order of priority)
 #1.Very slow, need to possibly have a few threads downloading at once .. project will get more interesting as well
@@ -13,12 +14,12 @@ use LWP::Simple;
 my $url = "http://craigslist.org";
 my $link_pattern = qr/<a href=\"([^\"]*)\">([^<]*)<\/a>/;
 
-#TODO: need to exclude very old listings
 my @bad_patterns = ( qr"^/$", qr/mailto/, qr/https/, qr/blog\./, qr"/about/", qr"^(cal)", qr/forums[\/\.]?/, qr/cgi-bin/, qr/(index[0-9]+\.html)$/);
 my @good_patterns = ( qr/craigslist\.org/, qr/^(?!http)/ );
 my $listing_pattern = qr"(/[0-9]+.html)$";
 
 my %list = (); #Will contain all links spidered
+my %list_hash = (); #Will contain hash for page
 my %ads = ();  #Will contain all advertisement links
 my $max_depth = 10;
 
@@ -32,12 +33,14 @@ sub spider
 	my $seed_name = $_[1];
 	my $depth = $_[2];
 	
-	$list{$seed} = $seed_name;
-	
 	return if($depth > $max_depth);
 	
-	#Get page and store it
+	#Get page, store it, check its hash
+	$list{$seed} = $seed_name;
 	my $page = get($seed) or print "Could not download page ".$seed."\n" && return;
+	my $hash = md5_base64($page);
+	return if exists $list_hash{$hash} && print "Page's hash found in visited list\n";
+	$list_hash{$hash} = 1; #Valueless hash?
 	
 	#Find all valid links in the page and add it to our map.
 	scan: while($page =~ /$link_pattern/gi)
