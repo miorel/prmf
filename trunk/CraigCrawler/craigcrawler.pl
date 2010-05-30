@@ -1,12 +1,15 @@
 #!/usr/bin/perl
-
+# Made by Rodrigo Salazar
 use warnings;
 use strict;
+use Config;
 use LWP::Simple;
 use Digest::MD5 qw(md5_base64);
+use threads;
+use threads::shared;
 
-#Current problems: (In order of priority)
-#1.Very slow, need to possibly have a few threads downloading at once .. project will get more interesting as well
+#Current Issues: (In order of priority)
+#1.Get websites downloading using multiple threads. (current speed is not very useful)
 #2.Organization of data gathered, currently the links are separated as only ads or not ads.
 #3.Need more control over scanning, possibly the option to scan as far as 2 pages back, or even by day.
 #4.code is not very slick
@@ -18,13 +21,42 @@ my @bad_patterns = ( qr"^/$", qr/mailto/, qr/https/, qr/blog\./, qr"/about/", qr
 my @good_patterns = ( qr/craigslist\.org/, qr/^(?!http)/ );
 my $listing_pattern = qr"(/[0-9]+.html)$";
 
-my %list = (); #Will contain all links spidered
-my %list_hash = (); #Will contain hash for page
-my %ads = ();  #Will contain all advertisement links
+my %list : shared = (); #Will contain all links spidered
+my %list_hash : shared= (); #Will contain hash for page
+my %ads : shared= ();  #Will contain all advertisement links
 my $max_depth = 10;
+my $max_threads = 10;
 
-spider($url,"craigslist",0);
+if ($Config{useithreads}) 
+{
+	threaded_spider($url,"craigslist",0);
+}
+else
+{
+	spider($url,"craigslist",0);
+}
 print scalar keys %list," found";
+
+sub threaded_spider
+{
+	#create a queue structure, add @_ to this queue
+	#create an array of threads
+
+	#while( queue is not empty || #_threads != 0 ) {
+	#	if(#_threads is not maximum) {
+	#		create new thread with subroutine threaded_crawl and pass next link in queue
+	#		join thread
+	#		add new links to queue
+	#	}
+}
+
+sub threaded_crawl
+{	
+	#add seed_link to links hash
+	#download page, add md5hash to hash_list hash
+	#create a list of good links
+	#return list
+}
 
 sub spider
 {
@@ -90,7 +122,6 @@ sub clean_link
     	}
     	else
     	{
-
 	    	$curr_link =~ s"/""; #replace slashes with empty string, and append a single slash to front
 	    	$curr_link = "/".$curr_link;
 	    	$curr_link = $seed.$curr_link;

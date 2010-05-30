@@ -1,5 +1,9 @@
 2010-05-29	Rodrigo Salazar <rsala004@ufl.edu>
 
+	* craigcrawler.pl: Wrote up a very basic plan for how the threads will download and update the links list.
+	
+2010-05-29	Rodrigo Salazar <rsala004@ufl.edu>
+
 	* craigcrawler.pl: Added possible solution to an infinite loop problem (caused by unique links leading to old pages).
 	Solved with expensive solution though..using an md5 hash, I do think its possible to solve this problem by examining
 	craigslist website more closely, but I can't find any problem links at this moment.. the infinite loops otherwise happens
