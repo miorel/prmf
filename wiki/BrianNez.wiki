@@ -3,9 +3,10 @@
 
 = Basic Info =
 
-|| *Real name* || Brian Nez(vadovitz) ||
+|| *Real name* || Brian Nez ||
 || *Aliases* || nez, nezb, brianez21 ||
 || *Technologies* || Java, PHP, Python ||
+
 
 = Projects =
 
