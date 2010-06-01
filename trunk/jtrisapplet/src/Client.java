@@ -23,8 +23,13 @@ public class Client {
 	private Board board;
 	private ArrayList<Player> players;
 	
-	public Client() {
-		
+	public Client(final String hostname, final String username, final String password) {
+		;;
+	}
+	
+	public boolean attemptConnect() {
+		System.out.println("to be implemented");
+		return false;
 	}
 
 }

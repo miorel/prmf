@@ -21,34 +21,95 @@ import java.awt.event.*;
 
 public class ClientGUI extends Applet {
 	
+	private Client client;
+	
+	private TextField tf_hostname;
+	private TextField tf_username;
+	private TextField tf_password;
+	
+	public String getAppletInfo() {
+		String str = "JTrisApplet Client\n";
+		str += "Version 4 Release 0";
+		return str;
+	}
+	
+	public String[][] getParameterInfo() {
+		String[][] pinfo = {
+			{"hostname", "String", "Remote hostname[:port] to connect to"},
+			{"username", "String", "Default username to login under"},
+			{"password", "String", "Default password to authenticate with"}
+		};
+		return pinfo;
+	}
+	
+	public void attemptConnect(Button b, ActionListener a) {
+		b.removeActionListener(a);
+		b.setLabel("Connecting... please wait");
+		b.getParent().validate();
+		client = new Client(tf_hostname.getText(), tf_username.getText(), tf_password.getText());
+		try {
+			client.attemptConnect();
+		} catch(Exception e) {
+			;;
+		}
+	}
+	
 	public void init() {
-		// Window setup
+		System.out.println(getAppletInfo());
 		setSize(300, 150);
+		setLayout(new GridLayout(1, 1));
+	}
+	
+	public void start() {
+		Panel p = generateLoginPanel();
+		add(p);
+	}
+	
+	private Panel generateLoginPanel() {
+		// Create object to return
+		Panel pan_login_main = new Panel();
 		
-		// Window-level widgets
-		Label lbl_welcome = new Label("Welcome to JTrisApplet");
-		Panel pan_login = new Panel(new GridLayout(0, 2));
+		// Read applet configuration into strings
+		String DEFAULT_HOSTNAME = getParameter("hostname");
+		String DEFAULT_USERNAME = getParameter("username");
+		String DEFAULT_PASSWORD = getParameter("password");
+		if(DEFAULT_HOSTNAME == null) DEFAULT_HOSTNAME = "localhost";
+		if(DEFAULT_USERNAME == null) DEFAULT_USERNAME = "root";
+		if(DEFAULT_PASSWORD == null) DEFAULT_PASSWORD = "password";
+		
+		// Top-level panel widgets
+		Label lbl_welcome = new Label("Welcome to JTrisApplet", Label.CENTER);
+		Panel pan_login_fields = new Panel(new GridLayout(0, 2));
 		Button btn_connect = new Button("Connect");
+		btn_connect.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				Button b = (Button)event.getSource();
+				((ClientGUI)b.getParent().getParent()).attemptConnect(b, this);
+			}
+		});
 		
-		// Create the login panel
+		// Create the sub-panel for the login fields
 		Label lbl_hostname = new Label("Hostname:");
 		Label lbl_username = new Label("Username:");
 		Label lbl_password = new Label("Password:");
-		TextField tf_hostname = new TextField(11);
-		TextField tf_username = new TextField(11);
-		TextField tf_password = new TextField(11);
+		tf_hostname = new TextField(DEFAULT_HOSTNAME, 11);
+		tf_username = new TextField(DEFAULT_USERNAME, 11);
+		tf_password = new TextField(DEFAULT_PASSWORD, 11);
 		tf_password.setEchoChar('*');
-		pan_login.add(lbl_hostname);
-		pan_login.add(tf_hostname);
-		pan_login.add(lbl_username);
-		pan_login.add(tf_username);
-		pan_login.add(lbl_password);
-		pan_login.add(tf_password);
+		pan_login_fields.add(lbl_hostname);
+		pan_login_fields.add(tf_hostname);
+		pan_login_fields.add(lbl_username);
+		pan_login_fields.add(tf_username);
+		pan_login_fields.add(lbl_password);
+		pan_login_fields.add(tf_password);
 		
-		// Add widgets to window
-		add(lbl_welcome);
-		add(pan_login);
-		add(btn_connect);
+		// Add these widgets to the main login panel
+		pan_login_main.add(lbl_welcome);
+		pan_login_main.add(pan_login_fields);
+		pan_login_main.add(btn_connect);
+		
+		// Return the fresh new login panel
+		return(pan_login_main);
 	}
 	
 }

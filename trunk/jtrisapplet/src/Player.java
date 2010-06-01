@@ -22,11 +22,11 @@ public class Player implements Runnable {
 	private Socket socket;
 	
 	public Player(Socket socket) {
-		
+		;;
 	}
 	
 	public void run() {
-		System.out.println("started!");
+		System.out.println("Client connected");
 	}
 	
 }
