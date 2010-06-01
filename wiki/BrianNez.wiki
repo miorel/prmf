@@ -10,4 +10,4 @@
 
 = Projects =
 
-[JTrisApplet]
+  * [JTrisApplet]
