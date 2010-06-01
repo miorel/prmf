@@ -1,5 +1,12 @@
 2010-05-30	Rodrigo Salazar <rsala004@ufl.edu>
 
+	* Craigcrawler.pl: Moved some code to other files, still needs more work.
+	* Basic_Spider.pl: Created file, still empty.
+	* Threaded_Spider.pl: Created file, still empty.
+	* Util.pm: Moved validate_link and clean_link methods here.
+	
+2010-05-30	Rodrigo Salazar <rsala004@ufl.edu>
+
 	* craigcrawler.pl: Created basic code for the multithreaded spider, it currently locks up very quickly.
 	
 2010-05-30	Rodrigo Salazar <rsala004@ufl.edu>
