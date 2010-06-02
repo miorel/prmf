@@ -1,5 +1,10 @@
 2010-06-02	Rodrigo Salazar <rsala004@ufl.edu>
 
+	* pattern.pm: Added new pattern /#/ to ignore pages linking to themselves.. doesn't seem to work?
+	* util.pm: Added clause to strip www subdomain, which was causing websites to be redownloaded.
+	
+2010-06-02	Rodrigo Salazar <rsala004@ufl.edu>
+
 	* renamed all files to lowercase type, project reorganized completely, much cleaner now.
 	* craigcrawler.pl: moved all code that has to do with spidering to other files.
 	* pattern.pm: created to hold patterns and get methods.

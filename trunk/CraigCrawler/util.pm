@@ -28,6 +28,10 @@ sub clean_link
 	    if($curr_link =~ /http/)
     	{
     		$curr_link =~ s"/$""; #remove trailing slashes 
+    		if($curr_link =~ m"^(http://)www\.(.*)" )
+    		{
+    			$curr_link = $1.$2;
+    		}
     	}
     	else
     	{
