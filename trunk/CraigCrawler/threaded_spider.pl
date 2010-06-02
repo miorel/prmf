@@ -1,44 +1,18 @@
-#!/usr/bin/perl
-# Made by Rodrigo Salazar
-use warnings;
-use strict;
-use Config;
+package threaded_spider;
+
 use LWP::Simple;
 use Digest::MD5 qw(md5_base64);
 use threads;
 use threads::shared;
 use Thread::Queue;
-require Util;
+require pattern;
+require util;
 
-#Current Issues: (In order of priority)
-#1.Get websites downloading using multiple threads, threads are locking up.. not sure if being done properly.
-#2.Organization of data gathered, currently the links are separated as only ads or not ads.
-#3.Need more control over scanning, possibly the option to scan as far as 2 pages back, or even by day.
-#4.Code is not very slick.
-
-my $url = "http://craigslist.org";
-my $link_pattern = qr/<a href=\"([^\"]*)\">([^<]*)<\/a>/;
-my $listing_pattern = qr"(/[0-9]+.html)$";
-
-my %list = (); #Will contain all links spidered
-my %list_hash = (); #Will contain hash for page
-my %ads = ();  #Will contain all advertisement links
+my %list : shared= (); #Will contain all links spidered
+my %list_hash : shared = (); #Will contain hash for page
+my %ads : shared = ();  #Will contain all advertisement links
 my $max_depth = 10;
 my $max_threads = 10;
-
-if ($Config{useithreads}) 
-{
-	share(%list);
-	share(%list_hash);
-	share(%ads);
-	threaded_spider($url,"craigslist",0);
-}
-else
-{
-	spider($url,"craigslist",0);
-}
-
-print scalar keys %list," found";
 
 sub threaded_spider
 {
@@ -87,9 +61,9 @@ sub threaded_crawl
 	{
 		my $curr_link = $1;
 		my $page_name = $2;
-		next scan if(!Util::validate_link($curr_link));
+		next scan if(!util::validate_link($curr_link));
 		
-		$curr_link = Util::clean_link($seed,$curr_link);
+		$curr_link = util::clean_link($seed,$curr_link);
 		
 		my $exists_link;
 		{
@@ -119,41 +93,4 @@ sub threaded_crawl
 	}
 	threaded_spider($next_page->{url},$next_page->{seed_name},$next_page->{depth},$link_queue);
 }
-
-sub spider
-{
-	#Method takes the URL, pagename, and recursion depth as parameters
-	my $seed = $_[0];
-	my $seed_name = $_[1];
-	my $depth = $_[2];
-	
-	return if($depth > $max_depth);
-	
-	#Get page, store it, check its hash
-	$list{$seed} = $seed_name;
-	my $page = get($seed) or print "Could not download page ".$seed."\n" && return;
-	my $hash = md5_base64($page);
-	return if exists $list_hash{$hash} && print "Page's hash found in visited list\n";
-	$list_hash{$hash} = 1; #Valueless hash?
-	
-	#Find all valid links in the page and add it to our map.
-	scan: while($page =~ /$link_pattern/gi)
-	{
-		my $curr_link = $1;
-		my $page_name = $2;
-		next scan if(!validate_link($curr_link));
-		
-		$curr_link = clean_link($seed,$curr_link);
-		
-    	next scan if(exists $list{$curr_link});
-    	print $depth." ".$seed." => ".$curr_link." ".$page_name."\n";
-    	if ($curr_link =~ /$listing_pattern/)
-    	{
-    		$ads{$curr_link} = $page_name;
-    	}
-    	else 
-    	{
-			spider($curr_link,$page_name,$depth+1);
-    	}
-	}
-}
+1;

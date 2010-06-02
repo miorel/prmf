@@ -1,10 +1,13 @@
-#!/usr/bin/perl
-package Util;
-my @bad_patterns = ( qr"^/$", qr/mailto/, qr/https/, qr/blog\./, qr"/about/", qr"^(/?cal)", qr/forums[\/\.]?/, qr/cgi-bin/, qr/(index[0-9]+\.html)$/);
-my @good_patterns = ( qr/craigslist\.org/, qr/^(?!http)/ );
+package util;
+
+require pattern;
+
 sub validate_link
 {
 		my $curr_link = $_[0];
+		my @bad_pattens = pattern::get_bad_patterns();
+		my @good_patterns = pattern::get_good_patterns();
+		
 		foreach my $bad (@bad_patterns)
 		{
 			return 0 if($curr_link =~ /$bad/);

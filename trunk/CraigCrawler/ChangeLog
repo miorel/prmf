@@ -1,3 +1,13 @@
+2010-06-02	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* renamed all files to lowercase type, project reorganized completely, much cleaner now.
+	* craigcrawler.pl: moved all code that has to do with spidering to other files.
+	* pattern.pm: created to hold patterns and get methods.
+	* threaded_spider.pl: now contains subroutines for threaded crawling, still not working.
+	* util.pm: now gets the patterns it needs through get methods.
+	* basic_spider.pl: seems to be broken now with the new code organization, it is not sifting through the
+	  patterns correctly, might have something to do with the util.pm or pattern.pm files not functioning as intended.
+	
 2010-05-30	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* Craigcrawler.pl: Moved some code to other files, still needs more work.
