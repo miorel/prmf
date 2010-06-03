@@ -1,5 +1,11 @@
 2010-06-02	Rodrigo Salazar <rsala004@ufl.edu>
 
+	* basic_spider.pl: Revamped the basic_spider to help build off of it for work on the threaded version..
+	Now downloads the header info before downloading entire page to make sure its not an old page.
+	The subroutine now uses a stack to manage the links instead of recursion.
+	
+2010-06-02	Rodrigo Salazar <rsala004@ufl.edu>
+
 	* pattern.pm: Added new pattern /#/ to ignore pages linking to themselves.. doesn't seem to work?
 	* util.pm: Added clause to strip www subdomain, which was causing websites to be redownloaded.
 	
