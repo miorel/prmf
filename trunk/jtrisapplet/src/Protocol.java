@@ -18,6 +18,7 @@
 public class Protocol {
 	
 	public static final int PROTO_VERSION = 4000;
+	public static final int PROTO_DEFAULT_PORT = 2000;
 	
 	/* Commands sent by client */
 	public static final String C_LOGIN = "login";

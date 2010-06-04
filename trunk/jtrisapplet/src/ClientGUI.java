@@ -42,15 +42,17 @@ public class ClientGUI extends Applet {
 		return pinfo;
 	}
 	
-	public void attemptConnect(Button b, ActionListener a) {
+	public void attemptConnectAndLogin(Button b, ActionListener a) {
 		b.removeActionListener(a);
 		b.setLabel("Connecting... please wait");
 		b.getParent().validate();
-		client = new Client(tf_hostname.getText(), tf_username.getText(), tf_password.getText());
-		try {
-			client.attemptConnect();
-		} catch(Exception e) {
-			;;
+		client = new Client(tf_hostname.getText());
+		if(client.attemptConnectAndLogin(tf_username.getText(), tf_password.getText())) {
+			System.out.println("debug: to be implemented");
+		} else {
+			b.addActionListener(a);
+			b.setLabel("Connect");
+			b.getParent().validate();
 		}
 	}
 	
@@ -84,7 +86,7 @@ public class ClientGUI extends Applet {
 		btn_connect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				Button b = (Button)event.getSource();
-				((ClientGUI)b.getParent().getParent()).attemptConnect(b, this);
+				((ClientGUI)b.getParent().getParent()).attemptConnectAndLogin(b, this);
 			}
 		});
 		

@@ -23,12 +23,29 @@ public class Client {
 	private Board board;
 	private ArrayList<Player> players;
 	
-	public Client(final String hostname, final String username, final String password) {
-		;;
+	public Client(final String hostname) {
+		String real_hostname;
+		int port = Protocol.PROTO_DEFAULT_PORT;
+		if(hostname.indexOf(':') == -1)
+			real_hostname = hostname;
+		else {
+			real_hostname = hostname.split(":", 2)[0];
+			port = Integer.valueOf(hostname.split(":", 2)[1]);
+		}
+		con = new Connection(hostname, port);
+		System.out.println("debug: host:" + hostname);
+		System.out.println("debug: port:" + port);
 	}
 	
-	public boolean attemptConnect() {
-		System.out.println("to be implemented");
+	public boolean attemptConnectAndLogin(final String username, final String password) {
+		if(con.connect()) {
+			System.out.println("debug: connect OK");
+			if(con.login(username, password)) {
+				System.out.println("debug: login:" + username + " pass:" + password);
+				return true;
+			}
+		}
+		System.out.println("debug: failed attemptConnectAndLogin");
 		return false;
 	}
 
