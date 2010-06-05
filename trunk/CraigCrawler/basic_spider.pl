@@ -13,6 +13,7 @@ my %list_hash = (); #Will contain hash for pages downloaded
 my %list_minihash = (); #Will contain hash for part of page header info
 my %ads = ();  #Will contain all advertisement links found
 my @link_stack = ();
+my $page_downloaded = 0;
 
 sub basic_spider
 {
@@ -53,6 +54,8 @@ sub basic_crawler
 	#Now we download the entire page and do the same process..
 	my $page = get($seed) or print "Could not download page: ".$seed."\n";
 	return if !$page;
+	$page_downloaded++;
+	print $page_downloaded." pages downloaded\n";
 	if(settings::check_page_hash())
 	{
 		my $hash = md5_base64($page);

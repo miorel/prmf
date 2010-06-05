@@ -5,7 +5,7 @@ use strict;
 
 my %Config = (
 	"threading_on" => 1,
-	"check_headers_hash" => 1,
+	"check_headers_hash" => 0,
 	"check_page_hash" => 1
 );
 
