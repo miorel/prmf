@@ -9,9 +9,9 @@ require pattern;
 require util;
 
 my %list = (); #Will contain all links spidered
-my %list_hash = (); #Will contain hash for page
+my %list_hash = (); #Will contain hash for pages downloaded
 my %list_minihash = (); #Will contain hash for part of page header info
-my %ads = ();  #Will contain all advertisement links
+my %ads = ();  #Will contain all advertisement links found
 my @link_stack = ();
 
 sub basic_spider
@@ -38,7 +38,6 @@ sub basic_crawler
 	
 	#Get page, store it, check its hash
 	#Here we download & check just the header data before we continue with full page download.
-	
 	if(settings::check_headers_hash())
 	{
 		my @header_data = head($seed) or print "Could not get page header info: ".$seed."\n";
