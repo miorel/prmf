@@ -42,8 +42,9 @@ sub basic_crawler
 	if(settings::check_headers_hash())
 	{
 		my @header_data = head($seed) or print "Could not get page header info: ".$seed."\n";
-		if(@header_data)
+		if($header_data[2] && $header_data[3]) #Check if data we want to hash is there..
 		{
+			#Question.. Should we even hash this data or just use the concatenation as key? (Unique enough?)
 			my $minihash = md5_base64($header_data[2].$header_data[3]); #modified time.expiration data
 			return if exists $list_minihash{$minihash} && "minihash found in visited list:".$seed."\n";
 			$list_minihash{$minihash} = 1; #Valueless hash?

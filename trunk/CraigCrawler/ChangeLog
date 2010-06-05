@@ -1,5 +1,10 @@
 2010-06-04	Rodrigo Salazar <rsala004@ufl.edu>
 
+	* threaded_spider.pl: Erased lots of code, added many comments as to how the threading will be approached...
+	* basic_spider.pl: made minor change to the mini-hashing if condition.
+	
+2010-06-04	Rodrigo Salazar <rsala004@ufl.edu>
+
 	Overall refinement of the basic spidering method!
 	
 	* util.pm: Fixed problem with links to subdirectories.
