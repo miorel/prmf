@@ -1,5 +1,16 @@
 2010-06-02	Rodrigo Salazar <rsala004@ufl.edu>
 
+	Overall refinement of the basic spidering method!
+	
+	* util.pm: Fixed problem with links to subdirectories.
+	* settings.pm: Created, stores basic settings such as whether threading / hashing is enabled.
+	* basic_spider.pl: Fixed problem that was requiring checking hashes, hashing no longer 100% necessary .. but still
+	somewhat helpful (Reason why the settings file was created). Also removed several useless variables. Added warning
+	and strict packages.
+	* threaded_spider.pl: Added warning and strict packages.
+	
+2010-06-02	Rodrigo Salazar <rsala004@ufl.edu>
+
 	* basic_spider.pl: Revamped the basic_spider to help build off of it for work on the threaded version..
 	Now downloads the header info before downloading entire page to make sure its not an old page.
 	The subroutine now uses a stack to manage the links instead of recursion.

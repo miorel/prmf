@@ -1,5 +1,7 @@
 package threaded_spider;
 
+use warnings;
+use strict;
 use LWP::Simple;
 use Digest::MD5 qw(md5_base64);
 use threads;
@@ -57,6 +59,7 @@ sub threaded_crawl
 		}
 	}
 
+	my $link_pattern = pattern::get_link_pattern();
 	scan: while($page =~ /$link_pattern/gi)
 	{
 		my $curr_link = $1;
@@ -73,6 +76,8 @@ sub threaded_crawl
     	next scan if($exists_link);
     	
     	print "tid:".threads->tid()." ".$depth." ".$seed." => ".$curr_link." ".$page_name."\n";
+    	
+    	my $listing_pattern = pattern::get_listing_pattern();
     	if ($curr_link =~ /$listing_pattern/)
     	{
     		lock(%ads);

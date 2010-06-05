@@ -4,6 +4,7 @@
 use warnings;
 use strict;
 use Config;
+require settings;
 require "basic_spider.pl";
 require "threaded_spider.pl";
 
@@ -16,15 +17,14 @@ require "threaded_spider.pl";
 
 my $url = "http://craigslist.org";
 my $site_name = "craigslist";
-my $threading_off = 1;
 
-if ($Config{useithreads} && !$threading_off) 
+if ($Config{useithreads} && settings::threading_on() ) 
 {
 	threaded_spider::threaded_spider($url,$site_name,0);
 }
 else
 {
-	print "Threading not enabled in your perl\n" if !$threading_off;
+	print "Threading not enabled in your perl\n" if settings::threading_on();
 	basic_spider::basic_spider($url,$site_name);
 }
 
