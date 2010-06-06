@@ -1,5 +1,9 @@
 2010-06-04	Rodrigo Salazar <rsala004@ufl.edu>
 
+	* craigcrawler.pl: Updated TODO list with new goals for the project.
+	
+2010-06-04	Rodrigo Salazar <rsala004@ufl.edu>
+
 	* threaded_spider.pl: Added Semaphore module and stopped using locks, threading seems to be working very well now.
 	The threaded spider downloaded 1000 websites in 1 minute (1serv).. opposed to the single thread spider with 100 pages.
 	
