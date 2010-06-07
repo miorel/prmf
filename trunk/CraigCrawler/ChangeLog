@@ -1,3 +1,7 @@
+2010-06-07	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* output.pl : Created file to output to file.
+
 2010-06-05	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* craigcrawler.pl: Updated TODO list with new goals for the project.
