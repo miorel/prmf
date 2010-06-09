@@ -64,12 +64,15 @@ sub threaded_get_page
 			if($resp->is_success)
 			{
 				$page_downloaded++;
-				print $page_downloaded.") Thread ".threads->tid(). " downloaded ".$seed."\n";
+				print "Thr. ID ".threads->tid().") Downloaded page #".$page_downloaded.": ".$seed."\n";
 				$page_queue->enqueue({source=>$resp->decoded_content,url=>$seed});
 			}
 			else
 			{
-				print "Could not download page: ".$seed."\n";
+				$link_sema->down();
+		   			push (@link_stack, $seed);
+	    		$link_sema->up();
+				print "Thr. ID ".threads->tid().") Could not download page: ".$seed."\n";
 			}
 		}
 		sleep 1;

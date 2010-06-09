@@ -1,6 +1,10 @@
+2010-06-09	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* threaded_spider.pl: Links that fail to download are now repushed onto the stack. Additional formating changes.
+	
 2010-06-07	Rodrigo Salazar <rsala004@ufl.edu>
 
-	* output.pl : Created file to output to file.
+	* output.pl: Created file to output to file.
 
 2010-06-05	Rodrigo Salazar <rsala004@ufl.edu>
 
