@@ -25,10 +25,10 @@ sub basic_spider
 		my $popped = pop @link_stack;
 		basic_crawler($popped->{url},$popped->{seed_name});
 		my $stack_size = scalar @link_stack;
-		print "Links in stack: ".$stack_size."\n";
+		output::new_line("Links in stack: ".$stack_size."\n");
 	}
 	my $num_listings = scalar keys %ads;
-	print $num_listings." found.\n";
+	output::new_line($num_listings." found.\n");
 }
 
 sub basic_crawler
@@ -41,25 +41,25 @@ sub basic_crawler
 	#Here we download & check just the header data before we continue with full page download.
 	if(settings::check_headers_hash())
 	{
-		my @header_data = head($seed) or print "Could not get page header info: ".$seed."\n";
+		my @header_data = head($seed) or output::new_line("Could not get page header info: ".$seed."\n");
 		if($header_data[2] && $header_data[3]) #Check if data we want to hash is there..
 		{
 			#Question.. Should we even hash this data or just use the concatenation as key? (Unique enough?)
 			my $minihash = md5_base64($header_data[2].$header_data[3]); #modified time.expiration data
-			return if exists $list_minihash{$minihash} && "minihash found in visited list:".$seed."\n";
+			return if exists $list_minihash{$minihash} && output::new_line("minihash found in visited list:".$seed."\n");
 			$list_minihash{$minihash} = 1; #Valueless hash?
 		}
 	}
 	
 	#Now we download the entire page and do the same process..
-	my $page = get($seed) or print "Could not download page: ".$seed."\n";
+	my $page = get($seed) or output::new_line("Could not download page: ".$seed."\n");
 	return if !$page;
 	$page_downloaded++;
-	print $page_downloaded." pages downloaded\n";
+	output::new_line($page_downloaded." pages downloaded\n");
 	if(settings::check_page_hash())
 	{
 		my $hash = md5_base64($page);
-		return if exists $list_hash{$hash} && print "hash found in visited list:".$seed."\n";
+		return if exists $list_hash{$hash} && output::new_line("hash found in visited list:".$seed."\n");
 		$list_hash{$hash} = 1; #Valueless hash? Might actually store modified time in here at later point in project.
 	}
 	
@@ -74,7 +74,8 @@ sub basic_crawler
 		$curr_link = util::clean_link($seed,$curr_link);
 		
     	next scan if(exists $list{$curr_link});
-    	print $seed." => ".$curr_link." ".$page_name."\n";
+    	my $output = $seed." => ".$curr_link." ".$page_name."\n";
+    	output::new_line($output);
     	
     	my $listing_pattern = pattern::get_listing_pattern();
     	if ($curr_link =~ /$listing_pattern/)

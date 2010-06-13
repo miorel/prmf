@@ -11,6 +11,7 @@ use Thread::Semaphore;
 require settings;
 require pattern;
 require util;
+require "output.pl";
 
 my %list : shared= (); #Will contain all links spidered
 my %list_hash : shared = (); #Will contain hash for pages downloaded
@@ -21,7 +22,7 @@ my $link_sema : shared = Thread::Semaphore->new(); #Semaphore for @link_stack;
 my $page_queue : shared = Thread::Queue->new(); #Will contain pages to be scanned for new links to be added to @link_stack
 my $thread_count : shared = 0; #Number of spawned downloader threads
 my @threads = ();
-my $max_threads = 40; #Too fast.. not nice for craigslist. :)
+my $max_threads = settings::threads_number();
 my $page_processing : shared = 0;
 my $page_downloaded : shared = 0;
 
@@ -53,7 +54,7 @@ sub threaded_get_page
 	$ua->agent("");
 	while( scalar @link_stack || $page_queue->pending() || $page_processing ) #Is this a sufficient condition?
 	{
-		#print threads->tid()."\n";
+		#output::new_line(threads->tid()."\n");
 		my $seed;
 		$link_sema->down();
 			$seed = (scalar @link_stack ? shift @link_stack : 0);
@@ -64,7 +65,7 @@ sub threaded_get_page
 			if($resp->is_success)
 			{
 				$page_downloaded++;
-				print "Thr. ID ".threads->tid().") Downloaded page #".$page_downloaded.": ".$seed."\n";
+				output::new_line("Thr. ID ".threads->tid().") Downloaded page #".$page_downloaded.": ".$seed."\n");
 				$page_queue->enqueue({source=>$resp->decoded_content,url=>$seed});
 			}
 			else
@@ -72,7 +73,7 @@ sub threaded_get_page
 				$link_sema->down();
 		   			push (@link_stack, $seed);
 	    		$link_sema->up();
-				print "Thr. ID ".threads->tid().") Could not download page: ".$seed."\n";
+				output::new_line("Thr. ID ".threads->tid().") Could not download page: ".$seed."\n");
 			}
 		}
 		sleep 1;
@@ -85,6 +86,8 @@ sub threaded_process_page
 {	
 	#need nice condition here .. $page_queue->pending will not do since we can process much faster than download..
 	#for example we can process the first page much faster than the 2nd page can be downloaded.
+	
+	#Maybe check if the other downloader threads terminated?
 	while( 1 ) 
 	{
 		$page_processing = 0;
@@ -96,7 +99,7 @@ sub threaded_process_page
 		if(settings::check_page_hash())
 		{
 			my $hash = md5_base64($page_obj->{source});
-			next if exists $list_hash{$hash} && print "hash found in visited list:".$page_obj->{url}."\n";
+			next if exists $list_hash{$hash} && output::new_line("hash found in visited list:".$page_obj->{url}."\n");
 			$list_hash{$hash} = 1; #Valueless hash? Might actually store modified time in here at later point in project.
 		}
 		
@@ -112,7 +115,9 @@ sub threaded_process_page
 			$curr_link = util::clean_link($page_obj->{url},$curr_link);
 			
 	    	next scan if(exists $list{$curr_link});
-	    	print $page_obj->{url}." => ".$curr_link." ".$page_name."\n";
+	    	
+	    	my $output = $page_obj->{url}." => ".$curr_link." ".$page_name."\n";
+	    	output::new_line($output);
 	    	
 	    	my $listing_pattern = pattern::get_listing_pattern();
 	    	if ($curr_link =~ /$listing_pattern/)

@@ -1,3 +1,11 @@
+2010-06-12	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* output.pl: Completed the output file .. still breaks with very large file output though.
+	* settings.pm: Added various more settings, such as # of threads, file_output name, to print or not to print, etc.
+	* threaded_spider.pl: Changed all prints to redirect to the output methods.
+	* basic_spider.pl: Changed all prints to redirect to the output methods.
+	* craigcrawler.pl: Now makes sure to create a file before opening either threaded or basic crawler methods.
+
 2010-06-09	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* threaded_spider.pl: Links that fail to download are now repushed onto the stack. Additional formating changes.
