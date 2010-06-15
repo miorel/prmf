@@ -74,13 +74,13 @@ sub basic_crawler
 		$curr_link = util::clean_link($seed,$curr_link);
 		
     	next scan if(exists $list{$curr_link});
-    	my $output = $seed." => ".$curr_link." ".$page_name."\n";
-    	output::new_line($output);
-    	
+
     	my $listing_pattern = pattern::get_listing_pattern();
+    	my $is_ad = 0;
     	if ($curr_link =~ /$listing_pattern/)
     	{
     		$ads{$curr_link} = $page_name;
+    		$is_ad = 1;
     	}
     	else 
     	{
@@ -88,6 +88,7 @@ sub basic_crawler
    			push (@link_stack,$new_item);
    			$list{$curr_link} = $page_name;
     	}
+    	output::new_special_line($is_ad, $seed, $curr_link, $page_name);
 	}
 }
 1;

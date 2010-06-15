@@ -4,20 +4,29 @@ use warnings;
 use strict;
 
 my %Config = (
+	#Basic options
 	"threading_on" => 1,
-	"threads_number" => 5,
+	"threads_number" => 8,
 	
+	#Hash checking settings
 	"check_headers_hash" => 0,
 	"check_page_hash" => 1,
 	
-	"print_output" => 1,
+	#File settings
+	"print_screen" => 1,
 	"output_file" => 1,
 	"output_filename" => "list.txt",
+	"save_only_ads" => 1,
 );
 
-sub print_output
+sub save_only_ads
 {
-	return $Config{"print_output"};
+	return $Config{"save_only_ads"};
+}
+
+sub print_screen
+{
+	return $Config{"print_screen"};
 }
 
 sub output_file

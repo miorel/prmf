@@ -88,7 +88,7 @@ sub threaded_process_page
 	#for example we can process the first page much faster than the 2nd page can be downloaded.
 	
 	#Maybe check if the other downloader threads terminated?
-	while( 1 ) 
+	while( $thread_count ) 
 	{
 		$page_processing = 0;
 		next if !$page_queue->pending();
@@ -116,13 +116,12 @@ sub threaded_process_page
 			
 	    	next scan if(exists $list{$curr_link});
 	    	
-	    	my $output = $page_obj->{url}." => ".$curr_link." ".$page_name."\n";
-	    	output::new_line($output);
-	    	
+	    	my $is_ad = 0;
 	    	my $listing_pattern = pattern::get_listing_pattern();
 	    	if ($curr_link =~ /$listing_pattern/)
 	    	{
 	    		$ads{$curr_link} = $page_name;
+	    		$is_ad = 1;
 	    	}
 	    	else 
 	    	{
@@ -131,6 +130,8 @@ sub threaded_process_page
 	    		$link_sema->up();
 	   			$list{$curr_link} = $page_name;
 	    	}
+	    	
+	    	output::new_special_line($is_ad,$page_obj->{url},$curr_link,$page_name);
 		}
 	}
 }

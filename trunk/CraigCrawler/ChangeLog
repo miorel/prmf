@@ -1,3 +1,9 @@
+2010-06-15	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* output.pl: Cleaned up some methods and created a method called new_special_line which prints different output to the screen and to the file.
+	* threaded_spider.pl: Changed output commands to match output.pl
+	* basic_spider.pl: Changed output commands to match output.pl
+	* settings.pm: Added setting to only print ad info to file, added comments for more clarity
 2010-06-12	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* output.pl: Completed the output file .. still breaks with very large file output though.
