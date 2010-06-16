@@ -1,0 +1,268 @@
+\hypertarget{group__funcs}{
+\section{Functions}
+\label{group__funcs}\index{Functions@{Functions}}
+}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{group__funcs_ga01d952f60539143bb330b7b6571a3136}{main} (int argc, char $\ast$args\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em The main entry point to the program, takes filename as an argument. \item\end{DoxyCompactList}\item 
+struct box\_\-dynarr \hyperlink{group__funcs_ga0c09f6c919f86bbdfa30cfd1f28bd40b}{cutter} (const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em This method makes the calls to all the functions necessary to complete the process. \item\end{DoxyCompactList}\item 
+char \hyperlink{group__funcs_ga4b342011044f2cf83a5b393475743ba3}{get\_\-next\_\-seed} (char $\ast$$\ast$processed\_\-pixels, \hyperlink{structpixel}{pixelp} p)
+\begin{DoxyCompactList}\small\item\em Scans the processed\_\-pixels array given for the next pixel which has not been processed yet. \item\end{DoxyCompactList}\item 
+void \hyperlink{group__funcs_gabe3948a5318c33d57f02e254f224127a}{set\_\-box\_\-processed} (char $\ast$$\ast$processed\_\-pixels, \hyperlink{structbox}{boxp} bp)
+\begin{DoxyCompactList}\small\item\em Edits the processed\_\-pixels array so that all pixels denoted in the range of the given box struct are changed to off position. \item\end{DoxyCompactList}\item 
+void \hyperlink{group__funcs_ga7a905350fa166e9974455f590bea90ba}{set\_\-box\_\-bounds} (struct pixel\_\-dynarr $\ast$dynp, \hyperlink{structbox}{boxp} bp)
+\begin{DoxyCompactList}\small\item\em Given a set of pixels, this method finds the smallest box that can contain the pixels. \item\end{DoxyCompactList}\item 
+char \hyperlink{group__funcs_ga84198660774aad2a3bc31e2c6ad0d660}{is\_\-color\_\-nearby} (png\_\-bytepp png\_\-rows, struct pixel\_\-dynarr $\ast$dynp, struct \hyperlink{structcolor}{color} $\ast$candidate, int i, int j, int search\_\-dist)
+\begin{DoxyCompactList}\small\item\em Given a location on the image, this method returns if the color of interest is within a certain distance. (Method not implemented yet) This method should reduce the possibly of connecting regions which should not be connected. \item\end{DoxyCompactList}\item 
+void \hyperlink{group__funcs_ga27b38761dc5921b25d17babc675e252c}{flood\_\-seed} (char $\ast$$\ast$processed\_\-pixels, png\_\-bytepp png\_\-rows, struct \hyperlink{structcolor}{color} $\ast$bg\_\-colorp, \hyperlink{structpixel}{pixelp} seed, \hyperlink{structbox}{boxp} bp)
+\begin{DoxyCompactList}\small\item\em Given a pixel on the image, this method will perform a flood fill on the area, starting from this pixel. \item\end{DoxyCompactList}\item 
+char \hyperlink{group__funcs_gac569d4277e2155916296ebaad7e03e42}{color\_\-compare} (int r, int g, int b, int a, \hyperlink{structcolor}{colorp} color\_\-comp, int tolerance)
+\begin{DoxyCompactList}\small\item\em This method will return 1 or 0 based on whether it determines 2 colors to be near enough to each other There can be a set tolerance passed to this function which will act as factor to determine the result. If a tolerance is used then the result is based on the color distance between the given, which is simply calculated as the distance between the points (since color can be interpreted as such). \item\end{DoxyCompactList}\item 
+void \hyperlink{group__funcs_gaad3bdb6543a1c97e6b56c2330c07d5c8}{set\_\-bg\_\-processed} (png\_\-bytepp png\_\-rows, char $\ast$$\ast$processed\_\-pixels, \hyperlink{structcolor}{colorp} bg\_\-color)
+\begin{DoxyCompactList}\small\item\em Sets processed\_\-pixels array to 0 where ever png\_\-rows is equal (based on color\_\-compare) to bg\_\-color. \item\end{DoxyCompactList}\item 
+void \hyperlink{group__funcs_ga15a4db2e181f3ceef79a9bdd00d66866}{print\_\-picture} (png\_\-bytepp png\_\-rows, int nrows)
+\begin{DoxyCompactList}\small\item\em Convienience method which prints the byte array of the image loaded. \item\end{DoxyCompactList}\item 
+struct \hyperlink{structcolor}{color} \hyperlink{group__funcs_ga9f3d1acaa22f9aca948afcf487f6f850}{get\_\-pixel} (png\_\-bytepp png\_\-rows, int i, int j)
+\begin{DoxyCompactList}\small\item\em Given a pixel location, this method returns the color as a color structure. \item\end{DoxyCompactList}\item 
+void \hyperlink{group__funcs_gabc288f9283da15ec44a4200b0b1f0e7b}{get\_\-background\_\-color} (png\_\-bytepp png\_\-rows, \hyperlink{structcolor}{colorp} bg\_\-color)
+\begin{DoxyCompactList}\small\item\em Crude method of finding/guessing the background color of the image. \item\end{DoxyCompactList}\item 
+png\_\-bytepp \hyperlink{group__funcs_ga732414244cba6a9b064b73becc7dec97}{read\_\-png} (const char $\ast$file\_\-name)
+\begin{DoxyCompactList}\small\item\em LibPNG code to load the file, set image conversions in place, and finally convert image-\/file to a useable color byte array. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{group__funcs_gac569d4277e2155916296ebaad7e03e42}{
+\index{funcs@{funcs}!color\_\-compare@{color\_\-compare}}
+\index{color\_\-compare@{color\_\-compare}!funcs@{funcs}}
+\subsubsection[{color\_\-compare}]{\setlength{\rightskip}{0pt plus 5cm}char color\_\-compare (
+\begin{DoxyParamCaption}
+\item[{int}]{ r, }
+\item[{int}]{ g, }
+\item[{int}]{ b, }
+\item[{int}]{ a, }
+\item[{{\bf colorp}}]{ color\_\-comp, }
+\item[{int}]{ tolerance}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_gac569d4277e2155916296ebaad7e03e42}
+
+
+This method will return 1 or 0 based on whether it determines 2 colors to be near enough to each other There can be a set tolerance passed to this function which will act as factor to determine the result. If a tolerance is used then the result is based on the color distance between the given, which is simply calculated as the distance between the points (since color can be interpreted as such). 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em r}]Color component being compared (Red) \item[{\em g}]Color component being compared (Green) \item[{\em b}]Color component being compared (Blue) \item[{\em a}]Color component being compared (Alpha transperancy) \item[{\em color\_\-comp}]Base color being used as reference \item[{\em tolerance}]Predetermined value used a tolerance distance \end{DoxyParams}
+\hypertarget{group__funcs_ga0c09f6c919f86bbdfa30cfd1f28bd40b}{
+\index{funcs@{funcs}!cutter@{cutter}}
+\index{cutter@{cutter}!funcs@{funcs}}
+\subsubsection[{cutter}]{\setlength{\rightskip}{0pt plus 5cm}struct box\_\-dynarr cutter (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{ filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}
+\label{group__funcs_ga0c09f6c919f86bbdfa30cfd1f28bd40b}
+
+
+This method makes the calls to all the functions necessary to complete the process. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em filename}]The filename which contains the spritesheet \end{DoxyParams}
+\hypertarget{group__funcs_ga27b38761dc5921b25d17babc675e252c}{
+\index{funcs@{funcs}!flood\_\-seed@{flood\_\-seed}}
+\index{flood\_\-seed@{flood\_\-seed}!funcs@{funcs}}
+\subsubsection[{flood\_\-seed}]{\setlength{\rightskip}{0pt plus 5cm}void flood\_\-seed (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{ processed\_\-pixels, }
+\item[{png\_\-bytepp}]{ png\_\-rows, }
+\item[{struct {\bf color} $\ast$}]{ bg\_\-colorp, }
+\item[{{\bf pixelp}}]{ seed, }
+\item[{{\bf boxp}}]{ bp}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_ga27b38761dc5921b25d17babc675e252c}
+
+
+Given a pixel on the image, this method will perform a flood fill on the area, starting from this pixel. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em processed\_\-pixels}]2-\/dimensional array representing whether or not a pixel has been marked as processed \item[{\em png\_\-rows}]The actual image data as a color byte array \item[{\em bg\_\-colorp}]The color determined to be the background color of the image \item[{\em seed}]Pixel which will be the starting point for the flood fill \item[{\em bp}]Pointer to box object which will ultimately hold a bounding box for the sprite which contained the seed pixel \end{DoxyParams}
+\hypertarget{group__funcs_gabc288f9283da15ec44a4200b0b1f0e7b}{
+\index{funcs@{funcs}!get\_\-background\_\-color@{get\_\-background\_\-color}}
+\index{get\_\-background\_\-color@{get\_\-background\_\-color}!funcs@{funcs}}
+\subsubsection[{get\_\-background\_\-color}]{\setlength{\rightskip}{0pt plus 5cm}void get\_\-background\_\-color (
+\begin{DoxyParamCaption}
+\item[{png\_\-bytepp}]{ png\_\-rows, }
+\item[{{\bf colorp}}]{ bg\_\-color}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_gabc288f9283da15ec44a4200b0b1f0e7b}
+
+
+Crude method of finding/guessing the background color of the image. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em png\_\-rows}]The actual image data as a color byte array \item[{\em bg\_\-color}]Pointer to a color structure which the result will be stored in \end{DoxyParams}
+\hypertarget{group__funcs_ga4b342011044f2cf83a5b393475743ba3}{
+\index{funcs@{funcs}!get\_\-next\_\-seed@{get\_\-next\_\-seed}}
+\index{get\_\-next\_\-seed@{get\_\-next\_\-seed}!funcs@{funcs}}
+\subsubsection[{get\_\-next\_\-seed}]{\setlength{\rightskip}{0pt plus 5cm}char get\_\-next\_\-seed (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{ processed\_\-pixels, }
+\item[{{\bf pixelp}}]{ p}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_ga4b342011044f2cf83a5b393475743ba3}
+
+
+Scans the processed\_\-pixels array given for the next pixel which has not been processed yet. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em processed\_\-pixels}]2-\/dimensional array representing whether or not a pixel has been marked as processed \item[{\em p}]pointer to a pixel struct used a guide as to where to start the search \end{DoxyParams}
+\hypertarget{group__funcs_ga9f3d1acaa22f9aca948afcf487f6f850}{
+\index{funcs@{funcs}!get\_\-pixel@{get\_\-pixel}}
+\index{get\_\-pixel@{get\_\-pixel}!funcs@{funcs}}
+\subsubsection[{get\_\-pixel}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf color} get\_\-pixel (
+\begin{DoxyParamCaption}
+\item[{png\_\-bytepp}]{ png\_\-rows, }
+\item[{int}]{ i, }
+\item[{int}]{ j}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}
+\label{group__funcs_ga9f3d1acaa22f9aca948afcf487f6f850}
+
+
+Given a pixel location, this method returns the color as a color structure. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em png\_\-rows}]The actual image data as a color byte array \item[{\em i}]Y coordinate on the image \item[{\em j}]X coordinate on the image \end{DoxyParams}
+\hypertarget{group__funcs_ga84198660774aad2a3bc31e2c6ad0d660}{
+\index{funcs@{funcs}!is\_\-color\_\-nearby@{is\_\-color\_\-nearby}}
+\index{is\_\-color\_\-nearby@{is\_\-color\_\-nearby}!funcs@{funcs}}
+\subsubsection[{is\_\-color\_\-nearby}]{\setlength{\rightskip}{0pt plus 5cm}char is\_\-color\_\-nearby (
+\begin{DoxyParamCaption}
+\item[{png\_\-bytepp}]{ png\_\-rows, }
+\item[{struct pixel\_\-dynarr $\ast$}]{ dynp, }
+\item[{struct {\bf color} $\ast$}]{ candidate, }
+\item[{int}]{ i, }
+\item[{int}]{ j, }
+\item[{int}]{ search\_\-dist}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_ga84198660774aad2a3bc31e2c6ad0d660}
+
+
+Given a location on the image, this method returns if the color of interest is within a certain distance. (Method not implemented yet) This method should reduce the possibly of connecting regions which should not be connected. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em png\_\-rows}]The actual image data as a color byte array \item[{\em dynp}]???? \item[{\em candidate}]Color we are searching for \item[{\em i}]Y coordinate that we are searching around \item[{\em j}]X coordinate that we are searching around \item[{\em search\_\-dist}]The radius of pixels around i,j that we are to examine \end{DoxyParams}
+\hypertarget{group__funcs_ga01d952f60539143bb330b7b6571a3136}{
+\index{funcs@{funcs}!main@{main}}
+\index{main@{main}!funcs@{funcs}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}main (
+\begin{DoxyParamCaption}
+\item[{int}]{ argc, }
+\item[{char $\ast$}]{ args\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_ga01d952f60539143bb330b7b6571a3136}
+
+
+The main entry point to the program, takes filename as an argument. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em argc}]number of arguments \item[{\em args}]arguments \end{DoxyParams}
+\hypertarget{group__funcs_ga15a4db2e181f3ceef79a9bdd00d66866}{
+\index{funcs@{funcs}!print\_\-picture@{print\_\-picture}}
+\index{print\_\-picture@{print\_\-picture}!funcs@{funcs}}
+\subsubsection[{print\_\-picture}]{\setlength{\rightskip}{0pt plus 5cm}void print\_\-picture (
+\begin{DoxyParamCaption}
+\item[{png\_\-bytepp}]{ png\_\-rows, }
+\item[{int}]{ nrows}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_ga15a4db2e181f3ceef79a9bdd00d66866}
+
+
+Convienience method which prints the byte array of the image loaded. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em png\_\-rows}]The actual image data as a color byte array \item[{\em nrows}]Number of rows in the image loaded \end{DoxyParams}
+\hypertarget{group__funcs_ga732414244cba6a9b064b73becc7dec97}{
+\index{funcs@{funcs}!read\_\-png@{read\_\-png}}
+\index{read\_\-png@{read\_\-png}!funcs@{funcs}}
+\subsubsection[{read\_\-png}]{\setlength{\rightskip}{0pt plus 5cm}png\_\-bytepp read\_\-png (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{ file\_\-name}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_ga732414244cba6a9b064b73becc7dec97}
+
+
+LibPNG code to load the file, set image conversions in place, and finally convert image-\/file to a useable color byte array. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em file\_\-name}]Local file name of image to be loaded \end{DoxyParams}
+\hypertarget{group__funcs_gaad3bdb6543a1c97e6b56c2330c07d5c8}{
+\index{funcs@{funcs}!set\_\-bg\_\-processed@{set\_\-bg\_\-processed}}
+\index{set\_\-bg\_\-processed@{set\_\-bg\_\-processed}!funcs@{funcs}}
+\subsubsection[{set\_\-bg\_\-processed}]{\setlength{\rightskip}{0pt plus 5cm}void set\_\-bg\_\-processed (
+\begin{DoxyParamCaption}
+\item[{png\_\-bytepp}]{ png\_\-rows, }
+\item[{char $\ast$$\ast$}]{ processed\_\-pixels, }
+\item[{{\bf colorp}}]{ bg\_\-color}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_gaad3bdb6543a1c97e6b56c2330c07d5c8}
+
+
+Sets processed\_\-pixels array to 0 where ever png\_\-rows is equal (based on color\_\-compare) to bg\_\-color. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em png\_\-rows}]The actual image data as a color byte array \item[{\em processed\_\-pixels}]2-\/dimensional array representing whether or not a pixel has been marked as processed \item[{\em bg\_\-colorp}]The color determined to be the background color of the image \end{DoxyParams}
+\hypertarget{group__funcs_ga7a905350fa166e9974455f590bea90ba}{
+\index{funcs@{funcs}!set\_\-box\_\-bounds@{set\_\-box\_\-bounds}}
+\index{set\_\-box\_\-bounds@{set\_\-box\_\-bounds}!funcs@{funcs}}
+\subsubsection[{set\_\-box\_\-bounds}]{\setlength{\rightskip}{0pt plus 5cm}void set\_\-box\_\-bounds (
+\begin{DoxyParamCaption}
+\item[{struct pixel\_\-dynarr $\ast$}]{ dynp, }
+\item[{{\bf boxp}}]{ bp}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_ga7a905350fa166e9974455f590bea90ba}
+
+
+Given a set of pixels, this method finds the smallest box that can contain the pixels. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em dynp}]An array of pixels in the form of a dynamic array of type pixel\_\-dynarr (type created at compile-\/time) \item[{\em bp}]Pointer to a box structure which will hold the result of the calculation \end{DoxyParams}
+\hypertarget{group__funcs_gabe3948a5318c33d57f02e254f224127a}{
+\index{funcs@{funcs}!set\_\-box\_\-processed@{set\_\-box\_\-processed}}
+\index{set\_\-box\_\-processed@{set\_\-box\_\-processed}!funcs@{funcs}}
+\subsubsection[{set\_\-box\_\-processed}]{\setlength{\rightskip}{0pt plus 5cm}void set\_\-box\_\-processed (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{ processed\_\-pixels, }
+\item[{{\bf boxp}}]{ bp}
+\end{DoxyParamCaption}
+)}}
+\label{group__funcs_gabe3948a5318c33d57f02e254f224127a}
+
+
+Edits the processed\_\-pixels array so that all pixels denoted in the range of the given box struct are changed to off position. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em processed\_\-pixels}]2-\/dimensional array representing whether or not a pixel has been marked as processed \item[{\em bp}]pointer to box structure representing the range which will be set to off in the processed\_\-pixels array \end{DoxyParams}

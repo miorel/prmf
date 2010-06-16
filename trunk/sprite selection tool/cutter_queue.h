@@ -1,3 +1,9 @@
+/**
+* @file cutter_queue.h
+* @brief This is a 'generic' queue header file which is assembled at compile-time using the #define QUEUE_TYPE & #define QUEUE_IDENTIFIER
+* @author Rodrigo Salazar
+*/
+
 #ifndef CUTTER_QUEUE_H
 #define CUTTER_QUEUE_H
 

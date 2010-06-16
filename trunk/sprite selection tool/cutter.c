@@ -1,22 +1,32 @@
-/**
-Sprite selection tool
-by Rodrigo Salazar
-
-Will allow for the automatic retrieval of individual sprite locations from a given sprite-sheet in PNG
-image format. This would alleviate the tedious work of manually entering coordinates of sprites
-when writing programs which use large sprite-sheet images.
-
-Useful sources:
-http://www.libpng.org/pub/png/libpng-1.4.0-manual.pdf
-http://www.libpng.org/pub/png/book/toc.html
-http://www.piko3d.com/?page_id=68
-http://tunginobi.spheredev.org/site/node/88
-http://fydo.net/gamedev/dynamic-arrays
-http://www.flyingyogi.com/fun/spritelib.html
-www.cs.toronto.edu/~jepson/csc2503/segmentation.pdf (pg.19 possible solution for our basic problem)
-Miorel-Lucian Palii
-Preston Mueller
+/*! \mainpage Sprite Selection Tool
+* 
+* \section sum_sec Summary
+* Will allow for the automatic retrieval of individual sprite locations from a given sprite-sheet in PNG
+* image format. <br> This would alleviate the tedious work of manually entering coordinates of sprites
+* when writing programs which use large sprite-sheet images.
+*
+* \section srcs Useful sources: 
+* <ul>
+* <li>http://www.libpng.org/pub/png/libpng-1.4.0-manual.pdf </li>
+* <li>http://www.libpng.org/pub/png/book/toc.html </li>
+* <li>http://www.piko3d.com/?page_id=68 </li>
+* <li>http://tunginobi.spheredev.org/site/node/88 </li>
+* <li>http://fydo.net/gamedev/dynamic-arrays </li>
+* <li>http://www.flyingyogi.com/fun/spritelib.html </li>
+* <li>http://www.cs.toronto.edu/~jepson/csc2503/segmentation.pdf (pg.19 possible solution for our basic problem)  </li>
+* <li>Miorel-Lucian Palii </li>
+* <li>Preston Mueller </li>
+* </ul>
+*
+*
 **/
+
+/**
+* @file cutter.c
+* @brief The entry point for the project and contains most important methods.
+*
+* @author Rodrigo Salazar
+*/
 
 #include <png.h>
 #include <stdio.h>
@@ -50,13 +60,24 @@ void set_box_processed();
 struct box_dynarr cutter();
 void set_box_bounds();
 
-png_uint_32 img_width;
-png_uint_32 img_height;
-png_uint_32 bit_depth;
-png_uint_32 channels;
+/** \defgroup img_data Image Data */
+/*@{*/
+png_uint_32 img_width; ///< Image Width
+png_uint_32 img_height; ///< Image Height
+png_uint_32 bit_depth; ///< Number of bits used to represent color 
+png_uint_32 channels; ///< Number of color channels, ie. RGBA = 4
 png_uint_32 color_type;
-unsigned long long stride;
+unsigned long long stride; ///< Number of pixels per line
+/*@}*/
 
+/** \defgroup funcs Functions */
+/*@{*/
+
+/**
+* @brief The main entry point to the program, takes filename as an argument.
+* @param argc number of arguments
+* @param args arguments
+*/
 main(int argc,char *args[])
 {
 	if(argc == 2)
@@ -65,6 +86,10 @@ main(int argc,char *args[])
 		cutter("test_images/easy_input.png");
 }
 
+/**
+* @brief This method makes the calls to all the functions necessary to complete the process.
+* @param filename The filename which contains the spritesheet
+*/
 struct box_dynarr cutter(const char* filename)
 {
 	png_bytepp png_rows = read_png(filename);
@@ -96,6 +121,11 @@ struct box_dynarr cutter(const char* filename)
 	return boxes;
 }
 
+/**
+* @brief Scans the processed_pixels array given for the next pixel which has not been processed yet.
+* @param processed_pixels 2-dimensional array representing whether or not a pixel has been marked as processed
+* @param p pointer to a pixel struct used a guide as to where to start the search
+*/
 char get_next_seed(char **processed_pixels, pixelp p)
 {
 	/*
@@ -125,6 +155,12 @@ char get_next_seed(char **processed_pixels, pixelp p)
 	return 0;
 }
 
+/**
+* @brief Edits the processed_pixels array so that all pixels denoted in the range of the given box struct are changed to off position.
+* @param processed_pixels 2-dimensional array representing whether or not a pixel has been marked as processed
+* @param bp pointer to box structure representing the range which will be set to off in the processed_pixels array
+*/
+
 void set_box_processed(char **processed_pixels, boxp bp)
 {
 	printf("Debug: 'set_box_processed' box x:%d y:%d w:%d h:%d\n", bp->x,bp->y,bp->w,bp->h);
@@ -139,6 +175,11 @@ void set_box_processed(char **processed_pixels, boxp bp)
 	}
 }
 
+/**
+* @brief Given a set of pixels, this method finds the smallest box that can contain the pixels.
+* @param dynp An array of pixels in the form of a dynamic array of type pixel_dynarr (type created at compile-time)
+* @param bp Pointer to a box structure which will hold the result of the calculation
+*/
 void set_box_bounds(struct pixel_dynarr* dynp, boxp bp)
 {
 	/*
@@ -172,11 +213,29 @@ void set_box_bounds(struct pixel_dynarr* dynp, boxp bp)
 	bp->x = minx;
 }
 
+/**
+* @brief Given a location on the image, this method returns if the color of interest is within a certain distance.
+*		 (Method not implemented yet) This method should reduce the possibly of connecting regions which should not be connected.
+* @param png_rows The actual image data as a color byte array
+* @param dynp ????
+* @param candidate Color we are searching for
+* @param i Y coordinate that we are searching around
+* @param j X coordinate that we are searching around
+* @param search_dist The radius of pixels around i,j that we are to examine
+*/
 char is_color_nearby(png_bytepp png_rows,struct pixel_dynarr * dynp, struct color * candidate, int i, int j,int search_dist)
 {
 	return 0;
 }
 
+/**
+* @brief Given a pixel on the image, this method will perform a flood fill on the area, starting from this pixel.
+* @param processed_pixels 2-dimensional array representing whether or not a pixel has been marked as processed 
+* @param png_rows The actual image data as a color byte array
+* @param bg_colorp The color determined to be the background color of the image
+* @param seed Pixel which will be the starting point for the flood fill
+* @param bp Pointer to box object which will ultimately hold a bounding box for the sprite which contained the seed pixel
+*/
 void flood_seed(char **processed_pixels, png_bytepp png_rows,struct color * bg_colorp, pixelp seed, boxp bp)
 {
 	/*
@@ -232,6 +291,18 @@ void flood_seed(char **processed_pixels, png_bytepp png_rows,struct color * bg_c
 	pixel_queue_destroy( &q );
 }
 
+/**
+* @brief This method will return 1 or 0 based on whether it determines 2 colors to be near enough to each other
+* 			There can be a set tolerance passed to this function which will act as factor to determine the result.
+*			If a tolerance is used then the result is based on the color distance between the given, which is 
+*			simply calculated as the distance between the points (since color can be interpreted as such)
+* @param r Color component being compared (Red)
+* @param g Color component being compared (Green)
+* @param b Color component being compared (Blue)
+* @param a Color component being compared  (Alpha transperancy)
+* @param color_comp Base color being used as reference 
+* @param tolerance Predetermined value used a tolerance distance
+*/
 char color_compare(int r,int g,int b, int a, colorp color_comp, int tolerance)
 {
 	/*
@@ -250,6 +321,12 @@ char color_compare(int r,int g,int b, int a, colorp color_comp, int tolerance)
 		return 1;
 }
 
+/**
+* @brief Sets processed_pixels array to 0 where ever png_rows is equal (based on color_compare) to bg_color.
+* @param png_rows The actual image data as a color byte array
+* @param processed_pixels 2-dimensional array representing whether or not a pixel has been marked as processed 
+* @param bg_colorp The color determined to be the background color of the image
+*/
 void set_bg_processed(png_bytepp png_rows, char **processed_pixels, colorp bg_color)
 {
 	/*
@@ -278,6 +355,11 @@ void set_bg_processed(png_bytepp png_rows, char **processed_pixels, colorp bg_co
 	}
 }
 
+/**
+* @brief Convienience method which prints the byte array of the image loaded
+* @param png_rows The actual image data as a color byte array
+* @param nrows Number of rows in the image loaded
+*/
 void print_picture(png_bytepp png_rows, int nrows)
 {
 	//The following code prints out all the color info of the image!
@@ -292,6 +374,12 @@ void print_picture(png_bytepp png_rows, int nrows)
 	}
 }
 
+/**
+* @brief Given a pixel location, this method returns the color as a color structure
+* @param png_rows The actual image data as a color byte array
+* @param i Y coordinate on the image
+* @param j X coordinate on the image
+*/
 struct color get_pixel(png_bytepp png_rows, int i, int j)
 {
 	struct color pixel;
@@ -303,6 +391,11 @@ struct color get_pixel(png_bytepp png_rows, int i, int j)
 	return pixel;
 }
 
+/**
+* @brief Crude method of finding/guessing the background color of the image
+* @param png_rows The actual image data as a color byte array
+* @param bg_color Pointer to a color structure which the result will be stored in
+*/
 void get_background_color(png_bytepp png_rows, colorp bg_color)
 {
 	/*
@@ -345,6 +438,10 @@ void get_background_color(png_bytepp png_rows, colorp bg_color)
 	bg_color->a = get_pixel(png_rows, max_i, max_j).a;
 }
 
+/**
+* @brief LibPNG code to load the file, set image conversions in place, and finally convert image-file to a useable color byte array
+* @param file_name Local file name of image to be loaded
+*/
 png_bytepp read_png(const char* file_name)
 {
 	/*
@@ -491,3 +588,4 @@ png_bytepp read_png(const char* file_name)
 	return rows;
 }
 
+/*@}*/
