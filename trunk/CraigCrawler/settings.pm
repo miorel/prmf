@@ -4,9 +4,10 @@ use warnings;
 use strict;
 
 my %Config = (
-	#Basic options
-	"threading_on" => 1,
-	"threads_number" => 8,
+	#Basic options, only use one of use_poe and use_threads obviously
+	"use_poe" => 0,
+	"use_threads" => 1,
+	"threads_number" => 5,
 	
 	#Hash checking settings
 	"check_headers_hash" => 0,
@@ -18,6 +19,16 @@ my %Config = (
 	"output_filename" => "list.txt",
 	"save_only_ads" => 1,
 );
+
+sub valid_settings
+{
+	return (use_poe() + use_threads() <= 1 ? 1 : 0);
+}
+
+sub use_poe
+{
+	return $Config{"use_poe"};
+}
 
 sub save_only_ads
 {
@@ -43,9 +54,9 @@ sub threads_number
 	return $Config{"threads_number"};
 }
 
-sub threading_on
+sub use_threads
 {
-	return $Config{"threading_on"};
+	return $Config{"use_threads"};
 }
 
 sub check_headers_hash

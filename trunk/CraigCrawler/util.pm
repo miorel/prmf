@@ -43,7 +43,7 @@ sub clean_link
     	{
     		if($curr_link =~ m"^/") #if link starts with a slash, meaning a different folder at same level
     		{
-    			$seed =~ s"(/[^/]*)$"$curr_link"; #replace the folder we are currently in with the new folder, for $curr_links like /ggg/
+    			$seed =~ s"(/.*)$"$curr_link"; #replace the folder we are currently in with the new folder, for $curr_links like /ggg/
 				$curr_link = $seed;
     		}
     		else #if link doesnt start with a slash, (likely then ends with a slash, indicating a subdirectory)

@@ -15,7 +15,6 @@ require "output.pl";
 
 my %list : shared= (); #Will contain all links spidered
 my %list_hash : shared = (); #Will contain hash for pages downloaded
-my %list_minihash : shared = (); #Will contain hash for part of page header info
 my %ads : shared = ();  #Will contain all advertisement links found
 my @link_stack : shared = (); #Will contain links to be downloaded and added to @page_queue
 my $link_sema : shared = Thread::Semaphore->new(); #Semaphore for @link_stack;
@@ -52,6 +51,7 @@ sub threaded_get_page
 	my $ua = LWP::UserAgent->new;
 	$ua->timeout(5);
 	$ua->agent("");
+	$ua->protocols_allowed(['http']);
 	while( scalar @link_stack || $page_queue->pending() || $page_processing ) #Is this a sufficient condition?
 	{
 		#output::new_line(threads->tid()."\n");
