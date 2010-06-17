@@ -1,3 +1,9 @@
+2010-06-17	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* output.pl: Made small progress to folder creation .. and preserving file structure
+	* util.pm: Added get_filename() and dir_exists functions
+	* settings.pm: Added settings to save as directories, obviously not working currently though.
+	
 2010-06-16	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* poe_spider.pl: File Created, will contain code for new spidering framework, using POE and LWP::UserAgent::POE !!

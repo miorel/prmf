@@ -16,8 +16,9 @@ my %Config = (
 	#File settings
 	"print_screen" => 1,
 	"output_file" => 1,
+	"output_dirs" => 0,
 	"output_filename" => "list.txt",
-	"save_only_ads" => 1,
+	"save_only_ads" => 1, #Better to have this option, so that no stray threads access files while saving logs
 );
 
 sub valid_settings
@@ -45,6 +46,10 @@ sub output_file
 	return $Config{"output_file"};
 }
 
+sub output_dirs
+{
+	return $Config{"output_dirs"};
+}
 sub output_filename
 {
 	return $Config{"output_filename"};

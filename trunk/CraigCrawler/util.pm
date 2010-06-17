@@ -2,6 +2,7 @@ package util;
 
 use warnings;
 use strict;
+use URI;
 require pattern;
 
 sub validate_link
@@ -56,4 +57,21 @@ sub clean_link
     	$curr_link =~ s"/$""; #remove trailing slashes 
     	return $curr_link;
 }
+
+sub get_filename
+{
+	#All this method does is get filename from a LINK, but only if one is exposed
+	#We only want a filename if its exposed since otherwise I do not want to store such a file.
+	my $link = URI->new($_[0])->path;
+	$link =~ m#^/(.*)#; #cut off first leading slash ... what about substr though?
+	$link = $1;
+	return $link;
+}
+
+sub dir_exists
+{
+	my $dir = $_[0];
+	return (-d $dir ? 1 : 0); #obscure -d perl syntax? .. why not use a descriptive func name?
+}
+
 1;
