@@ -7,7 +7,8 @@ use File::Find;
 require settings;
 
 my $output_filename;
-my $fh;
+my $fh; #for single file output
+my %fh_map = ();
 
 sub prepare_file
 {
@@ -33,8 +34,11 @@ sub new_special_line
 {
 	#This method prints differently to file than it does to screen..
 	my ($is_ad,$seed,$curr_link,$page_name) = (@_);
+	
+	#TODO: move these output styles to settings somehow?
 	my $screen_output = $seed." => ".$curr_link." ".$page_name."\n";
 	my $file_output = $curr_link." ".$page_name."\n";
+	
 	my $ret1 = print_to_file($file_output, $is_ad, $seed);
 	my $ret2 = print_to_screen($screen_output);
 	return ($ret1 && $ret2);
@@ -42,36 +46,56 @@ sub new_special_line
 
 sub print_to_file
 {
+	#TODO: There might be redundant logic in this method, check
+	my $ret1=0;
+	my $ret2=0;	
+
 	my $print_ad = settings::save_only_ads() ? $_[1] : 1; #If only printing ads, check if input is flagged as an AD.
-	return 1 if (!$print_ad); #Variable is named poorly
+	return 1 if (!$print_ad); #Variable is poorly named
 	if( settings::output_file() )
 	{
-		my $ret1 = settings::output_file() && (defined $fh && $print_ad ? $fh->print($_[0]) : 1);
-		return $ret1;
+		$ret1 = settings::output_file() && (defined $fh && $print_ad ? $fh->print($_[0]) : 1);
 	}
-	else
+	if( settings::output_dirs() )
 	{
-		return print_to_dir(@_);
+		$ret2 = print_to_dir(@_);
 	}
+	return $ret1 && $ret2;
 }
 
 sub print_to_dir
 {
+	#TODO: Complete, but be sure to consider the fact that some links are redirects..
+	
 	my $file_output = $_[0];
-	my $is_ad = $_[1];
+	my $is_ad = $_[1]; #This actually should ALWAYS be 1, because of settings enforcement.
 	my $seed = $_[2];
-	if( $is_ad )
+		
+	#Decided to use URI, instead of simply cutting off http:// and using that as a DIR.
+	my $uri = URI->new($seed)->canonical();
+	my $authority = $uri->authority;
+	my @path_seg = $uri->path_segments;
+	
+	shift @path_seg if !$path_seg[0]; #if is absolute path, always will be though.
+	unshift @path_seg, $authority;
+	unshift @path_seg, "output";
+	my $path = join "/", @path_seg;
+	
+	if ( !util::dir_exists($path) )
 	{
-		# separate filename from directory
-		# check if directory exists
-			#if not, record directory location
-		# append seed link to the advertisements list in the folder!
+		my $result = util::cc_mkdir(@path_seg);
+		print "result: ".$result."\n";
+		return 0 if !$result && print "Error making path ".$path."\n";
 	}
-	else #Is a directory (actually its an index page, which we don't want to store)
+	$path = join "/",$path,"results";
+	print $path."\n";
+	if (!(exists $fh_map{$path})) #wow this is stupid, im gonna have like 2000 FHs open
 	{
-		#check if directory exists
-			#if not, make it!
+		$fh_map{$path} = FileHandle::new();
+		$fh_map{$path}->open($path, "w");
 	}
+	$fh_map{$path}->print($file_output);
+	return 1;
 }
 
 sub print_to_screen

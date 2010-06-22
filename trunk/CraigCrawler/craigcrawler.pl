@@ -11,12 +11,13 @@ require "poe_spider.pl";
 require "output.pl";
 
 #Current Issues: (In order of priority)
-#0.Fix problem with links involving geo.craigslist.org and its sub folders...
-#1.Organization of data gathered, including the creation of folders for each state/city.
-#2.Implement new spider method using POE and LWP::UserAgent::POE !!!
-#3.SOCKS Proxy support + Nice-Bot support (Delays, etc.)
-#4.Need more control over scanning, possibly the option to scan as far as 2 pages back, or even by day.
-#5.Code is not very slick.
+#0.Handle redirects / LOCATION header to handle geo.craigslist.org links as intended.
+#1.Redesign the directory/file creation method, it opens too many file handles ..
+#2.Preservation of alias for the city folder names .. ie. bks folder will should be called Books
+#3.Implement new spider method using POE and LWP::UserAgent::POE !!!
+#4.SOCKS Proxy support + Nice-Bot support (Delays, etc.)
+#5.Improve user functionality, possibly implement web .. add endless options.
+#6.Code is not very slick.
 
 my $url = "http://craigslist.org";
 my $site_name = "craigslist";
@@ -24,7 +25,7 @@ my $site_name = "craigslist";
 die if !settings::valid_settings() && output::new_line("Bad settings\n");
 
 my $open_file = output::prepare_file() if settings::output_file();
-output::new_line("Error creating/opening file\n") if $open_file == -1;
+output::new_line("Error creating/opening file\n") if (settings::output_file() && $open_file == -1);
 
 if( settings::use_poe() )
 {

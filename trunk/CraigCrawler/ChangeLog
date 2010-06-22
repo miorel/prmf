@@ -1,3 +1,10 @@
+2010-06-22	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* output.pl: Finished folder creation, basic file creation and writing.. functional but badly done
+	* util.pm: Added cc_mkdir method which creates nested folders with mkdir loop
+	* settings.pm: Added a couple more valid settings checks.
+	* craigcrawler.pl: Updated priority list of project goals.
+	
 2010-06-17	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* output.pl: Made small progress to folder creation .. and preserving file structure

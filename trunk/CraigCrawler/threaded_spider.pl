@@ -48,6 +48,7 @@ sub thread_pool
 
 sub threaded_get_page
 {
+	#TODO: Thread aborts when LWP times out, fix it
 	my $ua = LWP::UserAgent->new;
 	$ua->timeout(5);
 	$ua->agent("");

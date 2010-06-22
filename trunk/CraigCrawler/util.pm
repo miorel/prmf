@@ -26,7 +26,7 @@ sub validate_link
 
 sub clean_link
 {
-      #Does not support going up directories at the moment
+       #Does not support going up directories at the moment, but craigslist does not so not important
 
 	   #curr_link is the new link we found while parsing the current file
 		#seed is the actual file where the link was found in
@@ -58,12 +58,13 @@ sub clean_link
     	return $curr_link;
 }
 
+#This method might just be erased, its bad
 sub get_filename
 {
 	#All this method does is get filename from a LINK, but only if one is exposed
 	#We only want a filename if its exposed since otherwise I do not want to store such a file.
 	my $link = URI->new($_[0])->path;
-	$link =~ m#^/(.*)#; #cut off first leading slash ... what about substr though?
+	$link =~ m#/([^/]*)$#; #cut off the relative path
 	$link = $1;
 	return $link;
 }
@@ -71,7 +72,39 @@ sub get_filename
 sub dir_exists
 {
 	my $dir = $_[0];
-	return (-d $dir ? 1 : 0); #obscure -d perl syntax? .. why not use a descriptive func name?
+	return (-d $dir ? 1 : 0); 
+}
+
+sub file_exists
+{
+	my $file = $_[0];
+	return (-e $file ? 1 : 0);
+}
+
+sub cc_mkdir
+{
+	#This method takes an array of folder names, starting with the lowest depth.
+	#mkdir a/b would fail if 'a' does not already exist, this method should not..
+	my $result = 1;
+	my @dir_arr = @_;
+
+	print scalar @dir_arr;
+
+	my $rel_path = shift @dir_arr;
+	mkdir $rel_path if (!(-d $rel_path));
+
+	foreach my $d (@dir_arr)
+	{
+		$rel_path = join "/",$rel_path,$d;
+		print $rel_path."\n";
+		if(!dir_exists($rel_path))
+		{
+			my $new_result = mkdir $rel_path;
+			$result = ($result && $new_result ? 1 : 0);
+			return 0 if !$result;
+		}
+	}
+	return 1;
 }
 
 1;

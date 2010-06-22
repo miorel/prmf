@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 my %Config = (
-	#Basic options, only use one of use_poe and use_threads obviously
+	#Basic options, only use one of use_poe and use_threads obviously (or none)
 	"use_poe" => 0,
 	"use_threads" => 1,
 	"threads_number" => 5,
@@ -15,15 +15,19 @@ my %Config = (
 	
 	#File settings
 	"print_screen" => 1,
-	"output_file" => 1,
-	"output_dirs" => 0,
+	"output_file" => 0,
 	"output_filename" => "list.txt",
-	"save_only_ads" => 1, #Better to have this option, so that no stray threads access files while saving logs
+	"output_dirs" => 1,
+	"save_only_ads" => 1,
 );
 
 sub valid_settings
 {
-	return (use_poe() + use_threads() <= 1 ? 1 : 0);
+	my $method = use_poe() + use_threads() <= 1 ? 1 : 0;
+	my $store = output_file() + output_dirs() <=1 ? 1 : 0;
+	my $purpose = output_file() + output_dirs() + print_screen() >= 1 ? 1 : 0;
+	my $ad_dirs = !(save_only_ads() xor output_dirs());
+	return ($method && $store && $purpose && $ad_dirs);
 }
 
 sub use_poe
