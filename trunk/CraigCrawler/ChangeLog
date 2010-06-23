@@ -1,5 +1,10 @@
 2010-06-22	Rodrigo Salazar <rsala004@ufl.edu>
 
+	* util.pm: Added a method called close_file_map which closes all the file handles stored in a hashmap.
+	* output.pl: print_to_dir() now makes a call to a method in util.pm to close all the open file handles.
+	
+2010-06-22	Rodrigo Salazar <rsala004@ufl.edu>
+
 	* output.pl: Finished folder creation, basic file creation and writing.. functional but badly done
 	* util.pm: Added cc_mkdir method which creates nested folders with mkdir loop
 	* settings.pm: Added a couple more valid settings checks.

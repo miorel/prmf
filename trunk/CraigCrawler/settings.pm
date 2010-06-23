@@ -7,7 +7,7 @@ my %Config = (
 	#Basic options, only use one of use_poe and use_threads obviously (or none)
 	"use_poe" => 0,
 	"use_threads" => 1,
-	"threads_number" => 5,
+	"threads_number" => 4,
 	
 	#Hash checking settings
 	"check_headers_hash" => 0,

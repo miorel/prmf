@@ -11,8 +11,7 @@ require "poe_spider.pl";
 require "output.pl";
 
 #Current Issues: (In order of priority)
-#0.Handle redirects / LOCATION header to handle geo.craigslist.org links as intended.
-#1.Redesign the directory/file creation method, it opens too many file handles ..
+#1.Handle redirects / LOCATION header to handle geo.craigslist.org links as intended.
 #2.Preservation of alias for the city folder names .. ie. bks folder will should be called Books
 #3.Implement new spider method using POE and LWP::UserAgent::POE !!!
 #4.SOCKS Proxy support + Nice-Bot support (Delays, etc.)

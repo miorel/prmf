@@ -88,8 +88,6 @@ sub cc_mkdir
 	my $result = 1;
 	my @dir_arr = @_;
 
-	print scalar @dir_arr;
-
 	my $rel_path = shift @dir_arr;
 	mkdir $rel_path if (!(-d $rel_path));
 
@@ -105,6 +103,16 @@ sub cc_mkdir
 		}
 	}
 	return 1;
+}
+
+sub close_file_map
+{
+	my $fh_mapref = $_[0];
+	while (my ($path, $fh) = each %$fh_mapref)
+	{
+		$fh->close;
+		delete $$fh_mapref{$path};
+	}
 }
 
 1;

@@ -9,6 +9,7 @@ require settings;
 my $output_filename;
 my $fh; #for single file output
 my %fh_map = ();
+my $fh_limit = 200;
 
 sub prepare_file
 {
@@ -88,13 +89,14 @@ sub print_to_dir
 		return 0 if !$result && print "Error making path ".$path."\n";
 	}
 	$path = join "/",$path,"results";
-	print $path."\n";
-	if (!(exists $fh_map{$path})) #wow this is stupid, im gonna have like 2000 FHs open
+	#print $path."\n";
+	if (!(exists $fh_map{$path}))
 	{
 		$fh_map{$path} = FileHandle::new();
-		$fh_map{$path}->open($path, "w");
+		$fh_map{$path}->open($path, ">>");
 	}
 	$fh_map{$path}->print($file_output);
+	util::close_file_map(\%fh_map) if scalar keys %fh_map >= $fh_limit;
 	return 1;
 }
 
