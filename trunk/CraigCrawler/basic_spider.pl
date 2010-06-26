@@ -73,7 +73,7 @@ sub basic_crawler
 		
 		$curr_link = util::clean_link($seed,$curr_link);
 		
-    	next scan if(exists $list{$curr_link});
+    	next scan if(exists $list{$curr_link} || exists $ads{$curr_link});
 
     	my $listing_pattern = pattern::get_listing_pattern();
     	my $is_ad = 0;

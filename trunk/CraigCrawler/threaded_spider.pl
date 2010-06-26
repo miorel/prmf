@@ -96,6 +96,8 @@ sub threaded_process_page
 		$page_processing = 1;
 		
 		my $page_obj = $page_queue->dequeue();
+		
+		#TODO: Add a check for minihash (header)
 		#Now we check the page hash
 		if(settings::check_page_hash())
 		{
@@ -115,7 +117,7 @@ sub threaded_process_page
 			
 			$curr_link = util::clean_link($page_obj->{url},$curr_link);
 			
-	    	next scan if(exists $list{$curr_link});
+	    	next scan if(exists $list{$curr_link} || exists $ads{$curr_link});
 	    	
 	    	my $is_ad = 0;
 	    	my $listing_pattern = pattern::get_listing_pattern();

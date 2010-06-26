@@ -1,3 +1,8 @@
+2010-06-26	Rodrigo Salazar <rsala004@ufl.edu>
+
+	* threaded_spider.pl: Fixed bug where ads would be written more than once.
+	* util.pm: Minor changes.
+	
 2010-06-22	Rodrigo Salazar <rsala004@ufl.edu>
 
 	* util.pm: Added a method called close_file_map which closes all the file handles stored in a hashmap.

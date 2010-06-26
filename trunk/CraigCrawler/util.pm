@@ -89,7 +89,7 @@ sub cc_mkdir
 	my @dir_arr = @_;
 
 	my $rel_path = shift @dir_arr;
-	mkdir $rel_path if (!(-d $rel_path));
+	mkdir $rel_path if (!(dir_exists($rel_path)));
 
 	foreach my $d (@dir_arr)
 	{
