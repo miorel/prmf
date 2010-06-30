@@ -1,0 +1,21 @@
+<project name="Race" default="dist-bin">
+	<target name="clean">
+		<delete dir="bin"/>
+		<delete dir="dist"/>
+	</target>
+
+	<target name="bin">
+		<mkdir dir="bin"/>
+		<javac srcdir="src" destdir="bin" includeAntRuntime="no"/>
+	</target>
+
+	<target name="dist-bin" depends="bin">
+		<mkdir dir="dist"/>
+		<jar destfile="dist/race.jar">
+			<manifest>
+				<attribute name="Main-Class" value="race.Main"/>
+			</manifest>
+			<fileset dir="bin"/>
+		</jar>
+	</target>
+</project>
