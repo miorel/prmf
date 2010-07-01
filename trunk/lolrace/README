@@ -1,0 +1,11 @@
+lolrace - fun for the whole family.
+
+compilation:
+cd lolrace/
+ant
+
+running (aftr compilation):
+cd dist/
+java -jar race.jar
+
+enjoy

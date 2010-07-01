@@ -43,8 +43,8 @@ public class Racer extends JComponent {
 		currentHeight = 475;
 		lane = l;
 		try {
-			img1 = ImageIO.read(this.getClass().getResource("gfx/" + imgPath + ".png"));
-			img2 = ImageIO.read(this.getClass().getResource("gfx/" + imgPath+ "2.png"));
+			img1 = ImageIO.read(this.getClass().getResource(imgPath + ".png"));
+			img2 = ImageIO.read(this.getClass().getResource(imgPath+ "2.png"));
 			currentImg = img1;
 			ci = 1;
 		} catch (IOException e) {
@@ -65,7 +65,7 @@ public class Racer extends JComponent {
 	public void die()
 	{
 		try {
-			currentImg = ImageIO.read(this.getClass().getResource("gfx/hit.png"));
+			currentImg = ImageIO.read(this.getClass().getResource("hit.png"));
 		} catch (IOException e) {
 			System.out.println(e);
 		}

@@ -93,9 +93,9 @@ public class Game extends JLayeredPane {
 		
 		BufferedImage tmpImg;
 		try {
-			tmpImg = ImageIO.read(this.getClass().getResource("gfx/again.png"));
+			tmpImg = ImageIO.read(this.getClass().getResource("again.png"));
 			again = new JButton(new ImageIcon(tmpImg));
-			tmpImg = ImageIO.read(this.getClass().getResource("gfx/exit.png"));
+			tmpImg = ImageIO.read(this.getClass().getResource("exit.png"));
 			exit = new JButton(new ImageIcon(tmpImg));
 		} catch (IOException e) {
 			System.out.println(e);

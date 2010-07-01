@@ -16,6 +16,7 @@
 				<attribute name="Main-Class" value="race.Main"/>
 			</manifest>
 			<fileset dir="bin"/>
+			<fileset dir="res"/>
 		</jar>
 	</target>
 </project>

@@ -39,10 +39,6 @@ public class Main {
 			frame.setSize(610, 600);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosed(WindowEvent e) {
-			}
-
-			@Override
 			public void windowClosing(WindowEvent e) {
 				frame.setVisible(false);
 				frame.dispose();
@@ -98,7 +94,7 @@ public class Main {
 	
 				if(!ret)
 				{
-					((Game)frame.getContentPane()).winrar.setText(c + " wins!!!!");
+					((Game)frame.getContentPane()).winrar.setText(c + " is a winrar!!!!");
 					scoreboard.put(c, scoreboard.get(c)+1);
 					switch(toMove){
 					case 0:
