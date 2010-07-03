@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -37,116 +38,135 @@ import javax.swing.SwingConstants;
  *
  */
 
-public class Game extends JLayeredPane {
+public class Game {
 
+	Boolean again;
+	HashMap<String, Integer> scoreboard;
+	
+	View view;
 	HashMap<String, Racer> racers;
-	Background bg;
-	JLabel winrar;
-	JButton again;
-	JButton exit;
-	JFrame frame;
-	Boolean boolagain;
-	JLabel gatorScore;
-	JLabel penguinScore;
-	JLabel catScore;
-	JLabel humanScore;
-	public Game(JFrame f, Boolean b)
+	
+	public Game(JFrame frame)
 	{
-		boolagain = b;
-		frame = f;
+		again = new Boolean(true);
+		scoreboard = new HashMap<String, Integer>();
+
 		racers = new HashMap<String, Racer>();
-		setBackground(Color.WHITE);
-		this.setLayout(null);
-		bg = new Background();
-		add(bg, 1);
-		bg.setBounds(0,0,600,600);
-		bg.setOpaque(true);
-		winrar = new JLabel();
-		add(winrar,2);
-		winrar.setOpaque(true);
-		winrar.setBounds(0,15,400,15);
-		winrar.setHorizontalAlignment( SwingConstants.CENTER );
 		
-		gatorScore = new JLabel();
-		penguinScore = new JLabel();
-		catScore = new JLabel();
-		humanScore = new JLabel();
+		this.view = new View(frame, racers);
 		
-		add(gatorScore,2);
-		add(penguinScore,2);
-		add(catScore,2);
-		add(humanScore,2);
+		reset();
+		frame.setVisible(true);
+	}
+	
+	public void reset()
+	{
+		scoreboard.put("gator", 0);
+		scoreboard.put("penguin", 0);
+		scoreboard.put("cat", 0);
+		scoreboard.put("human", 0);
 		
-		gatorScore.setBounds(530, 63, 60, 20);
-		gatorScore.setHorizontalAlignment(SwingConstants.RIGHT);
-		penguinScore.setBounds(530, 113, 60, 20);
-		penguinScore.setHorizontalAlignment(SwingConstants.RIGHT);
-		catScore.setBounds(530, 162, 60, 20);
-		catScore.setHorizontalAlignment(SwingConstants.RIGHT);
-		humanScore.setBounds(530, 219, 60, 20);
-		humanScore.setHorizontalAlignment(SwingConstants.RIGHT);
+		this.view.gatorScore.setText(scoreboard.get("gator").toString());
+		this.view.penguinScore.setText(scoreboard.get("penguin").toString());
+		this.view.catScore.setText(scoreboard.get("cat").toString());
+		this.view.humanScore.setText(scoreboard.get("human").toString());
 		
-		gatorScore.setOpaque(true);
-		penguinScore.setOpaque(true);
-		catScore.setOpaque(true);
-		humanScore.setOpaque(true);
-		
-		BufferedImage tmpImg;
-		try {
-			tmpImg = ImageIO.read(this.getClass().getResource("again.png"));
-			again = new JButton(new ImageIcon(tmpImg));
-			tmpImg = ImageIO.read(this.getClass().getResource("exit.png"));
-			exit = new JButton(new ImageIcon(tmpImg));
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-		
-		add(again,2);
-		again.setBounds(433, 307,137,129);
-		again.setOpaque(true);
-		again.setBorderPainted(false);
-		again.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-            	boolagain = new Boolean(false);
-            	synchronized(frame)
-            	{
-            		frame.notify();
-            	}
-            }
-        });   
-		again.setEnabled(false);
-		add(exit,2);
-		exit.setOpaque(true);
-		exit.setBorderPainted(false);
-		exit.addActionListener(new ActionListener() {
-               
-            public void actionPerformed(ActionEvent e)
-            {
-            	frame.setVisible(false);
-				frame.dispose();
-				System.exit(0);
-            }
-        });      
-		
-		exit.setBounds(450,522 ,103,31);
-
-		racers.put("gator", new Racer("gator", 1));
-		racers.put("penguin", new Racer("penguin", 2));
-		racers.put("cat", new Racer("cat", 3));
-		racers.put("human", new Racer("human", 4));
-
-		Set<String> s = racers.keySet();
-		
-		for(String x : s)
+	}
+	
+	public void exit()
+	{
+		this.view.frame.setVisible(false);
+		this.view.frame.dispose();
+		System.exit(0);
+	}
+	
+	public void play() throws InterruptedException
+	{
+		this.view.again.setEnabled(false);
+		this.view.again.update(this.view.again.getGraphics());
+		this.view.winrar.setText("");
+		this.view.winrar.update(this.view.winrar.getGraphics());
+		Random randGen = new Random();
+		boolean ret = true;
+		String c = "";
+		int toMove = 0;
+		while(true)
 		{
-			add(racers.get(x),3);
+			toMove = randGen.nextInt(4);
+			switch(toMove){
+			case 0:
+				ret = this.view.racers.get("gator").move();
+				c = "gator";
+				break;
+			case 1:
+				ret = this.view.racers.get("penguin").move();
+				c = "penguin";
+				break;
+			case 2:
+				ret = this.view.racers.get("cat").move();
+				c = "cat";
+				break;
+			case 3:
+				ret = this.view.racers.get("human").move();
+				c = "human";
+				break;
+			
+			}
+			int timeToNext = randGen.nextInt(75) + 30;
+			Thread.sleep(timeToNext);
+
+			if(!ret)
+			{
+				this.view.winrar.setText(c + " wins!!!!");
+				scoreboard.put(c, scoreboard.get(c)+1);
+				switch(toMove){
+				case 0:
+					
+					this.view.racers.get("penguin").die();
+					this.view.racers.get("cat").die();
+					this.view.racers.get("human").die();
+					
+					this.view.gatorScore.setText(scoreboard.get(c).toString());
+					this.view.gatorScore.update(this.view.gatorScore.getGraphics());
+					this.view.racers.get("gator").dance();
+					break;
+				case 1:
+					this.view.racers.get("gator").die();
+					this.view.racers.get("cat").die();
+					this.view.racers.get("human").die();
+					
+					this.view.penguinScore.setText(scoreboard.get(c).toString());
+					this.view.penguinScore.update(this.view.penguinScore.getGraphics());
+					this.view.racers.get("penguin").dance();
+					break;
+				case 2:
+					this.view.racers.get("gator").die();
+					this.view.racers.get("penguin").die();
+					this.view.racers.get("human").die();
+					
+					this.view.catScore.setText(scoreboard.get(c).toString());
+					this.view.catScore.update(this.view.catScore.getGraphics());
+					this.view.racers.get("cat").dance();
+					break;
+				case 3:
+					this.view.racers.get("gator").die();
+					this.view.racers.get("penguin").die();
+					this.view.racers.get("cat").die();
+					
+					this.view.humanScore.setText(scoreboard.get(c).toString());
+					this.view.humanScore.update(this.view.humanScore.getGraphics());
+					this.view.racers.get("human").dance();
+					break;
+				}
+				this.view.again.setEnabled(true);
+				this.view.again.update(this.view.again.getGraphics());
+				synchronized(this.view.frame)
+				{
+					this.view.frame.wait();
+				}
+				this.view.resetRacers();
+				break;
+			}
 		}
-		for(String x : s)
-		{
-			racers.get(x).setBounds(75 * racers.get(x).lane, 475, 27, 90);
-			racers.get(x).setOpaque(true);
-		}
-		
 	}
 }
