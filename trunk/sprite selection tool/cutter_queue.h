@@ -67,6 +67,3 @@ inline void QUEUENAME(QUEUE_IDENTIFIER,queue_destroy) ( struct QUEUENAME(QUEUE_I
 #undef QUEUE_TYPE
 #undef QUEUE_IDENTIFIER
 
-
-
-

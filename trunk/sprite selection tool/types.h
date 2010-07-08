@@ -33,4 +33,3 @@ struct pixel
 	int i,j;
 };
 
-

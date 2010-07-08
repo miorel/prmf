@@ -1,11 +1,8 @@
-lolrace - fun for the whole family.
+lolrace - fun for the whole family
 
-compilation:
-cd lolrace/
-ant
+This project uses Apache Ant <http://ant.apache.org/> for its build process.
 
-running (aftr compilation):
-cd dist/
-java -jar race.jar
+To build, execute `ant` in the project's root directory.
+To run (after building), `cd dist` and `java -jar race.jar`.
 
-enjoy
+Enjoy!

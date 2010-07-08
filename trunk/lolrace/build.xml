@@ -1,4 +1,4 @@
-<project name="Race" default="dist-bin">
+<project name="lolrace" default="dist-bin">
 	<target name="clean">
 		<delete dir="bin"/>
 		<delete dir="dist"/>

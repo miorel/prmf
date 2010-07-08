@@ -17,7 +17,6 @@
 
 #if defined (DYNARR_TYPE) && defined (DYNARR_IDENTIFIER)
 
-
 /**
 * @brief 'Generic' Dynamic array which is assembled using preprocessor directives
 */
@@ -64,7 +63,4 @@ inline void DYNARRNAME(DYNARR_IDENTIFIER,dynarr_destroy) (struct DYNARRNAME(DYNA
 #undef DYNARR_TYPE
 #undef DYNARR_IDENTIFIER
 /*@}*/
-
-
-
 

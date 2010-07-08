@@ -1,7 +1,9 @@
 This directory contains the LaTeX source for the algorithm packet.
 
-On systems that have the make and pdflatex commands, execute `make pdf' to
-compile a pdf file.
+On systems that have the make and pdflatex commands, execute `make' to compile
+a pdf file. Two other targets of interest are `make dist`, to create a source
+archive, and `make clean`, to remove the compilation output and any other
+rebuildable files. 
 
 There is an optional dependency on the Rubber project:
 <http://iml.univ-mrs.fr/~beffara/soft/rubber/>

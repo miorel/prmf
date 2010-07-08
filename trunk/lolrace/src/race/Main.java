@@ -12,7 +12,6 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-
 package race;
 
 import java.awt.event.WindowAdapter;
@@ -23,11 +22,8 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 /**
- * 
  * @author Preston Mueller
- *
  */
-
 public class Main {
 
 	public static void main(String[] args) throws IOException, InterruptedException {

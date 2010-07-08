@@ -22,4 +22,4 @@ dist: algo.zip
 clean:
 	rm -f algo.{aux,log,pdf,toc,zip}
 
-.PHONY: clean dist
+.PHONY: dist clean

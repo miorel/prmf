@@ -1,0 +1,69 @@
+2010-07-08  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* Doxyfile, cutter.c, doc.sh: Tweaked some settings, created a script for
+	  installing the documentation in the proper part of the repository.
+
+2010-06-16  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* Doxyfile, cutter.c, cutter_dynarr.h, cutter_queue.h, types.h: Doxygen
+	  documentation 95% complete for sprite selection tool!!
+
+2010-06-09  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* COPYING: Added license file to Rodrigo's sprite selection tool (which
+	  really needs a better name, by the way).
+
+2010-05-20  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* cutter.c: Minor fixes.
+
+2010-05-20  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* cutter.c: Commited fix to important bug before I forgot about it.
+
+2010-05-20  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* cutter.c: Added couple more color tolerance methods for more control over
+	  extending components. If it doesn't work out I will move over to a more
+	  advanced algorithm. Currently the program infinite loops since one of the
+	  new methods is not implemented yet.
+
+2010-05-18  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* cutter.c: Sprite tool correctly bounded boxes around all 65 sprites in
+	  easy_input.png, now works as intended!!
+
+2010-05-17  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* cutter.c: Added source link for sprites.
+
+2010-05-17  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* cutter.c, test_images/difficult_input.png, test_images/easy_input.png,
+	  test_images/spritesheet.png: Added a spritesheet given by Preston Mueller
+	  to the test_images folder, removed the original spritesheet test file and
+	  replaced it with another that was less of a problem. There are now two
+	  test files, easy_input and difficult_input, I hope it won't be long till
+	  the program can parse the difficult_input.png, it's as difficult as can
+	  be, some sprites are only one pixel apart.
+
+2010-05-17  Preston Mueller <thepralz@gmail.com>
+
+	* test_images/Items.png, test_images/Sprites.png, test_images/Tiles.png:
+	  Added some new sprite sheets.
+
+2010-05-17  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* .cproject, .project: Uploaded as working eclipse C project, requires CDT
+	  plugin. I have it with correct working linking settings, not sure if
+	  that's included in .poject files.
+
+2010-05-17  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* test_images, test_images/spritesheet.png: Uploaded test spritesheet.
+
+2010-05-17  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* cutter.c, cutter_dynarr.h, cutter_queue.h, types.h: Sprite selection tool
+	  is now its own full fledged project.
+

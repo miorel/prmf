@@ -24,11 +24,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 /**
- * 
  * @author Preston Mueller
- *
  */
-
 public class Racer extends JComponent {
 
 	BufferedImage currentImg;
@@ -96,7 +93,7 @@ public class Racer extends JComponent {
     @Override
 	public Dimension getPreferredSize() {
         if (currentImg == null) {
-             return new Dimension(100,100);
+             return new Dimension(100, 100);
         } else {
            return new Dimension(currentImg.getWidth(null), currentImg.getHeight(null));
        }

@@ -1,3 +1,8 @@
+2010-07-08  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* Makefile, README: Noticed and fixed a discrepancy between the build
+	  process and building instructions.
+
 2010-05-20  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* Makefile: Improved build process.
