@@ -19,7 +19,10 @@ To run client:
 	$ cd dist
 	$ appletviewer Applet.html
 
-Note: To run the program you might have to sign the generated JAR file. This can be done by running "keytool -genkey" and then "keytool -selfcert" to generate a self-signed certificate, followed by running "make sign" in the src directory. You may need to modify the Makefile to include your key's password.
+Note: To run the program you might have to sign the generated JAR file. This
+can be done by running "keytool -genkey" and then "keytool -selfcert" to
+generate a self-signed certificate, followed by running "make sign" in the src
+directory. You may need to modify the Makefile to include your key's password.
 
 Server configuration files:
 	Main configuration file: jtaserv.cfg
