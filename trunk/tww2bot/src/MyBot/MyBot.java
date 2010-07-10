@@ -1,4 +1,5 @@
 package MyBot;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,8 +35,7 @@ public class MyBot extends PircBot {
     	};
     }
     
-    public void onConnect()
-    {
+    public void onConnect() {
     	//opList.add(ownName);
     	//voiceList.add(ownName);
     	jokeInfo = new int[2];
@@ -304,14 +304,12 @@ public class MyBot extends PircBot {
         }
     }
 
-    public void onOp(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
-    	if(recipient.equalsIgnoreCase(myName))
-    	{
-    		chansAmOp.add(channel);
-    	}
-    } 
+	public void onOp(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+		if(recipient.equalsIgnoreCase(myName)) {
+			chansAmOp.add(channel);
+		}
+	}
 
-    	
 	public void onDeop(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
 		if(recipient.equalsIgnoreCase(myName)) {
 			chansAmOp.remove(channel);

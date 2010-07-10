@@ -1,3 +1,8 @@
+2010-07-09  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* src/MafiaPlayer/MafiaPlayer.java: Removed some unused methods.
+	  Reimplemented containsIgnoreCase() and made it private and non-static.
+
 2010-05-19  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* build.xml, src/MyBot/MyBotMain.java: Added Apache Ant build file.
@@ -8,14 +13,14 @@
 
 2010-05-03  Miorel-Lucian Palii <mlpalii@gmail.com>
 
-	* lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar: Updated Merapi
-	  library files.
+	* lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar: Updated Merapi library
+	  files.
 
 2010-05-03  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* .classpath, .project, .settings/org.eclipse.jdt.core.prefs, lib,
-	  lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar: Added Merapi library
-	  to project.
+	  lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar: Added Merapi library to
+	  project.
 
 2010-05-02  Miorel-Lucian Palii <mlpalii@gmail.com>
 

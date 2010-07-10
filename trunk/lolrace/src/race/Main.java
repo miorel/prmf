@@ -17,22 +17,21 @@ package race;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Random;
+
 import javax.swing.JFrame;
 
 /**
  * @author Preston Mueller
  */
 public class Main {
-
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] arg) throws IOException, InterruptedException {
 		final JFrame frame = new JFrame("Race to the finish!!!");
-		
+
 		if(System.getProperty("os.name").equals("Mac OS X"))
-				frame.setSize(600, 600);
+			frame.setSize(600, 600);
 		else
 			frame.setSize(610, 600);
+
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
@@ -45,9 +44,10 @@ public class Main {
 				System.exit(0);
 			}
 		});
+
 		Game game = new Game(frame);
-		while(true)
-		{
+
+		for(;;) {
 			game.play();
 		}
 	}

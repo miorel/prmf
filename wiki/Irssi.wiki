@@ -9,7 +9,6 @@ Ever wonder how some people can be in the IRC channel _all_ the time? They're pr
 The following sequence of commands installs Irssi in your home directory. It even cleans up after itself. This was tested on `thunder` (and should therefore work on `storm` as well). It didn't work on `eclipse` because of a missing dependency (and will therefore probably _not_ work on the older Sun machines, either).
 
 {{{
-cd /tmp
 wget http://www.irssi.org/files/irssi-0.8.15.tar.bz2
 tar xjf irssi-0.8.15.tar.bz2
 cd irssi-0.8.15
@@ -30,10 +29,10 @@ Check out [http://quadpoint.org/articles/irssi A Guide to Efficiently Using Irss
 
 Since it gets annoying to type /connect irc.freenode.net and identify yourself to NickServ every time you want to join our IRC channel, you can tell Irssi to add these settings to your config file (warning: do not edit the config file manually, irssi hates that).
 
-First make sure you are connected to the server and have your nick set properly. Then, do the following (replace "password" with your password):
+First make sure you are connected to the server and have your nick set properly. Then, do the following (replace "secret" with your password):
 
-`/SERVER ADD -auto -network freenode irc.freenode.net 6667 password`
+`/SERVER ADD -auto -network Freenode irc.freenode.net 6667 secret`
 
-`/CHANNEL ADD -auto #ufpt freenode`
+`/CHANNEL ADD -auto #ufpt Freenode`
 
 `/save`

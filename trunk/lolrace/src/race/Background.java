@@ -15,16 +15,15 @@
 package race;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 /**
  * @author Preston Mueller
  */
-public class Background extends JComponent {	
+public class Background extends JComponent {
+	private static final long serialVersionUID = -4831891858524142765L;
+
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawLine(400, 0, 400, 600);
@@ -35,5 +34,5 @@ public class Background extends JComponent {
 		g.drawString("Penguin", 420, 125);
 		g.drawString("Cat", 420, 174);
 		g.drawString("Human", 420, 230);
-    } 
+	}
 }

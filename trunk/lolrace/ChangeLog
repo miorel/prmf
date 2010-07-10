@@ -1,3 +1,9 @@
+2010-07-09  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* src/race/Background.java, src/race/Game.java, src/race/Main.java,
+	  src/race/Racer.java, src/race/View.java: Changed formatting, organized
+	  imports, fixed a few warnings.
+
 2010-07-08  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* README: Changed instructions a bit.

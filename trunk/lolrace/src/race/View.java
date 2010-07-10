@@ -15,7 +15,6 @@
 package race;
 
 import java.awt.Color;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -29,57 +28,53 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 /**
  * @author Preston Mueller
  */
 public class View {
-
-	Background bg;
+	private Background bg;
 	JLabel winrar;
 	JButton again;
-	JButton exit;
+	private JButton exit;
 	JFrame frame;
-	JLayeredPane gamePanel;
-	HashMap<String, Racer> racers;
+	private JLayeredPane gamePanel;
+	HashMap<String,Racer> racers;
 	JLabel gatorScore;
 	JLabel penguinScore;
 	JLabel catScore;
 	JLabel humanScore;
-	
-	public View(JFrame f, HashMap<String, Racer> racers)
-	{
-		
+
+	public View(JFrame f, HashMap<String,Racer> racers) {
 		this.racers = racers;
 		this.frame = f;
 		this.gamePanel = new JLayeredPane();
 		this.gamePanel.setOpaque(true);
 		this.frame.setContentPane(gamePanel);
-		
+
 		this.frame.setBackground(Color.WHITE);
 		this.frame.setLayout(null);
 		bg = new Background();
 		this.frame.add(bg, 1);
-		bg.setBounds(0,0,600,600);
+		bg.setBounds(0, 0, 600, 600);
 		bg.setOpaque(true);
 		winrar = new JLabel();
-		this.frame.add(winrar,2);
+		this.frame.add(winrar, 2);
 		winrar.setOpaque(true);
-		winrar.setBounds(0,15,400,15);
-		winrar.setHorizontalAlignment( SwingConstants.CENTER );
-		
+		winrar.setBounds(0, 15, 400, 15);
+		winrar.setHorizontalAlignment(SwingConstants.CENTER);
+
 		gatorScore = new JLabel();
 		penguinScore = new JLabel();
 		catScore = new JLabel();
 		humanScore = new JLabel();
-		
-		this.frame.add(gatorScore,2);
-		this.frame.add(penguinScore,2);
-		this.frame.add(catScore,2);
-		this.frame.add(humanScore,2);
-		
+
+		this.frame.add(gatorScore, 2);
+		this.frame.add(penguinScore, 2);
+		this.frame.add(catScore, 2);
+		this.frame.add(humanScore, 2);
+
 		gatorScore.setBounds(530, 63, 60, 20);
 		gatorScore.setHorizontalAlignment(SwingConstants.RIGHT);
 		penguinScore.setBounds(530, 113, 60, 20);
@@ -88,78 +83,72 @@ public class View {
 		catScore.setHorizontalAlignment(SwingConstants.RIGHT);
 		humanScore.setBounds(530, 219, 60, 20);
 		humanScore.setHorizontalAlignment(SwingConstants.RIGHT);
-		
+
 		gatorScore.setOpaque(true);
 		penguinScore.setOpaque(true);
 		catScore.setOpaque(true);
 		humanScore.setOpaque(true);
-		
+
 		BufferedImage tmpImg;
 		try {
 			tmpImg = ImageIO.read(this.getClass().getResource("gfx/again.png"));
 			again = new JButton(new ImageIcon(tmpImg));
 			tmpImg = ImageIO.read(this.getClass().getResource("gfx/exit.png"));
 			exit = new JButton(new ImageIcon(tmpImg));
-		} catch (IOException e) {
+		}
+		catch(IOException e) {
 			System.out.println(e);
 		}
-		
-		this.frame.add(again,2);
-		again.setBounds(433, 307,137,129);
+
+		this.frame.add(again, 2);
+		again.setBounds(433, 307, 137, 129);
 		again.setOpaque(true);
 		again.setBorderPainted(false);
-		
-		again.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-            	synchronized(frame)
-            	{
-            		frame.notify();
-            	}
-            }
-        });   
-        
-		again.setEnabled(false);
-		this.frame.add(exit,2);
-		exit.setOpaque(true);
-		exit.setBorderPainted(false);
-		
-		exit.addActionListener(new ActionListener() {
-               
-            public void actionPerformed(ActionEvent e)
-            {
-            	frame.setVisible(false);
-            	frame.dispose();
+
+		this.again.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				synchronized(View.this.frame) {
+					View.this.frame.notify();
+				}
+			}
+		});
+
+		this.again.setEnabled(false);
+		this.frame.add(this.exit, 2);
+		this.exit.setOpaque(true);
+		this.exit.setBorderPainted(false);
+
+		this.exit.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				View.this.frame.setVisible(false);
+				View.this.frame.dispose();
 				System.exit(0);
-            }
-        });      
-		
-		exit.setBounds(450,522 ,103,31);
-		
+			}
+		});
+
+		this.exit.setBounds(450, 522, 103, 31);
+
 		this.racers.put("gator", new Racer("gator", 1));
 		this.racers.put("penguin", new Racer("penguin", 2));
 		this.racers.put("cat", new Racer("cat", 3));
 		this.racers.put("human", new Racer("human", 4));
 
 		Set<String> s = racers.keySet();
-		
-		for(String x : s)
-		{
-			this.frame.add(this.racers.get(x),3);
+
+		for(String x: s) {
+			this.frame.add(this.racers.get(x), 3);
 		}
-		for(String x : s)
-		{
+		for(String x: s) {
 			this.racers.get(x).setBounds(75 * this.racers.get(x).lane, 475, 27, 90);
 			this.racers.get(x).setOpaque(true);
 		}
 	}
-	
-	public void resetRacers()
-	{
-		Set<String> s = racers.keySet();
-		
-		for(String x : s)
-		{
+
+	public void resetRacers() {
+		Set<String> s = this.racers.keySet();
+
+		for(String x: s) {
 			this.racers.get(x).reset();
 		}
 	}

@@ -9,11 +9,10 @@ For more information on JTrisApplet, please go to:
 http://code.google.com/p/prmf/wiki/JTrisApplet
 
 To compile:
-	$ cd src
 	$ make
 
 To run server:
-	$ cd src
+	$ cd bin
 	$ java ServerCLI [logfile.txt]
 
 To run client:
