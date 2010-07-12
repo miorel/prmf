@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="merapi" default="dist-bin">
+	<description>Ant build file for the Merapi project</description>
+	<target name="bin" description="compiles the project source">
+		<mkdir dir="modules/core/bin"/>
+		<javac includeAntRuntime="no" srcdir="modules/core/src" destdir="modules/core/bin">
+			<include name="**/*.java"/>
+			<exclude name="**/package-info.java"/>
+		</javac>
+		<mkdir dir="modules/iterators/bin"/>
+		<javac includeAntRuntime="no" srcdir="modules/iterators/src" destdir="modules/iterators/bin">
+			<include name="**/*.java"/>
+			<exclude name="**/package-info.java"/>
+		</javac>
+		<mkdir dir="modules/unsorted/bin"/>
+		<javac includeAntRuntime="no" srcdir="modules/unsorted/src" destdir="modules/unsorted/bin">
+			<include name="**/*.java"/>
+			<exclude name="**/package-info.java"/>
+			<classpath>
+				<pathelement path="modules/core/bin"/>
+				<pathelement path="modules/iterators/bin"/>
+			</classpath>
+		</javac>
+	</target>
+	<target name="clean-bin" description="removes the compiled project source">
+		<delete dir="modules/core/bin"/>
+		<delete dir="modules/iterators/bin"/>
+		<delete dir="modules/unsorted/bin"/>
+	</target>
+	<target name="clean-dist" description="removes the distribution directory">
+		<delete dir="dist"/>
+	</target>
+	<target name="clean" description="removes all rebuildable files" depends="clean-bin,clean-dist"/>
+	<target name="dist-bin" description="creates binary distribution files" depends="bin">
+		<mkdir dir="dist"/>
+		<jar destfile="dist/merapi-core-0.0.1.jar">
+			<fileset includes="**/*.class" dir="modules/core/bin"/>
+			<fileset dir="modules/core/res"/>
+			<manifest>
+				<attribute value="merapi-core" name="Implementation-Title"/>
+				<attribute value="0.0.1" name="Implementation-Version"/>
+			</manifest>
+		</jar>
+		<jar destfile="dist/merapi-iterators-0.0.1.jar">
+			<fileset includes="**/*.class" dir="modules/iterators/bin"/>
+			<fileset dir="modules/iterators/res"/>
+			<manifest>
+				<attribute value="merapi-iterators" name="Implementation-Title"/>
+				<attribute value="0.0.1" name="Implementation-Version"/>
+			</manifest>
+		</jar>
+		<jar destfile="dist/merapi-unsorted-0.0.1.jar">
+			<fileset includes="**/*.class" dir="modules/unsorted/bin"/>
+			<fileset dir="modules/unsorted/res"/>
+			<manifest>
+				<attribute value="merapi-unsorted" name="Implementation-Title"/>
+				<attribute value="0.0.1" name="Implementation-Version"/>
+			</manifest>
+		</jar>
+		<jar destfile="dist/merapi-0.0.1.jar">
+			<manifest>
+				<attribute value="merapi" name="Implementation-Title"/>
+				<attribute value="0.0.1" name="Implementation-Version"/>
+			</manifest>
+			<zipfileset src="dist/merapi-core-0.0.1.jar" excludes="META-INF/**"/>
+			<zipfileset src="dist/merapi-iterators-0.0.1.jar" excludes="META-INF/**"/>
+			<zipfileset src="dist/merapi-unsorted-0.0.1.jar" excludes="META-INF/**"/>
+		</jar>
+	</target>
+	<target name="dist" description="creates all distribution files" depends="dist-bin"/>
+</project>

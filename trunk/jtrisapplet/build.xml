@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="jtrisapplet" default="dist-bin">
 	<target name="clean">
 		<delete dir="bin"/>
 		<delete file="dist/jtrisapplet.jar"/>
 	</target>
 
-	<target name="bin">
+	<target name="bin" description="compiles the project source">
 		<mkdir dir="bin"/>
 		<javac srcdir="src" destdir="bin" includeAntRuntime="no"/>
 	</target>

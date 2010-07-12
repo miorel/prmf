@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="TWW2Bot" default="dist-bin">
 	<target name="clean">
 		<delete dir="bin"/>
 		<delete dir="dist"/>
 	</target>
 
-	<target name="bin">
+	<target name="bin" description="compiles the project source">
 		<mkdir dir="bin"/>
 		<javac srcdir="src" destdir="bin" classpath="lib/merapi-0.0.1.jar" includeAntRuntime="no"/>
 	</target>

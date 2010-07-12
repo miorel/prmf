@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="corleone">
 	<target name="clean" description="Removes old class and jar files">
 		<delete dir="bin"/>
 		<delete dir="dist"/>
 	</target>
 
-	<target name="compile" description="Compiles the source code">
+	<target name="compile" description="compiles the project source">
 		<mkdir dir="bin"/>
 		<javac srcdir="src" destdir="bin"/>
 	</target>
