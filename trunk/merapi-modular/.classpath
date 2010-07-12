@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="modules/core/src" output="modules/core/bin"/>
+	<classpathentry kind="output" path="modules/core/bin"/>
+
+	<classpathentry kind="src" path="modules/iterators/src" output="modules/iterators/bin"/>
+	<classpathentry kind="output" path="modules/iterators/bin"/>
+
+	<classpathentry kind="src" path="modules/unsorted/src" output="modules/unsorted/bin"/>
+	<classpathentry kind="output" path="modules/unsorted/bin"/>
+
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+</classpath>

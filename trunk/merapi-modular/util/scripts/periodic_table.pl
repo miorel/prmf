@@ -5,7 +5,6 @@
 # There's probably a nicer way to do it, but this works.
 # 
 
-use 5.006;
 use warnings;
 use strict;
 

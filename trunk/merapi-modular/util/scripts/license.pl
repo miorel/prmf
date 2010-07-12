@@ -1,8 +1,4 @@
 #!/usr/bin/perl
-#
-# script for lazy people (like yours truly) that adds a GPLv3 notice to files
-# currently only works with .java files, I may add others later
-# 
 
 use warnings;
 use strict;
@@ -12,6 +8,9 @@ use File::Find;
 ### BEGIN CONFIG ###############################################################
 my $java = <<'EOF';
 /*
+ * Merapi - Multi-purpose Java library
+ * Copyright (C) 2009-2010 Miorel-Lucian Palii <mlpalii@gmail.com>
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
