@@ -1,5 +1,13 @@
 2010-07-08  Miorel-Lucian Palii <mlpalii@gmail.com>
 
+	* cutter.c: Added preprocessor directives to use
+	  png_set_expand_gray_1_2_4_to_8() rather than png_set_gray_1_2_4_to_8() if
+	  libpng 1.4 or later is present.
+	* Makefile: Created a basic Makefile. Currently contains a rule for
+	  compiling and one for cleaning.
+
+2010-07-08  Miorel-Lucian Palii <mlpalii@gmail.com>
+
 	* Doxyfile, cutter.c, doc.sh: Tweaked some settings, created a script for
 	  installing the documentation in the proper part of the repository.
 

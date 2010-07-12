@@ -543,8 +543,13 @@ png_bytepp read_png(const char* file_name)
 			printf("-Color type set to be converted from PALETTE to RGB\n\t");
 			break;
 		case PNG_COLOR_TYPE_GRAY:
-			if (bit_depth < 8)
+			if (bit_depth < 8) {
+#if (PNG_LIBPNG_VER_MAJOR > 1 || (PNG_LIBPNG_VER_MAJOR == 1 && PNG_LIBPNG_VER_MINOR >= 4))
+				png_set_expand_gray_1_2_4_to_8(png_ptr);
+#else
 				png_set_gray_1_2_4_to_8(png_ptr);
+#endif
+			}
 			bit_depth = 8;
 			printf("-Color type set to be expanded to low-bit GRAY to 8-bit\n\t");  
 			break;
