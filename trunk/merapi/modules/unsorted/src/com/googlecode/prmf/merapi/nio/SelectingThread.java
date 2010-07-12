@@ -1,5 +1,5 @@
 /*
- * merapi - Multi-purpose Java library
+ * Merapi - Multi-purpose Java library
  * Copyright (C) 2009-2010 Miorel-Lucian Palii <mlpalii@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,7 +25,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.Set;
 
-import com.googlecode.prmf.merapi.thread.SpecializedThread;
+import com.googlecode.prmf.merapi.threads.SpecializedThread;
 
 /**
  * A selector-backed thread for managing channels.

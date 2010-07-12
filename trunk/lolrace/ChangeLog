@@ -1,3 +1,8 @@
+2010-07-12  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* build.xml: Created a few more specific targets, added some target
+	  descriptions.
+
 2010-07-10  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* src/race, src/com/googlecode/prmf/lolrace, res/race,

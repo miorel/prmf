@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="corleone">
-	<target name="clean" description="Removes old class and jar files">
+	<target name="clean-bin" description="removes the compiled project source">
 		<delete dir="bin"/>
+	</target>
+
+	<target name="clean-dist" description="removes the distribution directory">
 		<delete dir="dist"/>
 	</target>
 
-	<target name="compile" description="compiles the project source">
+	<target name="clean" description="removes all rebuildable files" depends="clean-bin,clean-dist"/>
+
+	<target name="bin" description="compiles the project source">
 		<mkdir dir="bin"/>
-		<javac srcdir="src" destdir="bin"/>
+		<javac srcdir="src" destdir="bin" includeAntRuntime="no"/>
 	</target>
 
-	<target name="jar" description="Creates the jar file from the compiled source" depends="compile" >
+	<target name="jar" description="Creates the jar file from the compiled source" depends="bin">
 		<mkdir dir="dist"/>
 		<jar destfile="dist/corleone.jar">
 			<manifest>
@@ -25,6 +30,5 @@
 		<copy file="settings.txt" tofile="dist/settings.txt"/>
 		<java jar="dist/corleone.jar" fork="true"/>
 	</target>
-
 </project>
 

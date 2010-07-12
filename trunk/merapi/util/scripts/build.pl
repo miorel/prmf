@@ -9,14 +9,30 @@ my $version = '0.0.1';
 
 my @modules = (
 	{
-		name => 'core',
+		name => 'util',
+	},
+	{
+		name => 'event',
 	},
 	{
 		name => 'iterators',
+		deps => [qw(util)],
+	},
+	{
+		name => 'threads',
+		deps => [qw(util)],
+	},
+	{
+		name => 'math',
+		deps => [qw(iterators)],
 	},
 	{
 		name => 'unsorted',
-		deps => [qw(core iterators)],
+		deps => [qw(util event iterators threads)],
+	},
+	{
+		name => 'chem',
+		deps => [qw(unsorted)],
 	},
 );
 
@@ -66,18 +82,11 @@ for(@modules) {
 	my $module = $_->{name};
 	my $jar = xml_obj('jar', {destfile => "dist/$project-$module-$version.jar"});
 	add_child($jar, xml_obj('fileset', {dir => "modules/$module/bin", includes => '**/*.class'}));
-	add_child($jar, xml_obj('fileset', {dir => "modules/$module/res"}));
-	add_child($jar, xml_obj('manifest', {}, [
-		xml_obj('attribute', {name => 'Implementation-Title', value => "$project-$module"}),
-		xml_obj('attribute', {name => 'Implementation-Version', value => $version}),
-	]));
+	add_child($jar, xml_obj('fileset', {dir => "modules/$module/res"})) if -d "modules/$module/res";
+	add_child($jar, manifest("$project-$module", $version));
 	add_child($target, $jar);
 }
-my $jar = xml_obj('jar', {destfile => "dist/$project-$version.jar"});
-add_child($jar, xml_obj('manifest', {}, [
-	xml_obj('attribute', {name => 'Implementation-Title', value => $project}),
-	xml_obj('attribute', {name => 'Implementation-Version', value => $version}),
-]));
+my $jar = xml_obj('jar', {destfile => "dist/$project-$version.jar"}, [manifest($project, $version)]);
 for(@modules) {
 	my $module = $_->{name};
 	add_child($jar, xml_obj('zipfileset', {src => "dist/$project-$module-$version.jar", excludes => 'META-INF/**'}));
@@ -91,6 +100,14 @@ add_child($xml, $target);
 print_xml($fh, $xml);
 
 close $fh;
+
+sub manifest {
+	my($title, $version) = @_;
+	return xml_obj('manifest', {}, [
+		xml_obj('attribute', {name => 'Implementation-Title', value => $title}),
+		xml_obj('attribute', {name => 'Implementation-Version', value => $version}),
+	]);
+}
 
 sub xml_obj {
 	return {

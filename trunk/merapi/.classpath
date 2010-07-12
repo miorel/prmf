@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="modules/core/src" output="modules/core/bin"/>
-	<classpathentry kind="output" path="modules/core/bin"/>
+	<classpathentry kind="src" path="modules/util/src" output="modules/util/bin"/>
+	<classpathentry kind="output" path="modules/util/bin"/>
+
+	<classpathentry kind="src" path="modules/event/src" output="modules/event/bin"/>
+	<classpathentry kind="output" path="modules/event/bin"/>
 
 	<classpathentry kind="src" path="modules/iterators/src" output="modules/iterators/bin"/>
 	<classpathentry kind="output" path="modules/iterators/bin"/>
+
+	<classpathentry kind="src" path="modules/threads/src" output="modules/threads/bin"/>
+	<classpathentry kind="output" path="modules/threads/bin"/>
+
+	<classpathentry kind="src" path="modules/math/src" output="modules/math/bin"/>
+	<classpathentry kind="output" path="modules/math/bin"/>
+
+	<classpathentry kind="src" path="modules/chem/src" output="modules/chem/bin"/>
+	<classpathentry kind="output" path="modules/chem/bin"/>
 
 	<classpathentry kind="src" path="modules/unsorted/src" output="modules/unsorted/bin"/>
 	<classpathentry kind="output" path="modules/unsorted/bin"/>

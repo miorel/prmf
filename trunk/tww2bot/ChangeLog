@@ -1,3 +1,9 @@
+2010-07-12  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* build.xml: Created a few more specific targets, added some target
+	  descriptions.
+	* lib/merapi-0.0.1.jar: Updated Merapi libraries.
+
 2010-07-09  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* src/MafiaPlayer/MafiaPlayer.java: Removed some unused methods.

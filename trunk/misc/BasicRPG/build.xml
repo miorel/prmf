@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="BasicRPG" default="dist-bin">
-	<target name="clean">
+	<target name="clean-bin" description="removes the compiled project source">
 		<delete dir="bin"/>
+	</target>
+
+	<target name="clean-dist" description="removes the distribution directory">
 		<delete dir="dist"/>
 	</target>
+
+	<target name="clean" description="removes all rebuildable files" depends="clean-bin,clean-dist"/>
 
 	<target name="bin" description="compiles the project source">
 		<mkdir dir="bin"/>
@@ -20,5 +25,7 @@
 			<fileset dir="res"/>
 		</jar>
 	</target>
+
+	<target name="dist" description="creates all distribution files" depends="dist-bin"/>
 </project>
 

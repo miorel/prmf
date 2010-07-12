@@ -1,5 +1,5 @@
 /*
- * merapi - Multi-purpose Java library
+ * Merapi - Multi-purpose Java library
  * Copyright (C) 2009-2010 Miorel-Lucian Palii <mlpalii@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify it under
