@@ -1,0 +1,10 @@
+<project name="merapi-iterators" default="bin">
+	<target name="clean">
+		<delete dir="bin"/>
+	</target>
+
+	<target name="bin">
+		<mkdir dir="bin"/>
+		<javac srcdir="src" destdir="bin" includeAntRuntime="no"/>
+	</target>
+</project>

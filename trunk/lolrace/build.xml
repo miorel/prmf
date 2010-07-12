@@ -11,9 +11,9 @@
 
 	<target name="dist-bin" depends="bin">
 		<mkdir dir="dist"/>
-		<jar destfile="dist/race.jar">
+		<jar destfile="dist/lolrace.jar">
 			<manifest>
-				<attribute name="Main-Class" value="race.Main"/>
+				<attribute name="Main-Class" value="com.googlecode.prmf.lolrace.Main"/>
 			</manifest>
 			<fileset dir="bin"/>
 			<fileset dir="res"/>

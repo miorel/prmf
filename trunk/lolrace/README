@@ -3,6 +3,6 @@ lolrace - fun for the whole family
 This project uses Apache Ant <http://ant.apache.org/> for its build process.
 
 To build, execute `ant` in the project's root directory.
-To run (after building), `cd dist` and `java -jar race.jar`.
+To run (after building), `cd dist` and `java -jar lolrace.jar`.
 
 Enjoy!

@@ -1,3 +1,7 @@
+2010-07-11  Brian Nezvadovitz <brianez21@gmail.com>
+
+	* README: Changed line ends to char 80.
+
 2010-07-10  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* src/Makefile, Makefile: Moved Makefile to project root directory and

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package race;
+package com.googlecode.prmf.lolrace;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -26,16 +26,16 @@ import javax.swing.JComponent;
  * @author Preston Mueller
  */
 public class Racer extends JComponent {
+	private static final long serialVersionUID = 4391042457384928947L;
+
 	private BufferedImage currentImg;
 	private BufferedImage img1;
 	private BufferedImage img2;
 	private int ci;
 	int lane;
 	private int currentHeight;
-	private int score;
 
 	public Racer(String imgPath, int l) {
-		this.score = 0;
 		this.currentHeight = 475;
 		this.lane = l;
 		try {

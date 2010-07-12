@@ -1,3 +1,11 @@
+2010-07-10  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* src/race, src/com/googlecode/prmf/lolrace, res/race,
+	  res/com/googlecode/prmf/lolrace: Refactored package names.
+	* build.xml: Updated build script with new package names.
+	* src/com/googlecode/prmf/lolrace/Racer.java: Added serialVersionUID,
+	  removed unused field.
+
 2010-07-09  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* src/race/Background.java, src/race/Game.java, src/race/Main.java,
