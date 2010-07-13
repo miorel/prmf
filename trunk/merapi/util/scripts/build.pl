@@ -36,11 +36,12 @@ my @modules = (
 	},
 );
 
-
 open my $fh, ">$out_file" or die "Failed to open $out_file for writing";
 
 my $xml = xml_obj('project', {name => $project, default => 'dist-bin'});
-add_child($xml, xml_obj('description', undef, undef, 'Ant build file for the Merapi project'));
+add_child($xml, xml_obj('description', undef, undef, "\n\tAnt build file for the Merapi project\n\n"));
+
+my $src_fileset = {dir => '${basedir}', excludes => 'modules/*/bin/**,dist/**', prefix => "$project-$version-src"};
 
 my $target;
 
@@ -48,8 +49,8 @@ $target = xml_obj('target', {name => 'bin', description => 'compiles the project
 for(@modules) {
 	my $module = $_->{name};
 	my @deps = @{$_->{deps} || []};
-	add_child($target, xml_obj('mkdir', {dir => "modules/$module/bin"}));
-	my $javac = xml_obj('javac', {srcdir => "modules/$module/src", destdir => "modules/$module/bin", includeAntRuntime => 'no'});
+	add_child($target, mkdir_obj("modules/$module/bin"));
+	my $javac = xml_obj('javac', {srcdir => "modules/$module/src", destdir => "modules/$module/bin", includeAntRuntime => 'no', target => '1.5'});
 	add_child($javac, xml_obj('include', {name => '**/*.java'}));
 	add_child($javac, xml_obj('exclude', {name => '**/package-info.java'}));
 	if(@deps) {
@@ -76,17 +77,34 @@ add_child($xml, $target);
 $target = xml_obj('target', {name => 'clean', description => 'removes all rebuildable files', depends => 'clean-bin,clean-dist'});
 add_child($xml, $target);
 
+$target = xml_obj('target', {name => 'dist-src-tgz', description => 'creates a gzipped tarball source distribution'});
+add_child($target, mkdir_obj('dist'));
+add_child($target, xml_obj('tar', {destfile => "dist/$project-$version-src.tar.gz", compression => 'gzip', longfile => 'gnu'}, [xml_obj('tarfileset', $src_fileset)]));
+add_child($xml, $target);
+
+$target = xml_obj('target', {name => 'dist-src-tbz2', description => 'creates a bzip2-compressed tarball source distribution'});
+add_child($target, mkdir_obj('dist'));
+add_child($target, xml_obj('tar', {destfile => "dist/$project-$version-src.tar.bz2", compression => 'bzip2', longfile => 'gnu'}, [xml_obj('tarfileset', $src_fileset)]));
+add_child($xml, $target);
+
+$target = xml_obj('target', {name => 'dist-src-zip', description => 'creates a zipped source distribution'});
+add_child($target, mkdir_obj('dist'));
+add_child($target, xml_obj('zip', {destfile => "dist/$project-$version-src.zip"}, [xml_obj('zipfileset', $src_fileset)]));
+add_child($xml, $target);
+
+$target = xml_obj('target', {name => 'dist-src', description => 'creates all the source distribution bundles', depends => 'dist-src-tgz,dist-src-tbz2,dist-src-zip'});
+add_child($xml, $target);
+
 $target = xml_obj('target', {name => 'dist-bin', description => 'creates binary distribution files', depends => 'bin'});
-add_child($target, xml_obj('mkdir', {dir => 'dist'}));
+add_child($target, mkdir_obj('dist'));
 for(@modules) {
 	my $module = $_->{name};
-	my $jar = xml_obj('jar', {destfile => "dist/$project-$module-$version.jar"});
+	my $jar = jar_obj("dist/$project-$module-$version.jar", "$project-$module", $version);
 	add_child($jar, xml_obj('fileset', {dir => "modules/$module/bin", includes => '**/*.class'}));
 	add_child($jar, xml_obj('fileset', {dir => "modules/$module/res"})) if -d "modules/$module/res";
-	add_child($jar, manifest("$project-$module", $version));
 	add_child($target, $jar);
 }
-my $jar = xml_obj('jar', {destfile => "dist/$project-$version.jar"}, [manifest($project, $version)]);
+my $jar = jar_obj("dist/$project-$version.jar", $project, $version);
 for(@modules) {
 	my $module = $_->{name};
 	add_child($jar, xml_obj('zipfileset', {src => "dist/$project-$module-$version.jar", excludes => 'META-INF/**'}));
@@ -94,19 +112,29 @@ for(@modules) {
 add_child($target, $jar);
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'dist', description => 'creates all distribution files', depends => 'dist-bin'});
+$target = xml_obj('target', {name => 'dist', description => 'creates all distribution files', depends => 'dist-src,dist-bin'});
 add_child($xml, $target);
 
 print_xml($fh, $xml);
 
 close $fh;
 
-sub manifest {
+sub jar_obj {
+	my($file, $title, $version) = @_;
+	return xml_obj('jar', {destfile => $file}, [manifest_obj($title, $version)]);
+}
+
+sub manifest_obj {
 	my($title, $version) = @_;
 	return xml_obj('manifest', {}, [
 		xml_obj('attribute', {name => 'Implementation-Title', value => $title}),
 		xml_obj('attribute', {name => 'Implementation-Version', value => $version}),
 	]);
+}
+
+sub mkdir_obj {
+	my $dir = shift;
+	return xml_obj('mkdir', {dir => $dir})
 }
 
 sub xml_obj {
@@ -159,45 +187,16 @@ __DATA__
 <project name="merapi"> <!--default="dist"-->
 <!--	<property file="merapi.properties"/>
 	
-	<fileset id="merapi.src.fileset" dir="${basedir}" excludes="${merapi.bin.dir}/**,${merapi.dist.dir}/**,${merapi.doc.dir}/**"/>
-	
 	<target name="clean-doc" description="removes the documentation directory">
 		<delete dir="${merapi.doc.dir}"/>
 	</target>
-	
-	<target name="clean" description="removes all rebuildable files"
-		depends="clean-bin,clean-doc,clean-dist"/>
-	
-	<target name="dist-src-tgz" description="creates a gzipped tarball source distribution">
-		<mkdir dir="${merapi.dist.dir}"/>
-		<tar destfile="${merapi.dist.dir}/${merapi.dist.name}-src.tar.gz" compression="gzip">
-			<tarfileset refid="merapi.src.fileset" prefix="${merapi.dist.name}"/>
-		</tar>
-	</target>
-
-	<target name="dist-src-tbz2" description="creates a bzip2-compressed tarball source distribution">
-		<mkdir dir="${merapi.dist.dir}"/>
-		<tar destfile="${merapi.dist.dir}/${merapi.dist.name}-src.tar.bz2" compression="bzip2">
-			<tarfileset refid="merapi.src.fileset" prefix="${merapi.dist.name}"/>
-		</tar>
-	</target>
-	
-	<target name="dist-src-zip" description="creates a zipped source distribution">	
-		<mkdir dir="${merapi.dist.dir}"/>
-		<zip destfile="${merapi.dist.dir}/${merapi.dist.name}-src.zip">
-			<zipfileset refid="merapi.src.fileset" prefix="merapi.dist.name}"/>
-		</zip>
-	</target>
-	
-	<target name="dist-src" description="creates all the source distribution bundles"
-		depends="dist-src-tgz,dist-src-tbz2,dist-src-zip"/> 
 	
 	<target name="doc" description="generates project documentation">
 		<javadoc
 			access="package"
 			author="true"
 			destdir="doc"
-			doctitle="Documentation for the merapi project, version ${merapi.version}"
+			doctitle="Documentation for the Merapi project, version ${merapi.version}"
 			nodeprecated="false"
 			nodeprecatedlist="false"
 			noindex="false"
