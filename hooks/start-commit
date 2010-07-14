@@ -3,3 +3,5 @@
 print STDERR "$0 called with arguments:\n";
 print STDERR "$_\n" for @ARGV;
 print STDERR "\n";
+
+exit 1;
