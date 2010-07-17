@@ -4,158 +4,145 @@
 	Ant build file for the Merapi project
 
 </description>
-	<target name="bin" description="compiles the project source">
-		<mkdir dir="modules/util/bin"/>
-		<javac target="1.5" includeAntRuntime="no" srcdir="modules/util/src" destdir="modules/util/bin">
+	<target name="compile-project" description="compiles the project source">
+		<mkdir dir="build/bin/merapi-util"/>
+		<javac target="1.5" includeAntRuntime="no" srcdir="src/merapi-util/java" destdir="build/bin/merapi-util">
 			<include name="**/*.java"/>
-			<exclude name="**/package-info.java"/>
 		</javac>
-		<mkdir dir="modules/event/bin"/>
-		<javac target="1.5" includeAntRuntime="no" srcdir="modules/event/src" destdir="modules/event/bin">
+		<mkdir dir="build/bin/merapi-event"/>
+		<javac target="1.5" includeAntRuntime="no" srcdir="src/merapi-event/java" destdir="build/bin/merapi-event">
 			<include name="**/*.java"/>
-			<exclude name="**/package-info.java"/>
 		</javac>
-		<mkdir dir="modules/iterators/bin"/>
-		<javac target="1.5" includeAntRuntime="no" srcdir="modules/iterators/src" destdir="modules/iterators/bin">
+		<mkdir dir="build/bin/merapi-iterators"/>
+		<javac target="1.5" includeAntRuntime="no" srcdir="src/merapi-iterators/java" destdir="build/bin/merapi-iterators">
 			<include name="**/*.java"/>
-			<exclude name="**/package-info.java"/>
 			<classpath>
-				<pathelement path="modules/util/bin"/>
+				<pathelement path="build/bin/merapi-util"/>
 			</classpath>
 		</javac>
-		<mkdir dir="modules/threads/bin"/>
-		<javac target="1.5" includeAntRuntime="no" srcdir="modules/threads/src" destdir="modules/threads/bin">
+		<mkdir dir="build/bin/merapi-threads"/>
+		<javac target="1.5" includeAntRuntime="no" srcdir="src/merapi-threads/java" destdir="build/bin/merapi-threads">
 			<include name="**/*.java"/>
-			<exclude name="**/package-info.java"/>
 			<classpath>
-				<pathelement path="modules/util/bin"/>
+				<pathelement path="build/bin/merapi-util"/>
 			</classpath>
 		</javac>
-		<mkdir dir="modules/math/bin"/>
-		<javac target="1.5" includeAntRuntime="no" srcdir="modules/math/src" destdir="modules/math/bin">
+		<mkdir dir="build/bin/merapi-math"/>
+		<javac target="1.5" includeAntRuntime="no" srcdir="src/merapi-math/java" destdir="build/bin/merapi-math">
 			<include name="**/*.java"/>
-			<exclude name="**/package-info.java"/>
 			<classpath>
-				<pathelement path="modules/iterators/bin"/>
+				<pathelement path="build/bin/merapi-iterators"/>
 			</classpath>
 		</javac>
-		<mkdir dir="modules/unsorted/bin"/>
-		<javac target="1.5" includeAntRuntime="no" srcdir="modules/unsorted/src" destdir="modules/unsorted/bin">
+		<mkdir dir="build/bin/merapi-unsorted"/>
+		<javac target="1.5" includeAntRuntime="no" srcdir="src/merapi-unsorted/java" destdir="build/bin/merapi-unsorted">
 			<include name="**/*.java"/>
-			<exclude name="**/package-info.java"/>
 			<classpath>
-				<pathelement path="modules/util/bin"/>
-				<pathelement path="modules/event/bin"/>
-				<pathelement path="modules/iterators/bin"/>
-				<pathelement path="modules/threads/bin"/>
+				<pathelement path="build/bin/merapi-util"/>
+				<pathelement path="build/bin/merapi-event"/>
+				<pathelement path="build/bin/merapi-iterators"/>
+				<pathelement path="build/bin/merapi-threads"/>
 			</classpath>
 		</javac>
-		<mkdir dir="modules/chem/bin"/>
-		<javac target="1.5" includeAntRuntime="no" srcdir="modules/chem/src" destdir="modules/chem/bin">
+		<mkdir dir="build/bin/merapi-chem"/>
+		<javac target="1.5" includeAntRuntime="no" srcdir="src/merapi-chem/java" destdir="build/bin/merapi-chem">
 			<include name="**/*.java"/>
-			<exclude name="**/package-info.java"/>
 			<classpath>
-				<pathelement path="modules/unsorted/bin"/>
+				<pathelement path="build/bin/merapi-unsorted"/>
 			</classpath>
 		</javac>
 	</target>
 	<target name="clean-bin" description="removes the compiled project source">
-		<delete dir="modules/util/bin"/>
-		<delete dir="modules/event/bin"/>
-		<delete dir="modules/iterators/bin"/>
-		<delete dir="modules/threads/bin"/>
-		<delete dir="modules/math/bin"/>
-		<delete dir="modules/unsorted/bin"/>
-		<delete dir="modules/chem/bin"/>
+		<delete dir="build/bin"/>
 	</target>
 	<target name="clean-dist" description="removes the distribution directory">
-		<delete dir="dist"/>
+		<delete dir="build/dist"/>
 	</target>
-	<target name="clean" description="removes all rebuildable files" depends="clean-bin,clean-dist"/>
+	<target name="clean-all" description="removes all rebuildable files"/>
 	<target name="dist-src-tgz" description="creates a gzipped tarball source distribution">
-		<mkdir dir="dist"/>
-		<tar compression="gzip" destfile="dist/merapi-0.0.1-src.tar.gz" longfile="gnu">
-			<tarfileset excludes="modules/*/bin/**,dist/**" dir="${basedir}" prefix="merapi-0.0.1-src"/>
+		<mkdir dir="build/dist"/>
+		<tar compression="gzip" destfile="build/dist/merapi-0.0.1-src.tar.gz" longfile="gnu">
+			<tarfileset excludes="build/**" dir="${basedir}" prefix="merapi-0.0.1-src"/>
 		</tar>
 	</target>
 	<target name="dist-src-tbz2" description="creates a bzip2-compressed tarball source distribution">
-		<mkdir dir="dist"/>
-		<tar compression="bzip2" destfile="dist/merapi-0.0.1-src.tar.bz2" longfile="gnu">
-			<tarfileset excludes="modules/*/bin/**,dist/**" dir="${basedir}" prefix="merapi-0.0.1-src"/>
+		<mkdir dir="build/dist"/>
+		<tar compression="bzip2" destfile="build/dist/merapi-0.0.1-src.tar.bz2" longfile="gnu">
+			<tarfileset excludes="build/**" dir="${basedir}" prefix="merapi-0.0.1-src"/>
 		</tar>
 	</target>
 	<target name="dist-src-zip" description="creates a zipped source distribution">
-		<mkdir dir="dist"/>
-		<zip destfile="dist/merapi-0.0.1-src.zip">
-			<zipfileset excludes="modules/*/bin/**,dist/**" dir="${basedir}" prefix="merapi-0.0.1-src"/>
+		<mkdir dir="build/dist"/>
+		<zip destfile="build/dist/merapi-0.0.1-src.zip">
+			<zipfileset excludes="build/**" dir="${basedir}" prefix="merapi-0.0.1-src"/>
 		</zip>
 	</target>
 	<target name="dist-src" description="creates all the source distribution bundles" depends="dist-src-tgz,dist-src-tbz2,dist-src-zip"/>
-	<target name="dist-bin" description="creates binary distribution files" depends="bin">
-		<mkdir dir="dist"/>
-		<jar destfile="dist/merapi-util-0.0.1.jar">
+	<target name="dist-bin" description="creates binary distribution files" depends="compile-project">
+		<mkdir dir="build/dist"/>
+		<jar destfile="build/dist/merapi-util-0.0.1.jar">
 			<manifest>
 				<attribute value="merapi-util" name="Implementation-Title"/>
 				<attribute value="0.0.1" name="Implementation-Version"/>
 			</manifest>
-			<fileset includes="**/*.class" dir="modules/util/bin"/>
+			<fileset includes="**/*.class" dir="build/bin/merapi-util"/>
 		</jar>
-		<jar destfile="dist/merapi-event-0.0.1.jar">
+		<jar destfile="build/dist/merapi-event-0.0.1.jar">
 			<manifest>
 				<attribute value="merapi-event" name="Implementation-Title"/>
 				<attribute value="0.0.1" name="Implementation-Version"/>
 			</manifest>
-			<fileset includes="**/*.class" dir="modules/event/bin"/>
+			<fileset includes="**/*.class" dir="build/bin/merapi-event"/>
 		</jar>
-		<jar destfile="dist/merapi-iterators-0.0.1.jar">
+		<jar destfile="build/dist/merapi-iterators-0.0.1.jar">
 			<manifest>
 				<attribute value="merapi-iterators" name="Implementation-Title"/>
 				<attribute value="0.0.1" name="Implementation-Version"/>
 			</manifest>
-			<fileset includes="**/*.class" dir="modules/iterators/bin"/>
+			<fileset includes="**/*.class" dir="build/bin/merapi-iterators"/>
 		</jar>
-		<jar destfile="dist/merapi-threads-0.0.1.jar">
+		<jar destfile="build/dist/merapi-threads-0.0.1.jar">
 			<manifest>
 				<attribute value="merapi-threads" name="Implementation-Title"/>
 				<attribute value="0.0.1" name="Implementation-Version"/>
 			</manifest>
-			<fileset includes="**/*.class" dir="modules/threads/bin"/>
+			<fileset includes="**/*.class" dir="build/bin/merapi-threads"/>
 		</jar>
-		<jar destfile="dist/merapi-math-0.0.1.jar">
+		<jar destfile="build/dist/merapi-math-0.0.1.jar">
 			<manifest>
 				<attribute value="merapi-math" name="Implementation-Title"/>
 				<attribute value="0.0.1" name="Implementation-Version"/>
 			</manifest>
-			<fileset includes="**/*.class" dir="modules/math/bin"/>
+			<fileset includes="**/*.class" dir="build/bin/merapi-math"/>
 		</jar>
-		<jar destfile="dist/merapi-unsorted-0.0.1.jar">
+		<jar destfile="build/dist/merapi-unsorted-0.0.1.jar">
 			<manifest>
 				<attribute value="merapi-unsorted" name="Implementation-Title"/>
 				<attribute value="0.0.1" name="Implementation-Version"/>
 			</manifest>
-			<fileset includes="**/*.class" dir="modules/unsorted/bin"/>
-			<fileset dir="modules/unsorted/res"/>
+			<fileset includes="**/*.class" dir="build/bin/merapi-unsorted"/>
+			<fileset dir="src/merapi-unsorted/res"/>
 		</jar>
-		<jar destfile="dist/merapi-chem-0.0.1.jar">
+		<jar destfile="build/dist/merapi-chem-0.0.1.jar">
 			<manifest>
 				<attribute value="merapi-chem" name="Implementation-Title"/>
 				<attribute value="0.0.1" name="Implementation-Version"/>
 			</manifest>
-			<fileset includes="**/*.class" dir="modules/chem/bin"/>
-			<fileset dir="modules/chem/res"/>
+			<fileset includes="**/*.class" dir="build/bin/merapi-chem"/>
+			<fileset dir="src/merapi-chem/res"/>
 		</jar>
-		<jar destfile="dist/merapi-0.0.1.jar">
+		<jar destfile="build/dist/merapi-0.0.1.jar">
 			<manifest>
 				<attribute value="merapi" name="Implementation-Title"/>
 				<attribute value="0.0.1" name="Implementation-Version"/>
 			</manifest>
-			<zipfileset src="dist/merapi-util-0.0.1.jar" excludes="META-INF/**"/>
-			<zipfileset src="dist/merapi-event-0.0.1.jar" excludes="META-INF/**"/>
-			<zipfileset src="dist/merapi-iterators-0.0.1.jar" excludes="META-INF/**"/>
-			<zipfileset src="dist/merapi-threads-0.0.1.jar" excludes="META-INF/**"/>
-			<zipfileset src="dist/merapi-math-0.0.1.jar" excludes="META-INF/**"/>
-			<zipfileset src="dist/merapi-unsorted-0.0.1.jar" excludes="META-INF/**"/>
-			<zipfileset src="dist/merapi-chem-0.0.1.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-util-0.0.1.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-event-0.0.1.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-iterators-0.0.1.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-threads-0.0.1.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-math-0.0.1.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-unsorted-0.0.1.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-chem-0.0.1.jar" excludes="META-INF/**"/>
 		</jar>
 	</target>
 	<target name="dist" description="creates all distribution files" depends="dist-src,dist-bin"/>

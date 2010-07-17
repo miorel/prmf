@@ -7,6 +7,11 @@ my $out_file = 'build.xml';
 my $project = 'merapi';
 my $version = '0.0.1';
 
+sub module_root { return "src/$project-$_[0]"; }
+sub module_bin { return "build/bin/$project-$_[0]"; }
+sub module_res { return module_root($_[0])."/res"; }
+sub module_src { return module_root($_[0])."/java"; }
+
 my @modules = (
 	{
 		name => 'util',
@@ -41,73 +46,71 @@ open my $fh, ">$out_file" or die "Failed to open $out_file for writing";
 my $xml = xml_obj('project', {name => $project, default => 'dist-bin'});
 add_child($xml, xml_obj('description', undef, undef, "\n\tAnt build file for the Merapi project\n\n"));
 
-my $src_fileset = {dir => '${basedir}', excludes => 'modules/*/bin/**,dist/**', prefix => "$project-$version-src"};
+my $src_fileset = {dir => '${basedir}', excludes => 'build/**', prefix => "$project-$version-src"};
 
 my $target;
 
-$target = xml_obj('target', {name => 'bin', description => 'compiles the project source'});
+$target = xml_obj('target', {name => 'compile-project', description => 'compiles the project source'});
 for(@modules) {
 	my $module = $_->{name};
 	my @deps = @{$_->{deps} || []};
-	add_child($target, mkdir_obj("modules/$module/bin"));
-	my $javac = xml_obj('javac', {srcdir => "modules/$module/src", destdir => "modules/$module/bin", includeAntRuntime => 'no', target => '1.5'});
+	add_child($target, mkdir_obj(module_bin($module)));
+	my $javac = xml_obj('javac', {srcdir => module_src($module), destdir => module_bin($module), includeAntRuntime => 'no', target => '1.5'});
 	add_child($javac, xml_obj('include', {name => '**/*.java'}));
-	add_child($javac, xml_obj('exclude', {name => '**/package-info.java'}));
 	if(@deps) {
 		my $cp = xml_obj('classpath');
-		add_child($cp, $_) for map {xml_obj('pathelement', {path => "modules/$_/bin"})} @deps;
+		add_child($cp, $_) for map {xml_obj('pathelement', {path => module_bin($_)})} @deps;
 		add_child($javac, $cp);
 	}
 	add_child($target, $javac);
 }
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'clean-bin', description => 'removes the compiled project source'});
-for(@modules) {
-	my $module = $_->{name};
-	add_child($target, xml_obj('delete', {dir => "modules/$module/bin"}));
-}
-add_child($xml, $target);
-
-$target = xml_obj('target', {name => 'clean-dist', description => 'removes the distribution directory'}, [
-	xml_obj('delete', {dir => 'dist'}),
+$target = xml_obj('target', {name => 'clean-bin', description => 'removes the compiled project source'}, [
+	xml_obj('delete', {dir => 'build/bin'}),
 ]);
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'clean', description => 'removes all rebuildable files', depends => 'clean-bin,clean-dist'});
+$target = xml_obj('target', {name => 'clean-dist', description => 'removes the distribution directory'}, [
+	xml_obj('delete', {dir => 'build/dist'}),
+]);
+add_child($xml, $target);
+
+$target = xml_obj('target', {name => 'clean-all', description => 'removes all rebuildable files'});
+	xml_obj('delete', {dir => 'build'}),
 add_child($xml, $target);
 
 $target = xml_obj('target', {name => 'dist-src-tgz', description => 'creates a gzipped tarball source distribution'});
-add_child($target, mkdir_obj('dist'));
-add_child($target, xml_obj('tar', {destfile => "dist/$project-$version-src.tar.gz", compression => 'gzip', longfile => 'gnu'}, [xml_obj('tarfileset', $src_fileset)]));
+add_child($target, mkdir_obj('build/dist'));
+add_child($target, xml_obj('tar', {destfile => "build/dist/$project-$version-src.tar.gz", compression => 'gzip', longfile => 'gnu'}, [xml_obj('tarfileset', $src_fileset)]));
 add_child($xml, $target);
 
 $target = xml_obj('target', {name => 'dist-src-tbz2', description => 'creates a bzip2-compressed tarball source distribution'});
-add_child($target, mkdir_obj('dist'));
-add_child($target, xml_obj('tar', {destfile => "dist/$project-$version-src.tar.bz2", compression => 'bzip2', longfile => 'gnu'}, [xml_obj('tarfileset', $src_fileset)]));
+add_child($target, mkdir_obj('build/dist'));
+add_child($target, xml_obj('tar', {destfile => "build/dist/$project-$version-src.tar.bz2", compression => 'bzip2', longfile => 'gnu'}, [xml_obj('tarfileset', $src_fileset)]));
 add_child($xml, $target);
 
 $target = xml_obj('target', {name => 'dist-src-zip', description => 'creates a zipped source distribution'});
-add_child($target, mkdir_obj('dist'));
-add_child($target, xml_obj('zip', {destfile => "dist/$project-$version-src.zip"}, [xml_obj('zipfileset', $src_fileset)]));
+add_child($target, mkdir_obj('build/dist'));
+add_child($target, xml_obj('zip', {destfile => "build/dist/$project-$version-src.zip"}, [xml_obj('zipfileset', $src_fileset)]));
 add_child($xml, $target);
 
 $target = xml_obj('target', {name => 'dist-src', description => 'creates all the source distribution bundles', depends => 'dist-src-tgz,dist-src-tbz2,dist-src-zip'});
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'dist-bin', description => 'creates binary distribution files', depends => 'bin'});
-add_child($target, mkdir_obj('dist'));
+$target = xml_obj('target', {name => 'dist-bin', description => 'creates binary distribution files', depends => 'compile-project'});
+add_child($target, mkdir_obj('build/dist'));
 for(@modules) {
 	my $module = $_->{name};
-	my $jar = jar_obj("dist/$project-$module-$version.jar", "$project-$module", $version);
-	add_child($jar, xml_obj('fileset', {dir => "modules/$module/bin", includes => '**/*.class'}));
-	add_child($jar, xml_obj('fileset', {dir => "modules/$module/res"})) if -d "modules/$module/res";
+	my $jar = jar_obj("build/dist/$project-$module-$version.jar", "$project-$module", $version);
+	add_child($jar, xml_obj('fileset', {dir => module_bin($module), includes => '**/*.class'}));
+	add_child($jar, xml_obj('fileset', {dir => module_res($module)})) if -d module_res($module);
 	add_child($target, $jar);
 }
-my $jar = jar_obj("dist/$project-$version.jar", $project, $version);
+my $jar = jar_obj("build/dist/$project-$version.jar", $project, $version);
 for(@modules) {
 	my $module = $_->{name};
-	add_child($jar, xml_obj('zipfileset', {src => "dist/$project-$module-$version.jar", excludes => 'META-INF/**'}));
+	add_child($jar, xml_obj('zipfileset', {src => "build/dist/$project-$module-$version.jar", excludes => 'META-INF/**'}));
 }
 add_child($target, $jar);
 add_child($xml, $target);

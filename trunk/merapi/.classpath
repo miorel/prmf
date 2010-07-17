@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="modules/util/bin" path="modules/util/src"/>
-	<classpathentry kind="src" output="modules/event/bin" path="modules/event/src"/>
-	<classpathentry kind="src" output="modules/iterators/bin" path="modules/iterators/src"/>
-	<classpathentry kind="src" output="modules/threads/bin" path="modules/threads/src"/>
-	<classpathentry kind="src" output="modules/math/bin" path="modules/math/src"/>
-	<classpathentry kind="src" output="modules/chem/bin" path="modules/chem/src"/>
-	<classpathentry kind="src" output="modules/unsorted/bin" path="modules/unsorted/src"/>
+	<classpathentry kind="src" output="build/bin/merapi-util" path="src/merapi-util/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-event" path="src/merapi-event/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-iterators" path="src/merapi-iterators/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-threads" path="src/merapi-threads/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-math" path="src/merapi-math/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-chem" path="src/merapi-chem/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-unsorted" path="src/merapi-unsorted/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="junit.jar"/>
-	<classpathentry kind="lib" path="hamcrest-core.jar"/>
-	<classpathentry kind="output" path="modules/unsorted/bin"/>
 </classpath>

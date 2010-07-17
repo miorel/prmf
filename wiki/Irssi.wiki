@@ -6,12 +6,25 @@ Ever wonder how some people can be in the IRC channel _all_ the time? They're pr
 
 = Installing on [Cise CISE] systems =
 
-The following sequence of commands installs Irssi in your home directory. It even cleans up after itself. This was tested on `thunder` (and should therefore work on `storm` as well). It didn't work on `eclipse` because of a missing dependency (and will therefore probably _not_ work on the older Sun machines, either).
+The installation process consists of several steps:
+
+  # Download and unpack a source archive.
+  # Configure the build process and generate a Makefile.
+  # `make` and `make install`.
+
+All three of these can be executed programmatically, and overall, the build process is fairly straightforward. One problem when working on CISE systems is that linking with Perl libraries will fail. This is rather uncool because Perl support is needed for lots of neat Irssi scripts.
+
+It turns out the error is caused because there is no `/usr/lib/libperl.so`. But, there probably is a `/usr/lib/libperl.so.5.10.1`. The solution, then, is to create a symlink. Since you probably don't have write permissions in `/usr/lib`, you can create the link anywhere else and simply add the proper directory to the library path using the `LDFLAGS` environment variable. Additionally, the location of the Perl headers must be updated.
+
+The following script puts it all together and installs Irssi in your home directory. It even cleans up after itself. Note that you must run it with `bash` because of the `export` line.
 
 {{{
+#!/bin/bash
 wget http://www.irssi.org/files/irssi-0.8.15.tar.bz2
 tar xjf irssi-0.8.15.tar.bz2
 cd irssi-0.8.15
+ln -s /usr/lib/libperl.so.5.10.1 libperl.so
+export LDFLAGS="-L`pwd` -L/usr/lib/perl/5.10.1/CORE"
 ./configure --prefix=$HOME
 make
 make install
@@ -19,20 +32,22 @@ cd ..
 rm -rf irssi-0.8.15 irssi-0.8.15.tar.bz2
 }}}
 
+This was tested on `storm` (and should therefore work on `thunder` as well). It didn't work on `eclipse` because of a missing dependency (and will therefore probably _not_ work on the older Sun machines, either).
+
 After installation completes, the executable is `bin/irssi` in your home directory. If your path environment variable includes your personal `bin`, all you have to do is run `irssi` on the command line!
 
 = Using =
 
 Check out [http://quadpoint.org/articles/irssi A Guide to Efficiently Using Irssi and Screen], an excellent tutorial which covers Irssi basics as well as how you too can always be on IRC.
 
-= Auto-join to our IRC channel =
+= Auto-joining our IRC channel =
 
-Since it gets annoying to type /connect irc.freenode.net and identify yourself to NickServ every time you want to join our IRC channel, you can tell Irssi to add these settings to your config file (warning: do not edit the config file manually, irssi hates that).
+Since it's annoying to have to explicitly connect to the server, identify to NickServ, and join the channel each time you run Irssi, you can automate this process by editing the config. 
 
-First make sure you are connected to the server and have your nick set properly. Then, do the following (replace "secret" with your password):
+You _shouldn't_ edit the config file by hand because Irssi hates that (though I've actually broken my own advice before). Instead, make sure you are connected to the server and have the proper nick. Then, run the following (replace "secret" with your password):
 
 `/SERVER ADD -auto -network Freenode irc.freenode.net 6667 secret`
-
 `/CHANNEL ADD -auto #ufpt Freenode`
-
 `/save`
+
+You may notice there's no NickServ identification. That step is actually eliminated completely by a neat feature which [http://freenode.net/ Freenode] supports, allowing you to [http://freenode.net/faq.shtml#identify use the nick password as a server password].
