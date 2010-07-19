@@ -3,14 +3,27 @@
 use warnings;
 use strict;
 
-my $out_file = 'build.xml';
+my $repo;
+die "Forking failed" unless defined($repo = fork);
+
+my $out_file = $repo ? 'build.xml' : 'src/repo-ant/build.xml';
 my $project = 'merapi';
-my $version = '0.0.1';
+my $version = "\${$project.version}";
 
 sub module_root { return "src/$project-$_[0]"; }
 sub module_bin { return "build/bin/$project-$_[0]"; }
 sub module_res { return module_root($_[0])."/res"; }
 sub module_src { return module_root($_[0])."/java"; }
+
+my @src_includes = qw(.classpath .project .settings/** COPYING NEWS README TODO lib/** src/**);
+my @src_excludes = qw();
+
+if($repo) {
+	push @src_excludes, ('src/scripts/build.pl', 'src/repo-ant/**', 'lib/svnkit/**');
+}
+else {
+	push @src_includes, 'build.xml';
+}
 
 my @modules = (
 	{
@@ -46,16 +59,38 @@ open my $fh, ">$out_file" or die "Failed to open $out_file for writing";
 my $xml = xml_obj('project', {name => $project, default => 'dist-bin'});
 add_child($xml, xml_obj('description', undef, undef, "\n\tAnt build file for the Merapi project\n\n"));
 
-my $src_fileset = {dir => '${basedir}', excludes => 'build/**', prefix => "$project-$version-src"};
+my $src_fileset = {dir => '.', (@src_includes ? (includes => join(',', sort @src_includes)) : ()), (@src_excludes ? (excludes => join(',', sort @src_excludes)) : ()), prefix => "$project-$version-src"};
 
 my $target;
 
-$target = xml_obj('target', {name => 'compile-project', description => 'compiles the project source'});
+if($repo) {
+	$target = xml_obj('target', {name => 'download-dependencies', description => 'downloads library files required by the project'});
+	add_child($target, xml_obj('get', {dest => 'lib/svnkit', usetimestamp => 'true', skipexisting => 'true'}, [map {xml_obj('url', {url => "http://prmf.googlecode.com/svn/lib/svnkit/$_"})} qw(
+		antlr-runtime-3.1.3.jar jna.jar sqljet.1.0.2.jar svnkit-cli.jar svnkit.jar trilead.jar
+	)]));
+	add_child($target, mkdir_obj('lib/junit'));
+	add_child($target, xml_obj('get', {dest => 'lib/junit/junit-4.8.2.jar', usetimestamp => 'true', skipexisting => 'true', src => 'http://prmf.googlecode.com/svn/lib/junit/junit-4.8.2.jar'}));
+	add_child($xml, $target);
+	
+	$target = xml_obj('target', {name => 'find-version', description => 'checks the revision number to determine project version', depends => 'download-dependencies'});
+	add_child($target, mkdir_obj('build/repo-ant'));
+	my $cp = join(':', map {"lib/svnkit/$_"} qw(antlr-runtime-3.1.3.jar jna.jar sqljet.1.0.2.jar svnkit-cli.jar svnkit.jar trilead.jar));
+	add_child($target, xml_obj('javac', {srcdir => 'src/repo-ant', destdir => 'build/repo-ant', includeAntRuntime => 'false', target => '1.5', classpath => $cp}));
+	add_child($target, xml_obj('java', {classpath => "$cp:build/repo-ant", output => 'build/repo-ant/build.properties', classname => 'Version', failonerror => 'true', 'fork' => 'true'}));
+	add_child($target, xml_obj('property', {file => 'build/repo-ant/build.properties'}));
+	add_child($target, xml_obj('echo', {level => 'info', message => "Project version: $version"}));
+	add_child($xml, $target);
+}
+else {
+	add_child($xml, xml_obj('property', {file => 'build.properties'}));
+}
+
+$target = xml_obj('target', {name => 'compile-project', description => 'compiles the project source', ($repo ? (depends => 'download-dependencies,find-version') : ())});
 for(@modules) {
 	my $module = $_->{name};
 	my @deps = @{$_->{deps} || []};
 	add_child($target, mkdir_obj(module_bin($module)));
-	my $javac = xml_obj('javac', {srcdir => module_src($module), destdir => module_bin($module), includeAntRuntime => 'no', target => '1.5'});
+	my $javac = xml_obj('javac', {srcdir => module_src($module), destdir => module_bin($module), includeAntRuntime => 'false', target => '1.5'});
 	add_child($javac, xml_obj('include', {name => '**/*.java'}));
 	if(@deps) {
 		my $cp = xml_obj('classpath');
@@ -76,29 +111,43 @@ $target = xml_obj('target', {name => 'clean-dist', description => 'removes the d
 ]);
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'clean-all', description => 'removes all rebuildable files'});
+$target = xml_obj('target', {name => 'clean-all', description => 'removes all rebuildable files'}, [
 	xml_obj('delete', {dir => 'build'}),
+]);
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'dist-src-tgz', description => 'creates a gzipped tarball source distribution'});
+$target = xml_obj('target', {name => 'package-source-tgz', description => 'creates a gzipped tarball source distribution', ($repo ? (depends => 'download-dependencies,find-version') : ())});
 add_child($target, mkdir_obj('build/dist'));
-add_child($target, xml_obj('tar', {destfile => "build/dist/$project-$version-src.tar.gz", compression => 'gzip', longfile => 'gnu'}, [xml_obj('tarfileset', $src_fileset)]));
+add_child($target, xml_obj('tar', {destfile => "build/dist/$project-$version-src.tar.gz", compression => 'gzip', longfile => 'gnu'}, [
+	xml_obj('tarfileset', $src_fileset),
+	($repo ? (xml_obj('tarfileset', {fullpath => "$project-$version-src/build.xml", file => 'src/repo-ant/build.xml'})) : ()),
+	($repo ? (xml_obj('tarfileset', {fullpath => "$project-$version-src/build.properties", file => 'build/repo-ant/build.properties'})) : ()),
+]));
+
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'dist-src-tbz2', description => 'creates a bzip2-compressed tarball source distribution'});
+$target = xml_obj('target', {name => 'package-source-tbz2', description => 'creates a bzip2-compressed tarball source distribution', ($repo ? (depends => 'download-dependencies,find-version') : ())});
 add_child($target, mkdir_obj('build/dist'));
-add_child($target, xml_obj('tar', {destfile => "build/dist/$project-$version-src.tar.bz2", compression => 'bzip2', longfile => 'gnu'}, [xml_obj('tarfileset', $src_fileset)]));
+add_child($target, xml_obj('tar', {destfile => "build/dist/$project-$version-src.tar.bz2", compression => 'bzip2', longfile => 'gnu'}, [
+	xml_obj('tarfileset', $src_fileset),
+	($repo ? (xml_obj('tarfileset', {fullpath => "$project-$version-src/build.xml", file => 'src/repo-ant/build.xml'})) : ()),
+	($repo ? (xml_obj('tarfileset', {fullpath => "$project-$version-src/build.properties", file => 'build/repo-ant/build.properties'})) : ()),
+]));
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'dist-src-zip', description => 'creates a zipped source distribution'});
+$target = xml_obj('target', {name => 'package-source-zip', description => 'creates a zipped source distribution', ($repo ? (depends => 'download-dependencies,find-version') : ())});
 add_child($target, mkdir_obj('build/dist'));
-add_child($target, xml_obj('zip', {destfile => "build/dist/$project-$version-src.zip"}, [xml_obj('zipfileset', $src_fileset)]));
+add_child($target, xml_obj('zip', {destfile => "build/dist/$project-$version-src.zip"}, [
+	xml_obj('zipfileset', $src_fileset),
+	($repo ? (xml_obj('zipfileset', {fullpath => "$project-$version-src/build.xml", file => 'src/repo-ant/build.xml'})) : ()),
+	($repo ? (xml_obj('zipfileset', {fullpath => "$project-$version-src/build.properties", file => 'build/repo-ant/build.properties'})) : ()),
+]));
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'dist-src', description => 'creates all the source distribution bundles', depends => 'dist-src-tgz,dist-src-tbz2,dist-src-zip'});
+$target = xml_obj('target', {name => 'package-source-all', description => 'creates all the source distribution bundles', depends => 'package-source-tgz,package-source-tbz2,package-source-zip'});
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'dist-bin', description => 'creates binary distribution files', depends => 'compile-project'});
+$target = xml_obj('target', {name => 'dist-bin', description => 'creates binary distribution files', depends => ($repo ? 'find-version,' : '').'compile-project'});
 add_child($target, mkdir_obj('build/dist'));
 for(@modules) {
 	my $module = $_->{name};
@@ -115,7 +164,7 @@ for(@modules) {
 add_child($target, $jar);
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'dist', description => 'creates all distribution files', depends => 'dist-src,dist-bin'});
+$target = xml_obj('target', {name => 'dist', description => 'creates all distribution files', depends => 'package-source-all,dist-bin'});
 add_child($xml, $target);
 
 print_xml($fh, $xml);
@@ -225,5 +274,5 @@ __DATA__
 	</target>
 	
 	<target name="dist" description="creates all distribution files"
-		depends="dist-src,dist-doc,dist-bin"/>-->
+		depends="package-source,dist-doc,dist-bin"/>-->
 </project>

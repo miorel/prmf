@@ -4,26 +4,8 @@
 	Ant build file for the Merapi project
 
 </description>
-	<target name="download-dependencies" description="downloads library files required by the project">
-		<get usetimestamp="true" dest="lib/svnkit" skipexisting="true">
-			<url url="http://prmf.googlecode.com/svn/lib/svnkit/antlr-runtime-3.1.3.jar"/>
-			<url url="http://prmf.googlecode.com/svn/lib/svnkit/jna.jar"/>
-			<url url="http://prmf.googlecode.com/svn/lib/svnkit/sqljet.1.0.2.jar"/>
-			<url url="http://prmf.googlecode.com/svn/lib/svnkit/svnkit-cli.jar"/>
-			<url url="http://prmf.googlecode.com/svn/lib/svnkit/svnkit.jar"/>
-			<url url="http://prmf.googlecode.com/svn/lib/svnkit/trilead.jar"/>
-		</get>
-		<mkdir dir="lib/junit"/>
-		<get usetimestamp="true" dest="lib/junit/junit-4.8.2.jar" src="http://prmf.googlecode.com/svn/lib/junit/junit-4.8.2.jar" skipexisting="true"/>
-	</target>
-	<target name="find-version" description="checks the revision number to determine project version" depends="download-dependencies">
-		<mkdir dir="build/repo-ant"/>
-		<javac target="1.5" includeAntRuntime="false" srcdir="src/repo-ant" destdir="build/repo-ant" classpath="lib/svnkit/antlr-runtime-3.1.3.jar:lib/svnkit/jna.jar:lib/svnkit/sqljet.1.0.2.jar:lib/svnkit/svnkit-cli.jar:lib/svnkit/svnkit.jar:lib/svnkit/trilead.jar"/>
-		<java fork="true" classpath="lib/svnkit/antlr-runtime-3.1.3.jar:lib/svnkit/jna.jar:lib/svnkit/sqljet.1.0.2.jar:lib/svnkit/svnkit-cli.jar:lib/svnkit/svnkit.jar:lib/svnkit/trilead.jar:build/repo-ant" output="build/repo-ant/build.properties" classname="Version" failonerror="true"/>
-		<property file="build/repo-ant/build.properties"/>
-		<echo level="info" message="Project version: ${merapi.version}"/>
-	</target>
-	<target name="compile-project" description="compiles the project source" depends="download-dependencies,find-version">
+	<property file="build.properties"/>
+	<target name="compile-project" description="compiles the project source">
 		<mkdir dir="build/bin/merapi-util"/>
 		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-util/java" destdir="build/bin/merapi-util">
 			<include name="**/*.java"/>
@@ -80,32 +62,26 @@
 	<target name="clean-all" description="removes all rebuildable files">
 		<delete dir="build"/>
 	</target>
-	<target name="package-source-tgz" description="creates a gzipped tarball source distribution" depends="download-dependencies,find-version">
+	<target name="package-source-tgz" description="creates a gzipped tarball source distribution">
 		<mkdir dir="build/dist"/>
 		<tar compression="gzip" destfile="build/dist/merapi-${merapi.version}-src.tar.gz" longfile="gnu">
-			<tarfileset excludes="lib/svnkit/**,src/repo-ant/**,src/scripts/build.pl" includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
-			<tarfileset fullpath="merapi-${merapi.version}-src/build.xml" file="src/repo-ant/build.xml"/>
-			<tarfileset fullpath="merapi-${merapi.version}-src/build.properties" file="build/repo-ant/build.properties"/>
+			<tarfileset includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,build.xml,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
 		</tar>
 	</target>
-	<target name="package-source-tbz2" description="creates a bzip2-compressed tarball source distribution" depends="download-dependencies,find-version">
+	<target name="package-source-tbz2" description="creates a bzip2-compressed tarball source distribution">
 		<mkdir dir="build/dist"/>
 		<tar compression="bzip2" destfile="build/dist/merapi-${merapi.version}-src.tar.bz2" longfile="gnu">
-			<tarfileset excludes="lib/svnkit/**,src/repo-ant/**,src/scripts/build.pl" includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
-			<tarfileset fullpath="merapi-${merapi.version}-src/build.xml" file="src/repo-ant/build.xml"/>
-			<tarfileset fullpath="merapi-${merapi.version}-src/build.properties" file="build/repo-ant/build.properties"/>
+			<tarfileset includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,build.xml,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
 		</tar>
 	</target>
-	<target name="package-source-zip" description="creates a zipped source distribution" depends="download-dependencies,find-version">
+	<target name="package-source-zip" description="creates a zipped source distribution">
 		<mkdir dir="build/dist"/>
 		<zip destfile="build/dist/merapi-${merapi.version}-src.zip">
-			<zipfileset excludes="lib/svnkit/**,src/repo-ant/**,src/scripts/build.pl" includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
-			<zipfileset fullpath="merapi-${merapi.version}-src/build.xml" file="src/repo-ant/build.xml"/>
-			<zipfileset fullpath="merapi-${merapi.version}-src/build.properties" file="build/repo-ant/build.properties"/>
+			<zipfileset includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,build.xml,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
 		</zip>
 	</target>
 	<target name="package-source-all" description="creates all the source distribution bundles" depends="package-source-tgz,package-source-tbz2,package-source-zip"/>
-	<target name="dist-bin" description="creates binary distribution files" depends="find-version,compile-project">
+	<target name="dist-bin" description="creates binary distribution files" depends="compile-project">
 		<mkdir dir="build/dist"/>
 		<jar destfile="build/dist/merapi-util-${merapi.version}.jar">
 			<manifest>

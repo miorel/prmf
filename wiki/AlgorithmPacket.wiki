@@ -17,7 +17,7 @@ make
 make dist
 
 # Print the packet's table of contents in Google Code wiki format
-./toc.pl
+perl toc.pl
 
 # Remove the pdf, source archive, and any temporary files
 make clean

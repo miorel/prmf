@@ -1,5 +1,6 @@
 #summary People page for Preston Mueller
+#labels People
 
 || *Real name* || Preston Mueller ||
 || *Goes by* || Preston ||
-|| *Aliases* || pralz, praaaaaaaaaaaaalz ||
+|| *Aliases* || pralz ||

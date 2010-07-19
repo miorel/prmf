@@ -7,5 +7,6 @@
 	<classpathentry kind="src" output="build/bin/merapi-math" path="src/merapi-math/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-chem" path="src/merapi-chem/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-unsorted" path="src/merapi-unsorted/java"/>
+	<classpathentry kind="src" output="build/test-bin" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 </classpath>
