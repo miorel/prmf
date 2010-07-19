@@ -164,7 +164,36 @@ for(@modules) {
 add_child($target, $jar);
 add_child($xml, $target);
 
-$target = xml_obj('target', {name => 'dist', description => 'creates all distribution files', depends => 'package-source-all,dist-bin'});
+$target = xml_obj('target', {name => 'generate-javadoc', description => 'generates project documentation', ($repo ? (depends => 'find-version') : ())}, [xml_obj('javadoc', {
+	access => 'package',
+	author => 'true',
+	destdir => 'build/doc',
+	doctitle => "Documentation for the Merapi project, version $version",
+	nodeprecated => 'false',
+	nodeprecatedlist => 'false',
+	noindex => 'false',
+	nonavbar => 'false',
+	notree => 'false',
+	overview => 'src/package-info/overview.html',
+	packagenames => 'com.googlecode.prmf.merapi.*',
+	source => '1.6',
+	splitindex => 'true',
+	'use' => 'true',
+	version => 'false',
+}, [
+	xml_obj('sourcepath', undef, [map {xml_obj('pathelement', {path => $_})} ((map {module_src($_->{name})} @modules), 'src/package-info')]),
+	xml_obj('link', {href => 'http://java.sun.com/javase/6/docs/api/'}),
+])]);
+add_child($xml, $target);
+
+$target = xml_obj('target', {name => 'package-javadoc', description => 'creates a zip archive of the project documentation', depends => 'generate-javadoc'});
+add_child($target, mkdir_obj('build/dist'));
+add_child($target, xml_obj('zip', {destfile => "build/dist/$project-$version-doc.zip"}, [
+	xml_obj('zipfileset', {dir => 'build/doc', prefix => "$project-$version-doc"}),
+]));
+add_child($xml, $target);
+
+$target = xml_obj('target', {name => 'dist', description => 'creates all distribution files', depends => 'package-source-all,dist-bin,package-javadoc'});
 add_child($xml, $target);
 
 print_xml($fh, $xml);

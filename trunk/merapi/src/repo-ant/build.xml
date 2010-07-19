@@ -148,5 +148,26 @@
 			<zipfileset src="build/dist/merapi-chem-${merapi.version}.jar" excludes="META-INF/**"/>
 		</jar>
 	</target>
-	<target name="dist" description="creates all distribution files" depends="package-source-all,dist-bin"/>
+	<target name="generate-javadoc" description="generates project documentation">
+		<javadoc nodeprecated="false" source="1.6" splitindex="true" access="package" noindex="false" version="false" doctitle="Documentation for the Merapi project, version ${merapi.version}" author="true" packagenames="com.googlecode.prmf.merapi.*" overview="src/package-info/overview.html" nodeprecatedlist="false" notree="false" nonavbar="false" use="true" destdir="build/doc">
+			<sourcepath>
+				<pathelement path="src/merapi-util/java"/>
+				<pathelement path="src/merapi-event/java"/>
+				<pathelement path="src/merapi-iterators/java"/>
+				<pathelement path="src/merapi-threads/java"/>
+				<pathelement path="src/merapi-math/java"/>
+				<pathelement path="src/merapi-unsorted/java"/>
+				<pathelement path="src/merapi-chem/java"/>
+				<pathelement path="src/package-info"/>
+			</sourcepath>
+			<link href="http://java.sun.com/javase/6/docs/api/"/>
+		</javadoc>
+	</target>
+	<target name="package-javadoc" description="creates a zip archive of the project documentation" depends="generate-javadoc">
+		<mkdir dir="build/dist"/>
+		<zip destfile="build/dist/merapi-${merapi.version}-doc.zip">
+			<zipfileset dir="build/doc" prefix="merapi-${merapi.version}-doc"/>
+		</zip>
+	</target>
+	<target name="dist" description="creates all distribution files" depends="package-source-all,dist-bin,package-javadoc"/>
 </project>

@@ -1,7 +1,8 @@
 package com.googlecode.prmf.huabot;
 
-import static com.googlecode.prmf.merapi.net.irc.IrcCommands.*;
-import static com.googlecode.prmf.merapi.util.Iterators.*;
+import static com.googlecode.prmf.merapi.net.irc.IrcCommands.privmsg;
+import static com.googlecode.prmf.merapi.util.Iterators.iterator;
+import static com.googlecode.prmf.merapi.util.Iterators.lines;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -110,7 +112,9 @@ public class Huabot extends AbstractIrcEventListener {
 			String[] arg = cmdMatcher.group(2).trim().split("\\s+");
 
 			if(cmd.equals("version")) {
-				privmsg(client, channel, "This is huabot, REWRITE edition (prmf revision 371).");
+				ResourceBundle rb = ResourceBundle.getBundle(Huabot.class.getPackage().getName() + ".Info");
+				String version = rb.getString("huabot.version");
+				privmsg(client, channel, "This is huabot, version " + version + ".");
 			}
 
 			if(cmd.equals("date")) {
@@ -163,7 +167,6 @@ public class Huabot extends AbstractIrcEventListener {
 					privmsg(client, channel, String.format("%s has %d karma.", entity, Integer.valueOf(getKarma(entity))));
 				}
 			}
-			
 			
 		}
 		else {
