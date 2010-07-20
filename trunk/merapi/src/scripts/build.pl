@@ -22,7 +22,7 @@ if($repo) {
 	push @src_excludes, ('src/scripts/build.pl', 'src/repo-ant/**', 'lib/svnkit/**');
 }
 else {
-	push @src_includes, 'build.xml';
+	push @src_includes, ('build.xml', 'build.properties');
 }
 
 my @modules = (
@@ -65,11 +65,10 @@ my $target;
 
 if($repo) {
 	$target = xml_obj('target', {name => 'download-dependencies', description => 'downloads library files required by the project'});
-	add_child($target, xml_obj('get', {dest => 'lib/svnkit', usetimestamp => 'true', skipexisting => 'true'}, [map {xml_obj('url', {url => "http://prmf.googlecode.com/svn/lib/svnkit/$_"})} qw(
-		antlr-runtime-3.1.3.jar jna.jar sqljet.1.0.2.jar svnkit-cli.jar svnkit.jar trilead.jar
-	)]));
+	add_child($target, mkdir_obj('lib/svnkit'));
+	add_child($target, xml_obj('get', {dest => "lib/svnkit/$_", src => "http://prmf.googlecode.com/svn/lib/svnkit/$_", usetimestamp => 'true'})) for qw(antlr-runtime-3.1.3.jar jna.jar sqljet.1.0.2.jar svnkit-cli.jar svnkit.jar trilead.jar);
 	add_child($target, mkdir_obj('lib/junit'));
-	add_child($target, xml_obj('get', {dest => 'lib/junit/junit-4.8.2.jar', usetimestamp => 'true', skipexisting => 'true', src => 'http://prmf.googlecode.com/svn/lib/junit/junit-4.8.2.jar'}));
+	add_child($target, xml_obj('get', {dest => 'lib/junit/junit-4.8.2.jar', usetimestamp => 'true', src => 'http://prmf.googlecode.com/svn/lib/junit/junit-4.8.2.jar'}));
 	add_child($xml, $target);
 	
 	$target = xml_obj('target', {name => 'find-version', description => 'checks the revision number to determine project version', depends => 'download-dependencies'});

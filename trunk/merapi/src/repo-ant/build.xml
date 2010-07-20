@@ -65,19 +65,19 @@
 	<target name="package-source-tgz" description="creates a gzipped tarball source distribution">
 		<mkdir dir="build/dist"/>
 		<tar compression="gzip" destfile="build/dist/merapi-${merapi.version}-src.tar.gz" longfile="gnu">
-			<tarfileset includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,build.xml,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
+			<tarfileset includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,build.properties,build.xml,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
 		</tar>
 	</target>
 	<target name="package-source-tbz2" description="creates a bzip2-compressed tarball source distribution">
 		<mkdir dir="build/dist"/>
 		<tar compression="bzip2" destfile="build/dist/merapi-${merapi.version}-src.tar.bz2" longfile="gnu">
-			<tarfileset includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,build.xml,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
+			<tarfileset includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,build.properties,build.xml,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
 		</tar>
 	</target>
 	<target name="package-source-zip" description="creates a zipped source distribution">
 		<mkdir dir="build/dist"/>
 		<zip destfile="build/dist/merapi-${merapi.version}-src.zip">
-			<zipfileset includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,build.xml,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
+			<zipfileset includes=".classpath,.project,.settings/**,COPYING,NEWS,README,TODO,build.properties,build.xml,lib/**,src/**" dir="." prefix="merapi-${merapi.version}-src"/>
 		</zip>
 	</target>
 	<target name="package-source-all" description="creates all the source distribution bundles" depends="package-source-tgz,package-source-tbz2,package-source-zip"/>

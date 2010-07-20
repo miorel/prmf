@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" output="build/bin" path="src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/merapi-0.0.1.jar">
+	<classpathentry kind="lib" path="lib/merapi/merapi-0.0.1-r429.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/huabot/lib/merapi-0.0.1-doc.zip!/merapi-0.0.1-doc"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/huabot/lib/merapi/merapi-0.0.1-r429-doc.zip!/merapi-0.0.1-r429-doc"/>
 		</attributes>
 	</classpathentry>
 </classpath>
