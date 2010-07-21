@@ -12,7 +12,11 @@ SHELL=/bin/bash
 PDFLATEX_CMD=pdflatex -interaction=nonstopmode $(SRC)
 
 algo.pdf: $(SRC) $(RES)
-	if (which rubber >& /dev/null); then (rubber --pdf $(SRC)); else ($(PDFLATEX_CMD) && $(PDFLATEX_CMD) && $(PDFLATEX_CMD)); fi
+	if (which rubber >& /dev/null); then \
+		rubber --pdf $(SRC); \
+	else \
+		$(PDFLATEX_CMD) && $(PDFLATEX_CMD) && $(PDFLATEX_CMD); \
+	fi
 
 algo.zip: $(ALL)
 	zip -9 -r algo.zip $(ALL)

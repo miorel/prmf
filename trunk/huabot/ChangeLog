@@ -1,93 +1,102 @@
+2010-07-21  Joseph Thuemler <manwiththeplan@gmail.com>
+
+	* src/main/java/com/googlecode/prmf/huabot/Huabot.java: Added framework
+	  for spojaday function.
+
 2010-07-20  Miorel-Lucian Palii <mlpalii@gmail.com>
 
- * build.xml: Made compatible with older Ant (which sadly required removing the
-   skipExisting attribute in get tasks). Added download of Merapi libraries to
-   download-dependencies task.
- * lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar: Removed from repository,
-   Merapi will now be downloaded through Ant.
- * .classpath: Updated name/location of Merapi libraries.
+	* build.xml: Made compatible with older Ant (which sadly required
+	  removing the skipExisting attribute in get tasks). Added download of
+	  Merapi libraries to download-dependencies task.
+	* lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar: Removed from
+	  repository, Merapi will now be downloaded through Ant.
+	* .classpath: Updated name/location of Merapi libraries.
 
 2010-07-19  Miorel-Lucian Palii <mlpalii@gmail.com>
 
- * .classpath, build.xml, src/com, src/main/java/com,
-   src/main/java/com/googlecode/prmf/huabot/Huabot.java, src/repo-ant,
-   src/repo-ant/Version.java: Edited the build process so the revision number
-   now automatically determined and doesn't have to be hard-coded. (This
-   requires SVNKit.) Also changed project layout a bit.
+	* .classpath, build.xml, src/com, src/main/java/com,
+	  src/main/java/com/googlecode/prmf/huabot/Huabot.java, src/repo-ant,
+	  src/repo-ant/Version.java: Edited the build process so the revision
+	  number now automatically determined and doesn't have to be hard-coded.
+	  (This requires SVNKit.) Also changed project layout a bit.
 
 2010-07-12  Miorel-Lucian Palii <mlpalii@gmail.com>
 
- * build.xml: Created a few more specific targets, added some target
-   descriptions.
- * lib/merapi-0.0.1.jar: Updated Merapi libraries.
+	* build.xml: Created a few more specific targets, added some target
+	  descriptions.
+	* lib/merapi-0.0.1.jar: Updated Merapi libraries.
 
 2010-05-28  Miorel-Lucian Palii <mlpalii@gmail.com>
 
- * src/com/googlecode/prmf/huabot/Huabot.java: Karma file writing should be more
-   efficient now: iterator use leads to better lookups. Never mind that the
-   limiting step is probably I/O anyway.
+	* src/com/googlecode/prmf/huabot/Huabot.java: Karma file writing should
+	  be more efficient now: iterator use leads to better lookups. Never
+	  mind that the limiting step is probably I/O anyway.
 
 2010-05-28  Miorel-Lucian Palii <mlpalii@gmail.com>
 
- * src/com/googlecode/prmf/huabot/Huabot.java: Improvements to karma
-   functionality: entities no longer case sensitive (since we do vary casing in
-   names); karma is now saved to file after each message that changed karma,
-   rather than after every individual karma change (so negging DHNet 30 times in
-   one message will be more efficient, resulting in one write rather than 30);
-   plussing yourself no longer registers, instead triggers a reprimand (for this
-   purpose, entities are case sensitive, meaning for example that TWW2 can't
-   plus tww2, either). Also, the version command now reports the revision
-   number, so we know what's running in the channel. Currently hard-coded,
-   please update this manually whenever you commit changes. I'll think of
-   something more clever soon.
+	* src/com/googlecode/prmf/huabot/Huabot.java: Improvements to karma
+	  functionality: entities no longer case sensitive (since we do vary
+	  casing in names); karma is now saved to file after each message that
+	  changed karma, rather than after every individual karma change (so
+	  negging DHNet 30 times in one message will be more efficient,
+	  resulting in one write rather than 30); plussing yourself no longer
+	  registers, instead triggers a reprimand (for this purpose, entities
+	  are case sensitive, meaning for example that TWW2 can't plus tww2,
+	  either). Also, the version command now reports the revision number, so
+	  we know what's running in the channel. Currently hard-coded, please
+	  update this manually whenever you commit changes. I'll think of
+	  something more clever soon.
 
 2010-05-24  Thomas Boyd <Boyd.thomas3@gmail.com>
 
- * src/com/googlecode/prmf/huabot/Huabot.java: This adds a function to the
-   "karma" command, when it is called with no arguments, the bot will search for
-   the highest and lowest karma. In the case of a tie for highest or lowest, it
-   returns the first one it encounters. This also fixed a small bug with the way
-   the bot handles commands with no arguments that made it think there's a
-   single, empty argument.
+	* src/com/googlecode/prmf/huabot/Huabot.java: This adds a function to
+	  the "karma" command, when it is called with no arguments, the bot will
+	  search for the highest and lowest karma. In the case of a tie for
+	  highest or lowest, it returns the first one it encounters. This also
+	  fixed a small bug with the way the bot handles commands with no
+	  arguments that made it think there's a single, empty argument.
 
 2010-05-22  Thomas Boyd <Boyd.thomas3@gmail.com>
 
- * src/com/googlecode/prmf/huabot/Huabot.java: Added the ability for huabot to
-   save the karma map in the text file karma.txt and read from the file to
-   repopulate the map whenever a new instance of huabot is created.
+	* src/com/googlecode/prmf/huabot/Huabot.java: Added the ability for
+	  huabot to save the karma map in the text file karma.txt and read from
+	  the file to repopulate the map whenever a new instance of huabot is
+	  created.
 
 2010-05-17  Miorel-Lucian Palii <mlpalii@gmail.com>
 
- * src/com/googlecode/prmf/huabot/Huabot.java: huabot karma feature
-   modifications, can now be queried using the "karma" command.
+	* src/com/googlecode/prmf/huabot/Huabot.java: huabot karma feature
+	  modifications, can now be queried using the "karma" command.
 
 2010-05-17  Joseph Thuemler <manwiththeplan@gmail.com>
 
- * src/com/googlecode/prmf/huabot/Huabot.java: huabot now processes commands
-   that give positive/negative karma and reports the result to the channel.
-   Nothing happens besides that, though.
+	* src/com/googlecode/prmf/huabot/Huabot.java: huabot now processes
+	  commands that give positive/negative karma and reports the result to
+	  the channel. Nothing happens besides that, though.
 
 2010-05-05  Brian Nezvadovitz <brianez21@gmail.com>
 
- * COPYING: Added license file.
+	* COPYING: Added license file.
 
 2010-05-04  Miorel-Lucian Palii <mlpalii@gmail.com>
 
- * lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar,
-   src/com/googlecode/prmf/huabot/Huabot.java: Updated Merapi libraries and
-   added rest of Tinysong API functionality.
+	* lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar,
+	  src/com/googlecode/prmf/huabot/Huabot.java: Updated Merapi libraries
+	  and added rest of Tinysong API functionality.
 
 2010-05-03  Miorel-Lucian Palii <mlpalii@gmail.com>
 
- * lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar,
-   src/com/googlecode/prmf/huabot/Huabot.java: Updated Merapi libraries and
-   added Tinysong support to huabot.
+	* lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar,
+	  src/com/googlecode/prmf/huabot/Huabot.java: Updated Merapi libraries
+	  and added Tinysong support to huabot.
 
 2010-05-02  Miorel-Lucian Palii <mlpalii@gmail.com>
 
- * .classpath, .project, .settings, .settings/org.eclipse.jdt.core.prefs,
-   build.xml, lib, lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar, src, src/com,
-   src/com/googlecode, src/com/googlecode/prmf, src/com/googlecode/prmf/huabot,
-   src/com/googlecode/prmf/huabot/Huabot.java,
-   src/com/googlecode/prmf/huabot/Main.java: huabot is now a project!
+	 * .classpath, .project, .settings,
+	   .settings/org.eclipse.jdt.core.prefs, build.xml, lib,
+	   lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar, src, src/com,
+	   src/com/googlecode, src/com/googlecode/prmf,
+	   src/com/googlecode/prmf/huabot,
+	   src/com/googlecode/prmf/huabot/Huabot.java,
+	   src/com/googlecode/prmf/huabot/Main.java: huabot is now a project!
 

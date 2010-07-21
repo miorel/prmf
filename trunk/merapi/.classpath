@@ -9,8 +9,11 @@
 	<classpathentry kind="src" output="build/bin/merapi-io" path="src/merapi-io/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-strings" path="src/merapi-strings/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-json" path="src/merapi-json/java"/>
-	<classpathentry kind="src" output="build/bin/merapi-unsorted" path="src/merapi-unsorted/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-misc" path="src/merapi-misc/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-net" path="src/merapi-net/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-www" path="src/merapi-www/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-irc" path="src/merapi-irc/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-spoj" path="src/merapi-spoj/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-tinysong" path="src/merapi-tinysong/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-shorten" path="src/merapi-shorten/java"/>
 	<classpathentry kind="src" output="build/test-bin" path="src/test/java"/>

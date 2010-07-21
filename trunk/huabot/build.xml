@@ -11,8 +11,8 @@
 		<get usetimestamp="true" dest="lib/svnkit/svnkit.jar" src="http://prmf.googlecode.com/svn/lib/svnkit/svnkit.jar"/>
 		<get usetimestamp="true" dest="lib/svnkit/trilead.jar" src="http://prmf.googlecode.com/svn/lib/svnkit/trilead.jar"/>
 		<mkdir dir="lib/merapi"/>
-		<get usetimestamp="true" dest="lib/merapi/merapi-0.0.1-r429.jar" src="http://prmf.googlecode.com/svn/lib/merapi/merapi-0.0.1-r429.jar"/>
-		<get usetimestamp="true" dest="lib/merapi/merapi-0.0.1-r429-doc.zip" src="http://prmf.googlecode.com/svn/lib/merapi/merapi-0.0.1-r429-doc.zip"/>
+		<get usetimestamp="true" dest="lib/merapi/merapi-0.0.1-r433.jar" src="http://prmf.googlecode.com/svn/lib/merapi/merapi-0.0.1-r433.jar"/>
+		<get usetimestamp="true" dest="lib/merapi/merapi-0.0.1-r433-doc.zip" src="http://prmf.googlecode.com/svn/lib/merapi/merapi-0.0.1-r433-doc.zip"/>
 	</target>
 
 	<target name="find-version" description="checks the revision number to determine project version" depends="download-dependencies">

@@ -1,5 +1,9 @@
 2010-07-08  Miorel-Lucian Palii <mlpalii@gmail.com>
 
+	* Makefile: Made Makefile slightly more readable.
+
+2010-07-08  Miorel-Lucian Palii <mlpalii@gmail.com>
+
 	* Makefile, README: Noticed and fixed a discrepancy between the build
 	  process and building instructions.
 
@@ -17,8 +21,8 @@
 2010-04-30  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* README: Updated instructions.
-	* toc.pl: Created script for extracting the algorithm packet table
-	  of contents in Google Code wiki format.
+	* toc.pl: Created script for extracting the algorithm packet table of
+	  contents in Google Code wiki format.
 
 2010-04-27  Miorel-Lucian Palii <mlpalii@gmail.com>
 

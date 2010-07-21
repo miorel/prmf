@@ -1,0 +1,14 @@
+2010-07-20  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* .classpath, .project: Adding basic Eclipse project files.
+	* src/main/java/com/googlecode/prmf/jtinysong: Created initial directory
+	  structure for source files.
+
+2010-05-19  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* COPYING: Added license file.
+	* README: Created project plan! JTinysong will expose the Tinysong API
+	  <http://tinysong.com/api> within Java. I already have code that does
+	  this within Merapi, but I think it should be branched out as its own
+	  project.
+

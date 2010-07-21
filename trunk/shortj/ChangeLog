@@ -1,0 +1,13 @@
+2010-07-20  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* .classpath, .project: Adding basic Eclipse project files.
+	* src/main/java/com/googlecode/prmf/shortj: Created initial directory
+	  structure for source files.
+
+2010-05-20  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* COPYING: Added license file.
+	* README: Created project plan! shortj will be a URL-shortening library
+	  for Java. I already have code that does this within Merapi, but I
+	  think it should be branched out as its own project.
+

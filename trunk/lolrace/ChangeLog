@@ -25,15 +25,16 @@
 2010-07-03  Preston Mueller <thepralz@gmail.com>
 
 	* res/race/again.png, res/race/cat.png, res/race/cat2.png,
-	  res/race/exit.png, res/race/gator.png, res/race/gator2.png, res/race/gfx,
-	  res/race/gfx/again.png, res/race/gfx/cat.png, res/race/gfx/cat2.png,
-	  res/race/gfx/exit.png, res/race/gfx/gator.png, res/race/gfx/gator2.png,
-	  res/race/gfx/hit.png, res/race/gfx/human.png, res/race/gfx/human2.png,
-	  res/race/gfx/penguin.png, res/race/gfx/penguin2.png, res/race/hit.png,
-	  res/race/human.png, res/race/human2.png, res/race/penguin.png,
-	  res/race/penguin2.png, src/race/Game.java, src/race/Main.java,
-	  src/race/Racer.java, src/race/View.java: Lots of restructuring in an
-	  attempt to make the code a bit nicer, not sure if success.
+	  res/race/exit.png, res/race/gator.png, res/race/gator2.png,
+	  res/race/gfx, res/race/gfx/again.png, res/race/gfx/cat.png,
+	  res/race/gfx/cat2.png, res/race/gfx/exit.png, res/race/gfx/gator.png,
+	  res/race/gfx/gator2.png, res/race/gfx/hit.png, res/race/gfx/human.png,
+	  res/race/gfx/human2.png, res/race/gfx/penguin.png,
+	  res/race/gfx/penguin2.png, res/race/hit.png, res/race/human.png,
+	  res/race/human2.png, res/race/penguin.png, res/race/penguin2.png,
+	  src/race/Game.java, src/race/Main.java, src/race/Racer.java,
+	  src/race/View.java: Lots of restructuring in an attempt to make the
+	  code a bit nicer, not sure if success.
 
 2010-07-01  Preston Mueller <thepralz@gmail.com>
 
@@ -43,8 +44,8 @@
 	  res/race/gator2.png, res/race/hit.png, res/race/human.png,
 	  res/race/human2.png, res/race/penguin.png, res/race/penguin2.png,
 	  src/race/Game.java, src/race/Main.java, src/race/Racer.java:
-	  Added/changed some project files. Added a readme and license file. Moved
-	  images to a different location.
+	  Added/changed some project files. Added a readme and license file.
+	  Moved images to a different location.
 
 2010-06-30  Preston Mueller <thepralz@gmail.com>
 
@@ -55,8 +56,9 @@
 	  bin/race/gfx/penguin2.png, build.xml, src, src/race,
 	  src/race/Background.java, src/race/Game.java, src/race/Main.java,
 	  src/race/Racer.java: Initial commit for lolrace, a simple 2D mini race
-	  game. WARNING: This code is not for the faint of heart. It is not OOP, it
-	  is not elegant (or even remotely pretty), and it was hacked together with
-	  no planning. Initially just a project to dive in and learn some Java
-	  Swing, I plan on rewriting it. Feel free to do whatever.
+	  game. WARNING: This code is not for the faint of heart. It is not OOP,
+	  it is not elegant (or even remotely pretty), and it was hacked
+	  together with no planning. Initially just a project to dive in and
+	  learn some Java Swing, I plan on rewriting it. Feel free to do
+	  whatever.
 

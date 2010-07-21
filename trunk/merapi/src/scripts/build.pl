@@ -35,11 +35,12 @@ my @modules = (
 		name => 'event',
 	},
 	{
-		name => 'misc',
-	},
-	{
 		name => 'iterators',
 		deps => [qw(util)],
+	},
+	{
+		name => 'misc',
+		deps => [qw(iterators)]
 	},
 	{
 		name => 'strings',
@@ -58,20 +59,32 @@ my @modules = (
 		deps => [qw(iterators), qw(util)],
 	},
 	{
-		name => 'unsorted',
-		deps => [qw(util event iterators threads strings io)],
+		name => 'net',
+		deps => [qw(event io threads), qw(util)],
+	},
+	{
+		name => 'www',
+		deps => [qw(io), qw(threads util)],
+	},
+	{
+		name => 'spoj',
+		deps => [qw(www), qw(net event io threads util)],
+	},
+	{
+		name => 'irc',
+		deps => [qw(event iterators strings net io), qw(util threads)],
 	},
 	{
 		name => 'json',
-		deps => [qw(util iterators strings unsorted)],
+		deps => [qw(util iterators strings misc)],
 	},
 	{
 		name => 'shorten',
-		deps => [qw(strings json unsorted)],
+		deps => [qw(strings misc json www), qw(util iterators io threads)],
 	},
 	{
 		name => 'tinysong',
-		deps => [qw(iterators strings unsorted json)],
+		deps => [qw(iterators strings misc json www), qw(util io threads)],
 	},
 	{
 		name => 'chem',
