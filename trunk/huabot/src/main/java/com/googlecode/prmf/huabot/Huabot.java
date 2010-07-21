@@ -168,6 +168,15 @@ public class Huabot extends AbstractIrcEventListener {
 				}
 			}
 			
+			if (cmd.equals("spojaday")) {
+				if (arg.length == 0 || arg[0].length() == 0) {
+					privmsg(client, channel, "No one does SPOJ anymore!");
+				}
+				else {
+					privmsg(client, channel, "That guy doesn't do SPOJ anymore, who does SPOJ anymore?");
+				}
+			}
+			
 		}
 		else {
 			// This was not a command. Do other kinds of text processing.
