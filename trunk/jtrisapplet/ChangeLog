@@ -1,3 +1,7 @@
+2010-07-20  Brian Nezvadovitz <brianez21@gmail.com>
+
+	* README, Makefile: Removed information related to `make sign` as it is not needed.
+
 2010-07-12  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* build.xml: Created a few more specific targets, added some target
