@@ -18,31 +18,31 @@
 // A class that morphs into the appropriate shape for use in the Board class.
 
 public class Shape {
-    
-    private static final int pieceCoords[][][] = {
+	
+	private static final int pieceCoords[][][] = {
 		{{0, 0},	 {0, 0},	 {0, 0},	 {0, 0}},	// 0: blank
 		{{0, -1},	 {0, 0},	 {0, 1},	 {0, 2}},	// 1: line
 		{{1, -1},	 {0, -1},	 {0, 0},	 {0, 1}},	// 2: inverted-L
-		{{-1, -1},	 {0, -1},	 {0, 0},	 {0, 1}},	// 3: normal-L
+		{{-1, -1}, {0, -1},	 {0, 0},	 {0, 1}},	// 3: normal-L
 		{{0, 0},	 {1, 0},	 {0, 1},	 {1, 1}},	// 4: square
 		{{-1, 0},	 {0, 0},	 {1, 0},	 {0, 1}},	// 5: T-shape
 		{{0, -1},	 {0, 0},	 {1, 0},	 {1, 1}},	// 6: normal-S
 		{{0, -1},	 {0, 0},	 {-1, 0},	 {-1, 1}}	// 7: inverted-S
-    };
-    
-    private int coords[][] = new int[4][2];
-    private int shapeNum;
-    
-    public Shape(final int shapeNum) {
+	};
+	
+	private int coords[][] = new int[4][2];
+	private int shapeNum;
+	
+	public Shape(final int shapeNum) {
 		this.shapeNum = shapeNum;
 		for(int x = 0; x < 4; x++) {
 			for(int y = 0; y < 2; y++) {
 				coords[x][y] = pieceCoords[this.shapeNum][x][y];
 			}
 		} // end for
-    }
+	}
 
-    public void rotate(String direction) {
+	public void rotate(String direction) {
 		if(shapeNum == 4) {
 			return;
 		} else if(direction.equals("right")) {
@@ -54,23 +54,23 @@ public class Shape {
 				setXyValues(i, getYCoord(i), -getXCoord(i));
 			}
 		}
-    }
+	}
 
-    public int getXCoord(int pointNumber) {
+	public int getXCoord(int pointNumber) {
 		return coords[pointNumber][0];
-    }
+	}
 
-    public int getYCoord(int pointNumber) {
+	public int getYCoord(int pointNumber) {
 		return coords[pointNumber][1];
-    }
+	}
 
-    public void setXyValues(int pointNumber, int newXValue, int newYValue) {
+	public void setXyValues(int pointNumber, int newXValue, int newYValue) {
 		coords[pointNumber][0] = newXValue;
 		coords[pointNumber][1] = newYValue;
-    }
+	}
 
-    public int getShapeNum() {
+	public int getShapeNum() {
 		return shapeNum;
-    }
+	}
 
 }

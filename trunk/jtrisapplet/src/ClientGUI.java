@@ -15,56 +15,68 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-import java.applet.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Button;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class ClientGUI extends Applet {
-	
+public class ClientGUI extends Frame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 957174843990132008L;
+
 	private Client client;
 	
 	private TextField tf_hostname;
 	private TextField tf_username;
 	private TextField tf_password;
 	
-	public String getAppletInfo() {
-		String str = "JTrisApplet Client\n";
-		str += "Version 4 Release 0";
-		return str;
+	public ClientGUI(String title) {
+		super(title);
 	}
 	
-	public String[][] getParameterInfo() {
-		String[][] pinfo = {
-			{"hostname", "String", "Remote hostname[:port] to connect to"},
-			{"username", "String", "Default username to login under"},
-			{"password", "String", "Default password to authenticate with"}
-		};
-		return pinfo;
+	public static void main(String[] args) {
+		final ClientGUI s = new ClientGUI("JTrisApplet");
+		s.setSize(new Dimension(200, 200));
+		s.addWindowListener(new WindowAdapter(){
+
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				System.exit(0);
+			}
+
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				s.setVisible(false);
+				s.dispose();
+			}
+			
+		} );
+		
+		s.setResizable(false);
+		s.setLayout(new GridLayout(1, 1));
+
+		Panel p = s.generateLoginPanel();
+		s.add(p);
+		
+		s.setVisible(true);
+		
 	}
 	
 	public void attemptConnectAndLogin(Button b, ActionListener a) {
-		b.removeActionListener(a);
-		b.setLabel("Connecting... please wait");
-		b.getParent().validate();
 		client = new Client(tf_hostname.getText());
 		if(client.attemptConnectAndLogin(tf_username.getText(), tf_password.getText())) {
 			System.out.println("debug: to be implemented");
-		} else {
-			b.addActionListener(a);
-			b.setLabel("Connect");
-			b.getParent().validate();
 		}
-	}
-	
-	public void init() {
-		System.out.println(getAppletInfo());
-		setSize(300, 150);
-		setLayout(new GridLayout(1, 1));
-	}
-	
-	public void start() {
-		Panel p = generateLoginPanel();
-		add(p);
 	}
 	
 	private Panel generateLoginPanel() {
@@ -72,12 +84,9 @@ public class ClientGUI extends Applet {
 		Panel pan_login_main = new Panel();
 		
 		// Read applet configuration into strings
-		String DEFAULT_HOSTNAME = getParameter("hostname");
-		String DEFAULT_USERNAME = getParameter("username");
-		String DEFAULT_PASSWORD = getParameter("password");
-		if(DEFAULT_HOSTNAME == null) DEFAULT_HOSTNAME = "localhost";
-		if(DEFAULT_USERNAME == null) DEFAULT_USERNAME = "root";
-		if(DEFAULT_PASSWORD == null) DEFAULT_PASSWORD = "password";
+		String DEFAULT_HOSTNAME = "localhost";
+		String DEFAULT_USERNAME = "root";
+		String DEFAULT_PASSWORD = "password";
 		
 		// Top-level panel widgets
 		Label lbl_welcome = new Label("Welcome to JTrisApplet", Label.CENTER);
@@ -113,5 +122,5 @@ public class ClientGUI extends Applet {
 		// Return the fresh new login panel
 		return(pan_login_main);
 	}
-	
+
 }

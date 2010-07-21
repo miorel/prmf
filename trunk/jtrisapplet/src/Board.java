@@ -20,33 +20,33 @@ import java.util.ArrayList;
 // The game board
 
 public class Board {
-    
-    private static final int width = 10;
-    private static final int height = 21;
-    private int curX;
-    private int curY;
-    public Shape shape = new Shape(0);
-    private int board[] = new int[width * height];
-    protected Boolean gameOver = false;
-    
-    public Board() {
-    	super();
-    }
-    
+	
+	private static final int width = 10;
+	private static final int height = 21;
+	private int curX;
+	private int curY;
+	public Shape shape = new Shape(0);
+	private int board[] = new int[width * height];
+	protected Boolean gameOver = false;
+	
+	public Board() {
+		super();
+	}
+	
 	public int[] getCurXy() {
 		int xy[] = { curX, curY };
 		return xy;
 	}
 
-    public int getCoords(int x, int y) {
+	public int getCoords(int x, int y) {
 		return board[(y * width) + x];
-    }
-    
-    public void setCoords(int x, int y, final int shape) {
+	}
+	
+	public void setCoords(int x, int y, final int shape) {
 		board[(y * width) + x] = shape;
-    }
-    
-    public boolean addPiece(final int piece) {
+	}
+	
+	public boolean addPiece(final int piece) {
 		int x = width / 2;
 		int y = 1;
 		final Shape shape = new Shape(piece);
@@ -58,9 +58,9 @@ public class Board {
 		} else {
 			return false;
 		} // end if
-    }
-    
-    public boolean isPossibleRotate(String direction) {
+	}
+	
+	public boolean isPossibleRotate(String direction) {
 		shape.rotate(direction);
 		if(isPossibleMove(0, 0, shape, true)) {
 			return true;
@@ -72,9 +72,9 @@ public class Board {
 			}
 			return false;
 		}
-    }
-    
-    public boolean isPossibleMove(int x, int y, Shape shape, boolean xyIsOffset) {
+	}
+	
+	public boolean isPossibleMove(int x, int y, Shape shape, boolean xyIsOffset) {
 		int movedX, movedY;
 		for(int i = 0; i < 4; i++) {
 			if(xyIsOffset) {
@@ -93,14 +93,14 @@ public class Board {
 			}
 		} // end for
 		return true;
-    }
-    
-    public void doMove(int x, int y) {
+	}
+	
+	public void doMove(int x, int y) {
 		curX += x;
 		curY += y;
-    }
-    
-    public int clearLines() {
+	}
+	
+	public int clearLines() {
 		int rowsCleared = 0;
 		int i;
 		for(int y = 0; y < height; y++) {
@@ -130,24 +130,24 @@ public class Board {
 			}
 		} // end for y
 		return rowsCleared;
-    }
+	}
 
-    public void merge() {
-        int mergeX, mergeY;
-        for(int i = 0; i < 4; i++) {
-            mergeX = curX + shape.getXCoord(i);
-            mergeY = curY + shape.getYCoord(i);
-            board[(mergeY * width) + mergeX] = shape.getShapeNum();
-        }
-    }
+	public void merge() {
+		int mergeX, mergeY;
+		for(int i = 0; i < 4; i++) {
+			mergeX = curX + shape.getXCoord(i);
+			mergeY = curY + shape.getYCoord(i);
+			board[(mergeY * width) + mergeX] = shape.getShapeNum();
+		}
+	}
 
-    public int getWidth() {
-        return width;
-    }
+	public int getWidth() {
+		return width;
+	}
 
-    public int getHeight() {
-        return height;
-    }
+	public int getHeight() {
+		return height;
+	}
 
 	public void setGameOver() {
 		this.gameOver = true;

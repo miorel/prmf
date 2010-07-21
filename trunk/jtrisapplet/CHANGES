@@ -1,6 +1,14 @@
 2010-07-21  Brian Nezvadovitz <brianez21@gmail.com>
 
-	* README, Makefile, config/*, src/Debug.java, src/Client.java, src/Connection.java: Edited README and Makefile (small cleanup), added a small program that will help to debug the server in the future, modified the client code to actually work, fixed a bug in connection and added the ability to pass an already created socket instead of just host/port pair.
+	* README, Makefile: Edited README and Makefile (small cleanup)
+	* config/*: Moved configuration samples to new folder (previously in src)
+	* src/Debug.java: Added a small program that will help to debug the
+	  server in the future
+	* src/Client.java: modified the client code to actually work
+	* src/Connection.java: fixed a bug in connection and added the ability to
+	  pass an already created socket instead of just host/port pair
+	* src/ClientGUI.java: made ClientGUI into a Swing frame instead of an applet
+	* dist/Applet.html: removed this file (no longer a browser applet)
 
 2010-07-20  Brian Nezvadovitz <brianez21@gmail.com>
 
@@ -126,4 +134,3 @@
 
 	* Board.java, BoardGUI.java, Client.java, ClientGUI.java, Shape.java:
 	  Initial commit of the fourth full-rewrite of my pet Tetris project.
-
