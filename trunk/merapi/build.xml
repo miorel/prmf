@@ -15,7 +15,7 @@
 		<mkdir dir="lib/junit"/>
 		<get usetimestamp="true" dest="lib/junit/junit-4.8.2.jar" src="http://prmf.googlecode.com/svn/lib/junit/junit-4.8.2.jar"/>
 	</target>
-	<target name="find-version" description="checks the revision number to determine project version" depends="download-dependencies">
+	<target name="find-version" description="checks the revision number to determine project version" unless="merapi.version" depends="download-dependencies">
 		<mkdir dir="build/repo-ant"/>
 		<javac target="1.5" includeAntRuntime="false" srcdir="src/repo-ant" destdir="build/repo-ant" classpath="lib/svnkit/antlr-runtime-3.1.3.jar:lib/svnkit/jna.jar:lib/svnkit/sqljet.1.0.2.jar:lib/svnkit/svnkit-cli.jar:lib/svnkit/svnkit.jar:lib/svnkit/trilead.jar"/>
 		<java fork="true" classpath="lib/svnkit/antlr-runtime-3.1.3.jar:lib/svnkit/jna.jar:lib/svnkit/sqljet.1.0.2.jar:lib/svnkit/svnkit-cli.jar:lib/svnkit/svnkit.jar:lib/svnkit/trilead.jar:build/repo-ant" output="build/repo-ant/build.properties" classname="Version" failonerror="true"/>
@@ -31,11 +31,23 @@
 		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-event/java" destdir="build/bin/merapi-event">
 			<include name="**/*.java"/>
 		</javac>
+		<mkdir dir="build/bin/merapi-misc"/>
+		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-misc/java" destdir="build/bin/merapi-misc">
+			<include name="**/*.java"/>
+		</javac>
 		<mkdir dir="build/bin/merapi-iterators"/>
 		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-iterators/java" destdir="build/bin/merapi-iterators">
 			<include name="**/*.java"/>
 			<classpath>
 				<pathelement path="build/bin/merapi-util"/>
+			</classpath>
+		</javac>
+		<mkdir dir="build/bin/merapi-strings"/>
+		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-strings/java" destdir="build/bin/merapi-strings">
+			<include name="**/*.java"/>
+			<classpath>
+				<pathelement path="build/bin/merapi-util"/>
+				<pathelement path="build/bin/merapi-iterators"/>
 			</classpath>
 		</javac>
 		<mkdir dir="build/bin/merapi-threads"/>
@@ -45,11 +57,20 @@
 				<pathelement path="build/bin/merapi-util"/>
 			</classpath>
 		</javac>
+		<mkdir dir="build/bin/merapi-io"/>
+		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-io/java" destdir="build/bin/merapi-io">
+			<include name="**/*.java"/>
+			<classpath>
+				<pathelement path="build/bin/merapi-threads"/>
+				<pathelement path="build/bin/merapi-util"/>
+			</classpath>
+		</javac>
 		<mkdir dir="build/bin/merapi-math"/>
 		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-math/java" destdir="build/bin/merapi-math">
 			<include name="**/*.java"/>
 			<classpath>
 				<pathelement path="build/bin/merapi-iterators"/>
+				<pathelement path="build/bin/merapi-util"/>
 			</classpath>
 		</javac>
 		<mkdir dir="build/bin/merapi-unsorted"/>
@@ -60,13 +81,46 @@
 				<pathelement path="build/bin/merapi-event"/>
 				<pathelement path="build/bin/merapi-iterators"/>
 				<pathelement path="build/bin/merapi-threads"/>
+				<pathelement path="build/bin/merapi-strings"/>
+				<pathelement path="build/bin/merapi-io"/>
+			</classpath>
+		</javac>
+		<mkdir dir="build/bin/merapi-json"/>
+		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-json/java" destdir="build/bin/merapi-json">
+			<include name="**/*.java"/>
+			<classpath>
+				<pathelement path="build/bin/merapi-util"/>
+				<pathelement path="build/bin/merapi-iterators"/>
+				<pathelement path="build/bin/merapi-strings"/>
+				<pathelement path="build/bin/merapi-unsorted"/>
+			</classpath>
+		</javac>
+		<mkdir dir="build/bin/merapi-shorten"/>
+		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-shorten/java" destdir="build/bin/merapi-shorten">
+			<include name="**/*.java"/>
+			<classpath>
+				<pathelement path="build/bin/merapi-strings"/>
+				<pathelement path="build/bin/merapi-json"/>
+				<pathelement path="build/bin/merapi-unsorted"/>
+			</classpath>
+		</javac>
+		<mkdir dir="build/bin/merapi-tinysong"/>
+		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-tinysong/java" destdir="build/bin/merapi-tinysong">
+			<include name="**/*.java"/>
+			<classpath>
+				<pathelement path="build/bin/merapi-iterators"/>
+				<pathelement path="build/bin/merapi-strings"/>
+				<pathelement path="build/bin/merapi-unsorted"/>
+				<pathelement path="build/bin/merapi-json"/>
 			</classpath>
 		</javac>
 		<mkdir dir="build/bin/merapi-chem"/>
 		<javac target="1.5" includeAntRuntime="false" srcdir="src/merapi-chem/java" destdir="build/bin/merapi-chem">
 			<include name="**/*.java"/>
 			<classpath>
-				<pathelement path="build/bin/merapi-unsorted"/>
+				<pathelement path="build/bin/merapi-strings"/>
+				<pathelement path="build/bin/merapi-util"/>
+				<pathelement path="build/bin/merapi-iterators"/>
 			</classpath>
 		</javac>
 	</target>
@@ -120,6 +174,13 @@
 			</manifest>
 			<fileset includes="**/*.class" dir="build/bin/merapi-event"/>
 		</jar>
+		<jar destfile="build/dist/merapi-misc-${merapi.version}.jar">
+			<manifest>
+				<attribute value="merapi-misc" name="Implementation-Title"/>
+				<attribute value="${merapi.version}" name="Implementation-Version"/>
+			</manifest>
+			<fileset includes="**/*.class" dir="build/bin/merapi-misc"/>
+		</jar>
 		<jar destfile="build/dist/merapi-iterators-${merapi.version}.jar">
 			<manifest>
 				<attribute value="merapi-iterators" name="Implementation-Title"/>
@@ -127,12 +188,26 @@
 			</manifest>
 			<fileset includes="**/*.class" dir="build/bin/merapi-iterators"/>
 		</jar>
+		<jar destfile="build/dist/merapi-strings-${merapi.version}.jar">
+			<manifest>
+				<attribute value="merapi-strings" name="Implementation-Title"/>
+				<attribute value="${merapi.version}" name="Implementation-Version"/>
+			</manifest>
+			<fileset includes="**/*.class" dir="build/bin/merapi-strings"/>
+		</jar>
 		<jar destfile="build/dist/merapi-threads-${merapi.version}.jar">
 			<manifest>
 				<attribute value="merapi-threads" name="Implementation-Title"/>
 				<attribute value="${merapi.version}" name="Implementation-Version"/>
 			</manifest>
 			<fileset includes="**/*.class" dir="build/bin/merapi-threads"/>
+		</jar>
+		<jar destfile="build/dist/merapi-io-${merapi.version}.jar">
+			<manifest>
+				<attribute value="merapi-io" name="Implementation-Title"/>
+				<attribute value="${merapi.version}" name="Implementation-Version"/>
+			</manifest>
+			<fileset includes="**/*.class" dir="build/bin/merapi-io"/>
 		</jar>
 		<jar destfile="build/dist/merapi-math-${merapi.version}.jar">
 			<manifest>
@@ -149,6 +224,27 @@
 			<fileset includes="**/*.class" dir="build/bin/merapi-unsorted"/>
 			<fileset dir="src/merapi-unsorted/res"/>
 		</jar>
+		<jar destfile="build/dist/merapi-json-${merapi.version}.jar">
+			<manifest>
+				<attribute value="merapi-json" name="Implementation-Title"/>
+				<attribute value="${merapi.version}" name="Implementation-Version"/>
+			</manifest>
+			<fileset includes="**/*.class" dir="build/bin/merapi-json"/>
+		</jar>
+		<jar destfile="build/dist/merapi-shorten-${merapi.version}.jar">
+			<manifest>
+				<attribute value="merapi-shorten" name="Implementation-Title"/>
+				<attribute value="${merapi.version}" name="Implementation-Version"/>
+			</manifest>
+			<fileset includes="**/*.class" dir="build/bin/merapi-shorten"/>
+		</jar>
+		<jar destfile="build/dist/merapi-tinysong-${merapi.version}.jar">
+			<manifest>
+				<attribute value="merapi-tinysong" name="Implementation-Title"/>
+				<attribute value="${merapi.version}" name="Implementation-Version"/>
+			</manifest>
+			<fileset includes="**/*.class" dir="build/bin/merapi-tinysong"/>
+		</jar>
 		<jar destfile="build/dist/merapi-chem-${merapi.version}.jar">
 			<manifest>
 				<attribute value="merapi-chem" name="Implementation-Title"/>
@@ -164,10 +260,16 @@
 			</manifest>
 			<zipfileset src="build/dist/merapi-util-${merapi.version}.jar" excludes="META-INF/**"/>
 			<zipfileset src="build/dist/merapi-event-${merapi.version}.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-misc-${merapi.version}.jar" excludes="META-INF/**"/>
 			<zipfileset src="build/dist/merapi-iterators-${merapi.version}.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-strings-${merapi.version}.jar" excludes="META-INF/**"/>
 			<zipfileset src="build/dist/merapi-threads-${merapi.version}.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-io-${merapi.version}.jar" excludes="META-INF/**"/>
 			<zipfileset src="build/dist/merapi-math-${merapi.version}.jar" excludes="META-INF/**"/>
 			<zipfileset src="build/dist/merapi-unsorted-${merapi.version}.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-json-${merapi.version}.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-shorten-${merapi.version}.jar" excludes="META-INF/**"/>
+			<zipfileset src="build/dist/merapi-tinysong-${merapi.version}.jar" excludes="META-INF/**"/>
 			<zipfileset src="build/dist/merapi-chem-${merapi.version}.jar" excludes="META-INF/**"/>
 		</jar>
 	</target>
@@ -176,10 +278,16 @@
 			<sourcepath>
 				<pathelement path="src/merapi-util/java"/>
 				<pathelement path="src/merapi-event/java"/>
+				<pathelement path="src/merapi-misc/java"/>
 				<pathelement path="src/merapi-iterators/java"/>
+				<pathelement path="src/merapi-strings/java"/>
 				<pathelement path="src/merapi-threads/java"/>
+				<pathelement path="src/merapi-io/java"/>
 				<pathelement path="src/merapi-math/java"/>
 				<pathelement path="src/merapi-unsorted/java"/>
+				<pathelement path="src/merapi-json/java"/>
+				<pathelement path="src/merapi-shorten/java"/>
+				<pathelement path="src/merapi-tinysong/java"/>
 				<pathelement path="src/merapi-chem/java"/>
 				<pathelement path="src/package-info"/>
 			</sourcepath>

@@ -23,7 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-import com.googlecode.prmf.merapi.util.Streams;
+import com.googlecode.prmf.merapi.io.Streams;
 
 /**
  * <p>

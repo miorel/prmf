@@ -17,6 +17,8 @@
  */
 package com.googlecode.prmf.merapi.net.www.spoj;
 
+import java.util.Locale;
+
 /**
  * A Sphere Online Judge (SPOJ) user.
  *
@@ -24,22 +26,35 @@ package com.googlecode.prmf.merapi.net.www.spoj;
  * @see <a href="http://www.spoj.pl/">Sphere Online Judge (SPOJ)</a>
  */
 public class User {
-//	private final String username;
+	private final String username;
 //	private final List<Submission> submissions = new ArrayList<Submission>();
 //
 //	private boolean readSubmissions = false;
-//
-//	public User(String username) {
-//		username = username.toLowerCase(Locale.ENGLISH);
-//		if(!username.matches("[a-z][a-z\\d_]{2,13}"))
-//			throw new IllegalArgumentException("Invalid username.");
-//		this.username = username;
-//	}
-//
-//	public String getUsername() {
-//		return this.username;
-//	}
-//
+
+	/**
+	 * Constructs an object representing the user corresponding to the specified
+	 * username.
+	 *
+	 * @param username
+	 *            the username
+	 * @throws IllegalArgumentException
+	 *             if the username is invalid
+	 */
+	public User(String username) {
+		this.username = username.toLowerCase(Locale.ENGLISH);
+		if(!this.username.matches("[a-z][a-z\\d_]{2,13}"))
+			throw new IllegalArgumentException("Invalid username.");
+	}
+
+	/**
+	 * Retrieves this user's username.
+	 *
+	 * @return the username
+	 */
+	public String getUsername() {
+		return this.username;
+	}
+
 //	public URL getSubmissionsUrl() {
 //		return Strings.toUrl("http://www.spoj.pl/status/" + this.username + "/signedlist/");
 //	}
@@ -69,19 +84,19 @@ public class User {
 //		}
 //		return ret;
 //	}
-//
-//	@Override
-//	public int hashCode() {
-//		return this.username.hashCode();
-//	}
-//
+
+	@Override
+	public int hashCode() {
+		return this.username.hashCode();
+	}
+
 //	@Override
 //	public boolean equals(Object obj) {
 //		return obj == this || (obj instanceof User && this.username.equals(((User) obj).username));
 //	}
-//
-//	@Override
-//	public String toString() {
-//		return "SPOJ user " + this.username;
-//	}
+
+	@Override
+	public String toString() {
+		return "SPOJ user " + this.username;
+	}
 }

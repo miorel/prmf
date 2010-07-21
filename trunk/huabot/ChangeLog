@@ -85,7 +85,7 @@
 
 2010-05-02  Miorel-Lucian Palii <mlpalii@gmail.com>
 
- * .classpath, .project, .settings, .settings/org.eclipse.jdt.core.prefs, 
+ * .classpath, .project, .settings, .settings/org.eclipse.jdt.core.prefs,
    build.xml, lib, lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar, src, src/com,
    src/com/googlecode, src/com/googlecode/prmf, src/com/googlecode/prmf/huabot,
    src/com/googlecode/prmf/huabot/Huabot.java,

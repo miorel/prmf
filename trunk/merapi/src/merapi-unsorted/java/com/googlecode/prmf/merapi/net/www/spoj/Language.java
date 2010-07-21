@@ -126,6 +126,9 @@ public enum Language {
 	INTERCAL("ICK", "INTERCAL"),
 
 	/**
+	 * Icon, an imperative, procedural, general-purpose language with syntax
+	 * reminiscent of C  and Pascal but higher level semantics.
+	 *
 	 * @see <a href="http://www.cs.arizona.edu/icon/">The Icon Programming
 	 *      Language</a>
 	 */

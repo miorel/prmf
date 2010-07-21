@@ -35,13 +35,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import com.googlecode.prmf.merapi.event.EventManager;
+import com.googlecode.prmf.merapi.io.Registrar;
 import com.googlecode.prmf.merapi.net.event.ConnectedEvent;
 import com.googlecode.prmf.merapi.net.event.DisconnectedEvent;
 import com.googlecode.prmf.merapi.net.event.NetworkEvent;
 import com.googlecode.prmf.merapi.net.event.NetworkEventListener;
 import com.googlecode.prmf.merapi.net.event.ReadingEvent;
 import com.googlecode.prmf.merapi.net.event.WritingEvent;
-import com.googlecode.prmf.merapi.nio.Registrar;
 
 /**
  * <p>

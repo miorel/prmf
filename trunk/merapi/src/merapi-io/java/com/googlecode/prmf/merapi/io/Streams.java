@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.merapi.util;
+package com.googlecode.prmf.merapi.io;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -141,7 +141,7 @@ public class Streams {
 	 * @return a buffer containing the contents of the stream
 	 * @throws IOException
 	 *             if an I/O error occurs
-	 * @see Iterators#lines(InputStream)
+	 * @see com.googlecode.prmf.merapi.util.Iterators#lines(InputStream) Iterators#lines(InputStream)
 	 * @see #slurp(File)
 	 * @see #slurp(FileDescriptor)
 	 * @see #slurp(Reader)
@@ -161,8 +161,8 @@ public class Streams {
 	 * @return a buffer containing the contents of the <code>Reader</code>
 	 * @throws IOException
 	 *             if an I/O error occurs
-	 * @see Iterators#lines(BufferedReader)
-	 * @see Iterators#lines(Reader)
+	 * @see com.googlecode.prmf.merapi.util.Iterators#lines(BufferedReader) Iterators#lines(BufferedReader)
+	 * @see com.googlecode.prmf.merapi.util.Iterators#lines(Reader) Iterators#lines(Reader)
 	 * @see #slurp(File)
 	 * @see #slurp(FileDescriptor)
 	 * @see #slurp(InputStream)
@@ -206,7 +206,7 @@ public class Streams {
 	 *             if the file cannot be opened for reading
 	 * @throws IOException
 	 *             if an I/O error occurs
-	 * @see Iterators#lines(File)
+	 * @see com.googlecode.prmf.merapi.util.Iterators#lines(File) Iterators#lines(File)
 	 * @see #slurp(FileDescriptor)
 	 * @see #slurp(InputStream)
 	 * @see #slurp(Reader)
@@ -226,7 +226,7 @@ public class Streams {
 	 * @return a buffer containing the contents of the file descriptor
 	 * @throws IOException
 	 *             if an I/O error occurs
-	 * @see Iterators#lines(FileDescriptor)
+	 * @see com.googlecode.prmf.merapi.util.Iterators#lines(FileDescriptor) Iterators#lines(FileDescriptor)
 	 * @see #slurp(File)
 	 * @see #slurp(InputStream)
 	 * @see #slurp(Reader)
@@ -267,7 +267,7 @@ public class Streams {
 	 * @return a buffer containing the contents of the resource
 	 * @throws IOException
 	 *             if an I/O error occurs
-	 * @see Iterators#lines(URL)
+	 * @see com.googlecode.prmf.merapi.util.Iterators#lines(URL) Iterators#lines(URL)
 	 * @see #slurp(File)
 	 * @see #slurp(FileDescriptor)
 	 * @see #slurp(InputStream)
@@ -287,7 +287,7 @@ public class Streams {
 	 * @return a buffer containing the contents of the resource
 	 * @throws IOException
 	 *             if an I/O error occurs
-	 * @see Iterators#lines(URLConnection)
+	 * @see com.googlecode.prmf.merapi.util.Iterators#lines(URLConnection) Iterators#lines(URLConnection)
 	 * @see #slurp(File)
 	 * @see #slurp(FileDescriptor)
 	 * @see #slurp(InputStream)

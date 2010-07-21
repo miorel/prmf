@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<macrodef name="assert-property-set">
+		<attribute name="name"/>
+		<sequential>
+			<fail message="Required property @{name} was not set." unless="@{name}"/>
+		</sequential>
+	</macrodef>
+
+	<target name="clean-bin" description="removes the compiled project source">
+		<assert-property-set name="project.bindir"/>
+		<delete dir="${project.bindir}"/>
+	</target>
+
+	<target name="clean-dist" description="removes the distribution directory">
+		<assert-property-set name="project.distdir"/>
+		<delete dir="${project.distdir}"/>
+	</target>
+</project>

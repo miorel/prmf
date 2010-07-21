@@ -15,9 +15,27 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+package com.googlecode.prmf.merapi.io;
+
+import java.nio.channels.ClosedChannelException;
+import java.nio.channels.SelectableChannel;
+import java.nio.channels.SelectionKey;
 
 /**
- * Classes that might be in the <code>java.nio</code> package if they were
- * authored by Sun.
+ * Makes the task of implementing the {@link Registrar} interface marginally
+ * easier.
+ * 
+ * @author Miorel-Lucian Palii
  */
-package com.googlecode.prmf.merapi.nio;
+public abstract class AbstractRegistrar implements Registrar {
+	/**
+	 * Default constructor, does nothing.
+	 */
+	public AbstractRegistrar() {
+	}
+	
+	@Override
+	public SelectionKey register(SelectableChannel channel, int ops) throws ClosedChannelException {
+		return register(channel, ops, null);
+	}
+}

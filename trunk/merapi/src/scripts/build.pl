@@ -15,6 +15,8 @@ sub module_bin { return "build/bin/$project-$_[0]"; }
 sub module_res { return module_root($_[0])."/res"; }
 sub module_src { return module_root($_[0])."/java"; }
 
+sub module_deps { return @{$_[0]->{deps} || []}; }
+
 my @src_includes = qw(.classpath .project .settings/** COPYING NEWS README TODO lib/** src/**);
 my @src_excludes = qw();
 
@@ -33,24 +35,47 @@ my @modules = (
 		name => 'event',
 	},
 	{
+		name => 'misc',
+	},
+	{
 		name => 'iterators',
 		deps => [qw(util)],
+	},
+	{
+		name => 'strings',
+		deps => [qw(util iterators)],
 	},
 	{
 		name => 'threads',
 		deps => [qw(util)],
 	},
 	{
+		name => 'io',
+		deps => [qw(threads), qw(util)],
+	},
+	{
 		name => 'math',
-		deps => [qw(iterators)],
+		deps => [qw(iterators), qw(util)],
 	},
 	{
 		name => 'unsorted',
-		deps => [qw(util event iterators threads)],
+		deps => [qw(util event iterators threads strings io)],
+	},
+	{
+		name => 'json',
+		deps => [qw(util iterators strings unsorted)],
+	},
+	{
+		name => 'shorten',
+		deps => [qw(strings json unsorted)],
+	},
+	{
+		name => 'tinysong',
+		deps => [qw(iterators strings unsorted json)],
 	},
 	{
 		name => 'chem',
-		deps => [qw(unsorted)],
+		deps => [qw(strings), qw(util iterators)],
 	},
 );
 
@@ -71,7 +96,7 @@ if($repo) {
 	add_child($target, xml_obj('get', {dest => 'lib/junit/junit-4.8.2.jar', usetimestamp => 'true', src => 'http://prmf.googlecode.com/svn/lib/junit/junit-4.8.2.jar'}));
 	add_child($xml, $target);
 	
-	$target = xml_obj('target', {name => 'find-version', description => 'checks the revision number to determine project version', depends => 'download-dependencies'});
+	$target = xml_obj('target', {name => 'find-version', description => 'checks the revision number to determine project version', depends => 'download-dependencies', 'unless' => 'merapi.version'});
 	add_child($target, mkdir_obj('build/repo-ant'));
 	my $cp = join(':', map {"lib/svnkit/$_"} qw(antlr-runtime-3.1.3.jar jna.jar sqljet.1.0.2.jar svnkit-cli.jar svnkit.jar trilead.jar));
 	add_child($target, xml_obj('javac', {srcdir => 'src/repo-ant', destdir => 'build/repo-ant', includeAntRuntime => 'false', target => '1.5', classpath => $cp}));
@@ -84,10 +109,10 @@ else {
 	add_child($xml, xml_obj('property', {file => 'build.properties'}));
 }
 
-$target = xml_obj('target', {name => 'compile-project', description => 'compiles the project source', ($repo ? (depends => 'download-dependencies,find-version') : ())});
+$target = xml_obj('target', {name => 'compile-project', description => 'compiles the project source', ($repo ? (depends => 'download-dependencies') : ())});
 for(@modules) {
 	my $module = $_->{name};
-	my @deps = @{$_->{deps} || []};
+	my @deps = module_deps($_);
 	add_child($target, mkdir_obj(module_bin($module)));
 	my $javac = xml_obj('javac', {srcdir => module_src($module), destdir => module_bin($module), includeAntRuntime => 'false', target => '1.5'});
 	add_child($javac, xml_obj('include', {name => '**/*.java'}));
@@ -263,44 +288,3 @@ sub print_xml {
 	}
 }
 
-__DATA__
-<project name="merapi"> <!--default="dist"-->
-<!--	<property file="merapi.properties"/>
-	
-	<target name="clean-doc" description="removes the documentation directory">
-		<delete dir="${merapi.doc.dir}"/>
-	</target>
-	
-	<target name="doc" description="generates project documentation">
-		<javadoc
-			access="package"
-			author="true"
-			destdir="doc"
-			doctitle="Documentation for the Merapi project, version ${merapi.version}"
-			nodeprecated="false"
-			nodeprecatedlist="false"
-			noindex="false"
-			nonavbar="false"
-			notree="false"
-			overview="${merapi.src.dir}/overview.html"
-			packagenames="com.googlecode.prmf.merapi.*"
-			source="1.6"
-			sourcepath="${merapi.src.dir}"
-			splitindex="true"
-			use="true"
-			version="false">
-			<link href="http://java.sun.com/javase/6/docs/api/"/>
-		</javadoc>
-		--><!-- :${merapi.lib.dir}/openjdk/jdk/src/share/classes --><!--
-	</target>
-	
-	<target name="dist-doc" description="creates a zip archive of the project documentation" depends="doc">	
-		<mkdir dir="${merapi.dist.dir}"/>
-		<zip destfile="${merapi.dist.dir}/${merapi.dist.name}-doc.zip">
-			<zipfileset dir="${merapi.doc.dir}" prefix="${merapi.dist.name}-doc"/>
-		</zip>
-	</target>
-	
-	<target name="dist" description="creates all distribution files"
-		depends="package-source,dist-doc,dist-bin"/>-->
-</project>

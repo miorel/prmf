@@ -2,13 +2,10 @@
 <projectDescription>
 	<name>TWW2Bot</name>
 	<comment></comment>
-	<projects>
-	</projects>
+	<projects></projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments>
-			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>

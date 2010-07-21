@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" output="build/bin/merapi-util" path="src/merapi-util/java"/>
-	<classpathentry kind="src" output="build/bin/merapi-event" path="src/merapi-event/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-iterators" path="src/merapi-iterators/java"/>
-	<classpathentry kind="src" output="build/bin/merapi-threads" path="src/merapi-threads/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-math" path="src/merapi-math/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-chem" path="src/merapi-chem/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-event" path="src/merapi-event/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-threads" path="src/merapi-threads/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-io" path="src/merapi-io/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-strings" path="src/merapi-strings/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-json" path="src/merapi-json/java"/>
 	<classpathentry kind="src" output="build/bin/merapi-unsorted" path="src/merapi-unsorted/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-misc" path="src/merapi-misc/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-tinysong" path="src/merapi-tinysong/java"/>
+	<classpathentry kind="src" output="build/bin/merapi-shorten" path="src/merapi-shorten/java"/>
 	<classpathentry kind="src" output="build/test-bin" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 </classpath>

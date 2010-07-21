@@ -85,9 +85,9 @@ import com.googlecode.prmf.merapi.util.iterators.UniversalIterator;
  * methods for concisely accomplishing some common tasks, such as sorting,
  * filtering, joining multiple iterators, or defining a mapping involving all
  * elements of a traversal. A neat trick is to:
- * 
+ *
  * <pre>import static lawu.util.iterator.Iterators.*;</pre>
- * 
+ *
  * ...and then you can <code>map()</code>, <code>grep()</code>, or
  * <code>join()</code> to your heart's desire. You won't win any code brevity
  * contests (this is still Java), but you might make a few Perl hackers smile.
@@ -101,7 +101,7 @@ import com.googlecode.prmf.merapi.util.iterators.UniversalIterator;
  * provided for converting any of these interfaces to
  * <code>UniversalIterator</code>s.
  * </p>
- * 
+ *
  * @author Miorel-Lucian Palii
  */
 public class Iterators {
@@ -113,7 +113,7 @@ public class Iterators {
 
 	/**
 	 * Returns an iterator over the passed elements or element array.
-	 * 
+	 *
 	 * @param <T>
 	 *            type of elements
 	 * @param array
@@ -128,7 +128,7 @@ public class Iterators {
 
 	/**
 	 * Returns an iterator over the list.
-	 * 
+	 *
 	 * @param <T>
 	 *            type of list elements
 	 * @param list
@@ -143,7 +143,7 @@ public class Iterators {
 
 	/**
 	 * Returns an iterator over the entries of a map.
-	 * 
+	 *
 	 * @param map
 	 *            the map over whose entries to iterate
 	 * @param <K>
@@ -157,10 +157,10 @@ public class Iterators {
 	public static <K,V> UniversalIterator<Entry<K,V>> iterator(Map<K,V> map) {
 		return adapt(map.entrySet());
 	}
-	
+
 	/**
 	 * Adapts a Gang of Four iterator to a <code>UniversalIterator</code>.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator
@@ -176,7 +176,7 @@ public class Iterators {
 
 	/**
 	 * Adapts an <code>Iterable</code> to a <code>UniversalIterator</code>.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterable
@@ -194,7 +194,7 @@ public class Iterators {
 	 * Adapts a Java <code>Iterator</code> to a <code>UniversalIterator</code>.
 	 * Because Java iterators do not provide a <code>reset()</code>-like method,
 	 * the returned iterator will not be resettable.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator
@@ -211,7 +211,7 @@ public class Iterators {
 	/**
 	 * Returns its argument. This method is rather useless. It's provided for
 	 * orthogonality.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator
@@ -230,7 +230,7 @@ public class Iterators {
 	 * Adapts an <code>Enumeration</code> to a <code>UniversalIterator</code>.
 	 * Because <code>Enumeration</code>s do not provide a <code>reset()</code>
 	 * -like method, the returned iterator will not be resettable.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param enumeration
@@ -246,7 +246,7 @@ public class Iterators {
 
 	/**
 	 * Returns an iterator over the nodes in the node list.
-	 * 
+	 *
 	 * @param list
 	 *            the node list
 	 * @return a node iterator
@@ -257,7 +257,7 @@ public class Iterators {
 
 	/**
 	 * Returns an iterator over the children of the node.
-	 * 
+	 *
 	 * @param node
 	 *            parent of the nodes over which to iterate
 	 * @return a node iterator
@@ -272,7 +272,7 @@ public class Iterators {
 	 * elements. The iterator gives files in lexicographical order based on
 	 * path, in a system-dependent manner (case-sensitive on Windows,
 	 * case-insensitive on Unix).
-	 * 
+	 *
 	 * @param file
 	 *            parent of the nodes over which to iterate
 	 * @return a file iterator
@@ -284,11 +284,11 @@ public class Iterators {
 		Arrays.sort(files);
 		return iterator(files);
 	}
-	
+
 	/**
 	 * Returns an iterator over the characters of the specified character
 	 * sequence.
-	 * 
+	 *
 	 * @param sequence
 	 *            the character sequence
 	 * @return a character iterator
@@ -303,8 +303,8 @@ public class Iterators {
 	 * sequences. This might be useful in combination with the
 	 * <code>lines()</code> family of methods because it allows code like
 	 * {@code chars(lines(System.in))} (assuming you've statically imported the
-	 * needed methods). 
-	 * 
+	 * needed methods).
+	 *
 	 * @param sequences
 	 *            an iterator of character sequences
 	 * @return a character iterator
@@ -317,12 +317,12 @@ public class Iterators {
 				return chars(sequence);
 			}
 		}, sequences));
-	}	
+	}
 
 	/**
 	 * Returns an iterator over the capturing groups of the specified
 	 * <code>MatchResult</code>
-	 * 
+	 *
 	 * @param match
 	 *            the match result
 	 * @return a match result iterator
@@ -333,11 +333,11 @@ public class Iterators {
 
 	/**
 	 * Returns an iterator over the lines of the specified <code>Reader</code>.
-	 * 
+	 *
 	 * @param reader
 	 *            the input source
 	 * @return a line iterator
-	 * @see Streams#slurp(Reader)
+	 * @see com.googlecode.prmf.merapi.io.Streams#slurp(Reader) Streams#slurp(Reader)
 	 * @see #lines(BufferedReader)
 	 * @see #lines(File)
 	 * @see #lines(FileDescriptor)
@@ -353,11 +353,11 @@ public class Iterators {
 	/**
 	 * Returns an iterator over the lines of the specified
 	 * <code>BufferedReader</code>.
-	 * 
+	 *
 	 * @param reader
 	 *            the input source
 	 * @return a line iterator
-	 * @see Streams#slurp(Reader)
+	 * @see com.googlecode.prmf.merapi.io.Streams#slurp(Reader) Streams#slurp(Reader)
 	 * @see #lines(File)
 	 * @see #lines(FileDescriptor)
 	 * @see #lines(InputStream)
@@ -373,11 +373,11 @@ public class Iterators {
 	/**
 	 * Returns an iterator over the lines of the specified
 	 * <code>InputStream</code>.
-	 * 
+	 *
 	 * @param stream
 	 *            the input source
 	 * @return a line iterator
-	 * @see Streams#slurp(InputStream)
+	 * @see com.googlecode.prmf.merapi.io.Streams#slurp(InputStream) Streams#slurp(InputStream)
 	 * @see #lines(BufferedReader)
 	 * @see #lines(File)
 	 * @see #lines(FileDescriptor)
@@ -392,11 +392,11 @@ public class Iterators {
 
 	/**
 	 * Returns an iterator over the lines of the specified file descriptor.
-	 * 
+	 *
 	 * @param fd
 	 *            the input source
 	 * @return a line iterator
-	 * @see Streams#slurp(FileDescriptor)
+	 * @see com.googlecode.prmf.merapi.io.Streams#slurp(FileDescriptor) Streams#slurp(FileDescriptor)
 	 * @see #lines(BufferedReader)
 	 * @see #lines(File)
 	 * @see #lines(InputStream)
@@ -411,13 +411,13 @@ public class Iterators {
 
 	/**
 	 * Returns an iterator over the lines of the specified file.
-	 * 
+	 *
 	 * @param file
 	 *            the input source
 	 * @return a line iterator
 	 * @throws FileNotFoundException
 	 *             if the file can't be opened for reading
-	 * @see Streams#slurp(File)
+	 * @see com.googlecode.prmf.merapi.io.Streams#slurp(File) Streams#slurp(File)
 	 * @see #lines(BufferedReader)
 	 * @see #lines(FileDescriptor)
 	 * @see #lines(InputStream)
@@ -432,13 +432,13 @@ public class Iterators {
 
 	/**
 	 * Returns an iterator over the lines of the resource at the specified URL.
-	 * 
+	 *
 	 * @param url
 	 *            the input source
 	 * @return a line iterator
 	 * @throws IOException
 	 *             if an I/O exception occurs
-	 * @see Streams#slurp(URL)
+	 * @see com.googlecode.prmf.merapi.io.Streams#slurp(URL) Streams#slurp(URL)
 	 * @see #lines(BufferedReader)
 	 * @see #lines(File)
 	 * @see #lines(FileDescriptor)
@@ -454,13 +454,13 @@ public class Iterators {
 	/**
 	 * Returns an iterator over the lines of the resource on the specified URL
 	 * connection.
-	 * 
+	 *
 	 * @param connection
 	 *            the input source
 	 * @return a line iterator
 	 * @throws IOException
 	 *             if an I/O exception occurs
-	 * @see Streams#slurp(URLConnection)
+	 * @see com.googlecode.prmf.merapi.io.Streams#slurp(URLConnection) Streams#slurp(URLConnection)
 	 * @see #lines(BufferedReader)
 	 * @see #lines(File)
 	 * @see #lines(FileDescriptor)
@@ -472,10 +472,10 @@ public class Iterators {
 	public static UniversalIterator<String> lines(URLConnection connection) throws IOException {
 		return new StreamIterator(connection);
 	}
-	
+
 	/**
 	 * Returns an iterator over the lines of the specified <code>Scanner</code>.
-	 * 
+	 *
 	 * @param scanner
 	 *            the input source
 	 * @return a line iterator
@@ -501,7 +501,7 @@ public class Iterators {
 	 * file's children will be traversed in lexicographical order based on path,
 	 * in a system-dependent manner (case-sensitive on Windows, case-insensitive
 	 * on Unix).
-	 * 
+	 *
 	 * @param file
 	 *            root of the directory hierarchy to traverse
 	 * @return an iterator over the directory hierarchy
@@ -513,7 +513,7 @@ public class Iterators {
 	/**
 	 * Returns an iterator over all the nodes in the node tree with the
 	 * specified root.
-	 * 
+	 *
 	 * @param node
 	 *            root of the node hierarchy to traverse
 	 * @return an iterator over the node hierarchy
@@ -530,7 +530,7 @@ public class Iterators {
 	 * effects might be a bad idea, but if you insist on applying it to all
 	 * elements without doing anything else, you may find the
 	 * {@link #traverse(Iterator)} method of use.
-	 * 
+	 *
 	 * @param <T>
 	 *            domain of mapping function (type of the input traversal)
 	 * @param <U>
@@ -550,7 +550,7 @@ public class Iterators {
 
 	/**
 	 * Keeps only those elements of a traversal which pass the specified filter.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the returned iterator iterates
 	 * @param filter
@@ -567,7 +567,7 @@ public class Iterators {
 
 	/**
 	 * Unix-esque synonym for {@link #filter(Filter,Iterator)}.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the returned iterator iterates
 	 * @param filter
@@ -584,7 +584,7 @@ public class Iterators {
 	/**
 	 * Unfolds an iterator of iterators by joining the elements of its elements
 	 * into a single iterator.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator
@@ -598,7 +598,7 @@ public class Iterators {
 
 	/**
 	 * Joins the specified iterators into a single one.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterators
@@ -612,7 +612,7 @@ public class Iterators {
 
 	/**
 	 * Orders a traversal using the default comparison method.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator
@@ -630,7 +630,7 @@ public class Iterators {
 
 	/**
 	 * Orders a traversal using the specified comparison method.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param comparator
@@ -649,7 +649,7 @@ public class Iterators {
 
 	/**
 	 * Randomly permutes the elements of a traversal.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator
@@ -674,7 +674,7 @@ public class Iterators {
 	 * Randomly permutes the elements of a traversal. This method is equivalent
 	 * to calling
 	 * <code>Iterators.{@linkplain #shuffle(Iterator, Random) shuffle}(iterator, null)</code>.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator
@@ -685,10 +685,10 @@ public class Iterators {
 	public static <T> ReversibleIterator<T> shuffle(Iterator<? extends T> iterator) {
 		return shuffle(iterator, null);
 	}
-	
+
 	/**
 	 * Returns a list containing the elements of an iterator.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator
@@ -708,7 +708,7 @@ public class Iterators {
 	 * that's backed by another structure (e.g. a list) that might be modified
 	 * while the iterator is in existence. Note that this method requires
 	 * traversing the input.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator
@@ -724,7 +724,7 @@ public class Iterators {
 	 * traversal. This does not immediately traverse the elements of the input,
 	 * so it's safe to call with never-ending iterators (though it would serve
 	 * no purpose).
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator
@@ -734,13 +734,13 @@ public class Iterators {
 	 */
 	public static <T> UniversalIterator<T> loop(Iterator<T> iterator) {
 		return new ContinuousIterator<T>(iterator);
-	}	
-	
+	}
+
 	/**
 	 * Traverses all the elements of an iterator from the beginning, doing
 	 * nothing. This might be useful for forcing evaluation of lazy methods,
 	 * such as {@link #map(Mapper,Iterator)}.
-	 * 
+	 *
 	 * @param iterator
 	 *            the iterator to traverse
 	 */
@@ -760,7 +760,7 @@ public class Iterators {
 	 * Reverses a traversal. Note that this will probably require actually going
 	 * through the entire traversal, so avoid calling with never-ending
 	 * iterators unless you like infinite loops.
-	 * 
+	 *
 	 * @param <T>
 	 *            type over which the iteration takes place
 	 * @param iterator

@@ -20,7 +20,7 @@ package com.googlecode.prmf.merapi.net;
 import java.net.SocketAddress;
 import java.nio.channels.spi.SelectorProvider;
 
-import com.googlecode.prmf.merapi.nio.Registrar;
+import com.googlecode.prmf.merapi.io.Registrar;
 
 /**
  * A {@link SocketClient} that sends and receives lines.

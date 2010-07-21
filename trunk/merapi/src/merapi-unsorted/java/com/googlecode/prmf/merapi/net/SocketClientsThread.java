@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.spi.SelectorProvider;
 
-import com.googlecode.prmf.merapi.nio.SelectingThread;
+import com.googlecode.prmf.merapi.io.SelectingThread;
 
 /**
  * A selector-backed thread for managing socket clients.

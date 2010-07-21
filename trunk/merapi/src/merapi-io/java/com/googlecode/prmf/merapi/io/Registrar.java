@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package com.googlecode.prmf.merapi.nio;
+package com.googlecode.prmf.merapi.io;
 
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectableChannel;

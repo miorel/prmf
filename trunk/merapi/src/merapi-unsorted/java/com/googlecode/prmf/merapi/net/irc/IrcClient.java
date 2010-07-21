@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
 
 import com.googlecode.prmf.merapi.dp.Iterator;
 import com.googlecode.prmf.merapi.event.EventManager;
+import com.googlecode.prmf.merapi.io.Registrar;
 import com.googlecode.prmf.merapi.net.LineOrientedClient;
 import com.googlecode.prmf.merapi.net.event.AbstractNetworkEventListener;
 import com.googlecode.prmf.merapi.net.event.ConnectedEvent;
@@ -48,7 +49,6 @@ import com.googlecode.prmf.merapi.net.irc.cmd.UnknownCommand;
 import com.googlecode.prmf.merapi.net.irc.event.AbstractIrcEventListener;
 import com.googlecode.prmf.merapi.net.irc.event.IrcEvent;
 import com.googlecode.prmf.merapi.net.irc.event.IrcEventListener;
-import com.googlecode.prmf.merapi.nio.Registrar;
 
 /**
  * A client that speaks the IRC protocol.
