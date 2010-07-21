@@ -1,3 +1,7 @@
+2010-07-21  Brian Nezvadovitz <brianez21@gmail.com>
+
+	* README, Makefile, config/*, src/Debug.java, src/Client.java, src/Connection.java: Edited README and Makefile (small cleanup), added a small program that will help to debug the server in the future, modified the client code to actually work, fixed a bug in connection and added the ability to pass an already created socket instead of just host/port pair.
+
 2010-07-20  Brian Nezvadovitz <brianez21@gmail.com>
 
 	* README, Makefile: Removed information related to `make sign` as it is

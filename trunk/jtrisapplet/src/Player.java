@@ -21,12 +21,16 @@ public class Player implements Runnable {
 	
 	private Socket socket;
 	
+	private Connection con;
+	
 	public Player(Socket socket) {
-		;;
+		con = new Connection(socket.getInetAddress().toString(), socket.getPort());
 	}
 	
 	public void run() {
-		System.out.println("Client connected");
+		System.out.println("debug: Client connected");
+		System.out.println("debug: Waiting for line containing C_LOGIN command ....");
+		
 	}
 	
 }

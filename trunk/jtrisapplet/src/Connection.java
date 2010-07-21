@@ -31,18 +31,38 @@ public class Connection {
 	public Connection(final String hostname, final int port) {
 		this.hostname = hostname;
 		this.port = port;
+		this.connected = false;
 	}
 	
 	/* Connect to remote server */
 	public boolean connect() {
+		if(connected)
+			return connected;
 		try {
 			socket = new Socket(hostname, port);
 			out = new PrintWriter(socket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			connected = true;
 		} catch(UnknownHostException e) {
+			System.out.println("debug: unknown host exception");
 			connected = false;
 		} catch(IOException e) {
+			System.out.println("debug: io exception");
+			connected = false;
+		}
+		return connected;
+	}
+	
+	/* Adopt a connection to a remote server */
+	public boolean connect(Socket sock) {
+		if(connected)
+			return connected;
+		try {
+			socket = sock;
+			out = new PrintWriter(socket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		} catch(IOException e) {
+			System.out.println("debug: io exception");
 			connected = false;
 		}
 		return connected;

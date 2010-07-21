@@ -17,34 +17,33 @@
 
 import java.util.*;
 
-public class Client {
+public class Debug {
 	
-	private Connection con;
-	private Board board;
-	private ArrayList<Player> players;
-	
-	public Client(final String hostname) {
-		String real_hostname;
-		int port = Protocol.PROTO_DEFAULT_PORT;
-		if(hostname.indexOf(':') == -1)
-			real_hostname = hostname;
-		else {
-			real_hostname = hostname.split(":", 2)[0];
-			port = Integer.valueOf(hostname.split(":", 2)[1]);
+	public static void main(String[] args) {
+		
+		Client client;
+		Scanner s = new Scanner(System.in);
+		
+		System.out.println("JTrisApplet Debugger\nVersion 4 Release 0");
+		System.out.println("** Be careful, I don't try to validate input");
+		
+		System.out.println("Connecting to localhost port 2000");
+		
+		System.out.print("Username: ");
+		String username = s.nextLine();
+		System.out.print("Password: ");
+		String password = s.nextLine();
+		
+		client = new Client("localhost:2000");
+		
+		if(client.attemptConnectAndLogin(username, password)) {
+			System.out.println("Logged in");
+		} else {
+			System.out.println("Login didn't work");
 		}
-		con = new Connection(real_hostname, port);
+		
+		System.out.println("Done!");
+		
 	}
 	
-	public boolean attemptConnectAndLogin(final String username, final String password) {
-		if(con.connect()) {
-			System.out.println("debug: connect OK");
-			if(con.login(username, password)) {
-				System.out.println("debug: login:" + username + " pass:" + password);
-				return true;
-			}
-		}
-		System.out.println("debug: failed attemptConnectAndLogin");
-		return false;
-	}
-
 }

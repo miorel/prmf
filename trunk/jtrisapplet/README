@@ -8,22 +8,22 @@ multiplayer support.
 For more information on JTrisApplet, please go to:
 http://code.google.com/p/prmf/wiki/JTrisApplet
 
-To compile:
-	$ make
+To compile just run:
+ $ make
 
-To run server:
-	$ cd bin
-	$ java ServerCLI [logfile.txt]
+To run the server:
+ $ cd bin
+ $ java ServerCLI [logfile.txt]
 
-To run client:
-	$ cd dist
-	$ appletviewer Applet.html
+To run the client:
+ $ cd dist
+ $ appletviewer Applet.html
 
-Server configuration files:
-	Main configuration file: jtaserv.cfg
-	User database: jtausers.cfg
-	High score database: jtascore.cfg
-	Initialization script: jtaserv.rc
+Server configuration files (in config/):
+ * Main configuration file: jtaserv.cfg
+ * User database: jtausers.cfg
+ * High score database: jtascore.cfg
+ * Initialization script: jtaserv.rc
 
 Copyright (C) 2010 Brian Nezvadovitz
 Licensed under the GNU General Public License version 3. Please see the file
