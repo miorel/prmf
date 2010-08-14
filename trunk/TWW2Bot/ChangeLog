@@ -7,7 +7,8 @@
 2010-07-09  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* src/MafiaPlayer/MafiaPlayer.java: Removed some unused methods.
-	  Reimplemented containsIgnoreCase() and made it private and non-static.
+	  Reimplemented containsIgnoreCase() and made it private and
+	  non-static.
 
 2010-05-19  Miorel-Lucian Palii <mlpalii@gmail.com>
 
@@ -19,20 +20,20 @@
 
 2010-05-03  Miorel-Lucian Palii <mlpalii@gmail.com>
 
-	* lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar: Updated Merapi library
-	  files.
+	* lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar: Updated Merapi
+	  library files.
 
 2010-05-03  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* .classpath, .project, .settings/org.eclipse.jdt.core.prefs, lib,
-	  lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar: Added Merapi library to
-	  project.
+	  lib/merapi-0.0.1-doc.zip, lib/merapi-0.0.1.jar: Added Merapi library
+	  to project.
 
 2010-05-02  Miorel-Lucian Palii <mlpalii@gmail.com>
 
-	* .classpath, src/MafiaPlayer/MafiaPlayer.java,
-	  src/MyBot/MyBot.java, src/MyBot/MyBotMain.java: Some improvements to
-	  TWW2Bot code (that should not affect behavior).
+	* .classpath, src/MafiaPlayer/MafiaPlayer.java, src/MyBot/MyBot.java,
+	  src/MyBot/MyBotMain.java: Some improvements to TWW2Bot code (that
+	  should not affect behavior).
 
 2010-04-28  Miorel-Lucian Palii <mlpalii@gmail.com>
 
@@ -45,7 +46,7 @@
 	  src/MafiaPlayer/MafiaPlayerMain.java, src/MafiaPlayerMain.java,
 	  src/MyBot, src/MyBot.java, src/MyBot/MyBot.java,
 	  src/MyBot/MyBotMain.java, src/MyBotMain.java, src/PircAPI,
-	  src/PircAPI/Colors.java, src/PircAPI/DccChat.java, 
+	  src/PircAPI/Colors.java, src/PircAPI/DccChat.java,
 	  src/PircAPI/DccFileTransfer.java, src/PircAPI/DccManager.java,
 	  src/PircAPI/IdentServer.java, src/PircAPI/InputThread.java,
 	  src/PircAPI/IrcException.java,
@@ -69,7 +70,6 @@
 
 2010-04-16  Thomas Boyd <Boyd.thomas3@gmail.com>
 
-	* MafiaPlayer.java, MafiaPlayerMain.java, MyBot.java,
-	  MyBotMain.java: My bot and the mafia player bots coming to a
-	  repository near you.
+	* MafiaPlayer.java, MafiaPlayerMain.java, MyBot.java, MyBotMain.java:
+	  My bot and the mafia player bots coming to a repository near you.
 

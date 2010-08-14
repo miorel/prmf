@@ -4,16 +4,11 @@
 	Ant build file for the Merapi project
 
 </description>
+	<property value="lib" name="project.libdir"/>
+	<import file="prmf-lib.xml"/>
 	<target name="download-dependencies" description="downloads library files required by the project">
-		<mkdir dir="lib/svnkit"/>
-		<get usetimestamp="true" dest="lib/svnkit/antlr-runtime-3.1.3.jar" src="http://prmf.googlecode.com/svn/lib/svnkit/antlr-runtime-3.1.3.jar"/>
-		<get usetimestamp="true" dest="lib/svnkit/jna.jar" src="http://prmf.googlecode.com/svn/lib/svnkit/jna.jar"/>
-		<get usetimestamp="true" dest="lib/svnkit/sqljet.1.0.2.jar" src="http://prmf.googlecode.com/svn/lib/svnkit/sqljet.1.0.2.jar"/>
-		<get usetimestamp="true" dest="lib/svnkit/svnkit-cli.jar" src="http://prmf.googlecode.com/svn/lib/svnkit/svnkit-cli.jar"/>
-		<get usetimestamp="true" dest="lib/svnkit/svnkit.jar" src="http://prmf.googlecode.com/svn/lib/svnkit/svnkit.jar"/>
-		<get usetimestamp="true" dest="lib/svnkit/trilead.jar" src="http://prmf.googlecode.com/svn/lib/svnkit/trilead.jar"/>
-		<mkdir dir="lib/junit"/>
-		<get usetimestamp="true" dest="lib/junit/junit-4.8.2.jar" src="http://prmf.googlecode.com/svn/lib/junit/junit-4.8.2.jar"/>
+		<prmf-download-lib-svnkit/>
+		<prmf-download-lib-junit/>
 	</target>
 	<target name="find-version" description="checks the revision number to determine project version" unless="merapi.version" depends="download-dependencies">
 		<mkdir dir="build/repo-ant"/>
@@ -165,6 +160,30 @@
 				<pathelement path="build/bin/merapi-strings"/>
 				<pathelement path="build/bin/merapi-util"/>
 				<pathelement path="build/bin/merapi-iterators"/>
+			</classpath>
+		</javac>
+	</target>
+	<target name="compile-tests" description="compiles project unit tests" depends="download-dependencies,compile-project">
+		<mkdir dir="build/test-bin"/>
+		<javac target="1.5" includeAntRuntime="false" srcdir="src/test/java" destdir="build/test-bin">
+			<classpath>
+				<pathelement path="build/bin/merapi-util"/>
+				<pathelement path="build/bin/merapi-event"/>
+				<pathelement path="build/bin/merapi-iterators"/>
+				<pathelement path="build/bin/merapi-misc"/>
+				<pathelement path="build/bin/merapi-strings"/>
+				<pathelement path="build/bin/merapi-threads"/>
+				<pathelement path="build/bin/merapi-io"/>
+				<pathelement path="build/bin/merapi-math"/>
+				<pathelement path="build/bin/merapi-net"/>
+				<pathelement path="build/bin/merapi-www"/>
+				<pathelement path="build/bin/merapi-spoj"/>
+				<pathelement path="build/bin/merapi-irc"/>
+				<pathelement path="build/bin/merapi-json"/>
+				<pathelement path="build/bin/merapi-shorten"/>
+				<pathelement path="build/bin/merapi-tinysong"/>
+				<pathelement path="build/bin/merapi-chem"/>
+				<pathelement path="lib/junit/junit-4.8.2.jar"/>
 			</classpath>
 		</javac>
 	</target>

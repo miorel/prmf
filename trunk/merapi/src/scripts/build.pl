@@ -102,11 +102,13 @@ my $src_fileset = {dir => '.', (@src_includes ? (includes => join(',', sort @src
 my $target;
 
 if($repo) {
-	$target = xml_obj('target', {name => 'download-dependencies', description => 'downloads library files required by the project'});
-	add_child($target, mkdir_obj('lib/svnkit'));
-	add_child($target, xml_obj('get', {dest => "lib/svnkit/$_", src => "http://prmf.googlecode.com/svn/lib/svnkit/$_", usetimestamp => 'true'})) for qw(antlr-runtime-3.1.3.jar jna.jar sqljet.1.0.2.jar svnkit-cli.jar svnkit.jar trilead.jar);
-	add_child($target, mkdir_obj('lib/junit'));
-	add_child($target, xml_obj('get', {dest => 'lib/junit/junit-4.8.2.jar', usetimestamp => 'true', src => 'http://prmf.googlecode.com/svn/lib/junit/junit-4.8.2.jar'}));
+	add_child($xml, xml_obj('property', {name => 'project.libdir', value => 'lib'}));
+	add_child($xml, xml_obj('import', {file => 'prmf-lib.xml'}));
+
+	$target = xml_obj('target', {name => 'download-dependencies', description => 'downloads library files required by the project'}, [
+		xml_obj('prmf-download-lib-svnkit'),
+		xml_obj('prmf-download-lib-junit'),
+	]);
 	add_child($xml, $target);
 	
 	$target = xml_obj('target', {name => 'find-version', description => 'checks the revision number to determine project version', depends => 'download-dependencies', 'unless' => 'merapi.version'});
@@ -137,6 +139,14 @@ for(@modules) {
 	add_child($target, $javac);
 }
 add_child($xml, $target);
+
+$target = xml_obj('target', {name => 'compile-tests', description => 'compiles project unit tests', depends => ($repo ? 'download-dependencies,' : '').'compile-project'}, [mkdir_obj('build/test-bin'), xml_obj('javac', {srcdir => 'src/test/java', destdir => 'build/test-bin', includeAntRuntime => 'false', target => '1.5'}, 
+[xml_obj('classpath', undef, [map {xml_obj('pathelement', {path => $_})} ((map {module_bin($_->{name})} @modules), 'lib/junit/junit-4.8.2.jar')])])]);
+add_child($xml, $target);
+
+#$target = xml_obj('target', {name => 'test', description => 'compiles project unit tests', depends => ($repo ? 'download-dependencies,' : '').'compile-project'}, [mkdir_obj('build/test-bin'), xml_obj('javac', {srcdir => 'src/test/java', destdir => 'build/test-bin', includeAntRuntime => 'false', target => '1.5'}, 
+#[xml_obj('classpath', undef, [map {xml_obj('pathelement', {path => $_})} ((map {module_bin($_->{name})} @modules), 'lib/junit/junit-4.8.2.jar')])])]);
+#add_child($xml, $target);
 
 $target = xml_obj('target', {name => 'clean-bin', description => 'removes the compiled project source'}, [
 	xml_obj('delete', {dir => 'build/bin'}),
@@ -301,3 +311,31 @@ sub print_xml {
 	}
 }
 
+__DATA__
+		<junit haltonerror="true" haltonfailure="true" printsummary="withOutAndErr">
+			<classpath>
+				<pathelement path="build/bin/merapi-util"/>
+				<pathelement path="build/bin/merapi-event"/>
+				<pathelement path="build/bin/merapi-iterators"/>
+				<pathelement path="build/bin/merapi-misc"/>
+				<pathelement path="build/bin/merapi-strings"/>
+				<pathelement path="build/bin/merapi-threads"/>
+				<pathelement path="build/bin/merapi-io"/>
+				<pathelement path="build/bin/merapi-math"/>
+				<pathelement path="build/bin/merapi-net"/>
+				<pathelement path="build/bin/merapi-www"/>
+				<pathelement path="build/bin/merapi-spoj"/>
+				<pathelement path="build/bin/merapi-irc"/>
+				<pathelement path="build/bin/merapi-json"/>
+				<pathelement path="build/bin/merapi-shorten"/>
+				<pathelement path="build/bin/merapi-tinysong"/>
+				<pathelement path="build/bin/merapi-chem"/>
+				<pathelement path="build/test-bin"/>
+				<pathelement path="lib/junit/junit-4.8.2.jar"/>
+			</classpath>
+			<batchtest>
+				<fileset dir="src/test/java">
+					<include name="**/*Test*.java"/>
+				</fileset>
+			</batchtest>
+		</junit>

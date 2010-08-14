@@ -1,28 +1,29 @@
 2010-07-21  Brian Nezvadovitz <brianez21@gmail.com>
 
 	* README, Makefile: Edited README and Makefile (small cleanup)
-	* config/*: Moved configuration samples to new folder (previously in src)
+	* config/jtascores.cfg, config/jtaserv.cfg, config/jtaserv.rc,
+	  config/jtausers.cfg, src/jtascores.cfg, src/jtaserv.cfg,
+	  src/jtaserv.rc, src/jtausers.cfg: Moved configuration samples to new
+	  folder (previously in src).
 	* src/Debug.java: Added a small program that will help to debug the
-	  server in the future
+	  server in the future.
 	* src/Client.java: modified the client code to actually work
-	* src/Connection.java: fixed a bug in connection and added the ability to
-	  pass an already created socket instead of just host/port pair
-	* src/ClientGUI.java: made ClientGUI into a Swing frame instead of an applet
-	* dist/Applet.html: removed this file (no longer a browser applet)
+	* src/Connection.java: Fixed a bug in connection and added the ability
+	  to pass an already created socket instead of just host/port pair.
+	* src/ClientGUI.java: Made ClientGUI into a Frame instead of an
+	  Applet.
+	* dist/Applet.html: Removed this file (program no longer a browser
+	  applet).
 
 2010-07-20  Brian Nezvadovitz <brianez21@gmail.com>
 
-	* README, Makefile: Removed information related to `make sign` as it is
-	  not needed.
+	* README, Makefile: Removed information related to `make sign` as it
+	  is not needed.
 
 2010-07-12  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* build.xml: Created a few more specific targets, added some target
 	  descriptions.
-
-2010-07-11  Brian Nezvadovitz <brianez21@gmail.com>
-
-	* README: Changed line ends to char 80.
 
 2010-07-10  Miorel-Lucian Palii <mlpalii@gmail.com>
 
@@ -37,22 +38,23 @@
 2010-06-04  Brian Nezvadovitz <brianez21@gmail.com>
 
 	* README: Updated.
-	* dist, dist/Applet.html, src/Applet.html: Moved Applet.html to the new
-	  dist directory.
+	* dist, dist/Applet.html, src/Applet.html: Moved Applet.html to the
+	  new dist directory.
 	* src/Client.java, src/ClientGUI.java, src/Protocol.java: Added a bit
 	  more networking code to the client side.
-	* src/Makefile: Created a proper Makefile. 
+	* src/Makefile: Created a proper Makefile.
 
 2010-06-01  Brian Nezvadovitz <brianez21@gmail.com>
 
-	* src/Applet.html, src/Client.java, src/ClientGUI.java, src/Player.java:
-	  Worked on the login screen. The button now calls a method... woo!
+	* src/Applet.html, src/Client.java, src/ClientGUI.java,
+	  src/Player.java: Worked on the login screen. The button now calls a
+	  method... woo!
 
 2010-05-27  Brian Nezvadovitz <brianez21@gmail.com>
 
 	* src/ClientGUI.java, src/Server.java: Started work on AWT Client GUI
-	  for JTrisApplet. I'm pretty bad at GUIs so someone should explain how
-	  to programatticaly do this in AWT ;)
+	  for JTrisApplet. I'm pretty bad at GUIs so someone should explain
+	  how to programatticaly do this in AWT ;)
 
 2010-05-24  Brian Nezvadovitz <brianez21@gmail.com>
 
@@ -91,12 +93,13 @@
 
 	* src/Client.java, src/Connection.java, src/Netstrings.java,
 	  src/Protocol.java, src/Server.java, src/ServerCLI.java,
-	  src/Sha1.java: Broke ground on basic networking code for client side.
+	  src/Sha1.java: Broke ground on basic networking code for client
+	  side.
 
 2010-05-12  Brian Nezvadovitz <brianez21@gmail.com>
 
-	* src/Client.java, src/Connection.java, src/Player.java: Made some more
-	  base classes.
+	* src/Client.java, src/Connection.java, src/Player.java: Made some
+	  more base classes.
 
 2010-05-05  Brian Nezvadovitz <brianez21@gmail.com>
 
@@ -134,3 +137,4 @@
 
 	* Board.java, BoardGUI.java, Client.java, ClientGUI.java, Shape.java:
 	  Initial commit of the fourth full-rewrite of my pet Tetris project.
+

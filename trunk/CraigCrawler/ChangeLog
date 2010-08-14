@@ -1,72 +1,75 @@
 2010-07-08  Miorel-Lucian Palii <mlpalii@gmail.com>
 
-	* util.pm: Reimplemented close_file_map() using built-in values function. A
-	  few other minor changes.
+	* util.pm: Reimplemented close_file_map() using built-in values
+	  function. A few other minor changes.
 
 2010-06-26  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* threaded_spider.pl: Fixed bug where ads would be written more than once.
+	* threaded_spider.pl: Fixed bug where ads would be written more than
+	  once.
 	* util.pm: Minor changes.
 
 2010-06-22  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* output.pl: print_to_dir() now makes a call to a method in util.pm to close
-	  all the open file handles.
-	* util.pm: Added a method called close_file_map which closes all the file
-	  handles stored in a hashmap.
+	* output.pl: print_to_dir() now makes a call to a method in util.pm to
+	  close all the open file handles.
+	* util.pm: Added a method called close_file_map which closes all the
+	  file handles stored in a hashmap.
 
 2010-06-22  Rodrigo Salazar <rsala004@ufl.edu>
 
 	* craigcrawler.pl: Updated priority list of project goals.
-	* output.pl: Finished folder creation, basic file creation and writing...
-	  functional but badly done.
+	* output.pl: Finished folder creation, basic file creation and
+	  writing... functional but badly done.
 	* settings.pm: Added a couple more valid settings checks.
-	* util.pm: Added cc_mkdir method which creates nested folders with mkdir
-	  loop.
+	* util.pm: Added cc_mkdir method which creates nested folders with
+	  mkdir loop.
 
 2010-06-17  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* output.pl: Made small progress to folder creation and preserving file
-	  structure.
-	* settings.pm: Added settings to save as directories, obviously not working
-	  currently though.
+	* output.pl: Made small progress to folder creation and preserving
+	  file structure.
+	* settings.pm: Added settings to save as directories, obviously not
+	  working currently though.
 	* util.pm: Added get_filename() and dir_exists functions.
 
 2010-06-16  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Updated list of project priorities and added a check to
-	  make sure settings are valid.
+	* craigcrawler.pl: Updated list of project priorities and added a
+	  check to make sure settings are valid.
 	* poe_spider.pl: File created, will contain code for new spidering
 	  framework, using POE and LWP::UserAgent::POE!!
-	* settings.pm: Added setting for use_poe, added method that returns whether
-	  settings are valid.
+	* settings.pm: Added setting for use_poe, added method that returns
+	  whether settings are valid.
 	* util.pm: Minor changes.
 
 2010-06-15  Rodrigo Salazar <rsala004@ufl.edu>
 
 	* basic_spider.pl: Changed output commands to match output.pl file.
 	* output.pl: Cleaned up some methods and created a method called
-	  new_special_line which prints different output to the screen and to the
-	  file.
-	* settings.pm: Added setting to only print ad info to file, added comments
-	  for more clarity.
-  	* threaded_spider.pl: Changed output commands to match output.pl file.
+	  new_special_line which prints different output to the screen and to
+	  the file.
+	* settings.pm: Added setting to only print ad info to file, added
+	  comments for more clarity.
+	* threaded_spider.pl: Changed output commands to match output.pl file.
 
 2010-06-12  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* basic_spider.pl: Changed all prints to redirect to the output methods.
-	* craigcrawler.pl: Now makes sure to create a file before opening either
-	  threaded or basic crawler methods.
-	* output.pl: Completed the output file. Still breaks with very large file
-	  output though.
+	* basic_spider.pl: Changed all prints to redirect to the output
+	  methods.
+	* craigcrawler.pl: Now makes sure to create a file before opening
+	  either threaded or basic crawler methods.
+	* output.pl: Completed the output file. Still breaks with very large
+	  file output though.
 	* settings.pm: Added various more settings, such as number of threads,
 	  output file name, to print or not to print, etc.
-	* threaded_spider.pl: Changed all prints to redirect to the output methods.
+	* threaded_spider.pl: Changed all prints to redirect to the output
+	  methods.
 
 2010-06-09  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* threaded_spider.pl: Links that fail to download are now repushed onto the
-	  stack. Additional formatting changes.
+	* threaded_spider.pl: Links that fail to download are now repushed
+	  onto the stack. Additional formatting changes.
 
 2010-06-07  Rodrigo Salazar <rsala004@ufl.edu>
 
@@ -80,27 +83,27 @@
 
 	* threaded_spider.pl: Added Semaphore module and stopped using locks,
 	  threading seems to be working very well now. The threaded spider
-	  downloaded 1000 websites in 1 minute (1serv) compared to the single thread
-	  spider with 100 pages.
+	  downloaded 1000 websites in 1 minute (1serv) compared to the single
+	  thread spider with 100 pages.
 
 2010-06-04  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* threaded_spider.pl: Implemented the start of some methods, still missing
-	  shared stack data structure.
+	* threaded_spider.pl: Implemented the start of some methods, still
+	  missing shared stack data structure.
 
 2010-06-04  Rodrigo Salazar <rsala004@ufl.edu>
 
 	* basic_spider.pl: Made minor change to the mini-hashing if condition.
-	* threaded_spider.pl: Erased lots of code, added many comments as to how the
-	  threading will be approached...
+	* threaded_spider.pl: Erased lots of code, added many comments as to
+	  how the threading will be approached...
 
 2010-06-04  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* basic_spider.pl: Overall refinement of the basic spidering method! Fixed
-	  problem that was requiring checking hashes, hashing no longer 100%
-	  necessary but still somewhat helpful (reason why the settings file was
-	  created). Also removed several useless variables. Added warning and strict
-	  pragmas.
+	* basic_spider.pl: Overall refinement of the basic spidering method!
+	  Fixed problem that was requiring checking hashes, hashing no longer
+	  100% necessary but still somewhat helpful (reason why the settings
+	  file was created). Also removed several useless variables. Added
+	  warning and strict pragmas.
 	* settings.pm: Created, stores basic settings such as whether
 	  threading/hashing is enabled.
 	* threaded_spider.pl: Added warning and strict pragmas.
@@ -108,36 +111,40 @@
 
 2010-06-02  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* basic_spider.pl: Revamped the basic_spider to help build off of it for
-	  work on the threaded version. Now downloads the header info before
-	  downloading entire page to make sure its not an old page. The subroutine
-	  now uses a stack to manage the links instead of recursion.
+	* basic_spider.pl: Revamped the basic_spider to help build off of it
+	  for work on the threaded version. Now downloads the header info
+	  before downloading entire page to make sure its not an old page. The
+	  subroutine now uses a stack to manage the links instead of
+	  recursion.
 
 2010-06-02  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* pattern.pm: Added new pattern /#/ to ignore pages linking to themselves...
-	  Doesn't seem to work.
-	* util.pm: Added clause to strip www subdomain, which was causing websites
-	  to be redownloaded.
+	* pattern.pm: Added new pattern /#/ to ignore pages linking to
+	  themselves... Doesn't seem to work.
+	* util.pm: Added clause to strip www subdomain, which was causing
+	  websites to be redownloaded.
 
 2010-06-02  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* basic_spider.pl: Seems to be broken now with the new code organization, it
-	  is not sifting through the patterns correctly, might have something to do
-	  with the util.pm or pattern.pm files not functioning as intended.
-	* craigcrawler.pl: Moved all code that has to do with spidering to other
-	  files.
+	* basic_spider.pl: Seems to be broken now with the new code
+	  organization, it is not sifting through the patterns correctly,
+	  might have something to do with the util.pm or pattern.pm files not
+	  functioning as intended.
+	* craigcrawler.pl: Moved all code that has to do with spidering to
+	  other files.
 	* pattern.pm: Created to hold patterns and get methods.
-	* threaded_spider.pl: Now contains subroutines for threaded crawling, still
-	  not working.
+	* threaded_spider.pl: Now contains subroutines for threaded crawling,
+	  still not working.
 	* util.pm: Now gets the patterns it needs through get methods.
-	* basic_spider.pl, craigcrawler.pl, threaded_spider.pl, util.pm: Renamed all
-	  files to lowercase type, project reorganized completely, much cleaner now.
+	* basic_spider.pl, craigcrawler.pl, threaded_spider.pl, util.pm:
+	  Renamed all files to lowercase type, project reorganized completely,
+	  much cleaner now.
 
 2010-05-30  Rodrigo Salazar <rsala004@ufl.edu>
 
 	* Basic_Spider.pl: Created file, still empty.
-	* Craigcrawler.pl: Moved some code to other files, still needs more work.
+	* Craigcrawler.pl: Moved some code to other files, still needs more
+	  work.
 	* Threaded_Spider.pl: Created file, still empty.
 	* Util.pm: Moved validate_link and clean_link methods here.
 
@@ -155,87 +162,92 @@
 
 	* craigcrawler.pl: Added possible solution to an infinite loop problem
 	  (caused by unique links leading to old pages). Solved with expensive
-	  solution though... using an MD5 hash, I do think it's possible to solve
-	  this problem by examining craigslist website more closely, but I can't
-	  find any problem links at this moment... the infinite loops otherwise
-	  happens hours into the program's crawl which makes it hard to find the
-	  exact problem. For now this solution might do well.
+	  solution though... using an MD5 hash, I do think it's possible to
+	  solve this problem by examining craigslist website more closely, but
+	  I can't find any problem links at this moment... the infinite loops
+	  otherwise happens hours into the program's crawl which makes it hard
+	  to find the exact problem. For now this solution might do well.
 
 2010-05-29  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Fixed bug with multiple slashes appearing. Spider no
-	  longer visits ad-listings so to scan faster. All ad-links and
-	  ad-descriptions are stored in a separate table now. Added a basic pattern
-	  to match ad listings.
+	* craigcrawler.pl: Fixed bug with multiple slashes appearing. Spider
+	  no longer visits ad-listings so to scan faster. All ad-links and
+	  ad-descriptions are stored in a separate table now. Added a basic
+	  pattern to match ad listings.
 
 2010-05-28  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Deleted 'pattern' and 'pattern2', decided to go with a
-	  general link pattern and then sieve it down from there. Program seems to
-	  work much better now, possibly as intended? Needs debugging. Cleaned up
-	  the code significantly and major improvements made!
+	* craigcrawler.pl: Deleted 'pattern' and 'pattern2', decided to go
+	  with a general link pattern and then sieve it down from there.
+	  Program seems to work much better now, possibly as intended? Needs
+	  debugging. Cleaned up the code significantly and major improvements
+	  made!
 
 2010-05-27  Rodrigo Salazar <rsala004@ufl.edu>
 
 	* craigcrawler.pl: Cleaned up the code some more, possibly got second
-	  pattern working, but still overall broken. Code runs without errors, but
-	  not as intended (ad pages still not being reached). Added one more pattern
-	  to 'bad_pattern' array. Need to rethink what is going on... Pattern2 seems
-	  redundant with Pattern1 (seeing this as I write change log).
+	  pattern working, but still overall broken. Code runs without errors,
+	  but not as intended (ad pages still not being reached). Added one
+	  more pattern to 'bad_pattern' array. Need to rethink what is going
+	  on... Pattern2 seems redundant with Pattern1 (seeing this as I write
+	  change log).
 
 2010-05-27  Rodrigo Salazar <rsala004@ufl.edu>
 
 	* craigcrawler.pl: Changed main pattern, added additional pattern for
-	  directories, added bad_pattern array since I was not able to combine them
-	  into one super-pattern. Bug created somehow... if spider reaches max
-	  recursion depth it freezes. Still not able to get spider to go all the way
-	  down to listings pages.
+	  directories, added bad_pattern array since I was not able to combine
+	  them into one super-pattern. Bug created somehow... if spider
+	  reaches max recursion depth it freezes. Still not able to get spider
+	  to go all the way down to listings pages.
 
 2010-05-24  Rodrigo Salazar <rsala004@ufl.edu>
 
 	* craigcrawler.pl: Erased dont_spider method because I decided it's a
-	  horrible way to check for bad links. It might be better just to be more
-	  specific with our original pattern. Added a list of problems to tackle!
-	
+	  horrible way to check for bad links. It might be better just to be
+	  more specific with our original pattern. Added a list of problems to
+	  tackle!
+
 2010-05-24  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Added a statement to remove leading slashes in directory
-	  links. Attempted to change one of the 'bad' patterns, currently a broken
-	  pattern which doesn't 'compile'.
-	
+	* craigcrawler.pl: Added a statement to remove leading slashes in
+	  directory links. Attempted to change one of the 'bad' patterns,
+	  currently a broken pattern which doesn't 'compile'.
+
 2010-05-24  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Made some progress on what to spider and what not to
-	  spider, but broke the spider in the process. Added some very messy code.
-	
+	* craigcrawler.pl: Made some progress on what to spider and what not
+	  to spider, but broke the spider in the process. Added some very
+	  messy code.
+
 2010-05-23  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Implemented basic spider method, which works somewhat!
-	  Problem: there are a TON of pages! All of 1 city took 15 minutes. Script
-	  terminated itself after completing its first city.
+	* craigcrawler.pl: Implemented basic spider method, which works
+	  somewhat! Problem: there are a TON of pages! All of 1 city took 15
+	  minutes. Script terminated itself after completing its first city.
 
 2010-05-21  Miorel-Lucian Palii <mlpalii@gmail.com>
 
-	* craigcrawler.pl: Answered in the comments a question Rodrigo posted in the
-	  comments.
+	* craigcrawler.pl: Answered in the comments a question Rodrigo posted
+	  in the comments.
 
 2010-05-21  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Set a layout for the first couple methods we will need to
-	  get started with this project, used pseudo-pseudo-code to describe the
-	  methods.
+	* craigcrawler.pl: Set a layout for the first couple methods we will
+	  need to get started with this project, used pseudo-pseudo-code to
+	  describe the methods.
 
 2010-05-21  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* craigcrawler.pl: Added a couple lines of code, need to think about how we
-	  are going to get all the interesting links from the page or whether we
-	  should just pull every link and spider the entire website, checking each
-	  to see if its a person listing or not. Will discuss later!
+	* craigcrawler.pl: Added a couple lines of code, need to think about
+	  how we are going to get all the interesting links from the page or
+	  whether we should just pull every link and spider the entire
+	  website, checking each to see if its a person listing or not. Will
+	  discuss later!
 
 2010-05-21  Rodrigo Salazar <rsala004@ufl.edu>
 
-	* .project: Updated CraigCrawler with Eclipse project settings (EPIC Perl
-	  plugin).
+	* .project: Updated CraigCrawler with Eclipse project settings (EPIC
+	  Perl plugin).
 
 2010-05-20  Miorel-Lucian Palii <mlpalii@gmail.com>
 
@@ -246,3 +258,4 @@
 
 	* craigcrawler.pl: Added a Perl file to work off of for the new
 	  craigslist bot project!
+

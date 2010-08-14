@@ -151,6 +151,30 @@
 			</classpath>
 		</javac>
 	</target>
+	<target name="compile-tests" description="compiles project unit tests" depends="compile-project">
+		<mkdir dir="build/test-bin"/>
+		<javac target="1.5" includeAntRuntime="false" srcdir="src/test/java" destdir="build/test-bin">
+			<classpath>
+				<pathelement path="build/bin/merapi-util"/>
+				<pathelement path="build/bin/merapi-event"/>
+				<pathelement path="build/bin/merapi-iterators"/>
+				<pathelement path="build/bin/merapi-misc"/>
+				<pathelement path="build/bin/merapi-strings"/>
+				<pathelement path="build/bin/merapi-threads"/>
+				<pathelement path="build/bin/merapi-io"/>
+				<pathelement path="build/bin/merapi-math"/>
+				<pathelement path="build/bin/merapi-net"/>
+				<pathelement path="build/bin/merapi-www"/>
+				<pathelement path="build/bin/merapi-spoj"/>
+				<pathelement path="build/bin/merapi-irc"/>
+				<pathelement path="build/bin/merapi-json"/>
+				<pathelement path="build/bin/merapi-shorten"/>
+				<pathelement path="build/bin/merapi-tinysong"/>
+				<pathelement path="build/bin/merapi-chem"/>
+				<pathelement path="lib/junit/junit-4.8.2.jar"/>
+			</classpath>
+		</javac>
+	</target>
 	<target name="clean-bin" description="removes the compiled project source">
 		<delete dir="build/bin"/>
 	</target>

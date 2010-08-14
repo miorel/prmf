@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<macrodef name="assert-property-set">
+		<attribute name="name"/>
+		<sequential>
+			<fail message="Required property @{name} was not set." unless="@{name}"/>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="prmf-download-lib">
+		<attribute name="path"/>
+		<sequential>
+			<assert-property-set name="project.libdir"/>
+			<get dest="${project.libdir}/@{path}" src="http://prmf.googlecode.com/svn/lib/@{path}" usetimestamp="true"/>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="prmf-download-lib-svnkit">
+		<sequential>
+			<assert-property-set name="project.libdir"/>
+			<mkdir dir="${project.libdir}/svnkit"/>
+			<prmf-download-lib path="svnkit/antlr-runtime-3.1.3.jar"/>
+			<prmf-download-lib path="svnkit/jna.jar"/>
+			<prmf-download-lib path="svnkit/sqljet.1.0.2.jar"/>
+			<prmf-download-lib path="svnkit/svnkit-cli.jar"/>
+			<prmf-download-lib path="svnkit/svnkit.jar"/>
+			<prmf-download-lib path="svnkit/trilead.jar"/>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="prmf-download-lib-junit">
+		<sequential>
+			<assert-property-set name="project.libdir"/>
+			<mkdir dir="${project.libdir}/junit"/>
+			<prmf-download-lib path="junit/junit-4.8.2.jar"/>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="prmf-download-lib-merapi">
+		<sequential>
+			<assert-property-set name="project.libdir"/>
+			<mkdir dir="${project.libdir}/merapi"/>
+			<prmf-download-lib path="merapi/merapi-0.0.1-r433.jar"/>
+			<prmf-download-lib path="lib/merapi/merapi-0.0.1-r433-doc.zip"/>
+		</sequential>
+	</macrodef>	
+</project>

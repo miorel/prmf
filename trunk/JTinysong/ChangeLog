@@ -1,8 +1,8 @@
 2010-07-20  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* .classpath, .project: Adding basic Eclipse project files.
-	* src/main/java/com/googlecode/prmf/jtinysong: Created initial directory
-	  structure for source files.
+	* src/main/java/com/googlecode/prmf/jtinysong: Created initial
+	  directory structure for source files.
 
 2010-05-19  Miorel-Lucian Palii <mlpalii@gmail.com>
 
