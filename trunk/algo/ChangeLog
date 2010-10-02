@@ -1,3 +1,11 @@
+2010-09-29  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* algo.tex: Corrected some embarrassing spelling/grammar mistakes.
+	* Makefile: Replaced use of the which command with the type command.
+	  Defined some commands (namely rubber and zip) and their
+	  corresponding flags as variables, thus making the build process more
+	  configurable. Yay!
+
 2010-07-08  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* Makefile: Made Makefile slightly more readable.

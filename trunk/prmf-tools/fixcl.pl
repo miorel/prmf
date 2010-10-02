@@ -6,20 +6,31 @@ use strict;
 my $tab_length = 8;
 my $line_length = 78;
 
-my $first = 1;
-while(<>) {
-	for(;;) {
-		last unless /\S/;
-		if(/^(\d+\-\d+\-\d+)\s+(.+?)\s+<([^@]+@[^@.]+(\.[^@.>]+))>/) {
+my $first = 1; # whether or not this is the first entry, initially yes
+
+while(<STDIN>) { # for each line of standard input only (avoid <> magic)
+	for(;;) { # infinite loop for processing, will break out explicitly
+		last unless /\S/; # skip empty lines
+
+		if(/^(\d+\-\d+\-\d+)\s+(.+?)\s+<([^@]+@[^@.]+(?:\.[^@.>]+))>/) {
+			# Looks like the first line of an entry.
+			# YYYY-MM-DD  Rick Astley <rick@example.org>
+
+			# empty line between entries
+			# i.e. empty line before every entry except first
 			print "\n" unless $first;
-			$first = 0;
+
+			$first = 0; # now no longer first
+
 			print "$1  $2 <$3>\n\n";
+			
+			# done processing this line, break out of infinite loop
 			last;
 		}
 		if(s/^\s*\*\s+//) {
 			my $msg = $_;
 			my $continue = 0;
-			while(<>) {
+			while(<STDIN>) {
 				if(/^\s*\*\s+/ || !/\S/) {
 					$continue = 1;
 					last;
@@ -41,4 +52,6 @@ while(<>) {
 		}
 	}
 }
+
+# finish off the file with an empty line
 print "\n";

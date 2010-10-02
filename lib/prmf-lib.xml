@@ -41,7 +41,7 @@
 			<assert-property-set name="project.libdir"/>
 			<mkdir dir="${project.libdir}/merapi"/>
 			<prmf-download-lib path="merapi/merapi-0.0.1-r433.jar"/>
-			<prmf-download-lib path="lib/merapi/merapi-0.0.1-r433-doc.zip"/>
+			<prmf-download-lib path="merapi/merapi-0.0.1-r433-doc.zip"/>
 		</sequential>
 	</macrodef>	
 </project>

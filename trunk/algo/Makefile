@@ -8,22 +8,33 @@ RES=icpc.png
 OTHER=ChangeLog Makefile README toc.pl
 
 ALL=$(SRC) $(RES) $(OTHER)
+
 SHELL=/bin/bash
-PDFLATEX_CMD=pdflatex -interaction=nonstopmode $(SRC)
+
+ZIP=zip
+ZIP_FLAGS=-9 -r
+
+PDFLATEX=pdflatex
+PDFLATEX_FLAGS=-interaction=nonstopmode
+PDFLATEX_CMD=$(PDFLATEX) $(PDFLATEX_FLAGS) $(SRC)
+
+RUBBER=rubber
+RUBBER_FLAGS=--pdf
+RUBBER_CMD=$(RUBBER) $(RUBBER_FLAGS) $(SRC)
 
 algo.pdf: $(SRC) $(RES)
-	if (which rubber >& /dev/null); then \
-		rubber --pdf $(SRC); \
+	if (type -p $(RUBBER) >& /dev/null); then \
+		$(RUBBER_CMD); \
 	else \
-		$(PDFLATEX_CMD) && $(PDFLATEX_CMD) && $(PDFLATEX_CMD); \
+		($(PDFLATEX_CMD)) && ($(PDFLATEX_CMD)) && ($(PDFLATEX_CMD)); \
 	fi
 
 algo.zip: $(ALL)
-	zip -9 -r algo.zip $(ALL)
+	$(ZIP) $(ZIP_FLAGS) algo.zip $(ALL)
 
 dist: algo.zip
 
 clean:
-	rm -f algo.{aux,log,pdf,toc,zip}
+	$(RM) algo.{aux,log,pdf,toc,zip}
 
 .PHONY: dist clean

@@ -416,9 +416,9 @@ double area(double[] x, double[] y) {
 \end{lstlisting}
 
 \subsubsection{Polygon area on an integer grid (Pick's theorem)}
-\noindent If the polygon is on a grid of evenly spaced points (usually some integer latice), Pick's theorem tells us the area is:
+\noindent If the polygon is on a grid of evenly spaced points (usually some integer lattice), Pick's theorem tells us the area is:
 \[A=I+\frac{B}{2}-1\]
-where $B$ is the number of latice points on the polygon's boundary and $I$ is the number of latice points in its interior.
+where $B$ is the number of lattice points on the polygon's boundary and $I$ is the number of lattice points in its interior.
 
 \subsubsection{Quadrilateral area, given side lengths (Bretschneider's formula and Brahmagupta's formula)}
 Bretschneider's formula gives the area of a quadrilateral as:
@@ -572,7 +572,7 @@ void initPrimes() {
 
 According to the fundamental theorem of arithmetic, any integer $n>1$ can be written as a product of primes, or, a bit more formally, any integer $n>1$ can be written in the form $n={p_0}^{\alpha_0}{p_1}^{\alpha_1}\ldots{p_{k-1}}^{\alpha_{k-1}}$ where the $p_i$'s are distinct primes. This is called the prime factorization (or prime decomposition) of $n$.
 
-To find the prime factorization of every number in some range, you can use a modified sieve which stores a prime factor rather than a boolean flag. The code below can't use the aforementioned square root optimization, but that should be fine if your range is small or you're only running this code once.
+To find the prime factorization of every number in some range, you can use a modified sieve which stores a prime factor rather than a boolean flag. The code below can't use the aforementioned square root optimization, but that should be fine if your range is small or if you're only running this code once.
 
 \begin{lstlisting}
 void initPrimes() {
@@ -695,7 +695,7 @@ Insert some text about how dynamic programming is awesome.
 
 \subsection{The knapsack problem}
 
-This is a combinatorial optimization problem. You have to choose from a set of objects to maximizes value while keeping the total weight under a specified threshold. The problem takes its name form its usual formulation in terms of a thief who must choose which treasures to steal to maximize his profit, under the constraint of some weight he can carry in his knapsack. (In the simplest form of the problem, other parameters, such as volume for example, are not taken in consideration.)
+This is a combinatorial optimization problem. You have to choose from a set of objects to maximize value while keeping the total weight under a specified threshold. The problem takes its name form its usual formulation in terms of a thief who must choose which treasures to steal to maximize his profit, under the constraint of some weight he can carry in his knapsack. (In the simplest form of the problem, other parameters, such as volume for example, are not taken in consideration.)
 
 \subsubsection{Greedy solution when fractional items are allowed}
 
@@ -818,7 +818,7 @@ int longestCommonSubsequence(char[] a, char[] b) {
 \end{lstlisting}
 
 \subsection{Longest increasing subsequence}
-In this problem you are given a sequence of numbers $a_1,a_2,\dots,a_n$, and are asked to find the longest subsequence such that, $a_{n_1}\le a_{n_2}\le\dots\le a_{n_k}$ (similary you can replae the $\le$ with $<$).
+In this problem you are given a sequence of numbers $a_1,a_2,\dots,a_n$, and are asked to find the longest subsequence such that, $a_{n_1}\le a_{n_2}\le\dots\le a_{n_k}$ (similary you can replace the $\le$ with $<$).
 The following code not only solves this problem, it also returns an array with the desired sequence.
 
 \begin{lstlisting} 
@@ -1015,7 +1015,7 @@ class Edge {
 }
 \end{lstlisting}
 
-It is nice to make \verb|Vertex|s iterable so that you can use for-each syntax when traversing it's neighbors. 
+It is nice to make \verb|Vertex|s iterable so that you can use for-each syntax when traversing its neighbors. 
 
 \subsection{Basic Traversal techniques}
 
@@ -1177,7 +1177,7 @@ private static void fw(int N, int[][] graph)  {
 
 \subsection{Random graph theory stuff that doesn't fit anywhere else}
 \begin{itemize}\item Euler path: a path which uses each edge exactly one time. Exactly two vertices can have an odd number of edges, the first and last ones.
-\item Cayley's formula: for any n, there are $n^{(n-2)}$ trees with n distinct vertices.
+\item Cayley's formula: for any $n$, there are $n^{(n-2)}$ trees with $n$ distinct vertices.
 \end{itemize}
 
 \newpage\section{Miscellaneous}
