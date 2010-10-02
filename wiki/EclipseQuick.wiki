@@ -23,3 +23,5 @@ Eclipse is the recommended IDE for Programming Mafia projects.
    * only get the project directory from the trunk, we'll deal with tags and branches later if needed
    * say you want the New Project wizard when asked and configure it as a Java project
    * sit back, relax, the download will finish shortly
+
+testing that commits are working
