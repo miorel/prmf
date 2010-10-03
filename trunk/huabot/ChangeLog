@@ -1,3 +1,10 @@
+2010-10-03  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* src/main/java/com/googlecode/prmf/huabot/Huabot.java: Added basic
+	  help function. Removed spojaday complaining since people started
+	  doing SPOJ! Spiced up the welcome messages a bit. Clever comments
+	  will now get a zing from the bot.
+
 2010-07-21  Joseph Thuemler <manwiththeplan@gmail.com>
 
 	* src/main/java/com/googlecode/prmf/huabot/Huabot.java: Added

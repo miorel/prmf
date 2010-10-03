@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -68,8 +69,18 @@ public class Huabot extends AbstractIrcEventListener {
 		String channel = cmd.getChannel().toLowerCase(Locale.ENGLISH);
 		String user = event.getOrigin().getNick();
 
-		if(!nick.equalsIgnoreCase(user)) // Otherwise we'd welcome ourselves!
-			privmsg(client, channel, String.format("Welcome to %s, %s!", channel, user));
+		if(!nick.equalsIgnoreCase(user)) { // Otherwise we'd welcome ourselves!
+			double rnd = new Random().nextDouble();
+			if(rnd <= 0.85) {
+				privmsg(client, channel, String.format("Welcome to %s, %s!", channel, user));
+			}
+			else if(rnd <= 0.95) {
+				privmsg(client, channel, String.format("Welcome, %s, to %s!", user, channel));
+			}
+			else {
+				privmsg(client, channel, String.format("WELCOME TO %s %s!!!!!!!!", channel.toUpperCase(Locale.ENGLISH), channel.toUpperCase(Locale.ENGLISH)));
+			}
+		}
 	}
 
 	@Override
@@ -111,6 +122,10 @@ public class Huabot extends AbstractIrcEventListener {
 			String cmd = cmdMatcher.group(1).toLowerCase(Locale.ENGLISH);
 			String[] arg = cmdMatcher.group(2).trim().split("\\s+");
 
+			if(cmd.equals("help")) {
+				privmsg(client, channel, "My commands are: date, help, karma, time, tinysong, version");
+			}
+			
 			if(cmd.equals("version")) {
 				ResourceBundle rb = ResourceBundle.getBundle(Huabot.class.getPackage().getName() + ".Info");
 				String version = rb.getString("huabot.version");
@@ -168,20 +183,13 @@ public class Huabot extends AbstractIrcEventListener {
 				}
 			}
 			
-			if (cmd.equals("spojaday")) {
-				if (arg.length == 0 || arg[0].length() == 0) {
-					privmsg(client, channel, "No one does SPOJ anymore!");
-				}
-				else {
-					privmsg(client, channel, "That guy doesn't do SPOJ anymore, who does SPOJ anymore?");
-				}
-			}
-			
 		}
 		else {
 			// This was not a command. Do other kinds of text processing.
 			String nick = sender.getNick();
 
+			boolean responded = false; // whether or not we reacted to the message
+			
 			// Process karma!
 			boolean karmaUpdated = false;
 			boolean reprimandedForSelfPlus = false; // Don't self plus! It's bad karma.
@@ -197,6 +205,7 @@ public class Huabot extends AbstractIrcEventListener {
 						if(!reprimandedForSelfPlus) {
 							privmsg(client, channel, nick + ": It's not cool to self-plus.");
 							reprimandedForSelfPlus = true;
+							responded = true;
 						}
 						change = false;
 					}
@@ -209,6 +218,12 @@ public class Huabot extends AbstractIrcEventListener {
 			}
 			if(karmaUpdated)
 				writeMapToFile(this.karma, KARMA_FILE);
+			
+			if(!responded) { // Well maybe we should!
+				// It was empirically determined that 1% of messages are zing-worthy.
+				if(Math.random() <= 0.01)
+					privmsg(client, channel, "zing~");
+			}
 		}
 	}
 
