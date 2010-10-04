@@ -78,7 +78,7 @@ public class Huabot extends AbstractIrcEventListener {
 				privmsg(client, channel, String.format("Welcome, %s, to %s!", user, channel));
 			}
 			else {
-				privmsg(client, channel, String.format("WELCOME TO %s %s!!!!!!!!", channel.toUpperCase(Locale.ENGLISH), channel.toUpperCase(Locale.ENGLISH)));
+				privmsg(client, channel, String.format("WELCOME TO %s %s!!!!!!!!", channel.toUpperCase(Locale.ENGLISH), user.toUpperCase(Locale.ENGLISH)));
 			}
 		}
 	}

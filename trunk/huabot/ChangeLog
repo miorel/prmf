@@ -1,3 +1,7 @@
+2010-10-04  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* src/main/java/com/googlecode/prmf/huabot/Huabot.java: Fixed typo.
+
 2010-10-03  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* src/main/java/com/googlecode/prmf/huabot/Huabot.java: Added basic
