@@ -1,0 +1,12 @@
+# Insert your Google Code credentials below.
+#
+# The password is not your Google password, it's your Google Code one. Look it
+# up at <https://code.google.com/hosting/settings>.
+#
+
+$user = 'albert';
+$pass = 'secret';
+
+$project = 'prmf';
+
+1; # return success

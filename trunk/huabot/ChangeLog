@@ -1,3 +1,10 @@
+2010-10-25  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* .classpath, .project, .externalToolBuilders,
+	  .externalToolBuilders/Ant Builder.launch, .settings,
+	  .settings/org.eclipse.jdt.core.prefs: Trying a new build approach
+	  within Eclipse.
+
 2010-10-04  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* src/main/java/com/googlecode/prmf/huabot/Huabot.java: Fixed typo.

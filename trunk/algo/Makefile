@@ -26,7 +26,7 @@ algo.pdf: $(SRC) $(RES)
 	if (type -p $(RUBBER) >& /dev/null); then \
 		$(RUBBER_CMD); \
 	else \
-		($(PDFLATEX_CMD)) && ($(PDFLATEX_CMD)) && ($(PDFLATEX_CMD)); \
+		{ $(PDFLATEX_CMD); } && { $(PDFLATEX_CMD); } && { $(PDFLATEX_CMD); }; \
 	fi
 
 algo.zip: $(ALL)

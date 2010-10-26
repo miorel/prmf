@@ -1,16 +1,34 @@
+2010-10-26  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* .: Added googlecode.config to svn:ignore, so that people don't end
+	  up uploading their Google Code credentials (see below).
+	* Makefile: The pdflatex commands are wrapped in {} now instead of ().
+	* gc_upload.pl, googlecode.config.example: Created script (and example
+	  configuration) for uploading the algorithm packet and source archive
+	  to the Downloads section of the Google Code repository. I'm not sure
+	  if this script belongs in the source archive, defaulting to no, as
+	  anyone who might run this ought to have the source from the
+	  repository anyway.
+	* test.pl: Created script for checking that the algorithm packet and
+	  source archive build successfully. Reports through exit code. It may
+	  be useful to have a post-commit hook run this script and make fun of
+	  anyone adding broken stuff to the repository. Unlike the other
+	  script, this one might have a purpose in a source archive, will
+	  think about it.
+
 2010-10-14  Miorel-Lucian Palii <mlpalii@gmail.com>
 
+	* README, toc.pl: Fixed some quotes.
 	* algo.tex: Updated header in anticipation of a new wave of
 	  contributions.
-	* README, toc.pl: Fixed some quotes.
 
 2010-09-29  Miorel-Lucian Palii <mlpalii@gmail.com>
 
-	* algo.tex: Corrected some embarrassing spelling/grammar mistakes.
 	* Makefile: Replaced use of the which command with the type command.
 	  Defined some commands (namely rubber and zip) and their
 	  corresponding flags as variables, thus making the build process more
 	  configurable. Yay!
+	* algo.tex: Corrected some embarrassing spelling/grammar mistakes.
 
 2010-07-08  Miorel-Lucian Palii <mlpalii@gmail.com>
 
