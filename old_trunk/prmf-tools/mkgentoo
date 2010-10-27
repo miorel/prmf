@@ -1,0 +1,62 @@
+#!/bin/bash
+
+GENTOO_MIRROR=http://www.gtlib.gatech.edu/pub/gentoo/
+
+device=/dev/sda
+[[ -e $device ]] || { echo "Uhh... I can't seem to find $device anywhere."; exit 1; }
+# killing swap, unmounting the destination device
+swapoff -a
+umount ${device}*
+
+# deleting partition table
+echo 'd 1 d 2 d 3 d 4 w' | sed 's/ /\n/g' | fdisk $device
+[[ -e ${device}1 ]] && { echo "There was a problem deleting the partitions!"; exit 1; }
+
+# creating partition table
+echo 'n p 1   a 1 w' | sed 's/ /\n/g' | fdisk $device
+[[ -e ${device}1 ]] || {
+	echo "Can't see ${device}1 yet, sleeping for a bit.";
+	sleep 5;
+	[[ -e ${device}1 ]] || { echo "Still can't see ${device}1 and I don't feel like waiting anymore."; exit 1; };
+}
+
+# creating filesystem
+mkfs.ext4 ${device}1
+tune2fs -c 10 -i 30 ${device}1
+
+# mounting root partition
+mountpoint=/mnt/gentoo
+rm -rf $mountpoint
+mkdir -p $mountpoint
+mount ${device}1 $mountpoint
+cd $mountpoint
+
+# getting/installing stage tarball
+file=latest-stage3.txt
+wget $GENTOO_MIRROR/releases/x86/autobuilds/$file || { echo "Couldn't download stage information :("; exit 1; }
+stage3=`grep -P ^\\s\*[^\\s\#] $file | tail -n1 | sed 's/\n//g; s/^\s+//; s/\s*$//'`
+rm $file
+wget $GENTOO_MIRROR/releases/x86/autobuilds/$stage3 || { echo "Problem downloading stage tarball!"; exit 1; }
+tar xjpf stage3-*.tar.bz2 || { echo "Problem installing stage tarball!"; exit 1; }
+rm stage3-*.tar.bz2
+
+# getting/installing Portage snapshot
+wget $GENTOO_MIRROR/snapshots/portage-latest.tar.bz2 || { echo "Problem downloading Portage snapshot!"; exit 1; }
+tar xjpf portage-latest.tar.bz2 -C usr || { echo "Problem installing Portage snapshot!"; exit 1; }
+rm portage-latest.tar.bz2
+
+# copying DNS info
+cp -L /etc/resolv.conf etc
+
+# mounting /proc and /dev
+mount -t proc none proc
+mount -o bind /dev dev
+
+# the following will be executed with a changed root
+tmpfile=`mktemp -p . | tr -d '\n'`
+cat << CHROOT.SH > $tmpfile
+rm $tmpfile
+env-update
+source /etc/profile
+CHROOT.SH
+chroot . /bin/bash $tmpfile
