@@ -1,0 +1,59 @@
+#summary One-sentence summary of this page.
+
+To start a new Perl module using `module-starter`:
+{{{
+module-starter --module=Foo::Bar --distro=foobar --eumm --author="Finch Lee" --email=finch@example.org --license=perl
+}}}
+
+To start a new (pure) Perl module using `h2xs`:
+{{{
+h2xs -X -B --use-new-tests -b 5.6.0 -n Foo::Bar
+}}}
+
+See what POD sections are produced...
+
+{{{
+#!/bin/bash
+
+cwd=`pwd`
+
+for cmd in \
+    "h2xs -X -B --use-new-tests -b 5.6.0 -n %s" \
+    "module-starter --module=%s --eumm --author=X --email=X --license=perl" \
+; do
+    tmpdir=`mktemp -d -p .`
+    cd $tmpdir
+    $(printf "$cmd" Foo::Bar) >& /dev/null
+    perl -nle 'print if s/^=head(\d+)\s*/"\t"x($1-1)/e' < */lib/Foo/Bar.pm
+    echo
+    cd $cwd
+    rm -rf $tmpdir
+done
+}}}
+
+outputs
+
+{{{
+NAME
+SYNOPSIS
+DESCRIPTION
+	EXPORT
+SEE ALSO
+AUTHOR
+COPYRIGHT AND LICENSE
+}}}
+
+{{{
+NAME
+VERSION
+SYNOPSIS
+EXPORT
+SUBROUTINES/METHODS
+	function1
+	function2
+AUTHOR
+BUGS
+SUPPORT
+ACKNOWLEDGEMENTS
+LICENSE AND COPYRIGHT
+}}}

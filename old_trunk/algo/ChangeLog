@@ -1,26 +1,36 @@
+2010-10-27  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* Makefile: Created target for date.txt, which will hold the algorithm
+	  packet's last modification time.
+	* .: Added date.txt to svn:ignore, as it will be generated during the
+	  build process.
+	* algo.tex: The date on the cover is now the last modification time
+	  (sourced from date.txt) instead of the build time. Added footnote
+	  about DOTALL to regex syntax summary. Replaced use of \verb with
+	  \lstinline. Fixed a typo.
+
 2010-10-26  Miorel-Lucian Palii <mlpalii@gmail.com>
 
-	* .: Added googlecode.config to svn:ignore, so that people don't end
-	  up uploading their Google Code credentials (see below).
-	* Makefile: The pdflatex commands are wrapped in {} now instead of ().
 	* gc_upload.pl, googlecode.config.example: Created script (and example
 	  configuration) for uploading the algorithm packet and source archive
 	  to the Downloads section of the Google Code repository. I'm not sure
 	  if this script belongs in the source archive, defaulting to no, as
 	  anyone who might run this ought to have the source from the
 	  repository anyway.
+	* .: Added googlecode.config to svn:ignore to minimize typing without
+	  the need to upload Google Code credentials to the repository.
 	* test.pl: Created script for checking that the algorithm packet and
 	  source archive build successfully. Reports through exit code. It may
 	  be useful to have a post-commit hook run this script and make fun of
 	  anyone adding broken stuff to the repository. Unlike the other
 	  script, this one might have a purpose in a source archive, will
 	  think about it.
+	* Makefile: The pdflatex commands are now wrapped in {} instead of ().
 
 2010-10-14  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* README, toc.pl: Fixed some quotes.
-	* algo.tex: Updated header in anticipation of a new wave of
-	  contributions.
+	* algo.tex: Updated header.
 
 2010-09-29  Miorel-Lucian Palii <mlpalii@gmail.com>
 

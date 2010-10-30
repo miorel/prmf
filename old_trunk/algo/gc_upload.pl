@@ -51,7 +51,7 @@ sub gc_upload {
 	print "Uploading $file_local to $file_remote on Google Code...\n";
 	my $res = $ua->post($url,
 		Content_Type => 'form-data',
-		Content => [ summary => $summary, filename => [$file_local, $file_remote], map {('label', $_)} @$labels ],
+		Content => [ summary => $summary, filename => [$file_local, $file_remote], (map {(label => $_)} @$labels) ],
 	);
 	printf("Status: %s %s\n", $res->status_line, $res->is_success ? ":D" : ":(");
 }

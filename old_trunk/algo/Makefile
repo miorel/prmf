@@ -22,12 +22,15 @@ RUBBER=rubber
 RUBBER_FLAGS=--pdf
 RUBBER_CMD=$(RUBBER) $(RUBBER_FLAGS) $(SRC)
 
-algo.pdf: $(SRC) $(RES)
+algo.pdf: $(SRC) $(RES) date.txt
 	if (type -p $(RUBBER) >& /dev/null); then \
 		$(RUBBER_CMD); \
 	else \
 		{ $(PDFLATEX_CMD); } && { $(PDFLATEX_CMD); } && { $(PDFLATEX_CMD); }; \
 	fi
+
+date.txt: $(SRC) $(RES)
+	date +"%B %-e, %Y %-l:%M%P" -r `ls -t $(SRC) $(RES) | head -n1` > date.txt
 
 algo.zip: $(ALL)
 	$(ZIP) $(ZIP_FLAGS) algo.zip $(ALL)
@@ -35,6 +38,6 @@ algo.zip: $(ALL)
 dist: algo.zip
 
 clean:
-	$(RM) algo.{aux,log,pdf,toc,zip}
+	$(RM) algo.{aux,log,pdf,toc,zip} date.txt
 
 .PHONY: dist clean

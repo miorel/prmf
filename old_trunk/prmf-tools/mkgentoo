@@ -1,10 +1,44 @@
 #!/bin/bash
+#
+# mkgentoo - install a basic Gentoo setup
+#
+# Author: Miorel-Lucian Palii <mlpalii@gmail.com>
+# License: GNU General Public License version 3 or any later version
+#          <http://www.gnu.org/licenses/gpl.html>
+# Version: script last updated October 29, 2010
+#
+# To use, boot up the destination system from your favorite installation medium (Gentoo's minimal install image is fine); then transfer the script (or just redownload it if possible) and run it.
+#
+# The script makes at least the following assumptions:
+#  * The destination device is /dev/sda (the first SATA device).
+#  * You're happy with your whole system on a single partition of type ext4.
+#  * Internet access is available.
+#  * The architecture is x86 (32-bit).
+# Some of these are straightforward to change, some are not.
+#
+# This code was written for lazy people. There is some basic error-checking but in general you should have no expectations of robustness. The script works best in a virtual machine (which is how I developed it and also what the original intended platform was).
+#
+
+# be nice, warn people
+cat << 'WARNING'
+WARNING!!! You're about to install a new operating system.
+This process will delete any data you might currently have on this machine.
+
+Last chance to cancel! Press Ctrl + C now.
+WARNING
+
+# countdown
+for i in {10..1}; do
+	printf "%d " $i
+	sleep 1
+done
+echo "Liftoff!"
 
 GENTOO_MIRROR=http://www.gtlib.gatech.edu/pub/gentoo/
 
 device=/dev/sda
 [[ -e $device ]] || { echo "Uhh... I can't seem to find $device anywhere."; exit 1; }
-# killing swap, unmounting the destination device
+# killing swap, unmounting the destination device if necessary
 swapoff -a
 umount ${device}*
 
@@ -21,7 +55,7 @@ echo 'n p 1   a 1 w' | sed 's/ /\n/g' | fdisk $device
 }
 
 # creating filesystem
-mkfs.ext4 ${device}1
+mkfs.ext3 ${device}1
 tune2fs -c 10 -i 30 ${device}1
 
 # mounting root partition
@@ -52,11 +86,64 @@ cp -L /etc/resolv.conf etc
 mount -t proc none proc
 mount -o bind /dev dev
 
-# the following will be executed with a changed root
-tmpfile=`mktemp -p . | tr -d '\n'`
-cat << CHROOT.SH > $tmpfile
-rm $tmpfile
+cat << 'MAKE.CONF' > etc/make.conf
+ACCEPT_KEYWORDS="~x86"
+CFLAGS="-march=i686 -O2 -pipe -fomit-frame-pointer"
+CHOST="i686-pc-linux-gnu"
+CXXFLAGS="${CFLAGS}"
+FEATURES="parallel-fetch"
+MAKEOPTS="-j2"
+USE="symlink"
+MAKE.CONF
+
+# the following will be executed within a changed root
+cat << CHROOT.SH > chroot.sh
+device=${device}
+tz=America/New_York
+hostname=vito
+CHROOT.SH
+cat << 'CHROOT.SH' >> chroot.sh
+rm chroot.sh
 env-update
 source /etc/profile
+emerge --sync --quiet
+ln -snf /usr/portage/profiles/default/linux/x86/10.0/ /etc/make.profile
+emerge --oneshot --noreplace portage
+perl -ple 's/^\s*#\s*(en_US)/$1/' -i /etc/locale.gen
+locale-gen
+cp "/usr/share/zoneinfo/$tz" /etc/localtime
+perl -ple 's[^\s*(/dev/(?:cdrom|BOOT|SWAP))\b][#$1]; s[/dev/ROOT][/dev/sda1]' -i /etc/fstab
+HOSTNAME=$hostname perl -ple '$_="HOSTNAME=\"$ENV{HOSTNAME}\"" if /^\s*HOSTNAME=/' -i /etc/conf.d/hostname
+HOSTNAME=$hostname perl -ple 's/(localhost)/$ENV{HOSTNAME}\t$1/g unless /^\s*#/' -i /etc/hosts
+rc-update add net.eth0 default
+
+perl -ple '$_="SET_WINDOWKEYS=\"yes\"" if /^\s*SET_WINDOWKEYS=/' -i /etc/conf.d/keymaps
+
+
+
+grep -v rootfs /proc/mounts > /etc/mtab
+emerge dhcpcd e2fsprogs genkernel gentoo-sources grub logrotate syslog-ng vixie-cron
+rc-update add syslog-ng default
+rc-update add vixie-cron default
+
+perl -ple 'BEGIN{($k)=(`eselect kernel list | grep "*"`=~/linux-(\S+)/)} s/KERNEL/$k/' << 'GRUB.CONF' > /boot/grub/grub.conf
+default 0
+timeout 3
+splashimage=(hd0,0)/boot/grub/splash.xpm.gz
+
+title=Gentoo Linux (KERNEL)
+root (hd0,0)
+kernel /boot/kernel-genkernel-x86-KERNEL root=/dev/ram0 real_root=/dev/sda1 vga=791
+initrd /boot/initramfs-genkernel-x86-KERNEL
+GRUB.CONF
+
+grub-install --no-floppy $device
+genkernel all
+{ echo 123456; echo 123456; } | passwd
+emerge eix genlop gentoolkit
+{ clear; perl -ple 's/\.?\\O//g' < /etc/issue.logo; } > /etc/issue
 CHROOT.SH
-chroot . /bin/bash $tmpfile
+chroot . /bin/bash chroot.sh
+
+cd /
+umount /mnt/gentoo/{proc,dev,.}

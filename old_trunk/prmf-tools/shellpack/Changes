@@ -1,0 +1,9 @@
+2010-10-30  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* ., ignore.txt, lib, lib/App, lib/App/ShellPack.pm, Makefile.PL,
+	  MANIFEST, README, t, t/00-load.t, t/boilerplate.t, t/manifest.t,
+	  t/pod-coverage.t, t/pod.t: Initial layout created using
+	  module-starter v1.54, run with arguments --module=App::ShellPack
+	  --distro=shellpack --eumm --author="Miorel-Lucian Palii"
+	  --email=mlpalii@gmail.com --license=perl.
+

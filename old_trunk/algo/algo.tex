@@ -12,14 +12,6 @@
 %  ...and other members of the 2009-2010 University of Florida Programming Team
 %
 % Since 2010, the following people have contributed to this project:
-% (ADD YOUR NAME TO THE LIST BELOW AND REMOVE THE FAKE AUTHORS AS WELL AS THESE
-% INSTRUCTIONS)
-%     Rick Astley
-%     John Doe
-%     Lady Gaga
-%     Albert Gator
-%     Alberta Gator
-%     Finch Lee
 %
 % The code in this document and related files is released under the GNU General
 % Public License version 3 or any later version.
@@ -61,7 +53,10 @@
 ``RTFP!''\\{\em Anonymous}
 
 \vfill
-{\large Built: \usdate\today \ \ampmtime}
+
+% The last update time is programmatically determined during the build process, see the Makefile.
+{\large Last updated: \input{date.txt}}
+
 \end{center}
 
 \end{titlepage}
@@ -72,57 +67,58 @@
 
 \subsection{Syntax summary}
 
-See the API page of \verb/java.util.regex.Pattern/ for the complete syntax.\\
+See the API page of \lstinline/java.util.regex.Pattern/ for the complete syntax.\\
 
 \noindent \begin{tabular*}{\textwidth}{|c|l|}
 \hline
 Construct & Description \\
 \hline
-\verb/x/ & The literal character \verb/x/ \\
-\verb/\\/ & The backslash character \\
-\verb/\t/ & The tab character (\verb/\u0009/) \\
-\verb/\n/ & The newline (line feed) character (\verb/\u000A/) \\
-\verb/\r/ & The carriage-return character (\verb/\u000D/) \\
-\verb/\0n/, \verb/\0nn/, \verb/\0mnn/ & The character with the specified octal value ($0 \le m \le 3$, $0 \le n \le 7$) \\
-\verb/\xhh/, \verb/\uhhhh/ & The character with the specified hexadecimal value \\
-\verb/[abc]/ & Any of the characters in brackets (here \verb/a/, \verb/b/, or \verb/c/)\\
-\verb/[^abc]/ & Any character not in the brackets \\
-\verb/[a-z]/ & Any character in the range (inclusive) \\
-\verb/[a-zA-Z]/ & Any character in the union \\
-\verb/[a-z&&[d-f]]/ & Any character in the intersection (here \verb/d/, \verb/e/, or \verb/f/) \\
-\verb/[a-z&&[^b-d]]/ & Any character in the subtraction (here \verb/a/ through \verb/z/, except for \verb/b/, \verb/c/, and \verb/d/) \\
-\verb/./ & Any character (except possibly line terminators) \\
-\verb/\d/ & A digit (\verb/[0-9]/) \\
-\verb/\D/ & A non-digit (\verb/[^0-9]/) \\
-\verb/\s/ & A whitespace character (\verb/[ \t\n\x0B\f\r]/) \\
-\verb/\S/ & A non-whitespace character (\verb/[^\s]/) \\
-\verb/\w/ & A word character (\verb/[a-zA-Z_0-9]/) \\
-\verb/\W/ & A non-word character (\verb/[^\w]/) \\
-\verb/^/ & The beginning of a line \\
-\verb/$/ & The end of a line \\
-\verb/\b/ & A word boundary \\
-\verb/\B/ & A non-word boundary \\
-\verb/X?/ & The pattern \verb/X/, once or not at all \\
-\verb/X*/ & The pattern \verb/X/, zero or more times \\
-\verb/X+/ & The pattern \verb/X/, one or more times \\
-\verb/X{n}/ & The pattern \verb/X/, exactly $n$ times \\
-\verb/X{n,}/ & The pattern \verb/X/, at least $n$ times \\
-\verb/X{n,m}/ & The pattern \verb/X/, at least $n$ but no more than $m$ times \\
-\verb/XY/ & The pattern \verb/X/ followed by the pattern \verb/Y/ \\
-\verb/X|Y/ & The pattern \verb/X/ or the pattern \verb/Y/ \\
-\verb/(X)/ & The pattern \verb/X/, as a capturing group \\
-\verb/(?:X)/ & The pattern \verb/X/, as a non-capturing group \\
-\verb/\1/, \verb/\2/, \verb/\3/, etc. & Whataver was matched by the $1$\textsuperscript{st}, $2$\textsuperscript{nd}, $3$\textsuperscript{rd} capturing group, etc. \\
-\verb/\/ & Matches nothing, but quotes the next character in the pattern \\
-\verb/\Q/ & Matches nothing, but quotes all characters until \verb/\E/ \\
-\verb/\E/ & Matches nothing, but ends quoting started by \verb/\Q/ \\
+\lstinline/x/ & The literal character \lstinline/x/ \\
+\lstinline/\\/ & The backslash character \\
+\lstinline/\t/ & The tab character (\lstinline/\u0009/) \\
+\lstinline/\n/ & The newline (line feed) character (\lstinline/\u000A/) \\
+\lstinline/\r/ & The carriage-return character (\lstinline/\u000D/) \\
+\lstinline/\0n/, \lstinline/\0nn/, \lstinline/\0mnn/ & The character with the specified octal value ($0 \le m \le 3$, $0 \le n \le 7$) \\
+\lstinline/\xhh/, \lstinline/\uhhhh/ & The character with the specified hexadecimal value \\
+\lstinline/[abc]/ & Any of the characters in brackets (here \lstinline/a/, \lstinline/b/, or \lstinline/c/)\\
+\lstinline/[^abc]/ & Any character not in the brackets \\
+\lstinline/[a-z]/ & Any character in the range (inclusive) \\
+\lstinline/[a-zA-Z]/ & Any character in the union \\
+\lstinline/[a-z&&[d-f]]/ & Any character in the intersection (here \lstinline/d/, \lstinline/e/, or \lstinline/f/) \\
+\lstinline/[a-z&&[^b-d]]/ & Any character in the subtraction (here \lstinline/a/ through \lstinline/z/, except for \lstinline/b/, \lstinline/c/, and \lstinline/d/) \\
+\lstinline/./ & Any character (except possibly line terminators\footnotemark) \\
+\lstinline/\d/ & A digit (\lstinline/[0-9]/) \\
+\lstinline/\D/ & A non-digit (\lstinline/[^0-9]/) \\
+\lstinline/\s/ & A whitespace character (\lstinline/[ \t\n\x0B\f\r]/) \\
+\lstinline/\S/ & A non-whitespace character (\lstinline/[^\s]/) \\
+\lstinline/\w/ & A word character (\lstinline/[a-zA-Z_0-9]/) \\
+\lstinline/\W/ & A non-word character (\lstinline/[^\w]/) \\
+\lstinline/^/ & The beginning of a line \\
+\lstinline/$/ & The end of a line \\
+\lstinline/\b/ & A word boundary \\
+\lstinline/\B/ & A non-word boundary \\
+\lstinline/X?/ & The pattern \lstinline/X/, once or not at all \\
+\lstinline/X*/ & The pattern \lstinline/X/, zero or more times \\
+\lstinline/X+/ & The pattern \lstinline/X/, one or more times \\
+\lstinline/X{n}/ & The pattern \lstinline/X/, exactly $n$ times \\
+\lstinline/X{n,}/ & The pattern \lstinline/X/, at least $n$ times \\
+\lstinline/X{n,m}/ & The pattern \lstinline/X/, at least $n$ but no more than $m$ times \\
+\lstinline/XY/ & The pattern \lstinline/X/ followed by the pattern \lstinline/Y/ \\
+\lstinline/X|Y/ & The pattern \lstinline/X/ or the pattern \lstinline/Y/ \\
+\lstinline/(X)/ & The pattern \lstinline/X/, as a capturing group \\
+\lstinline/(?:X)/ & The pattern \lstinline/X/, as a non-capturing group \\
+\lstinline/\1/, \lstinline/\2/, \lstinline/\3/, etc. & Whataver was matched by the $1$\textsuperscript{st}, $2$\textsuperscript{nd}, $3$\textsuperscript{rd} capturing group, etc. \\
+\lstinline/\/ & Matches nothing, but quotes the next character in the pattern \\
+\lstinline/\Q/ & Matches nothing, but quotes all characters until \lstinline/\E/ \\
+\lstinline/\E/ & Matches nothing, but ends quoting started by \lstinline/\Q/ \\
 \hline
 \end{tabular*}
+\footnotetext{Compile patterns with the \lstinline/DOTALL/ flag and \lstinline/./ will also match line terminators.}
 \pagebreak
 
 \subsection{How many backslashes?}
 
-One of the greatest annoyances of using regular expressions in Java is figuring out exactly how many backslashes you need. A good rule of thumb is that you need twice as many as there are in the syntax summary. That's because when you're writing code, you're not building the regular expression directly. You're building a \verb/String/ which gets compiled as a regular expression, and this adds another layer of character escaping. Therefore the following code checks if a \verb/String/ is equal to a {\em single} backslash:
+One of the greatest annoyances of using regular expressions in Java is figuring out exactly how many backslashes you need. A good rule of thumb is that you need twice as many as there are in the syntax summary. That's because when you're writing code, you're not building the regular expression directly. You're building a \lstinline/String/ which gets compiled as a regular expression, and this adds another layer of character escaping. Therefore the following code checks if a \lstinline/String/ is equal to a {\em single} backslash:
 
 \begin{lstlisting}
 boolean isBackslash(String s) {
@@ -133,7 +129,7 @@ boolean isBackslash(String s) {
 \subsection{Examples}
 
 \subsubsection{Collapse whitespace}
-Tabs and newlines become single spaces. \\\verb/" Tigers   are       great!    "/ becomes \verb/"Tigers are great!"/.
+\lstinline/" Tigers   are       great!    "/ becomes \lstinline/"Tigers are great!"/ (spaces shown as \lstinline/" "/ for emphasis). Tabs and newlines become single spaces.
 \begin{lstlisting}
 String collapseWhitespace(String text) {
 	return text.replaceAll("\\s+", " ").trim();
@@ -150,7 +146,7 @@ boolean hasTiger(String text) {
 \noindent Answer: this code would break if the text spans multiple lines because the period doesn't match newlines by default. To account for that, you could just strip all whitespace.
 
 \subsubsection{Check for a valid e-mail address (not comprehensive)}
-\verb/"alice@example.com"/, \verb/"bob@subdomain.example.org"/, and \verb/"charlie_314159@example.edu"/ would all match. Note that the period has to be escaped (quoted) because it's a special character.
+\lstinline/"alice@example.com"/, \lstinline/"bob@subdomain.example.org"/, and \lstinline/"charlie_314159@example.edu"/ would all match. Note that the period has to be escaped (quoted) because it's a special character.
 \begin{lstlisting}
 boolean isValidEmail(String email) {
 	return email.matches("[a-z][a-z0-9_]*@[a-z]+(\\.[a-z]+)+");
@@ -158,16 +154,17 @@ boolean isValidEmail(String email) {
 \end{lstlisting}
 
 \subsubsection{Word count}
-This example demonstrates how to look at the capturing groups (basically, the expressions in parentheses) within a match. Capturing groups are numbered from left to right in the order of their starting parentheses. One thing to remember is that capturing groups are numbered starting at $1$. The zeroth capturing group will give you the entire pattern match. Below is a case-sensitive word count. You could do \verb/String word = m.group(1).toLowerCase();/ to make it case-insensitive.
+This example demonstrates how to look at the capturing groups (basically, the expressions in parentheses) within a match. Capturing groups are numbered from left to right in the order of their starting parentheses. One thing to remember is that capturing groups are numbered starting at $1$. The zeroth capturing group will give you the entire pattern match. Below is a case-sensitive word count. You could do \lstinline/String word = m.group(1).toLowerCase();/ to make it case-insensitive.
 \begin{lstlisting}
+import java.util.Map;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 Pattern wordPattern = Pattern.compile("([A-Za-z]+)");
 
-HashMap<String,Integer> wordCount(String text) {
-	HashMap<String,Integer> ret = new HashMap<String,Integer>();
+Map<String,Integer> wordCount(String text) {
+	Map<String,Integer> ret = new HashMap<String,Integer>();
 	Matcher m = wordPattern.matcher(text);
 	while(m.find()) {
 		String word = m.group(1); // grab a capturing group!
@@ -180,7 +177,7 @@ HashMap<String,Integer> wordCount(String text) {
 \end{lstlisting}
 
 \subsubsection{Collapse duplicate characters}
-Capturing groups can be accessed within the same pattern with the \verb/\1/ syntax and within replacements with the \verb/$1/ syntax. This snippet transforms \verb/"Hello World! foo bar abbbccc"/ to \verb/"Helo World! fo bar abc"/. It also shows a nice trick for matching any character: \verb/[\s\S]/ means a whitespace character or a non-whitespace character, which is everything.
+Capturing groups can be accessed within the same pattern with the \lstinline/\1/ syntax and within replacements with the \lstinline/$1/ syntax. This snippet transforms \lstinline/"Hello World! foo bar abbbccc"/ to \lstinline/"Helo World! fo bar abc"/. It also shows a nice trick for matching any character: \lstinline/[\s\S]/ means a whitespace character or a non-whitespace character, which is everything.
 \begin{lstlisting}
 String collapseDuplicates(String text) {
 	return text.replaceAll("([\\s\\S])\\1+", "$1");
@@ -188,7 +185,7 @@ String collapseDuplicates(String text) {
 \end{lstlisting}
 
 \subsubsection{Increment all integers in some text}
-This is a contrived example. I'm not sure why you'd ever need to do this (though programming contests ask some strange things). But this example {\em does} illustrate the \verb/appendReplacement()/ and \verb/appendTail()/ paradigm, which is used for complex replacement operations. As you might hope, this technique preserves anything that isn't matched as-is.
+This is a contrived example. I'm not sure why you'd ever need to do this (though programming contests ask some strange things). But this example {\em does} illustrate the \lstinline/appendReplacement()/ and \lstinline/appendTail()/ paradigm, which is used for complex replacement operations. As you might hope, this technique preserves anything that isn't matched as-is.
 \begin{lstlisting}
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -216,7 +213,7 @@ boolean isEven(String number) {
 \end{lstlisting}
 
 \subsection{Quantifiers: greedy vs. non-greedy}
-Regular expression quantifiers are {\em greedy} by default. That means that they will try to match as many characters as possible. For example, \verb/"tigers!".replaceAll("(.{3,})", "$1 ")/ returns \verb/"tigers! "/ because the \verb/{3,}/ is greedy. Sometimes this is not the desired behavior. Append a question mark to make it non-greedy: \verb/"tigers!".replaceAll("(.{3,}?)", "$1 ")/ returns \verb/"tig ers !"/. This works with other quantifiers, too, for example \verb/*?/ is a non-greedy zero or more and \verb/??/ is a non-greedy once or not at all.
+Regular expression quantifiers are {\em greedy} by default. That means that they will try to match as many characters as possible. For example, \lstinline/"tigers!".replaceAll("(.{3,})", "$1 ")/ returns \lstinline/"tigers! "/ because the \lstinline/{3,}/ is greedy. Sometimes this is not the desired behavior. Append a question mark to make it non-greedy: \lstinline/"tigers!".replaceAll("(.{3,}?)", "$1 ")/ returns \lstinline/"tig ers !"/. This works with other quantifiers, too, for example \lstinline/*?/ is a non-greedy zero or more and \lstinline/??/ is a non-greedy once or not at all.
 
 \newpage\section{Math}
 
@@ -230,7 +227,7 @@ If you have $n$ distinguishable objects, there are $(n)(n-1)(n-2)\ldots(2)(1)$ w
 
 If you're arranging $n$ objects in a circle, there are $(n-1)!$ possibilities (because there's no concept of beginning or end).
 
-Be careful when working with factorials: $13!$ is enough to overflow signed $32$-bit integers (Java \verb/int/s) and $21!$ is enough to overflow signed $64$-bit integers (Java \verb/long/s). You'll have to either be clever or ``cheat'' by using arbitrary precision arithmetic.
+Be careful when working with factorials: $13!$ is enough to overflow signed $32$-bit integers (Java \lstinline/int/s) and $21!$ is enough to overflow signed $64$-bit integers (Java \lstinline/long/s). You'll have to either be clever or ``cheat'' by using arbitrary precision arithmetic.
 
 Factorial calculations lend themselves nicely to memoization:
 
@@ -251,14 +248,14 @@ BigInteger fact(int n) {
 }
 \end{lstlisting}
 
-Prepare the global list with \verb/initFacts()/ and \verb/fact()/ will take advantage of previously computed values.
+Prepare the global list with \lstinline/initFacts()/ and \lstinline/fact()/ will take advantage of previously computed values.
 
 \subsubsection{Permutations}
 If you don't use all the elements of a set in the arrangement, the number of possibilities becomes:
 \[P(n,k) = \frac{n!}{(n-k)!}\]
 \noindent where $k$ is the number of elements used and $n$ remains the total number of objects. That's because there are $n$ choices for the first object, $n-1$ for the second, $n-2$ for the third, etc. The $P$ stands for {\em permutation}, which is the name given to such an arrangement. As it should, the formula simplifies to $n!$ when $k=n$.
 
-If the bounds are small, you can afford to be lazy. Just use the \verb/fact()/ from before:
+If the bounds are small, you can afford to be lazy. Just use the \lstinline/fact()/ from before:
 \begin{lstlisting}
 BigInteger perm(int n, int k) {
 	return fact(n).divide(fact(n - k));
@@ -346,7 +343,7 @@ double[] solveLinear(double a, double b, double e,
 \noindent where $a$ and $b$ are the legs of a right triangle and $c$ is the hypotenuse (the side opposite the right angle). This can be used to calculate the distance between two points by building a right triangle with legs parallel to the axes. Then, in two dimensions, given points $(x_0, y_0)$ and $(x_1, y_1)$ the formula is:
 \[ d = \sqrt{(x_1 - x_0)^2 + (y_1 - y_0)^2} \]
 
-\noindent You can do this in Java with \verb/Math.sqrt()/ or you can use an API method:
+\noindent You can do this in Java with \lstinline/Math.sqrt()/ or you can use an API method:
 \begin{lstlisting}
 import java.awt.geom.Point2D;
 
@@ -561,9 +558,9 @@ boolean isPrime(int n) {
 }
 \end{lstlisting}
 
-\noindent After executing \verb/initPrimes()/, you can use \verb/isPrime()/ to simply look up if a number is prime. This works great for finding the primes up to $10$ million. Beyond that, it still works, but unless you {\em need} to know if every number in some range is prime, there are probably faster ways.
+\noindent After executing \lstinline/initPrimes()/, you can use \lstinline/isPrime()/ to simply look up if a number is prime. This works great for finding the primes up to $10$ million. Beyond that, it still works, but unless you {\em need} to know if every number in some range is prime, there are probably faster ways.
 
-The code above is not particularly optimized. Specifically, we don't actually have to check {\em every} number below $n$. If $n=ab$, then either $a$ or $b$ will be less than or equal to $\sqrt{n}$ because if both are greater, then $ab>\left(\sqrt{n}\right)^2=n$, a contradiction. So, to check if $n$ is prime, we only have to check numbers up to $\sqrt{n}$ (inclusive). The modified \verb/initPrimes()/ below incorporates this improvement by stopping the outer loop at the square root of \verb/MAX/ and starting the inner loop at \verb/i*i/ (since smaller multiples would have been ``crossed out'' by smaller primes). Use this only if you don't store the primes in a list as you go along, otherwise you'll miss the ones past the square root of the upper bound.
+The code above is not particularly optimized. Specifically, we don't actually have to check {\em every} number below $n$. If $n=ab$, then either $a$ or $b$ will be less than or equal to $\sqrt{n}$ because if both are greater, then $ab>\left(\sqrt{n}\right)^2=n$, a contradiction. So, to check if $n$ is prime, we only have to check numbers up to $\sqrt{n}$ (inclusive). The modified \lstinline/initPrimes()/ below incorporates this improvement by stopping the outer loop at the square root of \lstinline/MAX/ and starting the inner loop at \lstinline/i*i/ (since smaller multiples would have been ``crossed out'' by smaller primes). Use this only if you don't store the primes in a list as you go along, otherwise you'll miss the ones past the square root of the upper bound.
 
 \begin{lstlisting}
 void initPrimes() {
@@ -797,7 +794,7 @@ The longest common subsequence is very similar to the longest common substring, 
 \mathit{max}(\mathit{LCS}(A[0..i], B[0..j-1])), \mathit{LCS}(A[0..i-1], B[0..j]))) & \mathrm{otherwise}
 \end{cases}\]
 
-The code is therefore very similar, in fact all that distinguishes the longest common subsequence is an extra \verb/else/ clause.
+The code is therefore very similar, in fact all that distinguishes the longest common subsequence is an extra \lstinline/else/ clause.
 
 \begin{lstlisting}
 int longestCommonSubsequence(char[] a, char[] b) {
@@ -890,10 +887,10 @@ int lis(int[] array) {
 }
 \end{lstlisting}
 
-This only gives you the length, but if you keep the arrays then the longest increasing subsequence is given by \verb/.../, \verb/array[pred[pred[m[l]]]]/, \verb/array[pred[m[l]]]/, \verb/array[m[l]]/.
+This only gives you the length, but if you keep the arrays then the longest increasing subsequence is given by \lstinline/.../, \lstinline/array[pred[pred[m[l]]]]/, \lstinline/array[pred[m[l]]]/, \lstinline/array[m[l]]/.
 
 \subsection{Maximum subsequence sum}
-Given a sequence $A[1],A[2],\dots,A[n]$ define a query as \[Q(i,j)=\max\{A[x]+A[x+1]\dots+A[y]:i\le x\le y\le j\}\] To solve this we will assume that the sequence is in the array input, and the initial cummulative sums in the array csum. Basically $csum[i]=A[1]+A[2]+\dots+A[i]$. From this we create a binary heap as follows.
+Given a sequence $A[1],A[2],\dots,A[n]$ define a query as \[Q(i,j)=\max\{A[x]+A[x+1]\dots+A[y]:i\le x\le y\le j\}\] To solve this we will assume that the sequence is in the array input, and the initial cumulative sums in the array csum. Basically $csum[i]=A[1]+A[2]+\dots+A[i]$. From this we create a binary heap as follows.
 \begin{lstlisting}
 class node
 {
@@ -957,7 +954,7 @@ node Solve(int N,int b,int e,int i,int j)
 }
 
 \end{lstlisting}
-Once the method is finised running, say that you saved the result in the node \verb/result/, then the desired answer is just \verb/result.val/.
+Once the method is finised running, say that you saved the result in the node \lstinline/result/, then the desired answer is just \lstinline/result.val/.
 If you use this method to solve the problem it will take $O(N\log(N))$ to create the heap, and $O(\log(N))$ to answer any query.
 \par\noindent However, if the terms don't need to be consecutive then you can solve the problem by first sorting the array in decreasing order (larger elements first) and using the following code:
 \begin{lstlisting}
@@ -996,7 +993,7 @@ If $G$ is an unweighed graph, then $w = 1$ for all edges $e \in E$. If $G$ is we
 
 \subsubsection{Adjacency List}
 
-In general, the adjacency list representation is more practical due to better time and and space complexity. An adjacency list is a list of edges. The easiest way to implement an adjacency list representation of a graph in Java is with a \verb|Vertex| and \verb|Edge| class.
+In general, the adjacency list representation is more practical due to better time and and space complexity. An adjacency list is a list of edges. The easiest way to implement an adjacency list representation of a graph in Java is with a \lstinline/Vertex/ and \lstinline/Edge/ class.
 
 \begin{lstlisting}
 class Vertex implements Iterable<Edge> {
@@ -1024,7 +1021,7 @@ class Edge {
 }
 \end{lstlisting}
 
-It is nice to make \verb|Vertex|s iterable so that you can use for-each syntax when traversing its neighbors. 
+It is nice to make \lstinline/Vertex/s iterable so that you can use for-each syntax when traversing its neighbors. 
 
 \subsection{Basic Traversal techniques}
 
@@ -1054,7 +1051,7 @@ int[] bfs (Vertex[] graph, int source) {
 }
 \end{lstlisting}
 
-BFS can also be useful when you have a grid set up of some kind. In this case, just consider each point of the grid to be a vertex and each adjacent point to be an adjacent vertex. One useful application is if you have a grid with multiple ``points of interest'' and you want to know how close the nearest point of interest is to each point on the grid. The following code computes the shortest distance to any of the interesting points assuming you can only move in the cardinal directions (N,S,E,W). If you need to consider diagonal entries as adjacent also, just modify the \verb|dx| and \verb|dy| arrays.
+BFS can also be useful when you have a grid set up of some kind. In this case, just consider each point of the grid to be a vertex and each adjacent point to be an adjacent vertex. One useful application is if you have a grid with multiple ``points of interest'' and you want to know how close the nearest point of interest is to each point on the grid. The following code computes the shortest distance to any of the interesting points assuming you can only move in the cardinal directions (N,S,E,W). If you need to consider diagonal entries as adjacent also, just modify the \lstinline/dx/ and \lstinline/dy/ arrays.
 
 \begin{lstlisting}
 int[][] shortestDist(int width, int height, Point[] interesting) {
@@ -1149,7 +1146,7 @@ These algorithms are used to find the shortest path in a directed, weighted grap
 
 \subsubsection{Dijkstra's single source shortest path}
 
-Dijkstra's algorithm solves the single-source shortest-path problem. In other words, given a distinguished vertex $s \in G$, Dijkstra's will produce the shortest path from $s$ to each other vertex in $G$. The following implementation in Java uses a priority queue to order the edges in non-descending order. This uses the same \verb|Edge| class defined in Prim's minimum spanning tree algorithm.. Dijkstra's can only be used if there are no negative weight edges. Running time is $O(N^2\log N)$
+Dijkstra's algorithm solves the single-source shortest-path problem. In other words, given a distinguished vertex $s \in G$, Dijkstra's will produce the shortest path from $s$ to each other vertex in $G$. The following implementation in Java uses a priority queue to order the edges in non-descending order. This uses the same \lstinline/Edge/ class defined in Prim's minimum spanning tree algorithm.. Dijkstra's can only be used if there are no negative weight edges. Running time is $O(N^2\log N)$
 
 
 \begin{lstlisting}
@@ -1292,7 +1289,7 @@ void reverse(int[] array) {
 \end{lstlisting}
 
 \subsubsection{Next permutation (in place)}
-Gives the lexicographically next permutation. Returns success value, i.e. \verb/false/ if there is no next permutation.
+Gives the lexicographically next permutation. Returns success value, i.e. \lstinline/false/ if there is no next permutation.
 \begin{lstlisting}
 boolean nextPermutation(int[] arr) {
 	int n = arr.length;
@@ -1313,7 +1310,7 @@ boolean nextPermutation(int[] arr) {
 Programming contests often like to ask questions involving card games. A favorite representation of cards is as a letter indicating the rank and a letter indicating the suit. For example, ``TC'' would be the ten of clubs. For such problems, it may be useful to convert cards to integers when storing them. The example that follows does this.
 
 \subsubsection{Poker hand ranking}
-\noindent Here's the complete code for a \verb/Comparable/ poker hand \verb/class/. I didn't have time to comment it, but maybe you can make sense of it and/or use it for inspiration for similar problems.
+\noindent Here's the complete code for a \lstinline/Comparable/ poker hand \lstinline/class/. I didn't have time to comment it, but maybe you can make sense of it and/or use it for inspiration for similar problems.
 
 \begin{lstlisting}
 class PokerHand implements Comparable<PokerHand> {
@@ -1431,7 +1428,7 @@ If you answered no, stop. Do not pass go, do not collect \$200. Go RTFP.
 I sure hope you tested it on the examples before you submitted. That also implies your code compiles and that you read the problem. If not, isn't it obvious what you have to do?
 
 \subsubsection{Compile error}
-I thought you said your code compiles. It does? If you're using Java, make sure your primary class is \verb/public/. Ask the judges if the class has to have a particular name. Also ask if compiler warnings are considered fatal, and if so, make sure your code doesn't trigger any.
+I thought you said your code compiles. It does? If you're using Java, make sure your primary class is \lstinline/public/. Ask the judges if the class has to have a particular name. Also ask if compiler warnings are considered fatal, and if so, make sure your code doesn't trigger any.
 
 \subsubsection{Runtime error}
 This means your code crashed. Don't worry, if your algorithm is correct this should be an easy fix. Some of the most common reasons for runtime errors are:
@@ -1446,7 +1443,7 @@ This means your code crashed. Don't worry, if your algorithm is correct this sho
 You can minimize the number of runtime errors with defensive programming: don't make any assumptions not stated in the problem statement. (And unfortunatey, in rare cases, even those explicitly stated may not be safe to make. But only consider erroneous problem statements after you've considered everything else.)
 
 \subsubsection{Time limit exceeded}
-Donald Knuth once said that ``We should forget about small efficiencies, say about $97\%$ of the time: premature optimization is the root of all evil.'' So before you go and replace your \verb/Scanner/ with a \verb/BufferedReader/ or your \verb/ArrayList/ with a plain array, consider that it's much more likely your algorithm just isn't good enough. Your optimizations might shave a few milliseconds off your time, but they won't make $O(n^3)$ algorithms pass if the intended solution is $O(n^2)$.
+Donald Knuth once said that ``We should forget about small efficiencies, say about $97\%$ of the time: premature optimization is the root of all evil.'' So before you go and replace your \lstinline/Scanner/ with a \lstinline/BufferedReader/ or your \lstinline/ArrayList/ with a plain array, consider that it's much more likely your algorithm just isn't good enough. Your optimizations might shave a few milliseconds off your time, but they won't make $O(n^3)$ algorithms pass if the intended solution is $O(n^2)$.
 
 So, after you've made sure you don't have any infinite loops or other silly bugs, try optimizing your algorithm. If possible, use memoization or precomputation. Also, ask yourself if you're doing more work than you have to. Maybe with some insight into the problem, you can get rid of an entire loop altogether! Solve small test cases by hand and you might have an epiphany.
 
