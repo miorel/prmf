@@ -2,8 +2,8 @@ Changes
 MANIFEST
 Makefile.PL
 README
-bin/shellpack
 lib/App/ShellPack.pm
+script/shellpack
 t/00-load.t
 t/manifest.t
 t/pod-coverage.t

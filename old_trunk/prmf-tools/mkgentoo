@@ -5,7 +5,7 @@
 # Author: Miorel-Lucian Palii <mlpalii@gmail.com>
 # License: GNU General Public License version 3 or any later version
 #          <http://www.gnu.org/licenses/gpl.html>
-# Version: script last updated October 29, 2010
+# Version: script last updated November 1, 2010
 #
 # To use, boot up the destination system from your favorite installation medium (Gentoo's minimal install image is fine); then transfer the script (or just redownload it if possible) and run it.
 #
@@ -108,7 +108,7 @@ env-update
 source /etc/profile
 emerge --sync --quiet
 ln -snf /usr/portage/profiles/default/linux/x86/10.0/ /etc/make.profile
-emerge --oneshot --noreplace portage
+emerge -1u --noreplace portage
 perl -ple 's/^\s*#\s*(en_US)/$1/' -i /etc/locale.gen
 locale-gen
 cp "/usr/share/zoneinfo/$tz" /etc/localtime

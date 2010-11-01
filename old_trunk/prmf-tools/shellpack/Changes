@@ -1,7 +1,13 @@
 2010-11-01  Miorel-Lucian Palii <mlpalii@gmail.com>
 
-	* ., ignore.txt: Set svn:ignore on the directory to the contents of ignore.txt then deleted ignore.txt.
-	* bin, bin/shellpack: Began wrapper script for the module.
+	* ., ignore.txt: Set svn:ignore on the directory to the contents of
+	  ignore.txt then deleted ignore.txt.
+	* lib/App/ShellPack.pm: Implemented basic module functionality.
+	  Commented out most POD -- will reintroduce later. Versioned as
+	  0.00_01 (developer).
+	* script, script/shellpack: Began wrapper script for the module.
+	* Makefile.PL: Listed script/shellpack under EXE_FILES. A few cosmetic
+	  changes.
 
 2010-10-30  Miorel-Lucian Palii <mlpalii@gmail.com>
 
@@ -9,6 +15,6 @@
 	  MANIFEST, README, t, t/00-load.t, t/boilerplate.t, t/manifest.t,
 	  t/pod-coverage.t, t/pod.t: Initial layout created using
 	  module-starter v1.54, run with arguments --module=App::ShellPack
-	  --eumm --author="Miorel-Lucian Palii"
-	  --email=mlpalii@gmail.com --license=perl.
+	  --eumm --author="Miorel-Lucian Palii" --email=mlpalii@gmail.com
+	  --license=perl.
 

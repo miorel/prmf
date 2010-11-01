@@ -5,4 +5,4 @@ use strict;
 
 use App::ShellPack;
 
-
+print App::ShellPack->_work(@ARGV);
