@@ -54,8 +54,8 @@ Miorel-Lucian Palii, C<< <mlpalii at gmail.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-shellpack at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=shellpack>.  I will be notified, and then you'll
+Please report any bugs or feature requests to C<bug-app-shellpack at rt.cpan.org>, or through
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=App-ShellPack>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 
@@ -74,19 +74,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=shellpack>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App-ShellPack>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/shellpack>
+L<http://annocpan.org/dist/App-ShellPack>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/shellpack>
+L<http://cpanratings.perl.org/d/App-ShellPack>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/shellpack/>
+L<http://search.cpan.org/dist/App-ShellPack/>
 
 =back
 
