@@ -1,0 +1,17 @@
+#!/bin/bash
+emerge -DuN1 --noreplace dev-lang/perl
+perl-cleaner --all
+emerge -1 --noreplace dev-python/bsddb3 dev-util/lafilefixer
+
+for i in {1..3}; do
+	emerge -DuN --keep-going world
+	revdep-rebuild -i
+	rm -rf /var/tmp/portage/*
+done
+
+rm -rf /usr/lib/perl5/5.8.8 /usr/lib/libgmp.so.3 /usr/lib/libmpfr.so.1
+
+lafilefixer --justfixit
+chmod -x /var/log/tallylog
+
+etc-update <<< -5

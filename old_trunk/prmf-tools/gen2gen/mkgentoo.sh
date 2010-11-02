@@ -1,11 +1,10 @@
-#!/bin/bash
 #
 # mkgentoo - install a basic Gentoo setup
 #
 # Author: Miorel-Lucian Palii <mlpalii@gmail.com>
 # License: GNU General Public License version 3 or any later version
 #          <http://www.gnu.org/licenses/gpl.html>
-# Version: script last updated November 1, 2010
+# Version: script last updated November 2, 2010
 #
 # To use, boot up the destination system from your favorite installation medium (Gentoo's minimal install image is fine); then transfer the script (or just redownload it if possible) and run it.
 #
@@ -18,6 +17,8 @@
 #
 # This code was written for lazy people. There is some basic error-checking but in general you should have no expectations of robustness. The script works best in a virtual machine (which is how I developed it and also what the original intended platform was).
 #
+
+function _mkgentoo {
 
 # be nice, warn people
 cat << 'WARNING'
@@ -119,8 +120,6 @@ rc-update add net.eth0 default
 
 perl -ple '$_="SET_WINDOWKEYS=\"yes\"" if /^\s*SET_WINDOWKEYS=/' -i /etc/conf.d/keymaps
 
-
-
 grep -v rootfs /proc/mounts > /etc/mtab
 emerge dhcpcd e2fsprogs genkernel gentoo-sources grub logrotate syslog-ng vixie-cron
 rc-update add syslog-ng default
@@ -147,3 +146,5 @@ chroot . /bin/bash chroot.sh
 
 cd /
 umount /mnt/gentoo/{proc,dev,.}
+
+}

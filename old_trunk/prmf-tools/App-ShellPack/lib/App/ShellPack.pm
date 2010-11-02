@@ -29,11 +29,13 @@ sub _work {
 	my $hex_data = unpack("H*", $data);
 	my $ret = '';
 	$ret .= <<'SCRIPT';
-#!/bin/bash
-fold -w2 << 'HEX' | while read hex; do printf "\x$hex"; done | tar xvf -
+function _extract {
+	destdir=.
+	[[ $# -ge 1 ]] && destdir=$1
+	fold -w2 << 'HEX' | while read hex; do printf "\x$hex"; done | tar xvf - -C $destdir
 SCRIPT
 	$ret .= "$_\n" for $hex_data =~ /.{1,80}/g;
-	$ret .= "HEX\n";
+	$ret .= "HEX\n}\n";
 	return $ret;
 }
 
