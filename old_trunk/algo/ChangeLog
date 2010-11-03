@@ -1,3 +1,18 @@
+2010-11-03  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* algo.tex: Quick syntax fix of the cross product section.
+	* pp.png: Deleted, replacing with pp_vol.pdf (see below).
+	* pp_vol.pdf: Importing parallelepiped volume picture -- Inkscape PDF
+	  save of public domain file
+	  <http://commons.wikimedia.org/wiki/File:Parallelepiped_volume.svg>
+	  by Jitse Niesen.
+	* Makefile: Listed pp_vol.pdf under RES.
+
+2010-11-03  Rodrigo Salazar <rsala004@ufl.edu>
+
+	* algo.tex: Added section on cross products.
+	* pp.png: Got parallelepiped image from Wikimedia Commons.
+
 2010-10-27  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* Makefile: Created target for date.txt, which will hold the algorithm

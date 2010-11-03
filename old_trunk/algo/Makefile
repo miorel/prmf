@@ -2,7 +2,7 @@
 SRC=algo.tex
 
 # non-LaTeX resources that are incorporated in the pdf
-RES=icpc.png
+RES=icpc.png pp_vol.pdf
 
 # other files that belong in a source archive
 OTHER=ChangeLog Makefile README toc.pl
