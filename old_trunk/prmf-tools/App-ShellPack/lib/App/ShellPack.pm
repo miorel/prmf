@@ -30,9 +30,7 @@ sub _work {
 	my $ret = '';
 	$ret .= <<'SCRIPT';
 function _extract {
-	destdir=.
-	[[ $# -ge 1 ]] && destdir=$1
-	fold -w2 << 'HEX' | while read hex; do printf "\x$hex"; done | tar xvf - -C $destdir
+	fold -w2 << 'HEX' | while read hex; do printf "\x$hex"; done | tar xf -
 SCRIPT
 	$ret .= "$_\n" for $hex_data =~ /.{1,80}/g;
 	$ret .= "HEX\n}\n";

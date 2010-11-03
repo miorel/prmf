@@ -1,8 +1,8 @@
 function _main {
 	cwd=`pwd`
 	tmp=`mktemp -d -p .`
-	_extract $tmp
 	cd $tmp
+	_extract
 	source mkgentoo.sh
 	_mkgentoo
 	cd $cwd

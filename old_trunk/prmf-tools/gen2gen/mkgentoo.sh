@@ -64,12 +64,15 @@ mountpoint=/mnt/gentoo
 rm -rf $mountpoint
 mkdir -p $mountpoint
 mount ${device}1 $mountpoint
+
+# save working directory then change directory
+wd=`pwd`
 cd $mountpoint
 
 # getting/installing stage tarball
 file=latest-stage3.txt
 wget $GENTOO_MIRROR/releases/x86/autobuilds/$file || { echo "Couldn't download stage information :("; exit 1; }
-stage3=`grep -P ^\\s\*[^\\s\#] $file | tail -n1 | sed 's/\n//g; s/^\s+//; s/\s*$//'`
+stage3=`grep -P ^\\s\*[^\\s\#] $file | tail -n1 | sed 's/^\s+//; s/\s*$//'`
 rm $file
 wget $GENTOO_MIRROR/releases/x86/autobuilds/$stage3 || { echo "Problem downloading stage tarball!"; exit 1; }
 tar xjpf stage3-*.tar.bz2 || { echo "Problem installing stage tarball!"; exit 1; }
@@ -82,6 +85,8 @@ rm portage-latest.tar.bz2
 
 # copying DNS info
 cp -L /etc/resolv.conf etc
+
+cp $wd/{grub.conf,confset.pl} root
 
 # mounting /proc and /dev
 mount -t proc none proc
@@ -99,7 +104,7 @@ MAKE.CONF
 
 # the following will be executed within a changed root
 cat << CHROOT.SH > chroot.sh
-device=${device}
+device=$device
 tz=America/New_York
 hostname=vito
 CHROOT.SH
@@ -114,27 +119,19 @@ perl -ple 's/^\s*#\s*(en_US)/$1/' -i /etc/locale.gen
 locale-gen
 cp "/usr/share/zoneinfo/$tz" /etc/localtime
 perl -ple 's[^\s*(/dev/(?:cdrom|BOOT|SWAP))\b][#$1]; s[/dev/ROOT][/dev/sda1]' -i /etc/fstab
-HOSTNAME=$hostname perl -ple '$_="HOSTNAME=\"$ENV{HOSTNAME}\"" if /^\s*HOSTNAME=/' -i /etc/conf.d/hostname
+perl /root/confset.pl /etc/conf.d/hostname HOSTNAME="$hostname"
+perl /root/confset.pl /etc/conf.d/clock TIMEZONE="$tz" CLOCK_SYSTOHC="no"
 HOSTNAME=$hostname perl -ple 's/(localhost)/$ENV{HOSTNAME}\t$1/g unless /^\s*#/' -i /etc/hosts
 rc-update add net.eth0 default
 
-perl -ple '$_="SET_WINDOWKEYS=\"yes\"" if /^\s*SET_WINDOWKEYS=/' -i /etc/conf.d/keymaps
+perl /root/confset.pl /etc/conf.d/keymaps SET_WINDOWKEYS="yes"
 
 grep -v rootfs /proc/mounts > /etc/mtab
-emerge dhcpcd e2fsprogs genkernel gentoo-sources grub logrotate syslog-ng vixie-cron
+emerge dhcpcd e2fsprogs genkernel sys-kernel/gentoo-sources grub logrotate syslog-ng vixie-cron
 rc-update add syslog-ng default
 rc-update add vixie-cron default
 
-perl -ple 'BEGIN{($k)=(`eselect kernel list | grep "*"`=~/linux-(\S+)/)} s/KERNEL/$k/' << 'GRUB.CONF' > /boot/grub/grub.conf
-default 0
-timeout 3
-splashimage=(hd0,0)/boot/grub/splash.xpm.gz
-
-title=Gentoo Linux (KERNEL)
-root (hd0,0)
-kernel /boot/kernel-genkernel-x86-KERNEL root=/dev/ram0 real_root=/dev/sda1 vga=791
-initrd /boot/initramfs-genkernel-x86-KERNEL
-GRUB.CONF
+perl -ple 'BEGIN{($k)=(`eselect kernel list | grep "*"`=~/linux-(\S+)/)} s/KERNEL/$k/' < /root/grub.conf > /boot/grub/grub.conf
 
 grub-install --no-floppy $device
 genkernel all
