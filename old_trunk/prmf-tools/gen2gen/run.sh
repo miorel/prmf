@@ -1,4 +1,4 @@
-function _main {
+_run () {
 	cwd=`pwd`
 	tmp=`mktemp -d -p .`
 	cd $tmp

@@ -8,9 +8,9 @@ fi
 
 function _build {
 	echo "#!/bin/bash"
-	cat main.sh
+	cat run.sh
 	shellpack confset.pl mkgentoo.sh grub.conf make.conf
-	echo _main
+	echo _run
 }
 
 _build | tee gen2gen.sh

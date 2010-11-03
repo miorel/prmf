@@ -28,10 +28,9 @@ sub _work {
 	unlink $tmpfile->filename;
 	my $hex_data = unpack("H*", $data);
 	my $ret = '';
-	$ret .= <<'SCRIPT';
-function _extract {
+	$ret .= q[_extract () {
 	fold -w2 << 'HEX' | while read hex; do printf "\x$hex"; done | tar xf -
-SCRIPT
+];
 	$ret .= "$_\n" for $hex_data =~ /.{1,80}/g;
 	$ret .= "HEX\n}\n";
 	return $ret;

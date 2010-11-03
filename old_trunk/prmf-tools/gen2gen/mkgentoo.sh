@@ -21,12 +21,12 @@
 function _mkgentoo {
 
 # be nice, warn people
-cat << 'WARNING'
+cat << '_WARN_'
 WARNING!!! You're about to install a new operating system.
 This process will delete any data you might currently have on this machine.
 
 Last chance to cancel! Press Ctrl + C now.
-WARNING
+_WARN_
 
 # countdown
 for i in {10..1}; do
@@ -75,8 +75,8 @@ wget $GENTOO_MIRROR/releases/x86/autobuilds/$file || { echo "Couldn't download s
 stage3=`grep -P ^\\s\*[^\\s\#] $file | tail -n1 | sed 's/^\s+//; s/\s*$//'`
 rm $file
 wget $GENTOO_MIRROR/releases/x86/autobuilds/$stage3 || { echo "Problem downloading stage tarball!"; exit 1; }
-tar xjpf stage3-*.tar.bz2 || { echo "Problem installing stage tarball!"; exit 1; }
-rm stage3-*.tar.bz2
+tar xjpf $stage3 || { echo "Problem installing stage tarball!"; exit 1; }
+rm $stage3
 
 # getting/installing Portage snapshot
 wget $GENTOO_MIRROR/snapshots/portage-latest.tar.bz2 || { echo "Problem downloading Portage snapshot!"; exit 1; }
@@ -99,36 +99,40 @@ cat << CHROOT.SH > chroot.sh
 device=$device
 tz=America/New_York
 hostname=vito
+pass=123456
 CHROOT.SH
 cat << 'CHROOT.SH' >> chroot.sh
 rm chroot.sh
 env-update
 source /etc/profile
 emerge --sync --quiet
-ln -snf /usr/portage/profiles/default/linux/x86/10.0/ /etc/make.profile
+ln -snf ../usr/portage/profiles/default/linux/x86/10.0/ /etc/make.profile
 emerge -1u --noreplace portage
 perl -ple 's/^\s*#\s*(en_US)/$1/' -i /etc/locale.gen
 locale-gen
 cp "/usr/share/zoneinfo/$tz" /etc/localtime
 perl -ple 's[^\s*(/dev/(?:cdrom|BOOT|SWAP))\b][#$1]; s[/dev/ROOT][/dev/sda1]' -i /etc/fstab
 perl /root/confset.pl /etc/conf.d/hostname HOSTNAME="$hostname"
-perl /root/confset.pl /etc/conf.d/clock TIMEZONE="$tz" CLOCK_SYSTOHC="no"
+perl /root/confset.pl /etc/conf.d/clock TIMEZONE="$tz" CLOCK_SYSTOHC="yes"
 HOSTNAME=$hostname perl -ple 's/(localhost)/$ENV{HOSTNAME}\t$1/g unless /^\s*#/' -i /etc/hosts
+perl /root/confset.pl /etc/conf.d/net 'config_eth0=( "dhcp" )'
 rc-update add net.eth0 default
 
 perl /root/confset.pl /etc/conf.d/keymaps SET_WINDOWKEYS="yes"
 
 grep -v rootfs /proc/mounts > /etc/mtab
-emerge dhcpcd e2fsprogs genkernel sys-kernel/gentoo-sources grub logrotate syslog-ng vixie-cron
+emerge --keep-going net-misc/dhcpcd sys-fs/e2fsprogs sys-kernel/genkernel sys-kernel/gentoo-sources sys-boot/grub app-admin/logrotate app-admin/syslog-ng sys-process/vixie-cron
 rc-update add syslog-ng default
 rc-update add vixie-cron default
 
-perl -ple 'BEGIN{($k)=(`eselect kernel list | grep "*"`=~/linux-(\S+)/)} s/KERNEL/$k/' < /root/grub.conf > /boot/grub/grub.conf
+kernel=`eselect kernel show | perl -nle 'print $1 if /linux-(\S+)/'`
+perl -ple 's/KERNEL/$ARG[0]/' $kernel < /root/grub.conf > /boot/grub/grub.conf
 
 grub-install --no-floppy $device
 genkernel all
-{ echo 123456; echo 123456; } | passwd
+{ echo $pass; echo $pass; } | passwd
 emerge eix genlop gentoolkit
+eix-update
 { clear; perl -ple 's/\.?\\O//g' < /etc/issue.logo; } > /etc/issue
 CHROOT.SH
 chroot . /bin/bash chroot.sh
