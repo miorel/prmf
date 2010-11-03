@@ -313,6 +313,14 @@ The combination formula can be expanded to allow for repetitions:
 Given a system of linear equations:
 \[ax + by = e\]
 \[cx + dy = f\]
+
+
+
+
+
+
+
+
 \noindent If there is a unique solution, you can find it using Cramer's rule:
 
 \[
@@ -336,6 +344,23 @@ double[] solveLinear(double a, double b, double e,
 \noindent In the general case, given a system of linear equations $Ax=b$, where $A$ is an invertible matrix and the variables $x_0,x_1,\ldots,x_{n-1}$ are expressed as a column vector $x$, then:
 \[x_i=\frac{\det(A_i)}{\det(A)}\]
 \noindent where $A_i$ is the matrix obtained by replacing column $i$ of $A$ with the column vector $b$.
+
+
+
+
+\subsubsection{Cross product}
+\[a x b = (a2b3 - a3b2, a3b1 - a1b3, a1b2 - a2b1)\]
+\[a x b = -(bxa)\]
+\[a x b = |a||b|*sin(theta)* N\]
+N is the unit direction vector (right hand rule)
+
+parallellpipded?? volume
+v = |a \cdot (b x c)| = |b \cdot (c x a)| = |c \cdot (a x b)|
+\includegraphics[width=30mm]{pp.png}
+
+
+
+
 \subsection{Geometry}
 \subsubsection{Pythagorean theorem and distance between two points}
 \noindent The Pythagorean theorem states:
