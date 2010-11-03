@@ -92,15 +92,7 @@ cp $wd/{grub.conf,confset.pl} root
 mount -t proc none proc
 mount -o bind /dev dev
 
-cat << 'MAKE.CONF' > etc/make.conf
-ACCEPT_KEYWORDS="~x86"
-CFLAGS="-march=i686 -O2 -pipe -fomit-frame-pointer"
-CHOST="i686-pc-linux-gnu"
-CXXFLAGS="${CFLAGS}"
-FEATURES="parallel-fetch"
-MAKEOPTS="-j2"
-USE="symlink"
-MAKE.CONF
+cp $wd/make.conf etc/make.conf
 
 # the following will be executed within a changed root
 cat << CHROOT.SH > chroot.sh

@@ -9,7 +9,7 @@ fi
 function _build {
 	echo "#!/bin/bash"
 	cat main.sh
-	shellpack confset.pl mkgentoo.sh grub.conf
+	shellpack confset.pl mkgentoo.sh grub.conf make.conf
 	echo _main
 }
 
