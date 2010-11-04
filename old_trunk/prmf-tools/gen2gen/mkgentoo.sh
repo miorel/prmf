@@ -35,7 +35,10 @@ for i in {10..1}; do
 done
 echo "Liftoff!"
 
-GENTOO_MIRROR=http://www.gtlib.gatech.edu/pub/gentoo/
+mirror=http://www.gtlib.gatech.edu/pub/gentoo/
+# mirror=(`# while read line; do printf "%s" "$line"; done < mirrors3.xml | sed -r 's/<uri(\s[^>]*)?>([^<]+)<\/uri>/\n<uri> \2\n/g' | sed -rn 's/^<uri> (ftp:http):/\1:/p'`)
+# mirror=${mirror[$((RANDOM%${#mirror[*]}))]}
+# 
 
 device=/dev/sda
 [[ -e $device ]] || { echo "Uhh... I can't seem to find $device anywhere."; exit 1; }
@@ -72,9 +75,10 @@ cd $mountpoint
 # getting/installing stage tarball
 file=latest-stage3.txt
 wget $GENTOO_MIRROR/releases/x86/autobuilds/$file || { echo "Couldn't download stage information :("; exit 1; }
-stage3=`grep -P ^\\s\*[^\\s\#] $file | tail -n1 | sed 's/^\s+//; s/\s*$//'`
+stage3=`grep -P '^\s*[^\s#]' $file | tail -n1 | sed 's/^\s+//; s/\s*$//'`
 rm $file
 wget $GENTOO_MIRROR/releases/x86/autobuilds/$stage3 || { echo "Problem downloading stage tarball!"; exit 1; }
+stage3=`basename "$stage3"`
 tar xjpf $stage3 || { echo "Problem installing stage tarball!"; exit 1; }
 rm $stage3
 
@@ -105,7 +109,7 @@ cat << 'CHROOT.SH' >> chroot.sh
 rm chroot.sh
 env-update
 source /etc/profile
-emerge --sync --quiet
+emerge --sync -q
 ln -snf ../usr/portage/profiles/default/linux/x86/10.0/ /etc/make.profile
 emerge -1u --noreplace portage
 perl -ple 's/^\s*#\s*(en_US)/$1/' -i /etc/locale.gen
@@ -116,14 +120,13 @@ perl /root/confset.pl /etc/conf.d/hostname HOSTNAME="$hostname"
 perl /root/confset.pl /etc/conf.d/clock TIMEZONE="$tz" CLOCK_SYSTOHC="yes"
 HOSTNAME=$hostname perl -ple 's/(localhost)/$ENV{HOSTNAME}\t$1/g unless /^\s*#/' -i /etc/hosts
 perl /root/confset.pl /etc/conf.d/net 'config_eth0=( "dhcp" )'
-rc-update add net.eth0 default
-
 perl /root/confset.pl /etc/conf.d/keymaps SET_WINDOWKEYS="yes"
 
 grep -v rootfs /proc/mounts > /etc/mtab
 emerge --keep-going net-misc/dhcpcd sys-fs/e2fsprogs sys-kernel/genkernel sys-kernel/gentoo-sources sys-boot/grub app-admin/logrotate app-admin/syslog-ng sys-process/vixie-cron
-rc-update add syslog-ng default
-rc-update add vixie-cron default
+_add_service net.eth0
+_add_service syslog-ng
+_add_service vixie-cron
 
 kernel=`eselect kernel show | perl -nle 'print $1 if /linux-(\S+)/'`
 perl -ple 's/KERNEL/$ARG[0]/' $kernel < /root/grub.conf > /boot/grub/grub.conf
@@ -140,4 +143,11 @@ chroot . /bin/bash chroot.sh
 cd /
 umount /mnt/gentoo/{proc,dev,.}
 
+}
+
+_add_service () {
+	service=$1
+	level=default
+	[[ $# -ge 2 ]] && level=$2
+	rc-update add "$service" "$level"
 }
