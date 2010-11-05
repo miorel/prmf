@@ -31,7 +31,7 @@ while(($key, $val) = each %opt) {
 			$lines[$_] = "#" . $lines[$_] for @nc_i;
 		}
 	}
-	$lines[$i] = "$key=\"$val\"\n";
+	$lines[$i] = "$key=$val\n";
 }
 
 open $fh, "> $file" or die "failed to open $file for writing";

@@ -6,11 +6,11 @@ if ! (type -p shellpack >& /dev/null); then
 	exit
 fi
 
-function _build {
+_build () {
 	echo "#!/bin/bash"
 	cat run.sh
-	shellpack confset.pl mkgentoo.sh grub.conf make.conf
-	echo _run
+	shellpack confset.pl mkgentoo.sh grub.conf make.conf util.sh
+	echo 'run "$@"'
 }
 
 _build | tee gen2gen.sh

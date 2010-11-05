@@ -4,7 +4,7 @@
 # Author: Miorel-Lucian Palii <mlpalii@gmail.com>
 # License: GNU General Public License version 3 or any later version
 #          <http://www.gnu.org/licenses/gpl.html>
-# Version: script last updated November 2, 2010
+# Version: script last updated November 5, 2010
 #
 # To use, boot up the destination system from your favorite installation medium (Gentoo's minimal install image is fine); then transfer the script (or just redownload it if possible) and run it.
 #
@@ -18,7 +18,7 @@
 # This code was written for lazy people. There is some basic error-checking but in general you should have no expectations of robustness. The script works best in a virtual machine (which is how I developed it and also what the original intended platform was).
 #
 
-function _mkgentoo {
+_mkgentoo () {
 
 # be nice, warn people
 cat << '_WARN_'
@@ -35,10 +35,7 @@ for i in {10..1}; do
 done
 echo "Liftoff!"
 
-mirror=http://www.gtlib.gatech.edu/pub/gentoo/
-# mirror=(`# while read line; do printf "%s" "$line"; done < mirrors3.xml | sed -r 's/<uri(\s[^>]*)?>([^<]+)<\/uri>/\n<uri> \2\n/g' | sed -rn 's/^<uri> (ftp:http):/\1:/p'`)
-# mirror=${mirror[$((RANDOM%${#mirror[*]}))]}
-# 
+mirror=`random_gentoo_mirror`
 
 device=/dev/sda
 [[ -e $device ]] || { echo "Uhh... I can't seem to find $device anywhere."; exit 1; }
@@ -74,18 +71,22 @@ cd $mountpoint
 
 # getting/installing stage tarball
 file=latest-stage3.txt
-wget $GENTOO_MIRROR/releases/x86/autobuilds/$file || { echo "Couldn't download stage information :("; exit 1; }
+wget $mirror/releases/x86/autobuilds/$file || { echo "Couldn't download stage information :("; exit 1; }
 stage3=`grep -P '^\s*[^\s#]' $file | tail -n1 | sed 's/^\s+//; s/\s*$//'`
 rm $file
-wget $GENTOO_MIRROR/releases/x86/autobuilds/$stage3 || { echo "Problem downloading stage tarball!"; exit 1; }
+wget $mirror/releases/x86/autobuilds/$stage3 || { echo "Problem downloading stage tarball!"; exit 1; }
 stage3=`basename "$stage3"`
 tar xjpf $stage3 || { echo "Problem installing stage tarball!"; exit 1; }
 rm $stage3
 
 # getting/installing Portage snapshot
-wget $GENTOO_MIRROR/snapshots/portage-latest.tar.bz2 || { echo "Problem downloading Portage snapshot!"; exit 1; }
-tar xjpf portage-latest.tar.bz2 -C usr || { echo "Problem installing Portage snapshot!"; exit 1; }
-rm portage-latest.tar.bz2
+file=`gentoo_get_portage_snapshot`
+if [[ $? -ne 0 ]]; then
+	echo "Problem downloading Portage snapshot!"
+	exit 1
+fi
+tar xjpf $file -C usr || { echo "Problem installing Portage snapshot!"; exit 1; }
+rm $file
 
 # copying DNS info
 cp -L /etc/resolv.conf etc
@@ -98,15 +99,16 @@ mount -o bind /dev dev
 
 cp $wd/make.conf etc/make.conf
 
+pass=`generate_word`
+
 # the following will be executed within a changed root
-cat << CHROOT.SH > chroot.sh
+cat << CHROOT.SH > root/chroot.sh
 device=$device
 tz=America/New_York
 hostname=vito
-pass=123456
+pass=$pass
 CHROOT.SH
-cat << 'CHROOT.SH' >> chroot.sh
-rm chroot.sh
+cat << 'CHROOT.SH' >> root/chroot.sh
 env-update
 source /etc/profile
 emerge --sync -q
@@ -115,39 +117,45 @@ emerge -1u --noreplace portage
 perl -ple 's/^\s*#\s*(en_US)/$1/' -i /etc/locale.gen
 locale-gen
 cp "/usr/share/zoneinfo/$tz" /etc/localtime
-perl -ple 's[^\s*(/dev/(?:cdrom|BOOT|SWAP))\b][#$1]; s[/dev/ROOT][/dev/sda1]' -i /etc/fstab
+device=$device perl -ple 's[^\s*(/dev/(?:cdrom|BOOT|SWAP))\b][#$1]; s[/dev/ROOT][$ENV{device}1]' -i /etc/fstab
 perl /root/confset.pl /etc/conf.d/hostname HOSTNAME="$hostname"
 perl /root/confset.pl /etc/conf.d/clock TIMEZONE="$tz" CLOCK_SYSTOHC="yes"
-HOSTNAME=$hostname perl -ple 's/(localhost)/$ENV{HOSTNAME}\t$1/g unless /^\s*#/' -i /etc/hosts
+hostname=$hostname perl -ple 's/(localhost)/$ENV{hostname}\t$1/g unless /^\s*#/' -i /etc/hosts
 perl /root/confset.pl /etc/conf.d/net 'config_eth0=( "dhcp" )'
 perl /root/confset.pl /etc/conf.d/keymaps SET_WINDOWKEYS="yes"
 
 grep -v rootfs /proc/mounts > /etc/mtab
 emerge --keep-going net-misc/dhcpcd sys-fs/e2fsprogs sys-kernel/genkernel sys-kernel/gentoo-sources sys-boot/grub app-admin/logrotate app-admin/syslog-ng sys-process/vixie-cron
-_add_service net.eth0
-_add_service syslog-ng
-_add_service vixie-cron
+rc-update add net.eth0 default
+rc-update add syslog-ng default
+rc-update add vixie-cron default
 
 kernel=`eselect kernel show | perl -nle 'print $1 if /linux-(\S+)/'`
-perl -ple 's/KERNEL/$ARG[0]/' $kernel < /root/grub.conf > /boot/grub/grub.conf
+perl -ple 'BEGIN{$k=shift} s/KERNEL/$k/' $kernel < /root/grub.conf > /boot/grub/grub.conf
 
 grub-install --no-floppy $device
 genkernel all
-{ echo $pass; echo $pass; } | passwd
-emerge eix genlop gentoolkit
+echo -e "$pass\n$pass" | passwd
+passwd -e root
+emerge --noreplace --keep-going app-portage/{eix,genlop,gentoolkit}
 eix-update
 { clear; perl -ple 's/\.?\\O//g' < /etc/issue.logo; } > /etc/issue
 CHROOT.SH
-chroot . /bin/bash chroot.sh
+chroot . /bin/bash /root/chroot.sh
 
 cd /
 umount /mnt/gentoo/{proc,dev,.}
 
+cat << _PASS_
+
+The root password for your new system is: $pass
+
+_PASS_
+
 }
 
-_add_service () {
+gentoo_add_service () {
 	service=$1
-	level=default
-	[[ $# -ge 2 ]] && level=$2
+	level=default; [[ $# -ge 2 ]] && level=$2
 	rc-update add "$service" "$level"
 }
