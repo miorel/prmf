@@ -40,7 +40,7 @@ run () {
 	_extract
 	source util.sh
 	source mkgentoo.sh
-	_mkgentoo
+	_mkgentoo /dev/sda
 	ret=$?
 	cd $wd
 	rm -rf $tmp
@@ -49,7 +49,7 @@ run () {
 
 print_version () {
 	cat << '_VERSION_'
-gen2gen 0.0.1 (November 5, 2010)
+gen2gen 0.0.1-r462 (November 8, 2010)
 Copyright (C) 2010 Miorel-Lucian Palii
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
@@ -62,9 +62,10 @@ print_help () {
 Usage: $0 [OPTION]...
 Install a basic Gentoo system.
 
-      --          suppress further option parsing (useful for passing operands
-                  that start with a hyphen without confusing them for options)
-  -h, -?, --help  display this help and exit
+      --          suppress further option parsing (in case you need to pass
+                  operands that start with a hyphen without confusing them for
+                  options)
+  -h, --help, -?  display this help and exit
   -v, --version   output version information and exit
 
 Exit status:

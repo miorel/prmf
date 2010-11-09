@@ -64,6 +64,6 @@ gentoo_get_portage_snapshot () {
 }
 
 am_i_root () {
-	ret=0; ([ $EUID -eq 0 ] && ret=1
+	ret=0; [ $EUID -eq 0 ] && ret=1
 	echo $ret
 }
