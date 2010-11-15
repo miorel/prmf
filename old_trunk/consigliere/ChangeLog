@@ -1,0 +1,4 @@
+2010-11-12  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* main.pl: Created rudimentary script, currently just lists directory
+	  contents.
