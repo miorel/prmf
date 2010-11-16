@@ -3,44 +3,47 @@
 use warnings;
 use strict;
 
+use BSD::Resource;
 use IPC::Open3;
 
-my $loc = shift;
-die "no location specified" unless defined $loc;
+my($loc, $user, $pid);
+
+# force loading these functions now
+# (otherwise BSD::Resource will try to get them inside chroot and probably fail)
+eval { &getrlimit; };
+eval { &setrlimit; };
+
+defined($loc = shift) or die "no location specified";
 die "$loc is not a directory" unless -d $loc;
 
-my $user = shift;
-my $shell_pref = "/bin/bash";
+defined($user = shift) or $user = 'root';
 
-run("mount", "-t", "proc", "none", "$loc/proc");
-run("mount", "-o", "bind", "/dev", "$loc/dev");
-run("mount", "-t", "sysfs", "none", "$loc/sys");
+my $shell_pref = '/bin/bash';
 
-run("cp", "-L", "/etc/resolv.conf", "$loc/etc/resolv.conf");
+run(qw(mount -t proc none), "$loc/proc");
+run(qw(mount -o bind /dev), "$loc/dev");
+run(qw(mount -t sysfs none), "$loc/sys");
 
-my $pid;
+run(qw(cp -L /etc/resolv.conf), "$loc/etc/resolv.conf");
 
 defined($pid = fork()) or die "forking failed";
-
 if($pid == 0) {
-	my($out, $err);
-	open $out, ">", "out.txt";
-	open $err, ">", "err.txt";
+#	my($out, $err);
+#	open $out, qw(> out.txt);
+#	open $err, qw(> err.txt);
 
 	chdir $loc;
 	chroot '.';
 
-	$user = "root" unless defined $user;
-
 	my($uid, $gid, $home, $shell) = (getpwnam($user))[2,3,7,8];
 	if($shell ne $shell_pref) {
-		print "Warning: user shell was $shell, not $shell_pref as preferred, will use $shell_pref anyway.\n";
+		print "Warning: user shell was $shell, not $shell_pref as preferred!\nWill use $shell_pref anyway because that's what we know and love.\n";
 		$shell = $shell_pref;
 	}
 
 	local @_;
 	while(@_ = getgrent()) {
-		next if $_[2] == 0 && $user ne "root";
+		next if $_[2] == 0 && $user ne 'root';
 		for(split(/\s+/, $_[3])) {
 			$gid .= " $_[2]" and last if $_ eq $user;
 		}
@@ -59,6 +62,8 @@ if($pid == 0) {
 
 		$( = $) = $gid;
 		$< = $> = $uid;
+
+		limit(RLIMIT_NPROC, 32);
 
 		my($p_in, $p_out);
 		my $pid = open3($p_in, $p_out, '/dev/null', $shell, "-i", "-l");
@@ -81,31 +86,16 @@ if($pid == 0) {
 			}
 		}
 
-#		system { $shell } ($shell, "-l", "-i");
-
-		open STDOUT, ">&", $out;
-		open STDERR, ">&", $err;
-
-		open my $fh, ">", "cmd.sh";
-		print $fh <<'EOF';
-#cd prmf
-#svn update >& /dev/null
-#cd
-#tar cjf prmf.tbz2 prmf >& /dev/null
-#perl prmf/old_trunk/consigliere/main.pl prmf
-#rm -rf prmf
-#tar xjf prmf.tbz2 >& /dev/null
-#rm -rf prmf.tbz2
-EOF
-		close $fh;
+#		open STDOUT, ">&", $out;
+#		open STDERR, ">&", $err;
 	}
 
-	close $out;
-	close $err;
+#	close $out;
+#	close $err;
 
 	if($pid == 0) {
-		close STDIN;
-		my @cmd = ($shell, "cmd.sh");
+#		close STDIN;		
+		my @cmd = ($shell, qw(-l -i));
 		exec { $cmd[0] } @cmd;
 	}
 	else {
@@ -119,7 +109,7 @@ else {
 
 	unlink "$loc/etc/resolv.conf";
 
-	run("umount", "$loc/$_") for qw(proc dev sys);
+	run('umount', "$loc/$_") for qw(proc dev sys);
 
 	print "Parent exiting\n";
 }
@@ -127,4 +117,11 @@ else {
 sub run {
 	printf("Running: %s\n", join(" ", @_));
 	system {$_[0]} @_;
+}
+
+sub limit {
+	my($resource, $new_limit) = @_;
+	my $old_limit = (getrlimit($resource))[0];
+	$new_limit = $old_limit if $new_limit > $old_limit;
+	return setrlimit($resource, $new_limit, $new_limit);
 }
