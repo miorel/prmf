@@ -4,13 +4,13 @@ use warnings;
 use strict;
 
 use IPC::Open3;
-use Symbol qw(gensym);
 
 my $loc = shift;
 die "no location specified" unless defined $loc;
 die "$loc is not a directory" unless -d $loc;
 
 my $user = shift;
+my $shell_pref = "/bin/bash";
 
 run("mount", "-t", "proc", "none", "$loc/proc");
 run("mount", "-o", "bind", "/dev", "$loc/dev");
@@ -18,15 +18,14 @@ run("mount", "-t", "sysfs", "none", "$loc/sys");
 
 run("cp", "-L", "/etc/resolv.conf", "$loc/etc/resolv.conf");
 
-my $pid = fork();
-die "forking failed" unless defined $pid;
+my $pid;
+
+defined($pid = fork()) or die "forking failed";
 
 if($pid == 0) {
-	# I am child
-
 	my($out, $err);
-	open $out, "> out.txt";
-	open $err, "> err.txt";
+	open $out, ">", "out.txt";
+	open $err, ">", "err.txt";
 
 	chdir $loc;
 	chroot '.';
@@ -34,8 +33,9 @@ if($pid == 0) {
 	$user = "root" unless defined $user;
 
 	my($uid, $gid, $home, $shell) = (getpwnam($user))[2,3,7,8];
-	if($shell ne '/bin/bash') {
-		$shell = '/bin/bash';
+	if($shell ne $shell_pref) {
+		print "Warning: user shell was $shell, not $shell_pref as preferred, will use $shell_pref anyway.\n";
+		$shell = $shell_pref;
 	}
 
 	local @_;
@@ -46,48 +46,79 @@ if($pid == 0) {
 		}
 	}
 
-	$( = $) = $gid;
-	$< = $> = $uid;
+	chdir $home;
 
-	$ENV{USER} = $user;
-	$ENV{HOME} = $home;
-	$ENV{SHELL} = $shell;
+	defined($pid = fork()) or die "forking failed";
+	if($pid == 0) {
+		for(keys %ENV) {
+			delete $ENV{$_} unless $_ eq 'TERM';
+		}
+		$ENV{USER} = $user;
+		$ENV{HOME} = $home;
+		$ENV{SHELL} = $shell;
 
-	%ENV = map { $_ => $ENV{$_} } (grep {defined $ENV{$_}} qw(
-		USER
-		HOME
-		SHELL
-		TERM
-	));
-	
-	chdir $ENV{HOME};
+		$( = $) = $gid;
+		$< = $> = $uid;
 
-	my($p_in, $p_out, $p_err);
-	use Symbol 'gensym'; $p_err = gensym;
+		my($p_in, $p_out);
+		my $pid = open3($p_in, $p_out, '/dev/null', $shell, "-i", "-l");
+		print $p_in q(perl -MData::Dumper -e 'print Dumper(\%ENV), "#"')."\n";
+		close $p_in;
+		waitpid($pid, 0);
+		{
+			no warnings;
+			no strict;
+			undef $/;
+			my $str = <$p_out>;
+			$str =~ s/[^ -~\s]//g;
+			$str =~ s/[\r\n]//g;
+			eval $str;
+			%ENV = %$VAR1;
+			delete $ENV{_};
+			if(defined($ENV{SHLVL})) {
+				--$ENV{SHLVL};
+				delete $ENV{SHLVL} if $ENV{SHLVL} <= 0;
+			}
+		}
 
-	$pid = open3($p_in, $p_out, $p_err, $shell, "-i", "-l");
+#		system { $shell } ($shell, "-l", "-i");
 
-	close $p_in;
+		open STDOUT, ">&", $out;
+		open STDERR, ">&", $err;
 
-	waitpid($pid, 0);
-
-	print "Exit status = ".($? >> 8)."\n";
-
-	print $out $_ for <$p_out>;
-	print $err $_ for <$p_err>;
+		open my $fh, ">", "cmd.sh";
+		print $fh <<'EOF';
+#cd prmf
+#svn update >& /dev/null
+#cd
+#tar cjf prmf.tbz2 prmf >& /dev/null
+#perl prmf/old_trunk/consigliere/main.pl prmf
+#rm -rf prmf
+#tar xjf prmf.tbz2 >& /dev/null
+#rm -rf prmf.tbz2
+EOF
+		close $fh;
+	}
 
 	close $out;
 	close $err;
 
-	print "Child exiting\n";
+	if($pid == 0) {
+		close STDIN;
+		my @cmd = ($shell, "cmd.sh");
+		exec { $cmd[0] } @cmd;
+	}
+	else {
+		waitpid($pid, 0);
+		print "Child exiting, status = ".($? >> 8)."\n";
+	}	
 }
 else {
-	# I am parent
-
 	waitpid($pid, 0);
 	print "Parent reaped child\n";
 
-	run("rm", "$loc/etc/resolv.conf");
+	unlink "$loc/etc/resolv.conf";
+
 	run("umount", "$loc/$_") for qw(proc dev sys);
 
 	print "Parent exiting\n";
@@ -95,5 +126,5 @@ else {
 
 sub run {
 	printf("Running: %s\n", join(" ", @_));
-	system(@_);
+	system {$_[0]} @_;
 }
