@@ -6,6 +6,12 @@ use strict;
 use BSD::Resource;
 use IPC::Open3;
 
+{
+	no warnings;
+	no strict;
+	use Inline C;
+}
+
 my($loc, $user, $pid);
 
 # force loading these functions now
@@ -94,12 +100,14 @@ if($pid == 0) {
 #	close $err;
 
 	if($pid == 0) {
-#		close STDIN;		
+#		close STDIN;
+		traceme();
+		kill "STOP", $$;
 		my @cmd = ($shell, qw(-l -i));
 		exec { $cmd[0] } @cmd;
 	}
 	else {
-		waitpid($pid, 0);
+		mon();
 		print "Child exiting, status = ".($? >> 8)."\n";
 	}	
 }
@@ -124,4 +132,44 @@ sub limit {
 	my $old_limit = (getrlimit($resource))[0];
 	$new_limit = $old_limit if $new_limit > $old_limit;
 	return setrlimit($resource, $new_limit, $new_limit);
+}
+
+__END__
+__C__
+
+#include <signal.h>
+#include <sys/ptrace.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+void traceme() {
+	ptrace(PTRACE_TRACEME, 0, 0, 0);
+}
+
+void mon() {
+	int status, kids = 1;
+	siginfo_t sig;
+	pid_t pid;
+	while(kids > 0) {
+		pid = wait(&status);
+		ptrace(PTRACE_GETSIGINFO, pid, 0, &sig);
+
+		if(sig.si_signo == SIGTRAP) {
+			switch(sig.si_code >> 8) {
+			case PTRACE_EVENT_FORK:
+			case PTRACE_EVENT_VFORK:
+			case PTRACE_EVENT_CLONE:
+				++kids;
+				break;
+			}
+		}		
+
+		if(WIFSTOPPED(status)) {
+			ptrace(PTRACE_SETOPTIONS, pid, 0, PTRACE_O_TRACEFORK | PTRACE_O_TRACEVFORK | PTRACE_O_TRACECLONE);
+			ptrace(PTRACE_SYSCALL, pid, 0, 0);
+		}
+		else {
+			--kids;
+		}
+	}
 }
