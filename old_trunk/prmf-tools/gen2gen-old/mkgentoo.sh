@@ -88,27 +88,8 @@ else # it's a directory
 	cd $destination
 fi
 
-mirror=`random_gentoo_mirror`
 
-# getting/installing stage tarball
-stage3=`wget $mirror/releases/x86/autobuilds/latest-stage3.txt -O - | grep -P '^\s*[^\s#]' | tail -n1 | sed 's/^\s+//; s/\s*$//'`
-if [ $? -ne 0 ]; then
-	echo "Couldn't download stage information :("
-	exit 1
-fi
-wget $mirror/releases/x86/autobuilds/$stage3 || { echo "Problem downloading stage tarball!"; exit 1; }
-stage3=`basename "$stage3"`
-tar xjpf $stage3 || { echo "Problem installing stage tarball!"; exit 1; }
-rm $stage3
 
-# getting/installing Portage snapshot
-file=`gentoo_get_portage_snapshot $mirror`
-if [ $? -ne 0 ]; then
-	echo "Problem downloading Portage snapshot!"
-	exit 1
-fi
-tar xjpf $file -C usr || { echo "Problem installing Portage snapshot!"; exit 1; }
-rm $file
 
 # copying DNS info
 cp -L /etc/resolv.conf etc

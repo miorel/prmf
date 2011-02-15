@@ -19,8 +19,7 @@ clean_text () {
 }
 
 line_count () {
-	# print the number of records read at the end
-	awk 'END { print NR }'
+	wc -l
 }
 
 chomp () {
@@ -94,11 +93,12 @@ get_file_checking_md5 () {
 	if [[ $# -lt 2 ]]; then
 		success=1
 		checksum=$(wget "$url.md5sum" -O -)
-		if [[ $? -eq 8 ]]; then
+		ec=$?
+		if [[ $ec -eq 8 ]]; then
 			# server error, let's try a .DIGESTS file
 			checksum=$(wget "$url.DIGESTS" -O -)
 			(( $? )) && success=0
-		elif (( $? )); then
+		elif (( $ec )); then
 			success=0
 		fi
 
@@ -262,10 +262,10 @@ gentoo_default_partition () {
 		return 1
 	fi
 
-	if [[ ! -e "${disk}2" ]]; then
+	while [[ ! -e "${disk}2" ]]; do
 		echo "Can't see ${disk}2 just yet, sleeping for a sec." >&2
 		sleep 1
-	fi
+	done
 
 	make_swap "${disk}2"
 	make_ext2 "${disk}1"
@@ -281,36 +281,21 @@ assert_can_work_with_partitions () {
 
 make_swap () {
 	assert_can_work_with_partitions || return 1
-	mkswap "$1" && swapon "$1"
+	{ mkswap "$1" && swapon "$1"; } >&2
 }
 
 make_ext2 () {
 	assert_can_work_with_partitions || return 1
-	mkfs.ext2 "$1" && tune2fs -c 10 -i 30 "$1"
+	{ mkfs.ext2 "$1" && tune2fs -c 10 -i 30 "$1"; } >&2
 }
 
 make_ext3 () {
 	assert_can_work_with_partitions || return 1
-	mkfs.ext3 "$1" && tune2fs -c 10 -i 30 "$1"
+	{ mkfs.ext3 "$1" && tune2fs -c 10 -i 30 "$1"; } >&2
 }
 
-destination="/dev/sda"
-mountpoint="/mnt/gentoo"
-wd=$PWD
+gentoo_update () {
+	emerge -1u --noreplace --keep-going "$1"
+}
 
-gentoo_default_partition "$destination"
-rm -rf "$mountpoint"
-mkdir -p "$mountpoint"
-mount "${destination}3" "$mountpoint"
-cd "$mountpoint"
-mkdir boot
-mount "${destination}1" boot
 
-mirror=$(gentoo_random_mirror)
-
-stage3=$(gentoo_get_stage3 "$mirror")
-tar xjvpf "$stage3"
-portage_snapshot=$(gentoo_get_portage_snapshot "$mirror")
-tar xjvpf "$portage_snapshot" -C usr
-
-release_partitions "$destination"

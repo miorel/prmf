@@ -8,11 +8,9 @@ fi
 
 build_gen2gen () {
 	echo "#!/bin/bash"
+	shellpack util.sh
+	echo
 	cat run.sh
-	echo
-	shellpack confset.pl mkgentoo.sh grub.conf make.conf util.sh
-	echo
-	echo 'run "$@"'
 }
 
 build_gen2gen | tee gen2gen
