@@ -110,16 +110,3 @@ Exit status:
 EOF
 }
 
-suggest_help () {
-	echo "Try \`$0 --help' for more information."
-}
-
-unrecognized_option () {
-	echo "$0: unrecognized option \`$1'"
-	suggest_help
-}
-
-extra_operand () {
-	echo "$0: extra operand \`$1'"
-	suggest_help
-}

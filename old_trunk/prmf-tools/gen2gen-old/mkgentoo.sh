@@ -182,8 +182,3 @@ echo -e "\nThe root password for your new system is: $password\n"
 
 }
 
-gentoo_add_service () {
-	service=$1
-	level=default; [[ $# -ge 2 ]] && level=$2
-	rc-update add "$service" "$level"
-}
