@@ -32,7 +32,7 @@ push @names, qw(roy scrappy silo tango tanuzi);
 push @names, qw(coco pecola pecolius);
 
 # some penguin species that make good names
-push @names, qw(adelie humboldt magellan rockhopper adelie);
+push @names, qw(adelie humboldt magellan rockhopper);
 
 # sort, uniq
 @names = sort keys %{ {map {$_=>1} @names} };

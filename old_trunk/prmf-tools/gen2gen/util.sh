@@ -200,13 +200,13 @@ is_mounted () {
 release_partitions () {
 	assert_can_work_with_partitions || return 1
 
-	disk=$1
+	disk="$1"
 	ret=0
 
-	old_ifs=$IFS
+	old_ifs="$IFS"
 	IFS=$'\n'
 
-	wd=$PWD
+	wd="$PWD"
 	cd /
 	progress=1
 	while (( $progress )); do
@@ -224,7 +224,7 @@ release_partitions () {
 		fi
 	done
 
-	IFS=old_ifs
+	IFS="$old_ifs"
 
 	return $ret
 }
@@ -232,7 +232,7 @@ release_partitions () {
 delete_partitions () {
 	assert_can_work_with_partitions || return 1
 
-	disk=$1
+	disk="$1"
 
 	release_partitions "$disk" &&
 	{ for p in {1..4}; do echo -e "d\n$p"; done; echo w; } | fdisk -cu "$disk" >& /dev/null
@@ -246,7 +246,7 @@ delete_partitions () {
 gentoo_default_partition () {
 	assert_can_work_with_partitions || return 1
 
-	disk=$1
+	disk="$1"
 
 	delete_partitions "$disk" &&
 	{
@@ -298,4 +298,12 @@ gentoo_update () {
 	emerge -1u --noreplace --keep-going "$1"
 }
 
-
+countdown () {
+	max=10; [[ $# -ge 1 ]] && max="$1"
+	i="$max"
+	while [[ $i -ge 1 ]]; do
+		echo "$i " | chomp
+		sleep 1
+		i=$(($i - 1))
+	done
+}

@@ -56,108 +56,26 @@ wd=$PWD
 [ -e $destination ] || { echo "Uhh... I can't seem to find $destination anywhere."; exit 1; }
 
 if (( $dest_is_block )); then
-	# killing swap, unmounting the destination device if necessary
-	swapoff -a
-	umount ${destination}*
-
-	# deleting partition table
-	echo 'd 1 d 2 d 3 d 4 w' | sed 's/ /\n/g' | fdisk $destination
-	[ -e ${destination}1 ] && { echo "There was a problem deleting the partitions!"; exit 1; }
-
-	# creating partition table
-	echo 'n p 1   a 1 w' | sed 's/ /\n/g' | fdisk $destination
-	[ -e ${destination}1 ] || {
-		echo "Can't see ${destination}1 yet, sleeping for a bit.";
-		sleep 5;
-		[ -e ${destination}1 ] || { echo "Still can't see ${destination}1 and I don't feel like waiting anymore."; exit 1; };
-	}
-
-	# creating filesystem
-	mkfs.ext3 ${destination}1
-	tune2fs -c 10 -i 30 ${destination}1
-
-	# mounting root partition
-	mountpoint=/mnt/gentoo
-	rm -rf $mountpoint
-	mkdir -p $mountpoint
-	mount ${destination}1 $mountpoint
-
-	cd $mountpoint
 
 else # it's a directory
 	cd $destination
 fi
 
-
-
-
-# copying DNS info
-cp -L /etc/resolv.conf etc
-
-cp $wd/grub.conf root
-cp $wd/confset.pl root
-cp $wd/make.conf etc
-
-# mounting /proc and /dev
-mount -t proc none proc
-mount -o bind /dev dev
-
-password=`generate_word`
-hostname=vito
-timezone=America/New_York
-
 # the following will be executed within a changed root
 cat << CHROOT.SH > root/chroot.sh
 dest_is_block=$dest_is_block
-destination=$destination
-timezone=$timezone
-hostname=$hostname
-password=$password
 CHROOT.SH
 cat << 'CHROOT.SH' >> root/chroot.sh
-cd /root
-env-update
-source /etc/profile
-emerge --sync -q
-ln -snf ../usr/portage/profiles/default/linux/x86/10.0/ /etc/make.profile
-emerge -1u --noreplace sys-apps/portage
 
-perl -ple 's/^\s*#\s*(en_US)/$1/' -i /etc/locale.gen
-locale-gen
-cp "/usr/share/zoneinfo/$timezone" /etc/localtime
-root=${destination}1 perl -ple 's[^\s*(/dev/(?:cdrom|BOOT|SWAP))\b][#$1]; s[/dev/ROOT][$ENV{root}]' -i /etc/fstab
-perl confset.pl /etc/conf.d/hostname HOSTNAME="\"$hostname\""
-perl confset.pl /etc/conf.d/clock TIMEZONE="\"$timezone\"" 'CLOCK_SYSTOHC="yes"'
-hostname=$hostname perl -ple 's/(localhost)/$ENV{hostname}\t$1/g unless /^\s*#/' -i /etc/hosts
-perl confset.pl /etc/conf.d/net 'config_eth0=( "dhcp" )'
-perl confset.pl /etc/conf.d/keymaps 'SET_WINDOWKEYS="yes"'
-{ clear; perl -ple 's/\.?\\O//g' < /etc/issue.logo; } > /etc/issue
 
-grep -v rootfs /proc/mounts > /etc/mtab
-emerge -u --noreplace --keep-going net-misc/dhcpcd sys-fs/e2fsprogs sys-kernel/genkernel sys-kernel/gentoo-sources sys-boot/grub app-admin/logrotate app-admin/syslog-ng sys-process/vixie-cron
-rc-update add net.eth0 default
-rc-update add syslog-ng default
-rc-update add vixie-cron default
-
-kernel=`eselect kernel show | perl -nle 'print $1 if /linux-(\S+)/'`
-perl -ple 'BEGIN{$k=shift; $r=shift} s/KERNEL/$k/g; s/ROOT/$r/g' $kernel ${destination}1 < /root/grub.conf > /boot/grub/grub.conf
 
 if (( $dest_is_block )); then
 	grub-install --no-floppy $destination
 	genkernel all
 fi
 
-echo -e "$password\n$password" | passwd
-passwd -e root
-emerge -u --noreplace --keep-going app-portage/{eix,genlop,gentoolkit}
-eix-update
-
 rm /root/{chroot.sh,grub.conf,confset.pl}
 CHROOT.SH
-chroot . /bin/bash /root/chroot.sh
-
-cd /
-umount /mnt/gentoo/{proc,dev,.}
 
 echo -e "\nThe root password for your new system is: $password\n"
 
