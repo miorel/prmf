@@ -381,7 +381,20 @@ class TWW2BotListener extends Thread {
 		int sec = 60 - now.get(Calendar.SECOND);
 		String ret = "";
 		System.out.println("It is " + hr + ":" + min + ":" + sec);
-		if(hr > 2)
+		
+		if(sec >= 60)
+		{
+			sec -= 60;
+			++min;
+		}
+		
+		if(min >= 60)
+		{
+			min -= 60;
+			++hr;
+		}
+		
+		if(hr >= 2)
 		{
 			ret += " " + hr + " hours";
 		} else if(hr == 1)
@@ -389,7 +402,7 @@ class TWW2BotListener extends Thread {
 			ret += " " + hr + " hour";
 		}
 		
-		if(min > 2)
+		if(min >= 2)
 		{
 			ret += " " + min + " minutes";
 		} else if(min == 1)
@@ -397,7 +410,7 @@ class TWW2BotListener extends Thread {
 			ret += " " + min + " minute";
 		}
 		
-		if(sec > 2)
+		if(sec >= 2)
 		{
 			ret += " " + sec + " seconds";
 		} else if(sec == 1)
