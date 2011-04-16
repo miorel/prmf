@@ -8,7 +8,7 @@ fi
 
 build_gen2gen () {
 	echo "#!/bin/bash"
-	shellpack chroot.sh confset.pl grub.conf util.sh
+	shellpack chroot.sh confset.pl grub.conf make.conf util.sh
 	echo
 	cat run.sh
 }

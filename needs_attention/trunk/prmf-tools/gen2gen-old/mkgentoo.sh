@@ -19,21 +19,6 @@
 
 _mkgentoo () {
 
-# be nice, warn people
-cat << '_WARN_'
-WARNING!!! You're about to install a new operating system.
-This process will delete any data you might currently have on this machine.
-
-Last chance to cancel! Press Ctrl + C now.
-_WARN_
-
-# countdown
-for i in {10..1}; do
-	printf "%d " $i
-	sleep 1
-done
-echo "Liftoff!"
-
 destination=$1
 
 dest_is_block=0

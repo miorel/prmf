@@ -1,9 +1,10 @@
 #!/bin/bash
 
 cd /root
+mv make.conf /etc
 source vars.sh
 source util.sh
-#rm chroot.sh util.sh vars.sh
+rm chroot.sh util.sh vars.sh
 env-update
 source /etc/profile
 emerge --sync
@@ -13,7 +14,7 @@ perl -ple 's/^\s*#\s*(en_US)/$1/' -i /etc/locale.gen
 locale-gen
 
 cp "/usr/share/zoneinfo/$timezone" /etc/localtime
-#root=${destination}1 perl -ple 's[^\s*(/dev/(?:cdrom|BOOT|SWAP))\b][#$1]; s[/dev/ROOT][$ENV{root}]' -i /etc/fstab
+root="${destination}3" boot="${destination}1" perl -ple 's[^\s*(/dev/(?:cdrom|SWAP))\b][#$1]; s[/dev/ROOT][$ENV{root}]; s[/dev/BOOT][$ENV{boot}]' -i /etc/fstab
 perl confset.pl /etc/conf.d/hostname HOSTNAME="\"$hostname\""
 perl confset.pl /etc/conf.d/clock TIMEZONE="\"$timezone\"" 'CLOCK_SYSTOHC="yes"'
 hostname="$hostname" perl -ple 's/(localhost)/$ENV{hostname}\t$1/g unless /^\s*#/' -i /etc/hosts
@@ -38,4 +39,4 @@ passwd -e root
 emerge -u --noreplace --keep-going app-portage/{eix,genlop,gentoolkit}
 eix-update
 
-#rm confset.pl
+rm confset.pl grub.conf
