@@ -1,0 +1,6 @@
+Revision history for Perl extension App::ShellPack.
+
+0.02  Fri May  6 13:57:38 2011
+	- original version; created by h2xs 1.23 with options
+		-A -X -b 5.6.0 --use-new-tests -n App::ShellPack --skip-exporter --skip-autoloader -v 0.02
+

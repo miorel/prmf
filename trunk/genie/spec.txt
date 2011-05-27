@@ -1,0 +1,4 @@
+Project genie
+
+- will make certain installation tasks easier in Gentoo systems
+

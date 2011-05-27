@@ -1,0 +1,9 @@
+Project consigliere
+
+- will check that certain project guidelines are met
+- we'll start with some simple ones
+	* Unix newlines in the repo (Windows ones are ugly)
+	* no extra whitespace at end of lines
+	* presence of spec :)
+	* presence of license information
+

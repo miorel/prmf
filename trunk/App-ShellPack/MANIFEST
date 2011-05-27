@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/App-ShellPack.t
+lib/App/ShellPack.pm

@@ -1,0 +1,6 @@
+Project bigstick
+"Speak softly and carry a big stick."
+
+will be a bash library
+
+

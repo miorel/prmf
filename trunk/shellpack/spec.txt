@@ -1,0 +1,4 @@
+Project shellpack
+
+- creates a script that's a self-extracting archive
+- will be used in gen2gen project

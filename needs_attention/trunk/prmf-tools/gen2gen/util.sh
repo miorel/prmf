@@ -1,30 +1,5 @@
-trim () {
-	sed 's/^\s+//; s/\s+$//'
-}
-
-first_line () {
-	head -n1
-}
-
-last_line () {
-	tail -n1
-}
-
-first_word () {
-	awk '1 { print $1 }'
-}
-
 clean_text () {
 	trim | grep -P '^[^\s#]'
-}
-
-line_count () {
-	wc -l
-}
-
-chomp () {
-	# set the output record separator to the empty string
-	awk 'BEGIN { ORS = "" }; 1'
 }
 
 proc_count () {

@@ -1,0 +1,38 @@
+Project gen2gen
+Name comes from "Gentoo Generator"
+
+- will be used to generate Gentoo installs for various purposes
+- must be able to function using the tools available on common LiveCDs
+	* minimal Gentoo CD
+	* "full" Gentoo CD (will probably be supported as side effect of previous)
+	* a recent Ubuntu CD
+	* maybe others
+- should be configurable
+
+Steps:
+- ping DNS server, website of choice to verify network connection
+- partition disk
+- create and mount filesystems
+- set correct date/time
+- download and install stage3
+- download and install Portage snapshot
+- configure basic make.conf
+- chroot
+- emerge --sync
+- set profile
+- glibc locales
+- set timezone
+- install kernel
+- set /etc/fstab
+- set hostname
+- add networking to boot
+- set /etc/hosts
+- set root password
+- set /etc/rc.conf
+- set /etc/conf.d/clock
+- install system logger
+- install cron daemon
+- setup file indexing
+- install dhcp client
+- install bootloader
+- cleanup and reboot
