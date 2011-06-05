@@ -14,6 +14,8 @@ mov N 16
 mov O 32
 mov P 64
 
+mov H 0
+
 or A H
 shl H 1
 or B H
