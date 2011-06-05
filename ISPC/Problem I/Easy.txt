@@ -16,19 +16,19 @@ mov P 64
 
 mov H 0
 
-or A H
+or H A
 shl H 1
-or B H
+or H B
 shl H 1
-or C H
+or H C
 shl H 1
-or D H
+or H D
 shl H 1
-or E H
+or H E
 shl H 1
-or F H
+or H F
 shl H 1
-or G H
+or H G
 
 not H
 
