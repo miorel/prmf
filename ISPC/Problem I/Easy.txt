@@ -1,0 +1,58 @@
+get A
+get B
+get C
+get D
+get E
+get F
+get G
+
+mov J 1
+mov K 2
+mov L 4
+mov M 8
+mov N 16
+mov O 32
+mov P 64
+
+or A H
+shl H 1
+or B H
+shl H 1
+or C H
+shl H 1
+or D H
+shl H 1
+or E H
+shl H 1
+or F H
+shl H 1
+or G H
+
+not H
+
+and P H
+shr P 6
+put P
+
+and O H
+shr O 5
+put O
+
+and N H
+shr N 4
+put N
+
+and M H
+shr M 3
+put M
+
+and L H
+shr L 2
+put L
+
+and K H
+shr K 1
+put K
+
+and J H
+put J
