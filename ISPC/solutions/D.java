@@ -22,7 +22,47 @@ class D {
 			
 			if((r * c) % 2 == 1) System.out.println("IMPOSSIBLE");
 			else {
-				if(ri < ci && rj < cj) { // red below and left of blue
+				if(!( (ri - 1) == (r - ri) || (ci - 1) == (r - ci) || (ri > ci && rj == c && ri < r/2) || (ri < ci && rj == 0 && ri < r/2))) {
+					for(int i = rj; i > 0; --i) if(grid[ri- 1][i - 1] == '.'){ //iterated left from initial
+							grid[ri - 1][i - 1] = 'R';
+							grid[r - ri][c - i] = 'B';
+						}
+						for(int i = c - cj; i > 0; --i) if(grid[r - ci][i] == '.'){
+							grid[r - ci][i] = 'R';
+							grid[ci - 1][c - i - 1] = 'B';
+						}
+						for(int i = 0; i < r; ++i) if(grid[i][0] == '.') {
+							grid[i][0] = 'R';
+							grid[r - i - 1][c - 1] = 'B';
+						}
+				} else if(!(ri < ci && rj == 0 && ri < r/2)) {
+					for(int i = ri; i > 0; --i) if(grid[i - 1][rj - 1] == '.'){ //iterating up
+							grid[i - 1][rj - 1] = 'R';
+							grid[r - i][c - rj] = 'B';
+						}
+						for(int i = ci; i < r; ++i) if(grid[i - 1][cj - 1] == '.') {
+							grid[i - 1][cj - 1] = 'B';
+							grid[r - i][c - cj] = 'R';
+						}
+						for(int i = 0; i < c; ++i) if(grid[0][i] == '.') {
+							grid[0][i] = 'R';
+							grid[r - 1][c - i - 1] = 'B';
+						}
+				} else {
+						for(int i = rj; i < c; ++i) if(grid[ri- 1][i - 1] == '.'){ //iterated right from initial
+							grid[ri - 1][i - 1] = 'R';
+							grid[r - ri][c - i] = 'B';
+						}
+						for(int i = c - cj; i < c; ++i) if(grid[r - ci][i] == '.'){
+							grid[r - ci][i] = 'R';
+							grid[ci - 1][c - i - 1] = 'B';
+						}
+						for(int i = 0; i < r; ++i) if(grid[i][c-1] == '.') {
+							grid[i][c-1] = 'R';
+							grid[r - i + 1][0] = 'B';
+						}
+				}
+				/*if(ri < ci && rj < cj) { // red below and left of blue
 					if(r % 2 == 0) { //even number of rows
 						for(int i = rj; i < c; ++i) if(grid[ri- 1][i - 1] == '.'){ //iterated right from initial
 							grid[ri - 1][i - 1] = 'R';
@@ -197,10 +237,28 @@ class D {
 					} else { //even number of columns
 					
 					}
-				}
-				for(int i = 0; i < r; ++i) for(int j = 0; j < c; ++j) if(grid[i][j] == '.') {
-					grid[i][j] = 'R';
-					grid[r - 1 - i][c - 1 - j] = 'B';
+				}*/
+				
+				if(grid[0][0] == 'R') {
+					for(int i = 0; i < r; ++i) for(int j = 0; j < c; ++j) if(grid[i][j] == '.') {
+						grid[i][j] = 'R';
+						grid[r - 1 - i][c - 1 - j] = 'B';
+					}
+				} else if(grid[0][c-1] == 'R') {
+					for(int i = 0; i < r; ++i) for(int j = c-1; j >= 0; --j) if(grid[i][j] == '.') {
+						grid[i][j] = 'R';
+						grid[r - 1 - i][c - 1 - j] = 'B';
+					}
+				} else if(grid[r-1][0] == 'R') {
+					for(int i = r-1; i >= 0; --i) for(int j = 0; j < c; ++j) if(grid[i][j] == '.') {
+						grid[i][j] = 'R';
+						grid[r - 1 - i][c - 1 - j] = 'B';
+					}
+				} else {
+					for(int i = r-1; i >= 0; --i) for(int j = c-1; j >= 0; --j) if(grid[i][j] == '.') {
+						grid[i][j] = 'R';
+						grid[r - 1 - i][c - 1 - j] = 'B';
+					}
 				}
 				for(char[] row: grid) System.out.println(row);
 			}
