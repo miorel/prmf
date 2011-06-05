@@ -1,6 +1,37 @@
-Revision history for Perl extension App::ShellPack.
+2010-05-27  Miorel-Lucian Palii <mlpalii@gmail.com>
 
-0.02  Fri May  6 13:57:38 2011
-	- original version; created by h2xs 1.23 with options
-		-A -X -b 5.6.0 --use-new-tests -n App::ShellPack --skip-exporter --skip-autoloader -v 0.02
+	* Makefile.PL: Improved robustness of Makefile generation (in theory).
+	* liv/App/ShellPack.pm: Added some basic POD. Advancing version to
+	  0.00_02 (still under development).
+	* t/boilerplate.t: Removed, as it wasn't needed.
+	* t/00-load.t, t/pod-coverage.t, t/pod.t: Small stylistic changes.
+	* t/manifest.t: Removed environment variable condition. Let's make
+	  everyone run this test!
+	* t/App-ShellPack.t: Added stub test based on h2xs output.
+
+2010-11-02  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* lib/App/ShellPack.pm: The module now outputs a bash function rather
+	  than a bash script because that's the use case that currently
+	  interests me. Eventually I hope to make the behavior configurable.
+
+2010-11-01  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* ., ignore.txt: Set svn:ignore on the directory to the contents of
+	  ignore.txt then deleted ignore.txt.
+	* lib/App/ShellPack.pm: Implemented basic module functionality.
+	  Commented out most POD -- will reintroduce later. Versioned as
+	  0.00_01 (under development).
+	* script, script/shellpack: Began wrapper script for the module.
+	* Makefile.PL: Listed script/shellpack under EXE_FILES, made a few
+	  cosmetic changes.
+
+2010-10-30  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* ., ignore.txt, lib, lib/App, lib/App/ShellPack.pm, Makefile.PL,
+	  MANIFEST, README, t, t/00-load.t, t/boilerplate.t, t/manifest.t,
+	  t/pod-coverage.t, t/pod.t: Initial layout created using
+	  module-starter v1.54, run with arguments --module=App::ShellPack
+	  --eumm --author="Miorel-Lucian Palii" --email=mlpalii@gmail.com
+	  --license=perl.
 

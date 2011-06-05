@@ -1,6 +1,12 @@
 Changes
+lib/App/ShellPack.pm
 Makefile.PL
 MANIFEST
+META.yml
 README
+script/shellpack
+t/00-load.t
 t/App-ShellPack.t
-lib/App/ShellPack.pm
+t/manifest.t
+t/pod-coverage.t
+t/pod.t
