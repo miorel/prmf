@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="description" content="Internet Problem Solving Contest (IPSC) is an online programming contest for teams up three people.">
+  <meta name="keywords" content="IPSC, programming, contest, online contest">
+  <title>IPSC 2011 -  Problem&nbsp;B - BFS killer</title>
+  <LINK REL="SHORTCUT ICON" HREF="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="main.css">
+  </head>
+  <body>
+<div class="navbar">
+<div class="navline">
+ <a href="http://ipsc.ksp.sk/index.php">Home</a>
+| <a href="http://ipsc.ksp.sk/guide.html">Guide</a>
+| <a href="http://ipsc.ksp.sk/rules.html">Rules</a>
+| <a href="http://ipsc.ksp.sk/terms.html">Terms</a>
+| <a href="http://ipsc.ksp.sk/team.html">Organizing Team</a>
+| <a href="http://ipsc.ksp.sk/old.html">Archive</a>
+| <a href="http://ipsc.ksp.sk/clock.html">Clock</a>
+</div>
+<div class="navline">
+<span class=nav_cname>
+IPSC 2011:</span>
+| <a href="http://ipsc.ksp.sk/problems.php?arg_contest=ipsc2011&auth=1">Problem Set</a>
+| <a class="announcement_link" href="http://ipsc.ksp.sk/announce.html">Announcements</a>
+| <a href="http://ipsc.ksp.sk/register.html">Registration</a>
+| <a href="http://ipsc.ksp.sk/regteams.html">Registered Teams</a>
+</div>
+</div>
+<div class="title">
+<div class="ipscimg">
+<a href="http://ipsc.ksp.sk/index.php"><img src="ipsc.gif"
+alt="IPSC Logo"></a>
+</div>
+<div class="nadpis">
+<h1>Internet Problem Solving Contest</h1>
+<h2>IPSC 2011<br> Problem&nbsp;B - BFS killer</h2>
+</div>
+</div>
+<div class="telo">
+<ul>
+<li><a href="b1.in">Easy input data set - B1</a></li>
+</ul>
+<!--l. 7--><p class="indent" >   Mark just solved a traditional programming task: finding the shortest path in a maze. The map
+of his maze is a rectangular grid with <span 
+class="cmmi-10">r </span>rows and <span 
+class="cmmi-10">c </span>columns (1 <span 
+class="cmsy-10">&#x2264; </span><span 
+class="cmmi-10">r,c </span><span 
+class="cmsy-10">&#x2264; </span>600). Some of the cells
+contain walls (denoted by <span 
+class="cmtt-10">#</span>, ASCII code 35), others are empty (denoted by <span 
+class="cmtt-10">.</span>, ASCII code 46).
+There are two special empty cells: one starting point (denoted by <span 
+class="cmtt-10">S</span>) and one treasure (denoted by
+<span 
+class="cmtt-10">T</span>).
+<!--l. 14--><p class="indent" >   In each step the player may only move in one of the four cardinal directions. In other words, each two
+subsequent cells on his path have to share a common side. The treasure is always reachable from the starting
+point. The player is not allowed to leave the maze or enter a cell with a wall.
+<!--l. 19--><p class="indent" >   Mark&#8217;s task was to find the length of shortest path from the starting point to the treasure. He solved this
+task using breadth-first search (BFS).
+<!--l. 22--><p class="indent" >   His C++ solution is given in the input file. Below you can find the solution in pseudocode. However, Mark
+made a common bug in his implementation of the FIFO (first in, first out) queue &#8211; he is using a circular array of
+size <span 
+class="cmmi-10">k</span>. Show him that his queue is too short!
+<!--l. 27--><p class="noindent" ><span 
+class="cmssbx-10">Problem specification</span>
+<!--l. 29--><p class="indent" >   Find a map of a maze such that if Mark&#8217;s program is executed on your maze, the queue size will
+exceed <span 
+class="cmmi-10">k </span>at some moment. In the easy subproblem, <span 
+class="cmmi-10">k </span>= 5<span style="margin-left:0.3em" class="thinspace"></span>000. In the hard subproblem, <span 
+class="cmmi-10">k </span>= 15<span style="margin-left:0.3em" class="thinspace"></span>000.
+(The queue size is the number of cells it contains.) Your maze must satisfy all the constraints given
+above.
+                                                                                       
+
+                                                                                       
+   <div class="verbatim" id="verbatim-1">
+define&#x00A0;process_cell(r,c):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;(r,c)&#x00A0;is&#x00A0;not&#x00A0;outside&#x00A0;the&#x00A0;maze:
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;cell&#x00A0;at&#x00A0;(r,c)&#x00A0;is&#x00A0;not&#x00A0;a&#x00A0;wall:
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;(r,c)&#x00A0;is&#x00A0;unvisited:
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;treasure&#x00A0;is&#x00A0;at&#x00A0;(r,c),&#x00A0;terminate&#x00A0;the&#x00A0;entire&#x00A0;search
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;put&#x00A0;(r,c)&#x00A0;into&#x00A0;Q&#x00A0;and&#x00A0;mark&#x00A0;(r,c)&#x00A0;as&#x00A0;visited
+&#x00A0;<br />
+&#x00A0;<br />define&#x00A0;BFS(startr,startc):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;initialize&#x00A0;an&#x00A0;empty&#x00A0;queue&#x00A0;Q
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;put&#x00A0;(startr,startc)&#x00A0;into&#x00A0;Q&#x00A0;and&#x00A0;mark&#x00A0;(startr,startc)&#x00A0;as&#x00A0;visited
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;while&#x00A0;Q&#x00A0;is&#x00A0;not&#x00A0;empty:
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;get&#x00A0;(r,c)&#x00A0;from&#x00A0;the&#x00A0;queue
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for&#x00A0;each&#x00A0;(nr,nc)&#x00A0;in&#x00A0;(r,c+1),&#x00A0;(r-1,c),&#x00A0;(r,c-1),&#x00A0;(r+1,c):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;process_cell(nr,nc)
+</div>
+<!--l. 59--><p class="nopar" >
+<!--l. 61--><p class="noindent" ><span 
+class="cmssbx-10">Input specification</span>
+<!--l. 64--><p class="indent" >   The input file for this problem contains a reference C++ implementation of Mark&#8217;s solution. The variable
+<span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">size</span></span></span> in this implementation must exceed <span 
+class="cmmi-10">k</span>.
+<!--l. 68--><p class="noindent" ><span 
+class="cmssbx-10">Output specification</span>
+<!--l. 70--><p class="indent" >   On the first line output two integers separated by a single space: number of rows <span 
+class="cmmi-10">r </span>and number of columns <span 
+class="cmmi-10">c</span>.
+Then output <span 
+class="cmmi-10">r </span>rows with <span 
+class="cmmi-10">c </span>characters in each &#8211; the map of your maze.
+<!--l. 74--><p class="noindent" ><span 
+class="cmssbx-10">Example</span>
+<!--l. 83--><p class="noindent" ><div class="minipage">
+A syntactically valid submission with maximum queue size 4.
+<div class="fbox">
+<span 
+class="cmtt-10">3</span><span 
+class="cmtt-10">&#x00A0;4</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">....</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">.S#.</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">..#T</span>                                                                                </div>
+</div>
+                                                                                       
+
+                                                                                       
+    
+</body></html> 
+
+                                                                                       
+
+
+</div>
+<hr class="footer">
+<div class="footblock">
+<div class="footcell-init">
+e-mails
+</div>
+<div class="footcell">
+questions: ipscreg(at)ksp(dot)sk</div>
+<div class="footcell">
+webmaster: webmaster(at)ksp(dot)sk</div>
+<!--div class="footcell">
+last change: June, 2011</div-->
+<div class="footcell-last">
+</div>
+</div>
+
+</body>
+</html>

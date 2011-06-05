@@ -1,0 +1,317 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="description" content="Internet Problem Solving Contest (IPSC) is an online programming contest for teams up three people.">
+  <meta name="keywords" content="IPSC, programming, contest, online contest">
+  <title>IPSC 2011 -  Problem&nbsp;I - Inverting bits</title>
+  <LINK REL="SHORTCUT ICON" HREF="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="main.css">
+  </head>
+  <body>
+<div class="navbar">
+<div class="navline">
+ <a href="http://ipsc.ksp.sk/index.php">Home</a>
+| <a href="http://ipsc.ksp.sk/guide.html">Guide</a>
+| <a href="http://ipsc.ksp.sk/rules.html">Rules</a>
+| <a href="http://ipsc.ksp.sk/terms.html">Terms</a>
+| <a href="http://ipsc.ksp.sk/team.html">Organizing Team</a>
+| <a href="http://ipsc.ksp.sk/old.html">Archive</a>
+| <a href="http://ipsc.ksp.sk/clock.html">Clock</a>
+</div>
+<div class="navline">
+<span class=nav_cname>
+IPSC 2011:</span>
+| <a href="http://ipsc.ksp.sk/problems.php?arg_contest=ipsc2011&auth=1">Problem Set</a>
+| <a class="announcement_link" href="http://ipsc.ksp.sk/announce.html">Announcements</a>
+| <a href="http://ipsc.ksp.sk/register.html">Registration</a>
+| <a href="http://ipsc.ksp.sk/regteams.html">Registered Teams</a>
+</div>
+</div>
+<div class="title">
+<div class="ipscimg">
+<a href="http://ipsc.ksp.sk/index.php"><img src="ipsc.gif"
+alt="IPSC Logo"></a>
+</div>
+<div class="nadpis">
+<h1>Internet Problem Solving Contest</h1>
+<h2>IPSC 2011<br> Problem&nbsp;I - Inverting bits</h2>
+</div>
+</div>
+<div class="telo">
+<ul>
+<li>This problem has no input</li>
+</ul>
+<!--l. 5--><p class="indent" >   The wannabe scientist Kleofá&#353; has recently developed a new processor. The processor has got 26 registers,
+labeled <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">A</span></span></span> to <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Z</span></span></span>. Each register is an 8-bit unsigned integer variable.
+<!--l. 9--><p class="indent" >   This new processor is incredibly simple. It only supports the instructions specified in the table below. (In all
+instructions, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">R</span></span></span> is a name of a register, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">C</span></span></span> is a constant, and <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">X</span></span></span> is either the name of a register or a constant. All
+constants are 8-bit unsigned integers, i.e., numbers from 0 to 255.)
+<!--l. 17--><p class="noindent" ><!--tex4ht:inline--><div class="tabular"> <table id="TBL-1" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-1-1g"><col 
+id="TBL-1-1"></colgroup><colgroup id="TBL-1-2g"><col 
+id="TBL-1-2"></colgroup><colgroup id="TBL-1-3g"><col 
+id="TBL-1-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-1-1"  
+class="td11"> syntax</td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-1-2"  
+class="td11">semantics                                                                                      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-2-1"  
+class="td11"><span 
+class="cmtt-10">and R X</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-2-2"  
+class="td11">Compute the bitwise and of the values <span 
+class="cmtt-10">R </span>and <span 
+class="cmtt-10">X</span>, and store it in <span 
+class="cmtt-10">R</span>.             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-3-1"  
+class="td11"> <span 
+class="cmtt-10">or R X</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-3-2"  
+class="td11">Compute the bitwise or of the values <span 
+class="cmtt-10">R </span>and <span 
+class="cmtt-10">X</span>, and store it in <span 
+class="cmtt-10">R</span>.                </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-4-1"  
+class="td11">  <span 
+class="cmtt-10">not R</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-4-2"  
+class="td11">Compute the bitwise not of the value <span 
+class="cmtt-10">R</span>, and store it in <span 
+class="cmtt-10">R</span>.                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-5-1"  
+class="td11"><span 
+class="cmtt-10">shl R C</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-5-2"  
+class="td11">Take the value in <span 
+class="cmtt-10">R</span>, shift it to the left by <span 
+class="cmtt-10">C </span>bits, and store the result in <span 
+class="cmtt-10">R</span>.  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-6-1"  
+class="td11"><span 
+class="cmtt-10">shr R C</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-6-2"  
+class="td11">Take the value in <span 
+class="cmtt-10">R</span>, shift it to the right by <span 
+class="cmtt-10">C </span>bits, and store the result in <span 
+class="cmtt-10">R</span>.</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-7-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-7-1"  
+class="td11"><span 
+class="cmtt-10">mov R X</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-7-2"  
+class="td11">Store the value <span 
+class="cmtt-10">X </span>into <span 
+class="cmtt-10">R</span>.                                                                   </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-8-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-8-1"  
+class="td11"> <span 
+class="cmtt-10">get R</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-8-2"  
+class="td11">Read an 8-bit unsigned integer and store it in <span 
+class="cmtt-10">R</span>.</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-9-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-9-1"  
+class="td11">  <span 
+class="cmtt-10">put R</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-9-2"  
+class="td11">Output the content of the register <span 
+class="cmtt-10">R </span>as an 8-bit unsigned integer.             </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-10-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-10-1"  
+class="td11">       </td></tr></table></div>
+<!--l. 36--><p class="indent" >   Notes:
+     <ul class="itemize1">
+     <li class="itemize">After any instruction other than <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">not</span></span></span>, if the second argument was a register name, its content
+     remains unchanged.
+     </li>
+     <li class="itemize">Whenever <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">shl</span></span></span> or <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">shr</span></span></span> is called, the shifted value of the first argument is truncated on one end and
+     padded with zeroes on the other end. For example, if <span 
+class="cmtt-10">X </span>equals to binary 10110110, then <span 
+class="cmtt-10">X shr 2</span>
+     equals to 00101101.
+     </li></ul>
+<!--l. 48--><p class="noindent" ><span 
+class="cmssbx-10">Example task</span>
+<!--l. 50--><p class="indent" >   Assume that the input contains an arbitrary two 8-bit unsigned integers <span 
+class="cmmi-10">a </span>and <span 
+class="cmmi-10">b</span>. Write a program that will
+read these numbers and produce an integer <span 
+class="cmmi-10">z </span>such that <span 
+class="cmmi-10">z </span>= 0 if and only if <span 
+class="cmmi-10">a </span>= <span 
+class="cmmi-10">b</span>. (That is, if <span 
+class="cmmi-10">a </span>and <span 
+class="cmmi-10">b </span>differ, <span 
+class="cmmi-10">z</span>
+must be positive.)
+<!--l. 54--><p class="noindent" ><span 
+class="cmssbx-10">Solution of the example task</span>
+                                                                                       
+
+                                                                                       
+<!--l. 73--><p class="noindent" ><div class="minipage"><span 
+class="cmbx-10">input</span>
+<div class="fbox">
+<span 
+class="cmtt-10">get</span><span 
+class="cmtt-10">&#x00A0;A</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">get</span><span 
+class="cmtt-10">&#x00A0;B</span>
+<span 
+class="cmtt-10"></span><br />
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">mov</span><span 
+class="cmtt-10">&#x00A0;C</span><span 
+class="cmtt-10">&#x00A0;A</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">not</span><span 
+class="cmtt-10">&#x00A0;C</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">and</span><span 
+class="cmtt-10">&#x00A0;C</span><span 
+class="cmtt-10">&#x00A0;B</span>
+<span 
+class="cmtt-10"></span><br />
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">mov</span><span 
+class="cmtt-10">&#x00A0;D</span><span 
+class="cmtt-10">&#x00A0;B</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">not</span><span 
+class="cmtt-10">&#x00A0;D</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">and</span><span 
+class="cmtt-10">&#x00A0;D</span><span 
+class="cmtt-10">&#x00A0;A</span>
+<span 
+class="cmtt-10"></span><br />
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">mov</span><span 
+class="cmtt-10">&#x00A0;Z</span><span 
+class="cmtt-10">&#x00A0;C</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">or</span><span 
+class="cmtt-10">&#x00A0;Z</span><span 
+class="cmtt-10">&#x00A0;D</span>
+<span 
+class="cmtt-10"></span><br />
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">put</span><span 
+class="cmtt-10">&#x00A0;Z</span>                                                                               </div>
+</div>
+<!--l. 75--><p class="indent" >   Explanation: There are many possible solutions. In our solution, we read the input to registers <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">A</span></span></span> and <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">B</span></span></span>,
+compute their bitwise xor in register <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Z</span></span></span> and output it.
+<!--l. 80--><p class="indent" >   However, we do not have an instruction for xor. We have to assemble it from ands, ors, and nots. First,
+we create (not-<span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">A</span></span></span> and <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">B</span></span></span>) in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">C</span></span></span> and (not-<span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">B</span></span></span> and <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">A</span></span></span>) in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">D</span></span></span>. Finally, we store (<span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">C</span></span></span> or <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">D</span></span></span>) in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Z</span></span></span> and we are
+done.
+<!--l. 84--><p class="indent" >   Why does it work? If the two numbers are identical, then <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">C</span></span></span> and <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">D</span></span></span> will both be zero, and so will <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Z</span></span></span>. If the two
+numbers are not identical, consider a digit <span 
+class="cmmi-10">d </span>where the two numbers differ in their binary representations. If this
+digit is 0 in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">A</span></span></span>, it has to be 1 in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">B</span></span></span>. But then it is 1 in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">C</span></span></span> and therefore it is 1 in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Z</span></span></span>. And if the digit is 1 in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">A</span></span></span>, it has
+to be 0 in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">B</span></span></span>, 1 in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">D</span></span></span>, and 1 in <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Z</span></span></span>.
+<!--l. 90--><p class="noindent" ><span 
+class="cmssbx-10">Input specification</span>
+<!--l. 92--><p class="indent" >   This problem has no input.
+<!--l. 94--><p class="noindent" ><span 
+class="cmssbx-10">Problem specification</span>
+<!--l. 96--><p class="indent" >   For each data set, you have to write a program for Kleofá&#353;&#8217;s processor that solves the following task:
+The input for your program is a sequence of integers, each of them a 0 or a 1. The output of your
+program must be a sequence of their negations, in order. (That is, change each 0 into a 1 and vice
+versa.)
+<!--l. 105--><p class="indent" >   <span 
+class="cmbx-10">Easy subproblem: </span>The sequence contains <span 
+class="cmbx-10">exactly 7 </span>integers. In your program, you may only use the
+instruction <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">not</span></span></span> at most <span 
+class="cmbx-10">once</span>. Your program must have at most 100 instructions.
+<!--l. 110--><p class="indent" >   (Note that you have to use each of the instructions <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">get</span></span></span> and <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">put</span></span></span> exactly 7 times.)
+<!--l. 115--><p class="indent" >   <span 
+class="cmbx-10">Hard subproblem: </span>The sequence contains <span 
+class="cmbx-10">exactly 19 </span>integers. In your program, you may only use the
+instruction <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">not</span></span></span> at most <span 
+class="cmbx-10">twice</span>. Your program can have at most 300 instructions.
+<!--l. 119--><p class="noindent" ><span 
+class="cmssbx-10">Output specification</span>
+<!--l. 121--><p class="indent" >   Send us your program as a plain ASCII text. Each line of the text may either contain one complete
+instruction, or just whitespace. If you submit anything that is not a proper program, it will be judged &#8220;Wrong
+                                                                                       
+
+                                                                                       
+answer&#8221; and you will get an appropriate error message.
+<!--l. 125--><p class="indent" >
+                                                                                       
+
+                                                                                       
+                                                                                       
+
+                                                                                       
+    
+</body></html> 
+
+                                                                                       
+
+
+</div>
+<hr class="footer">
+<div class="footblock">
+<div class="footcell-init">
+e-mails
+</div>
+<div class="footcell">
+questions: ipscreg(at)ksp(dot)sk</div>
+<div class="footcell">
+webmaster: webmaster(at)ksp(dot)sk</div>
+<!--div class="footcell">
+last change: June, 2011</div-->
+<div class="footcell-last">
+</div>
+</div>
+
+</body>
+</html>

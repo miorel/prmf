@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="description" content="Internet Problem Solving Contest (IPSC) is an online programming contest for teams up three people.">
+  <meta name="keywords" content="IPSC, programming, contest, online contest">
+  <title>IPSC 2011 -  Problem&nbsp;A - Against a rock play Spock</title>
+  <LINK REL="SHORTCUT ICON" HREF="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="main.css">
+  </head>
+  <body>
+<div class="navbar">
+<div class="navline">
+ <a href="http://ipsc.ksp.sk/index.php">Home</a>
+| <a href="http://ipsc.ksp.sk/guide.html">Guide</a>
+| <a href="http://ipsc.ksp.sk/rules.html">Rules</a>
+| <a href="http://ipsc.ksp.sk/terms.html">Terms</a>
+| <a href="http://ipsc.ksp.sk/team.html">Organizing Team</a>
+| <a href="http://ipsc.ksp.sk/old.html">Archive</a>
+| <a href="http://ipsc.ksp.sk/clock.html">Clock</a>
+</div>
+<div class="navline">
+<span class=nav_cname>
+IPSC 2011:</span>
+| <a href="http://ipsc.ksp.sk/problems.php?arg_contest=ipsc2011&auth=1">Problem Set</a>
+| <a class="announcement_link" href="http://ipsc.ksp.sk/announce.html">Announcements</a>
+| <a href="http://ipsc.ksp.sk/register.html">Registration</a>
+| <a href="http://ipsc.ksp.sk/regteams.html">Registered Teams</a>
+</div>
+</div>
+<div class="title">
+<div class="ipscimg">
+<a href="http://ipsc.ksp.sk/index.php"><img src="ipsc.gif"
+alt="IPSC Logo"></a>
+</div>
+<div class="nadpis">
+<h1>Internet Problem Solving Contest</h1>
+<h2>IPSC 2011<br> Problem&nbsp;A - Against a rock play Spock</h2>
+</div>
+</div>
+<div class="telo">
+<ul>
+<li><a href="a1.in">Easy input data set - A1</a></li>
+<li><a href="a2.in">Difficult input data set - A2</a></li>
+</ul>
+<!--l. 5--><p class="indent" >   For many people, a Rock-Paper-Scissors game is too simple and thus boring. As IPSC should not be boring,
+we will be playing an extended version called Rock-Paper-Scissors-Lizard-Spock.
+<!--l. 8--><p class="indent" >   The game contains five gestures: <span 
+class="cmti-10">rock</span>, <span 
+class="cmti-10">paper</span>, <span 
+class="cmti-10">scissors</span>, <span 
+class="cmti-10">lizard</span>, and <span 
+class="cmti-10">Spock</span>. Lizard is usually formed by a hand
+closed to a sock-puppet-like mouth and Spock is formed by the Star Trek Vulcan salute. In each round of the
+game, both players simultaneously show one of the five gestures.
+<!--l. 12--><p class="indent" >   Each round is evaluated as follows: If the two gestures are equal, the round ends in a tie (nobody wins).
+Otherwise look at the table below and find the row that contains both gestures shown. The player showing the
+gesture in the left column wins. To the right of the table you can see figures from Wikipedia that contain the
+same information.
+   <div class="minipage">
+<div class="tabular"> <table id="TBL-1" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-1-1g"><col 
+id="TBL-1-1"><col 
+id="TBL-1-2"><col 
+id="TBL-1-3"></colgroup><tr  
+ style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-1-1"  
+class="td11">scissors</td><td  style="white-space:nowrap; text-align:center;" id="TBL-1-1-2"  
+class="td11">   cut     </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-1-3"  
+class="td11">paper  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-2-1"  
+class="td11">  paper</td><td  style="white-space:nowrap; text-align:center;" id="TBL-1-2-2"  
+class="td11">  covers   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-2-3"  
+class="td11">rock    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-3-1"  
+class="td11">   rock</td><td  style="white-space:nowrap; text-align:center;" id="TBL-1-3-2"  
+class="td11"> crushes  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-3-3"  
+class="td11">lizard  </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-4-1"  
+class="td11"> lizard</td> <td  style="white-space:nowrap; text-align:center;" id="TBL-1-4-2"  
+class="td11"> poisons </td> <td  style="white-space:nowrap; text-align:left;" id="TBL-1-4-3"  
+class="td11">Spock</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-5-1"  
+class="td11">  Spock</td><td  style="white-space:nowrap; text-align:center;" id="TBL-1-5-2"  
+class="td11"> smashes </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-5-3"  
+class="td11">scissors</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-6-1"  
+class="td11"> scissors</td><td  style="white-space:nowrap; text-align:center;" id="TBL-1-6-2"  
+class="td11">decapitate</td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-6-3"  
+class="td11">lizard  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-7-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-7-1"  
+class="td11">  lizard</td><td  style="white-space:nowrap; text-align:center;" id="TBL-1-7-2"  
+class="td11">   eats    </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-7-3"  
+class="td11">paper  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-8-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-8-1"  
+class="td11">  paper</td><td  style="white-space:nowrap; text-align:center;" id="TBL-1-8-2"  
+class="td11"> disproves </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-8-3"  
+class="td11">Spock  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-9-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-9-1"  
+class="td11">  Spock</td><td  style="white-space:nowrap; text-align:center;" id="TBL-1-9-2"  
+class="td11"> vaporizes </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-9-3"  
+class="td11">rock    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-10-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-10-1"  
+class="td11">   rock</td><td  style="white-space:nowrap; text-align:center;" id="TBL-1-10-2"  
+class="td11">  breaks   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-10-3"  
+class="td11">scissors</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-11-"><td  style="white-space:nowrap; text-align:right;" id="TBL-1-11-1"  
+class="td11"> </td></tr></table></div>
+</div>    <div class="minipage">
+<img 
+src="A0x.png" alt="PIC" class="graphics"><!--tex4ht:graphics  
+name="A0x.png" src="spock-text.pdf"  
+--></div><div class="minipage">
+<img 
+src="A1x.png" alt="PIC" class="graphics"><!--tex4ht:graphics  
+name="A1x.png" src="spock-gestures.pdf"  
+--></div>
+<!--l. 45--><p class="noindent" ><span 
+class="cmssbx-10">Problem specification</span>
+<!--l. 47--><p class="indent" >   The input contains the sequence of gestures we are going to play in the following rounds. For each gesture,
+output a line containing the name of the gesture you are going to play against it.
+<!--l. 51--><p class="indent" >   To solve the <span 
+class="cmbx-10">easy subproblem</span>, your task is to win every round of the game.
+<!--l. 53--><p class="indent" >   To solve the <span 
+class="cmbx-10">hard subproblem</span>, your task is the same. But you have to do it without using the same gesture
+                                                                                       
+
+                                                                                       
+twice in a row.
+<!--l. 56--><p class="indent" >   For instance, suppose that in round 1 we played <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Spock</span></span></span> and you played <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">paper</span></span></span>. If we play <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">rock</span></span></span> in round 2,
+you can only win by playing <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Spock</span></span></span>, you may not play <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">paper</span></span></span> again. In round 3, you then cannot play <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Spock</span></span></span>, but
+you may play <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">paper</span></span></span> again, if you wish.
+<!--l. 61--><p class="noindent" ><span 
+class="cmssbx-10">Input specification</span>
+<!--l. 63--><p class="indent" >   The first line contains a positive integer <span 
+class="cmmi-10">r</span>: the number of rounds we will play.
+<!--l. 65--><p class="indent" >   Each of the next <span 
+class="cmmi-10">r </span>lines contains one of the five strings <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">rock</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">paper</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">scissors</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">lizard</span></span></span>, and
+<span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Spock</span></span></span>.
+<!--l. 68--><p class="noindent" ><span 
+class="cmssbx-10">Output specification</span>
+<!--l. 70--><p class="indent" >   For each round, output a single line containing your gesture &#8211; again, one of the strings <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">rock</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">paper</span></span></span>,
+<span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">scissors</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">lizard</span></span></span>, and <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">Spock</span></span></span>. (Note the uppercase &#8216;<span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">S</span></span></span>&#8217; in Spock.)
+<!--l. 74--><p class="noindent" ><span 
+class="cmssbx-10">Example</span>
+<!--l. 82--><p class="noindent" ><div class="minipage"><span 
+class="cmbx-10">input</span>
+<div class="fbox">
+<span 
+class="cmtt-10">3</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">Spock</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">rock</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">rock</span>                                  </div>
+</div>
+<div class="minipage"><span 
+class="cmbx-10">output</span>
+<div class="fbox">
+<span 
+class="cmtt-10">paper</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">Spock</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">paper</span>                                 </div>
+</div>
+                                                                                       
+
+                                                                                       
+    
+</body></html> 
+
+                                                                                       
+
+
+</div>
+<hr class="footer">
+<div class="footblock">
+<div class="footcell-init">
+e-mails
+</div>
+<div class="footcell">
+questions: ipscreg(at)ksp(dot)sk</div>
+<div class="footcell">
+webmaster: webmaster(at)ksp(dot)sk</div>
+<!--div class="footcell">
+last change: June, 2011</div-->
+<div class="footcell-last">
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="description" content="Internet Problem Solving Contest (IPSC) is an online programming contest for teams up three people.">
+  <meta name="keywords" content="IPSC, programming, contest, online contest">
+  <title>IPSC 2011 -  Problem&nbsp;K - Keep clicking, keep flipping</title>
+  <LINK REL="SHORTCUT ICON" HREF="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="main.css">
+  </head>
+  <body>
+<div class="navbar">
+<div class="navline">
+ <a href="http://ipsc.ksp.sk/index.php">Home</a>
+| <a href="http://ipsc.ksp.sk/guide.html">Guide</a>
+| <a href="http://ipsc.ksp.sk/rules.html">Rules</a>
+| <a href="http://ipsc.ksp.sk/terms.html">Terms</a>
+| <a href="http://ipsc.ksp.sk/team.html">Organizing Team</a>
+| <a href="http://ipsc.ksp.sk/old.html">Archive</a>
+| <a href="http://ipsc.ksp.sk/clock.html">Clock</a>
+</div>
+<div class="navline">
+<span class=nav_cname>
+IPSC 2011:</span>
+| <a href="http://ipsc.ksp.sk/problems.php?arg_contest=ipsc2011&auth=1">Problem Set</a>
+| <a class="announcement_link" href="http://ipsc.ksp.sk/announce.html">Announcements</a>
+| <a href="http://ipsc.ksp.sk/register.html">Registration</a>
+| <a href="http://ipsc.ksp.sk/regteams.html">Registered Teams</a>
+</div>
+</div>
+<div class="title">
+<div class="ipscimg">
+<a href="http://ipsc.ksp.sk/index.php"><img src="ipsc.gif"
+alt="IPSC Logo"></a>
+</div>
+<div class="nadpis">
+<h1>Internet Problem Solving Contest</h1>
+<h2>IPSC 2011<br> Problem&nbsp;K - Keep clicking, keep flipping</h2>
+</div>
+</div>
+<div class="telo">
+<ul>
+<li><a href="k1.in">Easy input data set - K1</a></li>
+<li><a href="k2.in">Difficult input data set - K2</a></li>
+</ul>
+<!--l. 8--><p class="indent" >   The &#8220;Flip it&#8221; puzzle is played on a board with black and white tiles. In each step you pick a tile, flip it, and
+also flip all the adjacent tiles (from white to black and vice versa). The goal of this game is to turn all
+the tiles to their white side. We found this puzzle too easy, so we picked a harder version for you:
+     <ul class="itemize1">
+     <li class="itemize">Instead of square tiles, we will consider a graph with <span 
+class="cmmi-10">n </span>nodes, each black or white.
+     </li>
+     <li class="itemize"><span 
+class="cmti-10">We only allow clicking on black nodes.</span>
+     </li>
+     <li class="itemize">When we click on a node <span 
+class="cmmi-10">x</span>, its colour and the colour of all the adjacent nodes flips.
+     </li>
+     <li class="itemize">Additionally, all edges in the subgraph containing <span 
+class="cmmi-10">x </span>and all its neighbours are flipped: <br 
+class="newline" />If two of these vertices were adjacent before, now they are not, and vice versa.
+     </li>
+     <li class="itemize">The goal of the game: At the end, all nodes must be <span 
+class="cmti-10">white </span>and no two of them may be <span 
+class="cmti-10">adjacent</span>.</li></ul>
+<!--l. 25--><p class="noindent" ><span 
+class="cmssbx-10">Input specification</span>
+<!--l. 27--><p class="indent" >   The first line of the input file contains an integer <span 
+class="cmmi-10">t </span>specifying the number of test cases. Each test case is
+preceded by a blank line.
+<!--l. 30--><p class="indent" >   The first line of each test case contains two integers: <span 
+class="cmmi-10">n </span>and <span 
+class="cmmi-10">m</span>. Nodes are numbered from 0 to <span 
+class="cmmi-10">n </span><span 
+class="cmsy-10">- </span>1. The
+second line contains a string of length <span 
+class="cmmi-10">n</span>. The <span 
+class="cmmi-10">i</span>-th character of this string is either <span 
+class="cmtt-10">B </span>or <span 
+class="cmtt-10">W </span>and gives the colour of
+the <span 
+class="cmmi-10">i</span>-th node at the beginning of the game. Each of the following <span 
+class="cmmi-10">m </span>lines contains a pair of nodes <span 
+class="cmmi-10">x</span><sub><span 
+class="cmmi-7">i</span></sub>, <span 
+class="cmmi-10">y</span><sub><span 
+class="cmmi-7">i</span></sub> that are
+connected by an edge at the beginning of the game.
+<!--l. 36--><p class="indent" >   In the easy data set, <span 
+class="cmmi-10">n </span><span 
+class="cmsy-10">&#x2264; </span>50, in the hard data set, <span 
+class="cmmi-10">n </span><span 
+class="cmsy-10">&#x2264; </span>2000.
+<!--l. 38--><p class="noindent" ><span 
+class="cmssbx-10">Output specification</span>
+<!--l. 41--><p class="indent" >   For each test case, output the number of clicks and one particular sequence of clicks that wins the game. If
+there is no such sequence, output a single line containing the number <span 
+class="cmsy-10">-</span>1.
+<!--l. 44--><p class="noindent" ><span 
+class="cmssbx-10">Example</span>
+                                                                                       
+
+                                                                                       
+<!--l. 69--><p class="noindent" ><div class="minipage"><span 
+class="cmbx-10">input</span>
+<div class="fbox">
+<span 
+class="cmtt-10">2</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br />
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">3</span><span 
+class="cmtt-10">&#x00A0;2</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">BBW</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">0</span><span 
+class="cmtt-10">&#x00A0;1</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">0</span><span 
+class="cmtt-10">&#x00A0;2</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br />
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">7</span><span 
+class="cmtt-10">&#x00A0;12</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">WBBWWWW</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">0</span><span 
+class="cmtt-10">&#x00A0;2</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">0</span><span 
+class="cmtt-10">&#x00A0;3</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">1</span><span 
+class="cmtt-10">&#x00A0;2</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">1</span><span 
+class="cmtt-10">&#x00A0;4</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">1</span><span 
+class="cmtt-10">&#x00A0;6</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">2</span><span 
+class="cmtt-10">&#x00A0;3</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">2</span><span 
+class="cmtt-10">&#x00A0;4</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">2</span><span 
+class="cmtt-10">&#x00A0;6</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">3</span><span 
+class="cmtt-10">&#x00A0;4</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">3</span><span 
+class="cmtt-10">&#x00A0;6</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">4</span><span 
+class="cmtt-10">&#x00A0;5</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">5</span><span 
+class="cmtt-10">&#x00A0;6</span>                                   </div>
+</div>
+<div class="minipage"><span 
+class="cmbx-10">output</span>
+<div class="fbox">
+<span 
+class="cmtt-10">3</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">0</span><span 
+class="cmtt-10">&#x00A0;2</span><span 
+class="cmtt-10">&#x00A0;1</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br />
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">5</span>
+<span 
+class="cmtt-10">&#x00A0;</span><br /><span 
+class="cmtt-10">1</span><span 
+class="cmtt-10">&#x00A0;6</span><span 
+class="cmtt-10">&#x00A0;3</span><span 
+class="cmtt-10">&#x00A0;0</span><span 
+class="cmtt-10">&#x00A0;2</span>                             </div>
+<!--l. 78--><p class="noindent" >Note that in the first test case, if we started by
+clicking  at  1,  we  would  end  up  stuck  with  two
+adjacent white vertices.
+</div>
+<!--l. 82--><p class="indent" >   The figures below illustrate the solutions for the two test cases.
+<!--l. 86--><p class="indent" >   Test case #1:
+   <center class="math-display" >
+                                                                                       
+
+                                                                                       
+<img 
+src="K0x.png" alt="
+" class="math-display" ></center>
+<!--l. 99--><p class="indent" >   Test case #2:
+   <center class="math-display" >
+<img 
+src="K1x.png" alt="
+" class="math-display" ></center>
+<!--l. 112--><p class="indent" >
+   <center class="math-display" >
+<img 
+src="K2x.png" alt="
+" class="math-display" ></center>
+                                                                                       
+
+                                                                                       
+                                                                                       
+
+                                                                                       
+    
+</body></html> 
+
+                                                                                       
+
+
+</div>
+<hr class="footer">
+<div class="footblock">
+<div class="footcell-init">
+e-mails
+</div>
+<div class="footcell">
+questions: ipscreg(at)ksp(dot)sk</div>
+<div class="footcell">
+webmaster: webmaster(at)ksp(dot)sk</div>
+<!--div class="footcell">
+last change: June, 2011</div-->
+<div class="footcell-last">
+</div>
+</div>
+
+</body>
+</html>

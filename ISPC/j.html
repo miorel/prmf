@@ -1,0 +1,462 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="description" content="Internet Problem Solving Contest (IPSC) is an online programming contest for teams up three people.">
+  <meta name="keywords" content="IPSC, programming, contest, online contest">
+  <title>IPSC 2011 -  Problem&nbsp;J - Jedi academy</title>
+  <LINK REL="SHORTCUT ICON" HREF="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="main.css">
+  </head>
+  <body>
+<div class="navbar">
+<div class="navline">
+ <a href="http://ipsc.ksp.sk/index.php">Home</a>
+| <a href="http://ipsc.ksp.sk/guide.html">Guide</a>
+| <a href="http://ipsc.ksp.sk/rules.html">Rules</a>
+| <a href="http://ipsc.ksp.sk/terms.html">Terms</a>
+| <a href="http://ipsc.ksp.sk/team.html">Organizing Team</a>
+| <a href="http://ipsc.ksp.sk/old.html">Archive</a>
+| <a href="http://ipsc.ksp.sk/clock.html">Clock</a>
+</div>
+<div class="navline">
+<span class=nav_cname>
+IPSC 2011:</span>
+| <a href="http://ipsc.ksp.sk/problems.php?arg_contest=ipsc2011&auth=1">Problem Set</a>
+| <a class="announcement_link" href="http://ipsc.ksp.sk/announce.html">Announcements</a>
+| <a href="http://ipsc.ksp.sk/register.html">Registration</a>
+| <a href="http://ipsc.ksp.sk/regteams.html">Registered Teams</a>
+</div>
+</div>
+<div class="title">
+<div class="ipscimg">
+<a href="http://ipsc.ksp.sk/index.php"><img src="ipsc.gif"
+alt="IPSC Logo"></a>
+</div>
+<div class="nadpis">
+<h1>Internet Problem Solving Contest</h1>
+<h2>IPSC 2011<br> Problem&nbsp;J - Jedi academy</h2>
+</div>
+</div>
+<div class="telo">
+<ul>
+<li><a href="j1.in">Easy input data set - J1</a></li>
+<li><a href="j2.in">Difficult input data set - J2</a></li>
+</ul>
+<!--l. 7--><p class="indent" >   One of the excercises young Jedi must go through in Jedi acedemy training is flying and shooting on a special
+training machine. Now Luke Skywalker has to examine the results of this training. He wants to know whether
+the pilots hit something or not.
+<!--l. 12--><p class="noindent" ><span 
+class="cmssbx-10">Problem specification</span>
+<!--l. 14--><p class="indent" >   You are given a description of several models of combat ships. Each model is a set of triangles in 3D space.
+All models are sane (they have a reasonable structure, they are not just random triangles).
+<!--l. 17--><p class="indent" >   The 3D scene consists of several ships called objects. Each object is one of the models, rotated around some
+axis and moved into some position. The objects are disjoint.
+<!--l. 20--><p class="indent" >   We took snapshots of the scene from several different positions and angles. Each snapshot is described by the
+camera position (a point), the camera look direction (a vector) and the camera up vector (the direction that will
+be &#8220;up&#8221; on the snapshot). Each camera uses a standard perspective projection with a field of view 90
+degrees. (Field of view is the angle between the left and right boundary of view, and also the angle
+between up and down boundary of view. The camera look direction passes through the center of the
+snapshot.)
+<!--l. 27--><p class="indent" >   The entire scene seen by the camera is projected onto a square screen with fixed dimensions
+500 <span 
+class="cmsy-10">&#x00D7; </span>500 pixels. Its lower left corner has coordinates (0<span 
+class="cmmi-10">,</span>0), its upper right corner has coordinates
+(499<span 
+class="cmmi-10">,</span>499).
+<!--l. 30--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+                                                                                       
+
+                                                                                       
+<a 
+ id="x1-21"></a>
+                                                                                       
+
+                                                                                       
+<!--l. 32--><p class="noindent" ><img 
+src="J0x.png" alt="PIC" class="graphics"><!--tex4ht:graphics  
+name="J0x.png" src="opengl.pdf"  
+-->
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;1: </span><span  
+class="content">A right-hand coordinate system (left) and camera description (right).</span></div><!--tex4ht:label?: x1-21 -->
+                                                                                       
+
+                                                                                       
+<!--l. 34--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 36--><p class="indent" >   At the moment of the snapshot, a laser shot was taken from the position of the camera, passing through
+the point (<span 
+class="cmmi-10">x,y</span>) on the screen. Your should find whether an object is hit by the shot. If yes, find
+the closest such object (that is the one actually hit). You may assume that the shot is never on
+the object boundary (all neighbouring pixels of the snapshot will always correspond to the same
+object).
+<!--l. 41--><p class="noindent" ><span 
+class="cmssbx-10">Input specification</span>
+<!--l. 42--><p class="indent" >   First line of the input contains an integer <span 
+class="cmmi-10">m </span>(1 <span 
+class="cmsy-10">&#x2264; </span><span 
+class="cmmi-10">m </span><span 
+class="cmsy-10">&#x2264; </span>10), the number of ship models. A description of <span 
+class="cmmi-10">m</span>
+models follows. First line of the <span 
+class="cmmi-10">i</span>-th description contains an integer <span 
+class="cmmi-10">p</span><sub><span 
+class="cmmi-7">i</span></sub> (4 <span 
+class="cmsy-10">&#x2264; </span><span 
+class="cmmi-10">p</span><sub><span 
+class="cmmi-7">i</span></sub> <span 
+class="cmsy-10">&#x2264; </span>50<span 
+class="cmmi-10">,</span>000), the number of
+points on the model boundary. Next <span 
+class="cmmi-10">p</span><sub><span 
+class="cmmi-7">i</span></sub> lines contain coordinates of points &#8211; three floating point
+numbers <span 
+class="cmmi-10">x</span><sub><span 
+class="cmmi-7">ij</span></sub><span 
+class="cmmi-10">,y</span><sub><span 
+class="cmmi-7">ij</span></sub><span 
+class="cmmi-10">,z</span><sub><span 
+class="cmmi-7">ij</span></sub>. The next line of a description contains the number <span 
+class="cmmi-10">t</span><sub><span 
+class="cmmi-7">i</span></sub> (4 <span 
+class="cmsy-10">&#x2264; </span><span 
+class="cmmi-10">t</span><sub><span 
+class="cmmi-7">i</span></sub> <span 
+class="cmsy-10">&#x2264; </span>50<span 
+class="cmmi-10">,</span>000), the
+number of triangles forming the boundary of the model. Each of the last <span 
+class="cmmi-10">t</span><sub><span 
+class="cmmi-7">i</span></sub> lines describes one
+triangle using three zero-based indices of points (each number is an integer between 0 and <span 
+class="cmmi-10">p</span><sub><span 
+class="cmmi-7">i</span></sub> <span 
+class="cmsy-10">- </span>1,
+inclusive).
+<!--l. 53--><p class="indent" >   After all model descriptions, the next line contains an integer <span 
+class="cmmi-10">o </span>(1 <span 
+class="cmsy-10">&#x2264; </span><span 
+class="cmmi-10">o </span><span 
+class="cmsy-10">&#x2264; </span>5<span 
+class="cmmi-10">,</span>000), the number of objects. Next,
+<span 
+class="cmmi-10">o </span>object descriptions follow. The object description starts by a number <span 
+class="cmmi-10">m</span><sub><span 
+class="cmmi-7">i</span></sub> (0 <span 
+class="cmsy-10">&#x2264; </span><span 
+class="cmmi-10">m</span><sub><span 
+class="cmmi-7">i</span></sub> <span 
+class="cmmi-10">&#x003C; m</span>), model number which is
+used for the object. The next line contains a description of a rotation of the model. It starts by three floating
+point numbers <span 
+class="cmmi-10">x</span><sub><span 
+class="cmmi-7">ir</span></sub><span 
+class="cmmi-10">,y</span><sub><span 
+class="cmmi-7">ir</span></sub><span 
+class="cmmi-10">,z</span><sub><span 
+class="cmmi-7">ir</span></sub> &#8211; the vector specifying the rotation axis. (Always at least one of the numbers is
+non-zero.). These are followed by a floating point number <span 
+class="cmmi-10">a</span><sub><span 
+class="cmmi-7">ir</span></sub> &#8211; the angle of the rotation in degrees. The rotation
+follows the right-hand rule, so if the vector (<span 
+class="cmmi-10">x</span><sub><span 
+class="cmmi-7">ir</span></sub><span 
+class="cmmi-10">,y</span><sub><span 
+class="cmmi-7">ir</span></sub><span 
+class="cmmi-10">,z</span><sub><span 
+class="cmmi-7">ir</span></sub>) points toward you, the rotation will be counterclockwise
+from your point of view. The rotation axis always passes through (0<span 
+class="cmmi-10">,</span>0<span 
+class="cmmi-10">,</span>0). The last line of an object description
+is the object position, three floating point numbers <span 
+class="cmmi-10">x</span><sub><span 
+class="cmmi-7">ip</span></sub><span 
+class="cmmi-10">,y</span><sub><span 
+class="cmmi-7">ip</span></sub><span 
+class="cmmi-10">,z</span><sub><span 
+class="cmmi-7">ip</span></sub>. These numbers are added to the
+coordinates of all points in the model after the rotation (i.e., first we rotate the model, then we translate
+it).
+<!--l. 68--><p class="indent" >   The next line contains the number <span 
+class="cmmi-10">v </span>(1 <span 
+class="cmsy-10">&#x2264; </span><span 
+class="cmmi-10">v </span><span 
+class="cmsy-10">&#x2264; </span>10<span 
+class="cmmi-10">,</span>000) of snapshots. Each snapshot is described on four lines.
+The first line contains the camera position, three floating point numbers. The second line contains the camera
+look direction, three floating point numbers. The third line contains the camera up vector, three floating point
+numbers. This vector is always perpendicular to the look direction. The fourth line contains the pixel hit by the
+shot, two integers <span 
+class="cmmi-10">c</span><sub><span 
+class="cmmi-7">x</span></sub><span 
+class="cmmi-10">,c</span><sub><span 
+class="cmmi-7">y</span></sub> (0 <span 
+class="cmsy-10">&#x2264; </span><span 
+class="cmmi-10">c</span><sub><span 
+class="cmmi-7">x</span></sub><span 
+class="cmmi-10">,c</span><sub><span 
+class="cmmi-7">y</span></sub> <span 
+class="cmmi-10">&#x003C; </span>500).
+<!--l. 76--><p class="noindent" ><span 
+class="cmssbx-10">Output specification</span>
+<!--l. 78--><p class="indent" >   For each snapshot you should output one number. Either the number of an object hit by the laser shot
+(object numbers are zero-based), or the number -1, if there is no such object.
+<!--l. 82--><p class="indent" >
+                                                                                       
+
+                                                                                       
+<!--l. 84--><p class="noindent" ><span 
+class="cmssbx-10">Example</span>
+<!--l. 130--><p class="noindent" ><div class="minipage"><span 
+class="cmbx-10">input</span>
+<div class="fbox">
+<span 
+class="cmtt-10">1</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">8</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">-1.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">1.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">1.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">-1.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">-1.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">1.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">1.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">-1.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">12</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0</span><span 
+class="cmtt-10">&#x00A0;1</span><span 
+class="cmtt-10">&#x00A0;2</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0</span><span 
+class="cmtt-10">&#x00A0;2</span><span 
+class="cmtt-10">&#x00A0;3</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">4</span><span 
+class="cmtt-10">&#x00A0;5</span><span 
+class="cmtt-10">&#x00A0;6</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">4</span><span 
+class="cmtt-10">&#x00A0;6</span><span 
+class="cmtt-10">&#x00A0;7</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0</span><span 
+class="cmtt-10">&#x00A0;1</span><span 
+class="cmtt-10">&#x00A0;4</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">1</span><span 
+class="cmtt-10">&#x00A0;4</span><span 
+class="cmtt-10">&#x00A0;5</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">3</span><span 
+class="cmtt-10">&#x00A0;2</span><span 
+class="cmtt-10">&#x00A0;7</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">2</span><span 
+class="cmtt-10">&#x00A0;7</span><span 
+class="cmtt-10">&#x00A0;6</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">1</span><span 
+class="cmtt-10">&#x00A0;5</span><span 
+class="cmtt-10">&#x00A0;2</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">5</span><span 
+class="cmtt-10">&#x00A0;2</span><span 
+class="cmtt-10">&#x00A0;6</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0</span><span 
+class="cmtt-10">&#x00A0;4</span><span 
+class="cmtt-10">&#x00A0;3</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">4</span><span 
+class="cmtt-10">&#x00A0;3</span><span 
+class="cmtt-10">&#x00A0;7</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">2</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">-3.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">2.000000</span><span 
+class="cmtt-10">&#x00A0;2.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span><span 
+class="cmtt-10">&#x00A0;30.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">3.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">3</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span><span 
+class="cmtt-10">&#x00A0;8.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">120</span><span 
+class="cmtt-10">&#x00A0;229</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span><span 
+class="cmtt-10">&#x00A0;6.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">1.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">380</span><span 
+class="cmtt-10">&#x00A0;309</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span><span 
+class="cmtt-10">&#x00A0;6.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">0.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span><span 
+class="cmtt-10">&#x00A0;-1.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">1.000000</span><span 
+class="cmtt-10">&#x00A0;1.000000</span><span 
+class="cmtt-10">&#x00A0;0.000000</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">380</span><span 
+class="cmtt-10">&#x00A0;269</span>                               </div>
+</div>
+                                                                                       
+
+                                                                                       
+<div class="minipage"><span 
+class="cmbx-10">output</span>
+<div class="fbox">
+<span 
+class="cmtt-10">0</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">1</span>
+<span 
+class="cmtt-10"></span><br /><span 
+class="cmtt-10">-1</span>                                    </div>
+<!--l. 137--><p class="noindent" >Here is the picture of the first snapshot <br 
+class="newline" />(the red point represents the click):
+<!--l. 140--><p class="noindent" ><img 
+src="ogl1.png" alt="PIC"  
+>
+<!--l. 144--><p class="noindent" >And the picture of the second snapshot:
+<!--l. 146--><p class="noindent" ><img 
+src="ogl2.png" alt="PIC"  
+></div>
+                                                                                       
+
+                                                                                       
+    
+</body></html> 
+
+                                                                                       
+
+
+</div>
+<hr class="footer">
+<div class="footblock">
+<div class="footcell-init">
+e-mails
+</div>
+<div class="footcell">
+questions: ipscreg(at)ksp(dot)sk</div>
+<div class="footcell">
+webmaster: webmaster(at)ksp(dot)sk</div>
+<!--div class="footcell">
+last change: June, 2011</div-->
+<div class="footcell-last">
+</div>
+</div>
+
+</body>
+</html>
