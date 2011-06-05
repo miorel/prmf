@@ -1,6 +1,6 @@
 import java.math.*;
 
-class H_easy {
+class H1 {
 	public static void main(String[] arg) {
 		String ans = "QO";
 		String goal = "28180536462673263023";
