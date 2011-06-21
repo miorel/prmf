@@ -8,10 +8,9 @@ fi
 
 build_gen2gen () {
 	echo "#!/bin/bash"
-	shellpack chroot.sh confset.pl grub.conf make.conf util.sh
+	shellpack bs-*.sh chroot.sh make.conf #confset.pl grub.conf util.sh
 	echo
-	cat run.sh
+	cat main.sh #run.sh
 }
 
-build_gen2gen | tee gen2gen
-chmod +x gen2gen
+build_gen2gen | tee gen2gen && chmod +x gen2gen

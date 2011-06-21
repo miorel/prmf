@@ -1,3 +1,22 @@
+2011-06-20  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* bs-main-201106202315.sh: Added in bigstick library.
+	* build.sh: Wrote up build script that uses shellpack to get everything
+	  into one file.
+	* chroot.sh: Created empty stub file for code that will run with a changed
+	  root.
+	* main.sh: Refactored partition deletion as function. Copied in a few more
+	  functions from old code. Changed importing to use new build process.
+	  Started using a bunch of functions from bigstick library for cleaner and
+	  more robust code. Added code to mount partitions and download/extract
+	  stage/Portage snapshot.
+	* make.conf: Set up preliminary Portage configuration file.
+	* spec.txt: Marked completed stuff in the spec.
+
+2011-05-26  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* main.sh: Threw together a quick script that sets up the partition table.
+
 2011-04-18  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* spec.txt: Wrote up basic project spec, beginning implementation!

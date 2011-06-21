@@ -86,10 +86,8 @@ print_version () {
 	cat << EOF
 gen2gen 0.0.1 (November 9, 2010)
 Copyright (C) 2010 Miorel-Lucian Palii
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
 EOF
+	print_gpl_footer
 }
 
 print_help () {

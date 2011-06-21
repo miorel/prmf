@@ -1,7 +1,7 @@
 2010-05-27  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* Makefile.PL: Improved robustness of Makefile generation (in theory).
-	* liv/App/ShellPack.pm: Added some basic POD. Advancing version to
+	* lib/App/ShellPack.pm: Added some basic POD. Advancing version to
 	  0.00_02 (still under development).
 	* t/boilerplate.t: Removed, as it wasn't needed.
 	* t/00-load.t, t/pod-coverage.t, t/pod.t: Small stylistic changes.
