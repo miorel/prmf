@@ -1,3 +1,17 @@
+2011-06-24  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* bs-main-201106202315.sh, bs-main-201106241845.sh: Library upgrade.
+	* chroot.sh: Added code that: sets locale, hostname, Portage options, and
+	  /etc/fstab (among other things); installs a kernel and a few required
+	  system tools; changes root password to randomly generated "word".
+	* confset.pl: Perl script to facilitate changing configuration. It's okay
+	  to use Perl here because this will run in the changed root (which comes
+	  with Perl).
+	* grub.conf: Basic bootloader configuration file.
+	* main.sh: Changes to support the improvements to chroot.sh.
+	* Makefile: There's a Makefile now, although it does just run build.sh
+	  currently.
+
 2011-06-20  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* bs-main-201106202315.sh: Added in bigstick library.

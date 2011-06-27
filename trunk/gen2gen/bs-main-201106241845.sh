@@ -12,7 +12,6 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 # details: <http://www.gnu.org/licenses/>
 #
-BIGSTICK_VERSION="201106202315"
 SED_WHITESPACE_REGEX='[ \f\n\r\t\v]'
 chomp(){
 tr -d '\r\n'
@@ -74,7 +73,7 @@ can_i_work_with_partitions(){
 fm="Root privileges are needed to work with partitions!"; [[ $# -ge 2 ]] && fm=$2
 success_if_nonzero $(am_i_root) "$1" "$fm"
 }
-print_gpl_footer(){
+print_gpl_info(){
 cat << 'EOF'
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
@@ -196,6 +195,7 @@ sleep_until_exists "${disk}1" && make_ext2 "${disk}1" &&
 sleep_until_exists "${disk}3" && make_ext3 "${disk}3"
 }
 check_md5(){
+echo "Checking MD5 digest of $2" >&2
 md5sum -c - <<< "$2  $1" >&2
 success_if_zero $?
 }
@@ -270,3 +270,42 @@ get_file_checking_md5 "$mirror/$file"
 proc_count(){
 awk 'BEGIN {n = 0}; $1 == "processor" {++n}; END {print n}' < /proc/cpuinfo
 }
+gentoo_add_service(){
+service=$1
+level=default; [[ $# -ge 2 ]] && level=$2
+rc-update add "$service" "$level"
+}
+_do_gentoo_update(){
+emerge -u --noreplace --keep-going "$@"
+ret=$?
+hash -r
+env-update
+source /etc/profile
+return $ret
+}
+gentoo_update(){
+_do_gentoo_update "$@"
+}
+bigstick_version_time(){
+echo -n 201106241845
+}
+bigstick_version_string(){
+echo -n "bigstick 0.0.1 (June 24, 2011)"
+}
+bigstick_print_proverb(){
+cat << 'EOF'
+``Speak softly and carry a big stick; you will go far.''
+(African proverb and favorite slogan of Teddy Roosevelt)
+EOF
+}
+if [[ "${#BASH_SOURCE[@]}" -eq 1 ]]; then
+echo "$(bigstick_version_string)"
+bigstick_print_proverb
+echo ""
+cat << EOF
+This is a code library, not a stand-alone program.
+You'll find it most useful when including it in other software, with something
+like \`source $0'.
+EOF
+exit 1
+fi

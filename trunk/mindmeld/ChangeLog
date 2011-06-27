@@ -1,0 +1,5 @@
+2011-06-25  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* index.pl: Basic script that asks a random question from a hard-coded
+	  deck.
+

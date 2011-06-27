@@ -13,10 +13,10 @@ Steps:
 - ping DNS server, website of choice to verify network connection
 - partition disk (completed)
 - create and mount filesystems (completed)
-- set correct date/time
-- download and install stage3
-- download and install Portage snapshot
-- configure basic make.conf
+- set correct date/time 
+- download and install stage3 (completed)
+- download and install Portage snapshot (completed)
+- configure basic make.conf (completed)
 - chroot
 - emerge --sync
 - set profile
