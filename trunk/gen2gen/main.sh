@@ -1,4 +1,4 @@
-echo "gen2gen 201106241945 by Miorel-Lucian Palii" >&2
+echo "gen2gen 201106271915 by Miorel-Lucian Palii" >&2
 
 if (( $EUID )); then
 	echo "I'm not root, quitting from sadness." >&2
@@ -51,8 +51,6 @@ countdown () {
 	echo 0
 }
 
-#(( $(am_i_root "" "I'm not root, quitting from sadness.") )) || exit 1
-
 countdown >&2
 
 check_connectivity gentoo.org
@@ -83,6 +81,10 @@ mirror="$(gentoo_random_mirror)"
 stage3="$(gentoo_get_stage3 "$mirror")"
 (( $? )) && exit 1
 tar xjvpf "$stage3" >&2 || exit 1
+
+rm -f dev/null dev/console
+mknod dev/null c 1 3
+mknod dev/console c 5 1
 
 portage_snapshot="$(gentoo_get_portage_snapshot "$mirror")"
 (( $? )) && exit 1

@@ -1,3 +1,10 @@
+2011-06-28  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* chroot.sh: Now creates /etc/init.d/net.eth0 symlink and activates
+	  service. Set rc_sys variable in /etc/rc.conf.
+	* main.sh: Added code to create /dev/null and /dev/console (they don't seem
+	  to be in the stage3 archive).
+
 2011-06-24  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* bs-main-201106202315.sh, bs-main-201106241845.sh: Library upgrade.

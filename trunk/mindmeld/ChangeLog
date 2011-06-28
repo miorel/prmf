@@ -1,3 +1,13 @@
+2011-06-26  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* index.pl: Moved deck outside file, to a SQLite database. Added support
+	  for grades on a 0 to 5 scale (at least, that's what the web interface
+	  allows: the database schema just declares the grade as a real). Questions
+	  now asked randomly from those with lowest grade. Implmented basic
+	  statistics page to show grade distribution.
+	* states.db: Database with questions about the US state capitals. 
+	* states.pl: Generator script for the question database.
+
 2011-06-25  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* index.pl: Basic script that asks a random question from a hard-coded
