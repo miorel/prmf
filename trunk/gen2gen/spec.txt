@@ -17,22 +17,22 @@ Steps:
 - download and install stage3 (completed)
 - download and install Portage snapshot (completed)
 - configure basic make.conf (completed)
-- chroot
-- emerge --sync
+- chroot (completed)
+- emerge --sync (completed)
 - set profile
-- glibc locales
-- set timezone
+- glibc locales (completed)
+- set timezone (completed)
 - install kernel
-- set /etc/fstab
-- set hostname
-- add networking to boot
-- set /etc/hosts
-- set root password
+- set /etc/fstab (completed)
+- set hostname (completed)
+- add networking to boot (completed)
+- set /etc/hosts (completed)
+- set root password (completed)
 - set /etc/rc.conf
 - set /etc/conf.d/clock
-- install system logger
-- install cron daemon
+- install system logger (completed)
+- install cron daemon (completed)
 - setup file indexing
-- install dhcp client
-- install bootloader
+- install dhcp client (completed)
+- install bootloader (completed)
 - cleanup and reboot

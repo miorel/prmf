@@ -1,4 +1,8 @@
-echo "gen2gen 201106271915 by Miorel-Lucian Palii" >&2
+cat << 'EOF'
+gen2gen 0.0.1 (June 30, 2011)
+by Miorel-Lucian Palii
+
+EOF
 
 if (( $EUID )); then
 	echo "I'm not root, quitting from sadness." >&2
@@ -10,6 +14,7 @@ tmp="$(mktemp -d -p .)"
 cd "$tmp"
 _extract >& /dev/null
 source bs-main-201106241845.sh
+source random_antarctic_island.sh
 cd "$wd"
 rm -rf "$tmp"
 
@@ -51,6 +56,11 @@ countdown () {
 	echo 0
 }
 
+disk="/dev/sda"
+cat << EOF >&2
+I'm about to install a Gentoo system on $disk, deleting any data already
+there in the process! This is your last chance to press Ctrl+C and cancel!
+EOF
 countdown >&2
 
 check_connectivity gentoo.org
@@ -61,7 +71,7 @@ fi
 
 disk="/dev/sda"
 mountpoint="/mnt/gentoo"
-hostname="vito"
+hostname="$(random_antarctic_island)"
 timezone="America/New_York"
 password="$(generate_word)"
 

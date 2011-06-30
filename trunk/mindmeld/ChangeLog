@@ -1,10 +1,25 @@
+2011-06-30  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* Makefile: Threw together a quick Makefile. Comes with two rules so far
+	  (besides clean): one to regenerate the question database, one to create
+	  a distribution tarball for easy deployment.
+	* mm.db: Removing question database from the repository now that it can
+	  just be regenerated during the build process.
+	* Mindmeld.pm, index,pl, amino_acids.pl, states.pl: Reduced code
+	  duplication (and improved cleanliness a bit) by moving a few things into
+	  a (very bad) module.
+	* register.pl, login.pl: Hacked together a registration and login script,
+	  using Digest::SHA to avoid storing plaintext passwords, as well as per
+	  user salts. Some basic validation is applied (length, characters used).
+
 2011-06-26  Miorel-Lucian Palii <mlpalii@gmail.com>
 
-	* amino_acids.pl: Generator script for questions about the amino acid
-	  abbreviations.
 	* index.pl: Added concept of categories, which may be enabled or disabled
 	  through a new options page.
-	* mm.db: New, non-topic-specific question database also using a new schema!
+	* amino_acids.pl: Generator script for questions about the amino acid
+	  abbreviations.
+	* mm.db, states.db: Renamed database file now that there's more than one
+	  topic.
 	* states.pl: Updated generator script to use new database schema.
 
 2011-06-26  Miorel-Lucian Palii <mlpalii@gmail.com>

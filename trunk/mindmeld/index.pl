@@ -3,20 +3,14 @@
 use warnings;
 use strict;
 
-use CGI;
-use DBI;
+use lib qw(.);
 
-my $dbh = DBI->connect("dbi:SQLite:dbname=mm.db", "", "");
-$dbh->do("CREATE TABLE IF NOT EXISTS questions (q TEXT, a TEXT, cat TEXT, grade REAL DEFAULT 0)");
-$dbh->do("CREATE TABLE IF NOT EXISTS categories (name TEXT UNIQUE NOT NULL, active BOOLEAN DEFAULT 1 NOT NULL)");
+use Mindmeld;
 
-#srand(time ^ $$ ^ unpack "%L*", `ps axww | gzip -f`);
+my $cgi = Mindmeld::cgi();
+my $dbh = Mindmeld::dbh();
 
-my $cgi = CGI->new;
-
-my $info_str = 'mindmeld beta 201106262030';
-
-print $cgi->header, $cgi->start_html($info_str);
+print Mindmeld::header();
 
 my @actions = (
 	['study' => 'Study'],
@@ -99,6 +93,5 @@ if($show_question) {
 	}
 }
 
-print $cgi->hr, $cgi->p($info_str), $cgi->p('Copyright &copy; 2011 Miorel-Lucian Palii');
-print $cgi->end_html;
+print Mindmeld::footer();
 

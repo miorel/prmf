@@ -3,7 +3,9 @@
 use warnings;
 use strict;
 
-use DBI;
+use lib qw(.);
+
+use Mindmeld;
 
 my @data = ();
 while(<DATA>) {
@@ -31,16 +33,10 @@ while(<DATA>) {
 	};
 }
 
-#unlink('mm.db');
-my $dbh = DBI->connect("dbi:SQLite:dbname=mm.db", "", "");
-$dbh->do("CREATE TABLE IF NOT EXISTS questions (q TEXT, a TEXT, cat TEXT, grade REAL DEFAULT 0)");
-$dbh->do("CREATE TABLE IF NOT EXISTS categories (name TEXT UNIQUE NOT NULL, active BOOLEAN DEFAULT 1 NOT NULL)");
-my $sth;
-$sth = $dbh->prepare("INSERT INTO categories (name) VALUES (?)");
-$sth->execute($_) for sort keys(%{{map {$_->{cat} => 1} @data}});
-$sth = $dbh->prepare("INSERT INTO questions (q, a, cat) VALUES (?, ?, (SELECT rowid FROM categories WHERE name = ?))");
+my $dbh = Mindmeld::dbh();
+Mindmeld::ensure_schema();
 for(@data) {
-	$sth->execute($_->{Q}, $_->{A}, $_->{cat});
+	Mindmeld::add_question($_->{Q}, $_->{A}, $_->{cat});
 }
 
 #mnemosyne_output(\@data);

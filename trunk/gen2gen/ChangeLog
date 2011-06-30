@@ -1,3 +1,22 @@
+2011-06-30  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* main.sh: The cancel countdown now comes with a more helpful message, and
+	  the hostname is now randomly chosen from a list of antarctic islands (see
+	  below). I'm also blessing this update as version 0.0.1!
+	* random_antarctic_island.pl: Generator for random_antarctic_island.sh,
+	  a script wrapper for a function that (unsurprisingly) prints the name of
+	  a random antarctic island.
+	* build.sh: Including random_antarctic_island.sh in the shellpacked
+	  archive. Also moved a couple of statements into Makefile.
+	* Makefile: Created make rule for random_antarctic_island.sh, took a couple
+	  of statements from build.sh.
+	* chroot.sh: Now just removes *.sh within /root (in the chrooted
+	  environment) because I'm too lazy to list all the scripts that get
+	  extracted. Maybe I'll change it to use a temporary directory for
+	  extraction just because I'm a bit wary about mercilessly deleting scripts
+	  (even if we're not expecting any but ours to be in /root).
+	* spec.txt: Marked a few things as completed in the spec.
+
 2011-06-28  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* chroot.sh: Now creates /etc/init.d/net.eth0 symlink and activates

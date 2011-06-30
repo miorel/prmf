@@ -3,7 +3,7 @@
 cd /root
 source bs-main-201106241845.sh
 source vars.sh
-rm -f bs-main-201106241845.sh chroot.sh vars.sh
+rm -f *.sh
 env-update && source /etc/profile
 
 cat make.conf > /etc/make.conf
