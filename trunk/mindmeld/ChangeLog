@@ -1,5 +1,14 @@
 2011-06-26  Miorel-Lucian Palii <mlpalii@gmail.com>
 
+	* amino_acids.pl: Generator script for questions about the amino acid
+	  abbreviations.
+	* index.pl: Added concept of categories, which may be enabled or disabled
+	  through a new options page.
+	* mm.db: New, non-topic-specific question database also using a new schema!
+	* states.pl: Updated generator script to use new database schema.
+
+2011-06-26  Miorel-Lucian Palii <mlpalii@gmail.com>
+
 	* index.pl: Moved deck outside file, to a SQLite database. Added support
 	  for grades on a 0 to 5 scale (at least, that's what the web interface
 	  allows: the database schema just declares the grade as a real). Questions
