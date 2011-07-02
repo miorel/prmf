@@ -21,20 +21,11 @@ my $username;
 my $login_attempt = 0;
 my $login_success = 0;
 if(lc($cgi->request_method) eq 'post') {
-	$login_attempt = 1;
 	$username = $cgi->param('username');
 	my $password = $cgi->param('password');
-	if(defined($username) && defined($password)) {
-		my $sth = $dbh->prepare("SELECT salt FROM users WHERE username = ?");
-		$sth->execute($username);
-		my($salt) = $sth->fetchrow_array;
-		if(defined($salt)) {
-			$password = sha256_hex($password . $salt);
-			$sth = $dbh->prepare("SELECT username FROM users WHERE username = ? AND password = ?");
-			$sth->execute($username, $password);
-			$sth->fetch and $login_success = 1;
-		}
-	}
+	my $auth = PRMF::Auth->new(db => 'auth.db');
+	$login_attempt = 1;
+	$login_success = $auth->login($username, $password);
 }
 
 if($login_success) {

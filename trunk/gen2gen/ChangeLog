@@ -1,5 +1,18 @@
 2011-06-30  Miorel-Lucian Palii <mlpalii@gmail.com>
 
+	* main.sh: Starting work on 0.0.2, version string will be marked with pre
+	  for now. First improvement was fixing permissions on the /dev/null that's 
+	  reated.
+	* build.sh, Makefile: Rewrote contents of build.sh in Makefile and removed.
+	* .: Added output files to svn:ignore.
+	* chroot.sh: Commented out dev-libs/glib update: it was initially added in
+	  the hope that it might fix the genkernel problems, but this doesn't seem
+	  to be the case. Added GNU label to /etc/issue (so we get GNU/Linux in the
+	  system name rather than just Linux, yay). Setting rc_logger to "YES" in
+	  /etc/rc.conf. Setting windowkeys to "YES" in /etc/conf.d/keymaps.
+
+2011-06-30  Miorel-Lucian Palii <mlpalii@gmail.com>
+
 	* main.sh: The cancel countdown now comes with a more helpful message, and
 	  the hostname is now randomly chosen from a list of antarctic islands (see
 	  below). I'm also blessing this update as version 0.0.1!

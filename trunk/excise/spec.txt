@@ -1,0 +1,9 @@
+This will be an installer for CISE systems
+
+actions:
+
+update - updates database
+
+set - set a configuration variable
+
+

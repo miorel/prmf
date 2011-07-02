@@ -1,5 +1,5 @@
 cat << 'EOF'
-gen2gen 0.0.1 (June 30, 2011)
+gen2gen 0.0.2-pre (June 30, 2011)
 by Miorel-Lucian Palii
 
 EOF
@@ -93,7 +93,7 @@ stage3="$(gentoo_get_stage3 "$mirror")"
 tar xjvpf "$stage3" >&2 || exit 1
 
 rm -f dev/null dev/console
-mknod dev/null c 1 3
+mknod -m 0666 dev/null c 1 3
 mknod dev/console c 5 1
 
 portage_snapshot="$(gentoo_get_portage_snapshot "$mirror")"

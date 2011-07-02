@@ -1,0 +1,14 @@
+2011-06-30  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* ., ignore.txt, lib, lib/PRMF, lib/PRMF/Auth.pm, Makefile.PL,
+	  MANIFEST, README, t, t/00-load.t, t/boilerplate.t, t/manifest.t,
+	  t/pod-coverage.t, t/pod.t: Initial layout created using
+	  module-starter v1.54, run with arguments --module=PRMF::Auth
+	  --eumm --author="Miorel-Lucian Palii" --email=mlpalii@gmail.com
+	  --license=perl.
+	* ., ignore.txt: Set svn:ignore on the directory to the contents of
+	  ignore.txt then deleted ignore.txt.
+	* Makefile.PL: Remade using Makefile.PL of App::ShellPack as template.
+	* lib/PRMF/Auth.pm: Stripped down heavily stripped, versioned as 0.00_01.
+	  Implemented constructor, add_user (for registration), login (for
+	  authentication) and err (for giving error messages).
