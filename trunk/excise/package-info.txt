@@ -1,0 +1,23 @@
+package irssi
+install
+	#!/bin/bash
+	tld="$PWD"
+	mkdir -p tmp bin || exit 1
+	workdir="$(mktemp -d --tmpdir=tmp)"
+	(( $? )) && exit 1
+	cd "$workdir"
+	mkdir -p src lib dist dist/perl || exit 1
+	wget http://www.irssi.org/files/irssi-0.8.15.tar.bz2 || exit 1
+	tar xjf irssi-0.8.15.tar.bz2 -C src || exit 1
+	ln -s /usr/lib/libperl.so.5.10.1 lib/libperl.so
+	export CFLAGS="-O2 -fomit-frame-pointer"
+	export LDFLAGS="-L/usr/lib/perl/5.10.1/CORE -L$PWD/lib"
+	installdir="$PWD/dist"
+	cd src/irssi-0.8.15
+	./configure --prefix="$installdir" --with-perl-lib="$installdir/perl" && make -j5 && make install
+	(( $? )) && exit 1
+	cd "$tld"
+	chmod -R go-rwx "$installdir"
+	mv -f "$installdir/bin/irssi" bin/irssi || exit 1
+	rm -rf "$workdir"
+

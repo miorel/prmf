@@ -1,9 +1,9 @@
 #!/bin/bash
-echo "excise installer 0.0.1-pre (July 1, 2011)" >&2
+echo "excise installer 0.0.1-pre (July 2, 2011)" >&2
 echo "by Miorel-Lucian Palii" >&2
 echo >&2
 
-its="1309571588"
+its="1309584384"
 
 if ( type -p excise >& /dev/null ); then
 	echo "It looks like you already have an excise command in your path variable." >&2
@@ -72,7 +72,8 @@ fi
 for cmd in mkdir cp rm umask perl svn; do
 	echo -n "Checking for $cmd... " >&2
 	if ( ! type "$cmd" >& /dev/null ); then
-		echo "no, bailing :/" >&2
+		echo "no" >&2
+		echo "Bailing :/" >&2
 		exit 1
 	fi
 	echo "yes" >&2
@@ -118,10 +119,10 @@ if [[ "$fetch" == "" ]]; then
 fi
 
 echo "Checking installer version..." >&2
-latest_its="$($fetch - http://prmf.googlecode.com/svn/excise/1309571588.txt | perl -ne 'chomp;print if /^latest_its\s+/')"
+latest_its="$($fetch - http://prmf.googlecode.com/svn/trunk/excise/1309571588.txt | perl -ne 'chomp;print if s/^latest_its\s+//')"
 if [[ "$latest_its" == "" ]]; then
 	echo >&2
-	echo "I couldn't check if this is the latest version of the installer script." >&2
+	echo "I couldn't check if this is the latest version of the installation script." >&2
 	echo "If this is due to a change in the site's layout, then it probably isn't." >&2
 	echo "You should investigate at <http://prmf.googlecode.com/>." >&2
 	exit 1
@@ -132,20 +133,23 @@ else
 		echo >&2
 		echo "A newer installer is available!" >&2
 		echo "Get it from <http://prmf.googlecode.com/> and use that instead!" >&2
+		exit 1
 	else # its > latest_its
 		echo >&2
 		echo "Hmm, it seems like this script is newer than the one online! Hacking, are we?" >&2
-		exit 1
+		#exit 1
 	fi
 fi
 
 mkdir .excise || exit 1
 cd .excise
+mkdir -p bin etc lib var/excise tmp || _cleanup_and_die 
 echo "Downloading excise from SVN..." >&2
-svn co http://prmf.googlecode.com/svn/trunk/excise/ svn >&2 || _cleanup_and_die
-mkdir -p bin || _cleanup_and_die
-cp svn/bin/excise bin || _cleanup_and_die
+svn co http://prmf.googlecode.com/svn/trunk/excise/ tmp/excise >&2 || _cleanup_and_die
+cp -f tmp/excise/bin/excise bin || _cleanup_and_die
+cp -f tmp/excise/package-info.txt var/excise || _cleanup_and_die
 chmod 0500 bin/excise || _cleanup_and_die
+rm -rf tmp/excise
 
 tcsh_file=""
 bash_file=""
@@ -168,7 +172,7 @@ if [[ "$tcsh_file" != "" ]]; then
 	if [[ "$tcsh_file" != "" ]]; then
 		{
 			echo "# Automatically added during installation of the excise tool:"
-			echo "set path (~/.excise/bin \$path)" 
+			echo "set path=(~/.excise/bin \$path)" 
 		} >> "$tcsh_file" || tcsh_file=""
 	fi
 	if [[ "$tcsh_file" != "" ]]; then
@@ -214,7 +218,7 @@ echo >&2
 echo "excise tool successfully installed!" >&2
 if [[ "$rc" == "" ]]; then
 	echo "To use it, you'll have to update your path variable to include ~/.excise/bin." >&2
-	echo "For tcsh, add \`set path (~/.excise/bin \$path)' to .tcshrc." >&2
+	echo "For tcsh, add \`set path=(~/.excise/bin \$path)' to .tcshrc." >&2
 	echo "For bash, add \`export PATH=~/.excise/bin:\$PATH' to .bashrc." >&2
 else
 	echo "I've taken the liberty of updating the path in $rc for you." >&2
@@ -223,7 +227,7 @@ else
 fi
 
 echo >&2
-echo "It's also safe to delete this installer script: it's not needed anymore." >&2
+echo "The installation script isn't needed anymore so it's safe to remove it." >&2
 echo "Here's the command for your copy-pasting pleasure:" >&2
 echo "# rm '$0'" >&2
 

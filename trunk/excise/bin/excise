@@ -1,4 +1,58 @@
-#!/bin/bash
+#!/usr/bin/perl
 
-echo "Yay, you have successfully installed the excise tool!" >&2
-exit 1
+use warnings;
+use strict;
+
+chdir "$ENV{HOME}/.excise";
+
+my $cmd = shift;
+
+if(defined($cmd) && $cmd eq 'install') {
+	my $pkg = shift;
+	die "Must specify a packge!" unless $pkg;
+	my $fh;
+	open $fh, "<var/excise/package-info.txt" or die "Failed to read package information.";
+	my %vars = ();
+	my @pkg = ();
+	while(<$fh>) {
+		chomp;
+		s/^\s+//;
+		next if /^#/ || !/\S/;
+		my($var, $val) = split(/\s+/, $_, 2);
+		my $hash = ($var eq 'package') ? $pkg[scalar @pkg] = {} : (@pkg ? $pkg[-1] : \%vars);
+		unless(defined($val) && length($val) > 0) {
+			$val = '';
+			while(<$fh>) {
+				chomp;
+				last unless s/^\t//;
+				$val .= "$_\n";
+			}
+		}
+		$hash->{$var} = $val;
+	}
+	close $fh;
+	use Data::Dumper; print Dumper(\@pkg);
+	my $pkg_obj;
+	for(@pkg) {
+		if($_->{package} eq $pkg) {
+			$pkg_obj = $_;
+			last;
+		}
+	}
+	die "No such package!" unless $pkg_obj;
+	open $fh, ">install.sh" or die "Failed to open script for writing.";
+	print $fh $pkg_obj->{install};
+	close $fh;
+	system("bash", "install.sh") == 0 or die "Installation failed!";
+	unlink("install.sh");
+}
+
+print STDERR <<EOF;
+excise 0.0.1-pre (July 3, 2011) 
+Usage: $0 install PACKAGE
+
+excise is a command-line interface for managing packages in one's home
+directory on systems like CISE.
+EOF
+
+exit 1;
