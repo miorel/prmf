@@ -143,7 +143,7 @@ fi
 
 mkdir .excise || exit 1
 cd .excise
-mkdir -p bin etc lib var/excise tmp || _cleanup_and_die 
+mkdir -p bin var/excise tmp || _cleanup_and_die 
 echo "Downloading excise from SVN..." >&2
 svn co http://prmf.googlecode.com/svn/trunk/excise/ tmp/excise >&2 || _cleanup_and_die
 cp -f tmp/excise/bin/excise bin || _cleanup_and_die

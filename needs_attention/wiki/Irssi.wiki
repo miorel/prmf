@@ -2,21 +2,29 @@
 
 Ever wonder how some people can be in the IRC channel _all_ the time? They're probably connected from a server. And they're probably using Irssi.
 
-*Irssi* ([http://www.irssi.org/]) is "a terminal based IRC client for UNIX systems." It's a different experience from the graphical client you may be used to, but it's worth a try.
+*Irssi* ([http://www.irssi.org/]) is "a terminal based IRC client for UNIX systems." It's a different experience from the graphical client you may be used to, but it's worth checking out.
 
-= Installing on [Cise CISE] systems =
+= Installing on UF's CISE systems =
+
+== Through the excise tool ==
+
+If you have excise installed, just run `excise install irssi`.
+
+The primary advantage of this method is that it's easier to undo than a manual installation. Additionally, it won't install any files not needed by the casual user, e.g. include headers.
+
+== Manually ==
 
 The installation process consists of several steps:
 
-  # Download and unpack a source archive.
-  # Configure the build process and generate a Makefile.
+  # [http://www.irssi.org/download Download] and unpack a source archive.
+  # Run the `configure` script to configure the build process and generate a Makefile.
   # `make` and `make install`.
 
 All three of these can be executed programmatically, and overall, the build process is fairly straightforward. One problem when working on CISE systems is that linking with Perl libraries will fail. This is rather uncool because Perl support is needed for lots of neat Irssi scripts.
 
-It turns out the error is caused because there is no `/usr/lib/libperl.so`. But, there probably is a `/usr/lib/libperl.so.5.10.1`. The solution, then, is to create a symlink. Since you probably don't have write permissions in `/usr/lib`, you can create the link anywhere else and simply add the proper directory to the library path using the `LDFLAGS` environment variable. Additionally, the location of the Perl headers must be updated.
+It turns out the error occurs because there is no `/usr/lib/libperl.so`. Fortunately, there _is_ a `/usr/lib/libperl.so.5.10.1` (at least there _was_ at the time of this writing). The solution, then, is to create a symlink. You probably don't have write permissions in `/usr/lib`, so create the link somewhere else and add the proper directory to the library path using the `LDFLAGS` environment variable. Additionally, the location of the Perl headers has to be updated.
 
-The following script puts it all together and installs Irssi in your home directory. It even cleans up after itself. Note that you must run it with `bash` because of the `export` line.
+The following script does all of the above and installs Irssi in your home directory. It even cleans up after itself. Note that you must run it with `bash` because of the `export` line.
 
 {{{
 #!/bin/bash
@@ -24,15 +32,15 @@ wget http://www.irssi.org/files/irssi-0.8.15.tar.bz2
 tar xjf irssi-0.8.15.tar.bz2
 cd irssi-0.8.15
 ln -s /usr/lib/libperl.so.5.10.1 libperl.so
-export LDFLAGS="-L`pwd` -L/usr/lib/perl/5.10.1/CORE"
-./configure --prefix=$HOME
+export LDFLAGS="-L$PWD -L/usr/lib/perl/5.10.1/CORE"
+./configure --prefix="$HOME"
 make
 make install
 cd ..
 rm -rf irssi-0.8.15 irssi-0.8.15.tar.bz2
 }}}
 
-This was tested on `storm` (and should therefore work on `thunder` as well). It didn't work on `eclipse` because of a missing dependency (and will therefore probably _not_ work on the older Sun machines, either).
+This was tested on `storm` (and should therefore work on `thunder` as well). It will probably _not_ work on any of the Sun machines.
 
 After installation completes, the executable is `bin/irssi` in your home directory. If your path environment variable includes your personal `bin`, all you have to do is run `irssi` on the command line!
 
@@ -42,12 +50,14 @@ Check out [http://quadpoint.org/articles/irssi A Guide to Efficiently Using Irss
 
 = Auto-joining our IRC channel =
 
-Since it's annoying to have to explicitly connect to the server, identify to NickServ, and join the channel each time you run Irssi, you can automate this process by editing the config. 
+Since it's annoying to have to explicitly connect to the server, identify to !NickServ, and join the channel each time you run Irssi, you can automate this process by editing the config. 
 
-You _shouldn't_ edit the config file by hand because Irssi hates that (though I've actually broken my own advice before). Instead, make sure you are connected to the server and have the proper nick. Then, run the following (replace "secret" with your password):
+You _shouldn't_ edit the config file by hand because Irssi hates that (though I've actually broken my own advice before). Instead, make sure you're connected to the server and have the proper nick. Then, run the following Irssi commands, replacing "hunter2" with your password (unless, of course, "hunter2" _is_ your password, for it's such [http://bash.org/?244321 a fine password] indeed):
 
-`/SERVER ADD -auto -network Freenode irc.freenode.net 6667 secret`
-`/CHANNEL ADD -auto #ufpt Freenode`
-`/save`
+{{{
+/SERVER ADD -auto -network Freenode irc.freenode.net 6667 hunter2
+/CHANNEL ADD -auto #ufpt Freenode
+/save
+}}}
 
-You may notice there's no NickServ identification. That step is actually eliminated completely by a neat feature which [http://freenode.net/ Freenode] supports, allowing you to [http://freenode.net/faq.shtml#identify use the nick password as a server password].
+You may notice there's no !NickServ identification. That step is actually eliminated completely by a neat feature which [http://freenode.net/ Freenode] supports, allowing you to [http://freenode.net/faq.shtml#identify use the nick password as a server password].
