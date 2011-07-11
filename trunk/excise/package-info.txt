@@ -3,18 +3,19 @@ install
 	#!/bin/bash
 	umask 0007
 	tld="$PWD"
-	mkdir -p bin var/excise tmp || exit 1
-	workdir="$(mktemp -d --tmpdir=tmp)"
+	mkdir -p bin var/excise || exit 1
+	workdir="$(mktemp -d)"
 	(( $? )) && exit 1
 	cd "$workdir"
 	wget http://prmf.googlecode.com/svn/trunk/excise/bin/excise && chmod 0500 excise
 	(( $? )) && exit 1
-	wget http://prmf.googlecode.com/svn/trunk/excise/package-info.txt && chmod 0100 package-info.txt
+	wget http://prmf.googlecode.com/svn/trunk/excise/package-info.txt && chmod 0400 package-info.txt
 	(( $? )) && exit 1
 	cd "$tld"
 	mv -f "$workdir/excise" bin/excise || exit 1
-	mv -f "$workdir/package-info.txt" var/package-info.txt || exit 1
+	mv -f "$workdir/package-info.txt" var/excise/package-info.txt || exit 1
 	rm -rf "$workdir"
+	rmdir -p "$workdir" >& /dev/null
 	exit 0
 remove
 	#!/bin/bash
@@ -27,15 +28,15 @@ install
 	#!/bin/bash
 	tld="$PWD"
 	umask 0007
-	mkdir -p tmp bin || exit 1
-	workdir="$(mktemp -d --tmpdir=tmp)"
+	mkdir -p bin || exit 1
+	workdir="$(mktemp -d)"
 	(( $? )) && exit 1
 	cd "$workdir"
 	mkdir -p src lib dist dist/perl || exit 1
 	wget http://www.irssi.org/files/irssi-0.8.15.tar.bz2 || exit 1
 	tar xjf irssi-0.8.15.tar.bz2 -C src || exit 1
 	ln -s /usr/lib/libperl.so.5.10.1 lib/libperl.so
-	export CFLAGS="-O2 -fomit-frame-pointer"
+	export CFLAGS="-O2 -fomit-frame-pointer -pipe"
 	export LDFLAGS="-L/usr/lib/perl/5.10.1/CORE -L$PWD/lib"
 	installdir="$PWD/dist"
 	cd src/irssi-0.8.15
@@ -45,6 +46,7 @@ install
 	chmod -R go-rwx "$installdir"
 	mv -f "$installdir/bin/irssi" bin/irssi || exit 1
 	rm -rf "$workdir"
+	rmdir -p "$workdir" >& /dev/null
 	exit 0
 remove
 	#!/bin/bash

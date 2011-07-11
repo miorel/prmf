@@ -1,9 +1,9 @@
 #!/bin/bash
-echo "excise installer 0.0.1-pre (July 2, 2011)" >&2
+echo "excise installer 0.0.1-pre (July 11, 2011)" >&2
 echo "by Miorel-Lucian Palii" >&2
 echo >&2
 
-its="1309584384"
+its="1310402332"
 
 if ( type -p excise >& /dev/null ); then
 	echo "It looks like you already have an excise command in your path variable." >&2
@@ -147,8 +147,10 @@ mkdir -p bin var/excise tmp || _cleanup_and_die
 echo "Downloading excise from SVN..." >&2
 svn co http://prmf.googlecode.com/svn/trunk/excise/ tmp/excise >&2 || _cleanup_and_die
 cp -f tmp/excise/bin/excise bin || _cleanup_and_die
-cp -f tmp/excise/package-info.txt var/excise || _cleanup_and_die
 chmod 0500 bin/excise || _cleanup_and_die
+cp -f tmp/excise/package-info.txt var/excise || _cleanup_and_die
+chmod 0400 var/excise/package-info.txt
+echo "excise" >> var/excise/installed.txt
 rm -rf tmp/excise
 
 tcsh_file=""
