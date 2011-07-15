@@ -1,9 +1,9 @@
 #!/bin/bash
-echo "excise installer 0.0.1-pre (July 11, 2011)" >&2
+echo "excise installer 0.0.1-pre (July 15, 2011)" >&2
 echo "by Miorel-Lucian Palii" >&2
 echo >&2
 
-its="1310402332"
+its="1310760190"
 
 if ( type -p excise >& /dev/null ); then
 	echo "It looks like you already have an excise command in your path variable." >&2
@@ -23,7 +23,7 @@ if [[ -d .excise ]]; then
 	echo "You already seem to have a .excise in your home directory. It could have been" >&2
 	echo "created by another program or it may be the remnants of a previous install." >&2
 	_dot_excise_exists_error
-elif [[ -e .excise ]]; then
+elif [[ -f .excise ]]; then
 	echo "You already seem to have a .excise in your home directory. Was it created by" >&2
 	echo "another program?" >&2
 	_dot_excise_exists_error
@@ -137,7 +137,7 @@ else
 	else # its > latest_its
 		echo >&2
 		echo "Hmm, it seems like this script is newer than the one online! Hacking, are we?" >&2
-		#exit 1
+		exit 1
 	fi
 fi
 
@@ -150,7 +150,7 @@ cp -f tmp/excise/bin/excise bin || _cleanup_and_die
 chmod 0500 bin/excise || _cleanup_and_die
 cp -f tmp/excise/package-info.txt var/excise || _cleanup_and_die
 chmod 0400 var/excise/package-info.txt
-echo "excise" >> var/excise/installed.txt
+echo "excise" > var/excise/installed.txt
 rm -rf tmp/excise
 
 tcsh_file=""

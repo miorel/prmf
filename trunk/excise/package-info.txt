@@ -1,13 +1,10 @@
 package excise
 install
-	#!/bin/bash
-	umask 0007
-	tld="$PWD"
 	mkdir -p bin var/excise || exit 1
 	workdir="$(mktemp -d)"
 	(( $? )) && exit 1
 	cd "$workdir"
-	wget http://prmf.googlecode.com/svn/trunk/excise/bin/excise && chmod 0500 excise
+	wget http://prmf.googlecode.com/svn/trunk/excise/excise.pl -O excise && chmod 0500 excise
 	(( $? )) && exit 1
 	wget http://prmf.googlecode.com/svn/trunk/excise/package-info.txt && chmod 0400 package-info.txt
 	(( $? )) && exit 1
@@ -18,16 +15,12 @@ install
 	rmdir -p "$workdir" >& /dev/null
 	exit 0
 remove
-	#!/bin/bash
 	rm -rf bin/excise var/excise/package-info.txt || exit 1
 	rmdir -p bin var/excise >& /dev/null
 	exit 0
 
 package irssi
 install
-	#!/bin/bash
-	tld="$PWD"
-	umask 0007
 	mkdir -p bin || exit 1
 	workdir="$(mktemp -d)"
 	(( $? )) && exit 1
@@ -49,7 +42,6 @@ install
 	rmdir -p "$workdir" >& /dev/null
 	exit 0
 remove
-	#!/bin/bash
 	rm -rf bin/irssi || exit 1
 	rmdir -p bin >& /dev/null
 	exit 0
@@ -59,10 +51,8 @@ install
 	#!/bin/bash
 	java="$(which java)"
 	(( $? )) && exit 1
-	umask 0007
 	mkdir -p bin && ln -s "$java" bin/firetiger
 remove
-	#!/bin/bash
 	rm -rf bin/firetiger || exit 1
 	rmdir -p bin >& /dev/null
 	exit 0

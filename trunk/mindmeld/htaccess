@@ -1,0 +1,8 @@
+AddHandler cgi-script .pl
+DirectoryIndex index.pl
+
+<Files ~ "\.(db|pm)$">
+	order allow,deny
+	deny from all
+</Files>
+

@@ -1,3 +1,9 @@
+2011-07-14  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* lib/PRMF/Auth.pm: Changed command that was fed to srand: ps axww was
+	  failing. Fixed bug with login function return value.
+	* t/boilerplate.t: Removed, as it wasn't needed.
+
 2011-06-30  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* ., ignore.txt, lib, lib/PRMF, lib/PRMF/Auth.pm, Makefile.PL,

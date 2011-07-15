@@ -6,16 +6,11 @@ use strict;
 use lib qw(.);
 
 use Mindmeld;
-
-use Digest::SHA qw(sha256_hex);
-use DBI;
+use PRMF::Auth;
 
 my $cgi = Mindmeld::cgi();
 
 print Mindmeld::header();
-
-my $dbh = DBI->connect("dbi:SQLite:dbname=auth.db", "", "");
-$dbh->do("CREATE TABLE IF NOT EXISTS users (username TEXT UNIQUE NOT NULL, password TEXT NOT NULL, salt TEXT NOT NULL)");
 
 my $username;
 my $login_attempt = 0;

@@ -12,13 +12,6 @@ my $dbh = Mindmeld::dbh();
 
 print Mindmeld::header();
 
-my @actions = (
-	['study' => 'Study'],
-	['opts' => 'Options'],
-	['stats' => 'Statistics'],
-);
-print $cgi->p(join(" | ", map {$cgi->a({-href => "index.pl?action=$_->[0]"}, $_->[1])} @actions)), $cgi->hr;
-
 my $show_question = 1;
 
 my $action = $cgi->param('action');
@@ -47,7 +40,7 @@ if(defined($action) && $action eq 'stats') {
 if(defined($action) && $action eq 'opts') {
 	print $cgi->start_form(-action => 'index.pl');
 	if(lc($cgi->request_method) eq 'post') {
-		my $sth = $dbh->prepare("SELECT rowid FROM categories");
+		my $sth = $dbh->prepare(sprintf('SELECT %s FROM categories', Mindmeld::CATEGORY_ID_FROM_CATEGORIES));
 		my $id;
 		$sth->execute;
 		$sth->bind_columns(\$id);
@@ -58,7 +51,11 @@ if(defined($action) && $action eq 'opts') {
 		}
 		print $cgi->p('Active categories successfully updated!');
 	}
-	my $sth = $dbh->prepare("SELECT rowid, name, active FROM categories ORDER BY name");
+	my $sth = $dbh->prepare(sprintf('SELECT %1$s, %2$s, %3$s FROM categories ORDER BY %2$s',
+		Mindmeld::CATEGORY_ID_FROM_CATEGORIES,
+		Mindmeld::CATEGORY_NAME_FROM_CATEGORIES,
+		Mindmeld::ACTIVE_FROM_CATEGORIES,
+	));
 	my($id, $name, $active);
 	$sth->execute;
 	$sth->bind_columns(\$id, \$name, \$active);
@@ -73,19 +70,25 @@ if(defined($action) && $action eq 'opts') {
 }
 
 if($show_question) {
-	my $qc_is_active = "(SELECT active FROM categories WHERE rowid = questions.cat) = 1";
-	my $qc_name = "(SELECT name FROM categories WHERE rowid = questions.cat)";
-	my $grade_is_min = "grade = (SELECT MIN(grade) FROM questions WHERE $qc_is_active)";
-	my $sth = $dbh->prepare("SELECT rowid, q, a, $qc_name, grade FROM questions WHERE $qc_is_active AND $grade_is_min ORDER BY RANDOM() LIMIT 1");
+	my $grade_is_min = sprintf('%1$s = (SELECT MIN(%1$s) FROM questions WHERE %2$s = 1)', Mindmeld::GRADE_FROM_QUESTIONS, Mindmeld::ACTIVE_FROM_QUESTIONS);
+	my $sth = $dbh->prepare(sprintf("SELECT %s, %s, %s, %s, %s, %s FROM questions WHERE %s = 1 AND $grade_is_min ORDER BY RANDOM() LIMIT 1",
+		Mindmeld::QUESTION_ID_FROM_QUESTIONS,
+		Mindmeld::QUESTION_TEXT_FROM_QUESTIONS,
+		Mindmeld::ANSWER_FROM_QUESTIONS,
+		Mindmeld::CATEGORY_NAME_FROM_QUESTIONS,
+		Mindmeld::CATEGORY_ID_FROM_QUESTIONS,
+		Mindmeld::GRADE_FROM_QUESTIONS,
+		Mindmeld::ACTIVE_FROM_QUESTIONS,
+	));
 	$sth->execute;
-	my($id, $question, $answer, $category, $grade) = $sth->fetchrow_array;
-	if(defined($id)) {
-		print $cgi->p("Category: $category");
+	my($qid, $question, $answer, $category, $cid, $grade) = $sth->fetchrow_array;
+	if(defined($qid)) {
+		print $cgi->p("Category: " . $cgi->a({-href => "show_category.pl?cid=$cid"}, $category));
 		print $cgi->div({-style => 'text-align:center;'},
 			$cgi->p({-id => 'q'}, $question),
 			$cgi->p({-id => 'sa'}, $cgi->a({-href => 'javascript:void(0);', -onclick => q{javascript:document.getElementById('sa').style.display='none';document.getElementById('a').style.display='block';document.getElementById('gr').style.display='block';}}, 'Show Answer')),
 			$cgi->p({-id => 'a', -style => 'display:none;'}, $answer),
-			$cgi->p({-id => 'gr', -style => 'display:none;'}, "Grade: " . join(" ", map {$cgi->a({-href => "index.pl?action=set_grade&id=$id&grade=$_"}, $_)} 0..5)),
+			$cgi->p({-id => 'gr', -style => 'display:none;'}, "Grade: " . join(" ", map {$cgi->a({-href => "index.pl?action=set_grade&id=$qid&grade=$_"}, $_)} 0..5)),
 		);
 	}
 	else {

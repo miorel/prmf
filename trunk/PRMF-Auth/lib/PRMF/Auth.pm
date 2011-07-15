@@ -55,7 +55,7 @@ sub add_user {
 		$self->{err} = "Password may not be longer than 32 characters.";
 	}
 	else {
-		srand(time ^ $$ ^ unpack "%L*", `ps axww | gzip -f`);
+		srand(time ^ $$ ^ unpack "%L*", `ps -ef | gzip -f` || `ps axww | gzip -f`);
 		my $salt = join('', map {my @arr = ('A'..'Z', 'a'..'z', 0..9, '.', '/'); $arr[int(rand(scalar(@arr)))]} 1..16);
 		my $sth = $self->_dbh->prepare("INSERT INTO users (username, password, salt) VALUES (?, ?, ?)");
 		$password = sha256_hex($password . $salt);
@@ -82,7 +82,7 @@ sub login {
 		$password = sha256_hex($password . $salt);
 		$sth = $self->_dbh->prepare("SELECT COUNT(*) FROM users WHERE username = ? AND password = ?");
 		$sth->execute($username, $password);
-		$sth->fetch and $ret = 1;
+		$ret = ($sth->fetchrow_array)[0] == 1;
 	}
 	$self->{err} = "Wrong username or password." unless $ret;
 	return $ret;

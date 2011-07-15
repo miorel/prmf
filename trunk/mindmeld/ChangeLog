@@ -1,3 +1,17 @@
+2011-07-14  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* htaccess: Added basic Apache configuration setting the DirectoryIndex and
+	  enabling CGI handling for .pl files, as well as forbidding access to .db
+	  and .pm files.
+	* login.pl, register.pl: Refactored to use new module PRMF::Auth.
+	* show_category.pl, show_question.pl: Created a couple of new pages.
+	* Makefile: Included htaccess in distribution tarball, as well as
+	  Mindmeld.pm (which got neglected before) and the new show_category.pl and
+	  show_question.pl. Made permissions within  distribution more restrictive.
+	  Removed j flag from tar command (for better portability, I think),
+	  instead piping output through bzip2.
+	* index.pl, Mindmeld.pm: Abstracted away some of the SQL. Made some worse.
+
 2011-06-30  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* Makefile: Threw together a quick Makefile. Comes with two rules so far

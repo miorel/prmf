@@ -63,6 +63,11 @@ if(defined($cmd) && $cmd =~ /^(install|remove)$/) {
 		die "Package $pkg is not installed, can't be removed." unless $installed{$pkg};
 	}
 	open $fh, ">script.sh" or die "Failed to open script for writing.";
+	print $fh << 'EOF';
+#!/bin/bash
+tld="$PWD"
+umask 0077
+EOF
 	print $fh $pkg_obj->{$cmd};
 	close $fh;
 	system("bash", "script.sh") == 0 or die "\u$cmd failed!";
@@ -74,14 +79,14 @@ if(defined($cmd) && $cmd =~ /^(install|remove)$/) {
 	elsif($cmd eq 'remove') {
 		delete $installed{$pkg};
 	}
-	open $fh, ">var/excise/installed.txt" or die "Failed to update list of installed packages."
+	open $fh, ">var/excise/installed.txt" or die "Failed to update list of installed packages.";
 	print $fh "$_\n" for sort keys %installed;
 	close $fh;
 	exit 0;
 }
 
 print STDERR <<'EOF';
-excise 0.0.1-pre (July 11, 2011) 
+excise 0.0.1-pre (July 15, 2011) 
 Usage: excise install|remove PACKAGE
 
 excise is a command-line interface for managing packages in one's home
