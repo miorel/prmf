@@ -5,7 +5,7 @@ use strict;
 
 use lib qw(.);
 
-use Mindmeld;
+use MindMeld;
 
 my @data = ();
 while(<DATA>) {
@@ -33,10 +33,10 @@ while(<DATA>) {
 	};
 }
 
-my $dbh = Mindmeld::dbh();
-Mindmeld::ensure_schema();
+my $dbh = MindMeld::dbh();
+MindMeld::ensure_schema();
 for(@data) {
-	Mindmeld::add_question($_->{Q}, $_->{A}, $_->{cat});
+	MindMeld::add_question($_->{Q}, $_->{A}, $_->{cat});
 }
 
 #mnemosyne_output(\@data);

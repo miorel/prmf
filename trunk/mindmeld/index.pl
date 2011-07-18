@@ -5,16 +5,22 @@ use strict;
 
 use lib qw(.);
 
-use Mindmeld;
+use MindMeld;
 
-my $cgi = Mindmeld::cgi();
-my $dbh = Mindmeld::dbh();
+my $cgi = MindMeld::cgi();
+my $dbh = MindMeld::dbh();
 
-print Mindmeld::header();
+print MindMeld::header();
 
-my $show_question = 1;
+my $show_question = 0;
 
 my $action = $cgi->param('action');
+
+if(!defined($action)) {
+print q`<p><strong>MindMeld</strong> will be a system for training your mind like a Vulcan. Not becoming an emotionless automaton is left as an exercise for the user.</p>
+<p><iframe width="853" height="510" src="https://www.youtube.com/embed/ds7dBoWLlrc?rel=0" frameborder="0" allowfullscreen></iframe></p>`;
+}
+
 if(defined($action) && $action eq 'set_grade') {
 	my $grade = $cgi->param('grade');
 	my $id = $cgi->param('id');
@@ -22,6 +28,11 @@ if(defined($action) && $action eq 'set_grade') {
 		# needs error checking
 		$dbh->prepare("UPDATE questions SET grade = ? WHERE rowid = ?")->execute($grade, $id);
 	}
+	$show_question = 1;
+}
+
+if(defined($action) && $action eq 'study') {
+	$show_question = 1;
 }
 
 if(defined($action) && $action eq 'stats') {
@@ -40,7 +51,7 @@ if(defined($action) && $action eq 'stats') {
 if(defined($action) && $action eq 'opts') {
 	print $cgi->start_form(-action => 'index.pl');
 	if(lc($cgi->request_method) eq 'post') {
-		my $sth = $dbh->prepare(sprintf('SELECT %s FROM categories', Mindmeld::CATEGORY_ID_FROM_CATEGORIES));
+		my $sth = $dbh->prepare(sprintf('SELECT %s FROM categories', MindMeld::CATEGORY_ID_FROM_CATEGORIES));
 		my $id;
 		$sth->execute;
 		$sth->bind_columns(\$id);
@@ -52,9 +63,9 @@ if(defined($action) && $action eq 'opts') {
 		print $cgi->p('Active categories successfully updated!');
 	}
 	my $sth = $dbh->prepare(sprintf('SELECT %1$s, %2$s, %3$s FROM categories ORDER BY %2$s',
-		Mindmeld::CATEGORY_ID_FROM_CATEGORIES,
-		Mindmeld::CATEGORY_NAME_FROM_CATEGORIES,
-		Mindmeld::ACTIVE_FROM_CATEGORIES,
+		MindMeld::CATEGORY_ID_FROM_CATEGORIES,
+		MindMeld::CATEGORY_NAME_FROM_CATEGORIES,
+		MindMeld::ACTIVE_FROM_CATEGORIES,
 	));
 	my($id, $name, $active);
 	$sth->execute;
@@ -70,15 +81,15 @@ if(defined($action) && $action eq 'opts') {
 }
 
 if($show_question) {
-	my $grade_is_min = sprintf('%1$s = (SELECT MIN(%1$s) FROM questions WHERE %2$s = 1)', Mindmeld::GRADE_FROM_QUESTIONS, Mindmeld::ACTIVE_FROM_QUESTIONS);
+	my $grade_is_min = sprintf('%1$s = (SELECT MIN(%1$s) FROM questions WHERE %2$s = 1)', MindMeld::GRADE_FROM_QUESTIONS, MindMeld::ACTIVE_FROM_QUESTIONS);
 	my $sth = $dbh->prepare(sprintf("SELECT %s, %s, %s, %s, %s, %s FROM questions WHERE %s = 1 AND $grade_is_min ORDER BY RANDOM() LIMIT 1",
-		Mindmeld::QUESTION_ID_FROM_QUESTIONS,
-		Mindmeld::QUESTION_TEXT_FROM_QUESTIONS,
-		Mindmeld::ANSWER_FROM_QUESTIONS,
-		Mindmeld::CATEGORY_NAME_FROM_QUESTIONS,
-		Mindmeld::CATEGORY_ID_FROM_QUESTIONS,
-		Mindmeld::GRADE_FROM_QUESTIONS,
-		Mindmeld::ACTIVE_FROM_QUESTIONS,
+		MindMeld::QUESTION_ID_FROM_QUESTIONS,
+		MindMeld::QUESTION_TEXT_FROM_QUESTIONS,
+		MindMeld::ANSWER_FROM_QUESTIONS,
+		MindMeld::CATEGORY_NAME_FROM_QUESTIONS,
+		MindMeld::CATEGORY_ID_FROM_QUESTIONS,
+		MindMeld::GRADE_FROM_QUESTIONS,
+		MindMeld::ACTIVE_FROM_QUESTIONS,
 	));
 	$sth->execute;
 	my($qid, $question, $answer, $category, $cid, $grade) = $sth->fetchrow_array;
@@ -96,5 +107,5 @@ if($show_question) {
 	}
 }
 
-print Mindmeld::footer();
+print MindMeld::footer();
 

@@ -1,3 +1,11 @@
+2011-07-17  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* mindmeld.xcf, mindmeld.png, Makefile: Made a simple logo (and added it to
+	  the distribution tarball through the Makefile).
+	* MindMeld.pm: Changed header to use the logo and a bit of CSS.
+	* index.pl: Home page now shows a brief description of the project and a 
+	  YouTube video of Spock!
+
 2011-07-14  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* htaccess: Added basic Apache configuration setting the DirectoryIndex and
@@ -6,11 +14,11 @@
 	* login.pl, register.pl: Refactored to use new module PRMF::Auth.
 	* show_category.pl, show_question.pl: Created a couple of new pages.
 	* Makefile: Included htaccess in distribution tarball, as well as
-	  Mindmeld.pm (which got neglected before) and the new show_category.pl and
+	  MindMeld.pm (which got neglected before) and the new show_category.pl and
 	  show_question.pl. Made permissions within  distribution more restrictive.
 	  Removed j flag from tar command (for better portability, I think),
 	  instead piping output through bzip2.
-	* index.pl, Mindmeld.pm: Abstracted away some of the SQL. Made some worse.
+	* index.pl, MindMeld.pm: Abstracted away some of the SQL. Made some worse.
 
 2011-06-30  Miorel-Lucian Palii <mlpalii@gmail.com>
 
@@ -19,7 +27,7 @@
 	  a distribution tarball for easy deployment.
 	* mm.db: Removing question database from the repository now that it can
 	  just be regenerated during the build process.
-	* Mindmeld.pm, index,pl, amino_acids.pl, states.pl: Reduced code
+	* MindMeld.pm, index,pl, amino_acids.pl, states.pl: Reduced code
 	  duplication (and improved cleanliness a bit) by moving a few things into
 	  a (very bad) module.
 	* register.pl, login.pl: Hacked together a registration and login script,

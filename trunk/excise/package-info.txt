@@ -48,7 +48,6 @@ remove
 
 package firetiger
 install
-	#!/bin/bash
 	java="$(which java)"
 	(( $? )) && exit 1
 	mkdir -p bin && ln -s "$java" bin/firetiger

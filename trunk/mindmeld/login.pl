@@ -5,12 +5,12 @@ use strict;
 
 use lib qw(.);
 
-use Mindmeld;
+use MindMeld;
 use PRMF::Auth;
 
-my $cgi = Mindmeld::cgi();
+my $cgi = MindMeld::cgi();
 
-print Mindmeld::header();
+print MindMeld::header();
 
 my $username;
 my $login_attempt = 0;
@@ -35,5 +35,5 @@ else {
 	print $cgi->end_form;
 }
 
-print Mindmeld::footer();
+print MindMeld::footer();
 

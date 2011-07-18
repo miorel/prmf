@@ -5,26 +5,26 @@ use strict;
 
 use lib qw(.);
 
-use Mindmeld;
+use MindMeld;
 
-my $cgi = Mindmeld::cgi();
+my $cgi = MindMeld::cgi();
 
 my $qid = $cgi->param('qid');
 unless(defined($qid)) {
 	print $cgi->redirect(-uri => 'index.pl?action=study', -status => 302);
 }
 else {
-	my $dbh = Mindmeld::dbh();
+	my $dbh = MindMeld::dbh();
 
-	print Mindmeld::header();
+	print MindMeld::header();
 	
 	my $sth = $dbh->prepare(sprintf('SELECT %s, %s, %s, %s, %s FROM questions WHERE %s = ?',
-		Mindmeld::QUESTION_TEXT_FROM_QUESTIONS,
-		Mindmeld::ANSWER_FROM_QUESTIONS,
-		Mindmeld::CATEGORY_NAME_FROM_QUESTIONS,
-		Mindmeld::CATEGORY_ID_FROM_QUESTIONS,
-		Mindmeld::GRADE_FROM_QUESTIONS,
-		Mindmeld::QUESTION_ID_FROM_QUESTIONS,
+		MindMeld::QUESTION_TEXT_FROM_QUESTIONS,
+		MindMeld::ANSWER_FROM_QUESTIONS,
+		MindMeld::CATEGORY_NAME_FROM_QUESTIONS,
+		MindMeld::CATEGORY_ID_FROM_QUESTIONS,
+		MindMeld::GRADE_FROM_QUESTIONS,
+		MindMeld::QUESTION_ID_FROM_QUESTIONS,
 	));
 	$sth->execute($qid);
 	my($question, $answer, $category, $cid, $grade) = $sth->fetchrow_array;
@@ -38,6 +38,6 @@ else {
 		print $cgi->p("Question doesn't exist :(");
 	}
 	
-	print Mindmeld::footer();
+	print MindMeld::footer();
 }
 
