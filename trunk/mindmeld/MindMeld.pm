@@ -6,18 +6,18 @@ use strict;
 use CGI;
 use DBI;
 
-use constant QUESTION_ID_FROM_QUESTIONS => 'questions.rowid';
-use constant QUESTION_TEXT_FROM_QUESTIONS => 'questions.q';
-use constant ANSWER_FROM_QUESTIONS => 'questions.a';
+use constant QUESTION_ID_FROM_QUESTIONS => 'questions.id';
+use constant QUESTION_TEXT_FROM_QUESTIONS => 'questions.question';
+use constant ANSWER_FROM_QUESTIONS => 'questions.answer';
 use constant GRADE_FROM_QUESTIONS => 'questions.grade';
-use constant CATEGORY_ID_FROM_QUESTIONS => 'questions.cat';
+use constant CATEGORY_ID_FROM_QUESTIONS => 'questions.category';
 use constant CATEGORY_NAME_FROM_CATEGORIES => 'categories.name';
-use constant CATEGORY_ID_FROM_CATEGORIES => 'categories.rowid';
+use constant CATEGORY_ID_FROM_CATEGORIES => 'categories.id';
 use constant CATEGORY_NAME_FROM_QUESTIONS => sprintf("(SELECT %s FROM categories WHERE %s = %s)", CATEGORY_NAME_FROM_CATEGORIES, CATEGORY_ID_FROM_CATEGORIES, CATEGORY_ID_FROM_QUESTIONS);
 use constant ACTIVE_FROM_CATEGORIES => 'categories.active';
 use constant ACTIVE_FROM_QUESTIONS => sprintf("(SELECT %s FROM categories WHERE %s = %s)", ACTIVE_FROM_CATEGORIES, CATEGORY_ID_FROM_CATEGORIES, CATEGORY_ID_FROM_QUESTIONS);
 
-my $info_str = 'MindMeld beta 201107171647';
+my $info_str = 'MindMeld beta 201107191242';
 my($cgi, $dbh);
 
 sub cgi {
@@ -25,26 +25,18 @@ sub cgi {
 }
 
 sub dbh {
-	$dbh = DBI->connect("dbi:SQLite:dbname=mm.db", "", "")
+	$dbh = DBI->connect('dbi:SQLite:dbname=mm.db', '', '')
 		unless defined $dbh;
 	return $dbh;
 }
 
-sub ensure_schema {
-	my $dbh = dbh();
-	$dbh->do("CREATE TABLE IF NOT EXISTS questions (q TEXT, a TEXT, cat INTEGER, grade REAL DEFAULT 0)");
-	$dbh->do("CREATE TABLE IF NOT EXISTS categories (name TEXT UNIQUE NOT NULL, active BOOLEAN DEFAULT 1 NOT NULL)");
-}
-
-sub add_question {
-	my($q, $a, $cat) = @_;
-	my $dbh = dbh();
-	my $sth;
-	
-	$sth = $dbh->prepare_cached("INSERT OR IGNORE INTO categories (name) VALUES (?)");
-	$sth->execute($cat);
-	$sth = $dbh->prepare_cached("INSERT INTO questions (q, a, cat) VALUES (?, ?, (SELECT rowid FROM categories WHERE name = ?))");
-	$sth->execute($q, $a, $cat);
+sub _select {
+	my($package, $statement, @args) = @_;
+	my $sth = $package->dbh->prepare_cached($statement);
+	$sth->execute(@args);
+	my $ret = ($sth->fetchrow_array)[0];
+	$sth->fetch; # deactivate
+	return $ret;
 }
 
 sub header {

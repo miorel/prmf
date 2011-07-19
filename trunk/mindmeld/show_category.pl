@@ -6,35 +6,40 @@ use strict;
 use lib qw(.);
 
 use MindMeld;
+use MindMeld::Category;
+use MindMeld::Question;
 
-my $cgi = MindMeld::cgi();
+my $cgi = MindMeld->cgi;
 
 my $cid = $cgi->param('cid');
-unless(defined($cid)) {
+unless(defined $cid) {
 	print $cgi->redirect(-uri => 'index.pl?action=study', -status => 302);
 }
 else {
-	my $dbh = MindMeld::dbh();
+	my $dbh = MindMeld->dbh;
 
-	print MindMeld::header();
+	print MindMeld->header;
 	
-	my $sth = $dbh->prepare(sprintf('SELECT %s, %s FROM questions WHERE %s = ?',
-		MindMeld::QUESTION_TEXT_FROM_QUESTIONS,
-		MindMeld::QUESTION_ID_FROM_QUESTIONS,
-		MindMeld::CATEGORY_ID_FROM_QUESTIONS,
-	));
-	$sth->execute($cid);
+	my $c = MindMeld::Category->retrieve($cid);
+	if(defined $c) {
+		my $sth = $dbh->prepare('SELECT id FROM questions WHERE category = ?');
+		$sth->execute($cid);
 	
-	my($question, $qid);
-	$sth->bind_columns(\$question, \$qid);
-	my $count = 0;
-	while($sth->fetch) {
-		print $cgi->p(++$count . ". " . $cgi->a({-href => "show_question.pl?qid=$qid"}, $question));
+		my $qid;
+		$sth->bind_columns(\$qid);
+		my @q;
+		push @q, $qid while $sth->fetch;
+
+		my $count = 0;
+		for $qid (@q) {
+			my $q = MindMeld::Question->retrieve($qid);
+			print $cgi->p(++$count . ". " . $cgi->a({-href => "show_question.pl?qid=$qid"}, $q->question));
+		}
 	}
-	if($count == 0) {
-		print $cgi->p("No such category :(");
+	else {
+		print $cgi->p("Category doesn't exist :(");
 	}
 	
-	print MindMeld::footer();
+	print MindMeld->footer;
 }
 

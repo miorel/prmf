@@ -26,7 +26,7 @@ if(defined($action) && $action eq 'set_grade') {
 	my $id = $cgi->param('id');
 	if(defined($grade) && defined($id)) {
 		# needs error checking
-		$dbh->prepare("UPDATE questions SET grade = ? WHERE rowid = ?")->execute($grade, $id);
+		$dbh->prepare("UPDATE questions SET grade = ? WHERE id = ?")->execute($grade, $id);
 	}
 	$show_question = 1;
 }
@@ -51,22 +51,18 @@ if(defined($action) && $action eq 'stats') {
 if(defined($action) && $action eq 'opts') {
 	print $cgi->start_form(-action => 'index.pl');
 	if(lc($cgi->request_method) eq 'post') {
-		my $sth = $dbh->prepare(sprintf('SELECT %s FROM categories', MindMeld::CATEGORY_ID_FROM_CATEGORIES));
+		my $sth = $dbh->prepare('SELECT id FROM categories');
 		my $id;
 		$sth->execute;
 		$sth->bind_columns(\$id);
 		while($sth->fetch) {
 			my $cn = "cat_${id}_active";
 			my $val = $cgi->param($cn);
-			$dbh->prepare('UPDATE categories SET active = ? WHERE rowid = ?')->execute((defined($val) && $val eq '1'), $id);
+			$dbh->prepare('UPDATE categories SET active = ? WHERE id = ?')->execute((defined($val) && $val eq '1'), $id);
 		}
 		print $cgi->p('Active categories successfully updated!');
 	}
-	my $sth = $dbh->prepare(sprintf('SELECT %1$s, %2$s, %3$s FROM categories ORDER BY %2$s',
-		MindMeld::CATEGORY_ID_FROM_CATEGORIES,
-		MindMeld::CATEGORY_NAME_FROM_CATEGORIES,
-		MindMeld::ACTIVE_FROM_CATEGORIES,
-	));
+	my $sth = $dbh->prepare('SELECT id, name, active FROM categories ORDER BY name');
 	my($id, $name, $active);
 	$sth->execute;
 	$sth->bind_columns(\$id, \$name, \$active);

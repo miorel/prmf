@@ -6,6 +6,13 @@ use strict;
 use lib qw(.);
 
 use MindMeld;
+use MindMeld::Category;
+use MindMeld::Question;
+
+MindMeld->dbh->do('BEGIN');
+MindMeld::Category->_ensure_schema;
+MindMeld::Question->_ensure_schema;
+MindMeld->dbh->do('COMMIT');
 
 my @data = ();
 while(<DATA>) {
@@ -33,11 +40,27 @@ while(<DATA>) {
 	};
 }
 
-my $dbh = MindMeld::dbh();
-MindMeld::ensure_schema();
+MindMeld->dbh->do('BEGIN');
+
+my %cat = ();
+
 for(@data) {
-	MindMeld::add_question($_->{Q}, $_->{A}, $_->{cat});
+	my $cat = $_->{cat};
+	next if exists $cat{$cat};
+	$cat{$cat} = MindMeld::Category->create;
+	$cat{$cat}->name($cat);
+	$cat{$cat}->active(1);
 }
+
+for(@data) {
+	my $q = MindMeld::Question->create;
+	$q->category($cat{$_->{cat}}->{_id});
+	$q->question($_->{Q});
+	$q->answer($_->{A});
+	$q->grade(0);
+}
+
+MindMeld->dbh->do('COMMIT');
 
 #mnemosyne_output(\@data);
 
