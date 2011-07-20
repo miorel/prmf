@@ -8,9 +8,9 @@ use lib qw(.);
 use MindMeld;
 use PRMF::Auth;
 
-my $cgi = MindMeld::cgi();
+my $cgi = MindMeld->cgi;
 
-print MindMeld::header();
+print MindMeld->header;
 
 my $username;
 my $login_attempt = 0;
@@ -18,7 +18,7 @@ my $login_success = 0;
 if(lc($cgi->request_method) eq 'post') {
 	$username = $cgi->param('username');
 	my $password = $cgi->param('password');
-	my $auth = PRMF::Auth->new(db => 'auth.db');
+	my $auth = PRMF::Auth->new(db => 'mm.db');
 	$login_attempt = 1;
 	$login_success = $auth->login($username, $password);
 }
@@ -35,5 +35,5 @@ else {
 	print $cgi->end_form;
 }
 
-print MindMeld::footer();
+print MindMeld->footer;
 

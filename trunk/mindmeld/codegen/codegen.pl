@@ -6,19 +6,24 @@ use strict;
 generate_code(
 	types => [
 		{name => 'question', attr => {
-			question => {type => '_text'},
-			answer => {type => '_text'},
-			category => {type => 'category'},
-			grade => {type => '_real'},
+			question => {type => '_text', constraint => 'NOT NULL'},
+			answer => {type => '_text', constraint => 'NOT NULL'},
+			category => {type => 'category', constraint => 'NOT NULL'},
+			grade => {type => '_real', constraint => 'NOT NULL'},
 		}},
 		{name => 'category', attr => {
-			name => {type => '_text'},
-			active => {type => '_boolean'},
+			name => {type => '_text', constraint => 'UNIQUE NOT NULL'},
+			active => {type => '_boolean', constraint => 'NOT NULL'},
 		}},
 		{name => 'user', attr => {
-			username => {type => '_text'},
-			password => {type => '_text'},
-			salt => {type => '_text'},
+			username => {type => '_text', constraint => 'UNIQUE NOT NULL'},
+			password => {type => '_text', constraint => 'NOT NULL'},
+			salt => {type => '_text', constraint => 'NOT NULL'},
+		}},
+		{name => 'session', attr => {
+			user => {type => 'user'},
+			location => {type => '_text'},
+			text => {type => '_text'},
 		}},
 	],
 );
@@ -59,6 +64,9 @@ sub generate_code {
 				$sql .= 'INTEGER';
 				push @uses, package_name($attr_type);
 			}
+			
+			$sql .= ' ' . $attr->{constraint} if defined $attr->{constraint};
+			
 			$attr->{sql} = $sql;
 		}
 		
@@ -69,6 +77,15 @@ sub generate_code {
 		for(qw(warnings strict), '', @uses, '') {
 			printf("%s\n", $_ ? "use $_;" : '');
 		}
+
+		# overload
+		print q`use overload
+	'""' => sub {
+		return shift->{_id};
+	},
+;
+
+`;
 
 		# a bit of POD
 		printf q^=head1 NAME
@@ -88,35 +105,69 @@ sub generate_code {
 
 		# creation
 		printf q^sub create {
-	my $package = shift;
+	my($package, %%args) = @_;
 	my $dbh = MindMeld->dbh;
-	$dbh->do('INSERT INTO %s DEFAULT VALUES');
-	my $id = MindMeld->_select('SELECT LAST_INSERT_ROWID()');
-	return $id != 0 ? $package->retrieve($id) : undef;
+	my $ret = undef;
+	my @cols = ();
+	my @vals = ();
+	for(%2$s) {
+		next if !exists($args{$_});
+		push @cols, $_;
+		push @vals, $args{$_};
+	}
+	my $sql = 'INSERT INTO %1$s ';
+	$sql .= @cols ? '(' . join(', ', @cols) . ') VALUES (' . join(', ', map {'?'} @cols) . ')' : 'DEFAULT VALUES';
+	if($dbh->prepare_cached($sql)->execute(@vals)) {
+		my $id = MindMeld->_select('SELECT LAST_INSERT_ROWID()');
+		if($id != 0 && defined($ret = $package->retrieve(id => $id))) {
+			for(0..$#cols) {
+				$ret->{'_' . $cols[$_]} = $vals[$_];
+			}
+		}
+	}
+	return $ret;
 }
 
-^, plural($name);
+^, plural($name), join(', ', map {"'$_'"} sort keys %attr);
 
 		# retrieval
 		printf q^sub retrieve {
-	my($package, $id) = @_;
-	return MindMeld->_select('SELECT COUNT(*) FROM %s WHERE id = ?', $id) == 1 ? bless({_id => $id}, $package) : undef;
+	my($package, %%args) = @_;
+	my @cols = ();
+	my @vals = ();
+	for(%2$s) {
+		next if !exists($args{$_});
+		push @cols, $_;
+		push @vals, $args{$_};
+	}
+	my $ret = undef;
+	if(@cols) {
+		my $id = MindMeld->_select('SELECT id FROM %s WHERE ' . join(' AND ', map {"$_ = ?"} @cols), @vals);
+		if($id != 0) {
+			$ret = bless({_id => $id}, $package);
+			for(0..$#cols) {
+				$ret->{'_' . $cols[$_]} = $vals[$_];
+			}
+		}
+	}
+	return $ret;
 }
 
-^, plural($name);
+^, plural($name), join(', ', map {"'$_'"} ('id', sort keys %attr));
 
 		# accessors
 		for my $attr_name (sort keys %attr) {
 			my $attr = $attr{$attr_name};
 			my $fetch_code = sprintf(q`MindMeld->_select('SELECT %1$s FROM %2$s WHERE id = ?', $self->{_id})`, $attr_name, plural($name));
-			$fetch_code = sprintf("%s->retrieve(%s)", package_name($attr->{type}), $fetch_code) if $attr->{type} !~ /^_/;
+			$fetch_code = sprintf("%s->retrieve(id => %s)", package_name($attr->{type}), $fetch_code) if $attr->{type} !~ /^_/;
 			printf q^sub %1$s {
 	my($self, $new_%1$s) = @_;
 	if(exists $_[1]) {
 		# needs some error checking!
 		my $sth = MindMeld->dbh->prepare_cached('UPDATE %2$s SET %1$s = ? WHERE id = ?');
-		$sth->execute($new_%1$s, $self->{_id});
-		$self->{_%1$s} = $new_%1$s;
+		if($sth->execute($new_%1$s, $self->{_id})) {
+			$self->{_%1$s} = $new_%1$s;
+		}
 	}
 	elsif(!exists $self->{_%1$s}) {
 		$self->{_%1$s} = %3$s;
@@ -127,7 +178,15 @@ sub generate_code {
 ^, $attr_name, plural($name), $fetch_code;
 		}
 
+		# include external code
+		my $inc_file = "include_$name.pl";
+		if(-f $inc_file) {
+			open my $fh, "<$inc_file" or die "Failed to open $inc_file for reading";
+			print while <$fh>;
+			close $fh;
+		}
+
 		# end
-		print "1;\n\n__END__\n";
+		print "1;\n";
 	}
 }

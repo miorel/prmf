@@ -20,7 +20,7 @@ else {
 
 	print MindMeld->header;
 	
-	my $c = MindMeld::Category->retrieve($cid);
+	my $c = MindMeld::Category->retrieve(id => $cid);
 	if(defined $c) {
 		my $sth = $dbh->prepare('SELECT id FROM questions WHERE category = ?');
 		$sth->execute($cid);
@@ -32,7 +32,7 @@ else {
 
 		my $count = 0;
 		for $qid (@q) {
-			my $q = MindMeld::Question->retrieve($qid);
+			my $q = MindMeld::Question->retrieve(id => $qid);
 			print $cgi->p(++$count . ". " . $cgi->a({-href => "show_question.pl?qid=$qid"}, $q->question));
 		}
 	}

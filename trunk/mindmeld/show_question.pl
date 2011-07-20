@@ -12,12 +12,12 @@ my $cgi = MindMeld->cgi;
 
 my $qid = $cgi->param('qid');
 unless(defined $qid) {
-	print $cgi->redirect(-uri => 'index.pl?action=study', -status => 302);
+	print $cgi->redirect(-uri => 'study.pl', -status => 302);
 }
 else {
 	print MindMeld->header;
 
-	my $q = MindMeld::Question->retrieve($qid);
+	my $q = MindMeld::Question->retrieve(id => $qid);
 	if(defined $q) {
 		print $cgi->p("Category: " . $cgi->a({-href => "show_category.pl?cid=" . $q->category->{_id}}, $q->category->name));
 		print $cgi->p("Question: " . $q->question);

@@ -8,11 +8,13 @@ use lib qw(.);
 use MindMeld;
 use MindMeld::Category;
 use MindMeld::Question;
+use MindMeld::User;
 
-MindMeld->dbh->do('BEGIN');
+MindMeld->dbh->begin_work;
 MindMeld::Category->_ensure_schema;
 MindMeld::Question->_ensure_schema;
-MindMeld->dbh->do('COMMIT');
+MindMeld::User->_ensure_schema;
+MindMeld->dbh->commit;
 
 my @data = ();
 while(<DATA>) {
@@ -40,27 +42,23 @@ while(<DATA>) {
 	};
 }
 
-MindMeld->dbh->do('BEGIN');
+MindMeld->dbh->begin_work;
 
 my %cat = ();
 
 for(@data) {
 	my $cat = $_->{cat};
-	next if exists $cat{$cat};
-	$cat{$cat} = MindMeld::Category->create;
-	$cat{$cat}->name($cat);
-	$cat{$cat}->active(1);
+	$cat{$cat} = MindMeld::Category->create(name => $cat, active => 1)
+		unless exists $cat{$cat};
+	MindMeld::Question->create(
+		category => $cat{$_->{cat}},
+		question => $_->{Q},
+		answer => $_->{A},
+		grade => 0,
+	);
 }
 
-for(@data) {
-	my $q = MindMeld::Question->create;
-	$q->category($cat{$_->{cat}}->{_id});
-	$q->question($_->{Q});
-	$q->answer($_->{A});
-	$q->grade(0);
-}
-
-MindMeld->dbh->do('COMMIT');
+MindMeld->dbh->commit;
 
 #mnemosyne_output(\@data);
 

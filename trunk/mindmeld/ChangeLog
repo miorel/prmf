@@ -1,3 +1,17 @@
+2011-07-20  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* codegen/codegen.pl: Code generation now allows attributes to name
+	  constraints. Generated create() and retrieve() now allow specifying
+	  attribute values (to set initialy, and search by, respectively).
+	  Overloaded stringify ("") of generated classes to give the id.
+	* amino_acids.pl, states.pl: Changed to use improved constructors.
+	* css/green.css: Moved stylesheet outside of code.
+	* study.pl: Using visibiliy:hidden rather than display:none for initial
+	  hiding of the answer.
+	* MindMeld.pm: Changed header() to produce valid HTML5 and added code for
+	  log in form. Currently causes a lot of quirks with pages that expect
+	  other parameters.
+
 2011-07-19  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* codegen, codegen/codegen.pl, codegen/exec.sh, codegen/pipe.pl: Playing
@@ -6,8 +20,6 @@
 	  multiple files, started taking advantage of some of the generated code.
 	* MindMeld.pm, amino_acids.pl, show_category.pl, show_question.pl,
 	  states.pl: Mostly refactoring to work with generated code.
-	* Makefile: Added target for generating code, made sure it gets included
-	  in distribution tarball.
 
 2011-07-17  Miorel-Lucian Palii <mlpalii@gmail.com>
 

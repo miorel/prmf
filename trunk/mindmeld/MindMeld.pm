@@ -6,6 +6,8 @@ use strict;
 use CGI;
 use DBI;
 
+use PRMF::Auth;
+
 use constant QUESTION_ID_FROM_QUESTIONS => 'questions.id';
 use constant QUESTION_TEXT_FROM_QUESTIONS => 'questions.question';
 use constant ANSWER_FROM_QUESTIONS => 'questions.answer';
@@ -17,11 +19,13 @@ use constant CATEGORY_NAME_FROM_QUESTIONS => sprintf("(SELECT %s FROM categories
 use constant ACTIVE_FROM_CATEGORIES => 'categories.active';
 use constant ACTIVE_FROM_QUESTIONS => sprintf("(SELECT %s FROM categories WHERE %s = %s)", ACTIVE_FROM_CATEGORIES, CATEGORY_ID_FROM_CATEGORIES, CATEGORY_ID_FROM_QUESTIONS);
 
-my $info_str = 'MindMeld beta 201107192042';
+my $info_str = 'MindMeld beta 201107200721';
 my($cgi, $dbh);
 
 sub cgi {
-	$cgi = CGI->new;
+	$cgi = CGI->new
+		unless defined $cgi;
+	return $cgi;
 }
 
 sub dbh {
@@ -40,98 +44,75 @@ sub _select {
 }
 
 sub header {
-	my $cgi = cgi();
+	my $package = shift;
+	
+	my $cgi = $package->cgi;
+	
 	my @actions = (
 		['study.pl' => 'Study'],
 		['options.pl' => 'Options'],
 		['stats.pl' => 'Statistics'],
 	);
+	my $title = $package->info_str;
 	
-	my $title = info_str();
+	my $username;
+	my $login_attempt = 0;
+	my $login_success = 0;
+	if(lc($cgi->request_method) eq 'post') {
+		$username = $cgi->param('username');
+		my $password = $cgi->param('password');
+		my $auth = PRMF::Auth->new(db => 'mm.db');
+		$login_attempt = 1;
+		$login_success = $auth->login($username, $password);
+	}
+	
+	my $login_div;
+	if($login_success) {
+		$login_div = "Welcome, <strong>$username</strong>!";
+	}
+	else {
+		$login_div =
+			$cgi->start_form(-action => $cgi->url(-query => 1)) .
+			'Username: ' .
+			$cgi->textfield(-name => 'username', -value => '', -size => 12, -maxlength => 16) .
+			' Password: ' .
+			$cgi->password_field(-name => 'password', -value => '', -size => 12, -maxlength => 16, -override => 1) .
+			' ' .
+			$cgi->submit('Log in') .
+			$cgi->end_form;
+		$login_div .= '<p>Wrong username or password!</p>' if $login_attempt;
+	}
 	
 	return
-		$cgi->header . qq`<html>
+		qq`Content-Type: text/html; charset=utf-8
+
+<!DOCTYPE html>
+<html lang="en-US">
 <head>
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="css/green.css" />
+<meta name="description" content="$title" />
 <title>$title</title>
-<style type="text/css">
-body {
-	margin: 0;
-	font-size: 100%;
-}
-
-a {
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-#topbar {
-	position: relative;
-	background-color: 228b22;
-	height: 50px;
-	color: fff;
-	text-align: center;
-}
-
-#logo {
-	position: absolute;
-}
-
-#beta {
-	position: absolute;
-	font-size: 2em;
-	left: 197px;
-}
-
-#taskbar {
-	position: absolute;
-	top: 18px;
-	height: 32px;
-	left: 280px;
-	
-	background-color: 2aab2a;
-	text-align: left;
-	line-height: 2em;
-	font-weight: bold;
-	font-family: sans-serif;
-	font-size: 1em;
-}
-
-#taskbar a {
-	color: fff;
-	text-decoration: none;
-	display: inline-block;
-	margin: 0 0 0 0;
-	padding: 0 10px 0 10px;
-	height: 2em;
-}
-
-#taskbar a:hover {
-	background-color: 33d133;
-	
-}
-
-</style>
 </head>
 <body>
 <div id="topbar">
-	<div id="logo"><a href="index.pl"><img src="mindmeld.png" height="50px" border="0"/></a></div>
+	<div id="logo"><a href="index.pl"><img src="mindmeld.png" height="50" alt="MindMeld"/></a></div>
 	<div id="beta">&beta;</div>
-	<div id="taskbar">
-		` .
-	join(" | ", map {$cgi->a({-href => $_->[0]}, $_->[1])} @actions) . q`
-	</div>
+	<div id="taskbar">` .
+	join(" | ", map {$cgi->a({-href => $_->[0]}, $_->[1])} @actions) . qq`
+	</div><div id="login">$login_div</div>` . 
+
+q`
 </div>
 <div style="margin:5px 5px 5px 5px">`;
 }
 
 sub footer {
-	my $cgi = cgi();
+	my $package = shift;
+	my $cgi = $package->cgi;
 	return
 		$cgi->hr .
-		$cgi->p(info_str()) .
+		$cgi->p($package->info_str) .
 		$cgi->p('Copyright &copy; 2011 Miorel-Lucian Palii') .
 		q`</div>` .
 		$cgi->end_html;
