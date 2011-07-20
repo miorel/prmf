@@ -8,9 +8,13 @@
 	* css/green.css: Moved stylesheet outside of code.
 	* study.pl: Using visibiliy:hidden rather than display:none for initial
 	  hiding of the answer.
-	* MindMeld.pm: Changed header() to produce valid HTML5 and added code for
-	  log in form. Currently causes a lot of quirks with pages that expect
-	  other parameters.
+	* index.pl: Added registration form. Some cosmetic changes.
+	* MindMeld.pm: Changed header() to produce valid HTML5. Added code for
+	  log in form, using cookies to establish a session, rather insecurely (no
+	  server-side session expiration, no ). Currently causes a few quirks
+	  with pages that expect other parameters.
+	* login.pl, register.pl: Deleting, as their function is now implemented
+	  elsewhere.
 
 2011-07-19  Miorel-Lucian Palii <mlpalii@gmail.com>
 

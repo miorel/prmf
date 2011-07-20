@@ -11,7 +11,8 @@ use MindMeld::Question;
 
 my $cgi = MindMeld->cgi;
 
-my $cid = $cgi->param('cid');
+my $cid = $cgi->param('id');
+$cid = $cgi->url_param('id') if !defined($cid);
 unless(defined $cid) {
 	print $cgi->redirect(-uri => 'study.pl', -status => 302);
 }
@@ -33,7 +34,7 @@ else {
 		my $count = 0;
 		for $qid (@q) {
 			my $q = MindMeld::Question->retrieve(id => $qid);
-			print $cgi->p(++$count . ". " . $cgi->a({-href => "show_question.pl?qid=$qid"}, $q->question));
+			print $cgi->p(++$count . ". " . $cgi->a({-href => "show_question.pl?id=$qid"}, $q->question));
 		}
 	}
 	else {

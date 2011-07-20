@@ -21,9 +21,9 @@ generate_code(
 			salt => {type => '_text', constraint => 'NOT NULL'},
 		}},
 		{name => 'session', attr => {
-			user => {type => 'user'},
-			location => {type => '_text'},
-			text => {type => '_text'},
+			user => {type => 'user', constraint => 'NOT NULL'},
+#			location => {type => '_text', constraint => 'NOT NULL'},
+			text => {type => '_text', constraint => 'UNIQUE NOT NULL'},
 		}},
 	],
 );

@@ -6,6 +6,7 @@ use strict;
 use CGI;
 use DBI;
 
+use MindMeld::Session;
 use PRMF::Auth;
 
 use constant QUESTION_ID_FROM_QUESTIONS => 'questions.id';
@@ -55,38 +56,66 @@ sub header {
 	);
 	my $title = $package->info_str;
 	
-	my $username;
+	my $user;
 	my $login_attempt = 0;
-	my $login_success = 0;
+	my $cookie;
 	if(lc($cgi->request_method) eq 'post') {
-		$username = $cgi->param('username');
-		my $password = $cgi->param('password');
-		my $auth = PRMF::Auth->new(db => 'mm.db');
-		$login_attempt = 1;
-		$login_success = $auth->login($username, $password);
+		my $action = $cgi->param('action');
+		if(defined($action) && $action eq 'login') {
+			$login_attempt = 1;
+			my $auth = PRMF::Auth->new(db => 'mm.db');
+			my $username = $cgi->param('username');
+			if($auth->login($username, $cgi->param('password'))) {
+				$user = MindMeld::User->retrieve(username => $username);
+				if(defined($user)) {
+					# insecure!
+					my $text = join('', map {my @arr = ('A'..'Z', 'a'..'z', 0..9, '.', '/'); $arr[int(rand(scalar(@arr)))]} 1..32);
+					my $session = MindMeld::Session->create(user => $user, text => $text);
+					if(defined($session)) {
+						$cookie = $cgi->cookie(-name => 'mindmeld', -value => $text, -expires => '+15m');
+					}
+					else {
+						undef $user;
+					}
+				}
+			}
+		}
+	}
+	elsif(defined($cookie = $cgi->cookie('mindmeld'))) {
+		my $session = MindMeld::Session->retrieve(text => $cookie);
+		undef $cookie;
+		if(defined($session)) {
+			$user = $session->user;
+			if(defined($user)) {
+				$cookie = $cgi->cookie(-name => 'mindmeld', -value => $session->text, -expires => '+15m');
+			}
+		}
 	}
 	
 	my $login_div;
-	if($login_success) {
-		$login_div = "Welcome, <strong>$username</strong>!";
+	if($user) {
+		$login_div = "Welcome, <strong>" . ($user->username) . "</strong>!";
 	}
 	else {
 		$login_div =
-			$cgi->start_form(-action => $cgi->url(-query => 1)) .
+			$cgi->start_form(-action => $cgi->url(-full => 1, -query => 1)) .
+			$cgi->hidden(-name => 'action', -default => 'login', -override => 1) .
 			'Username: ' .
-			$cgi->textfield(-name => 'username', -value => '', -size => 12, -maxlength => 16) .
+			$cgi->textfield(-name => 'username', -value => '', -size => 12, -maxlength => 32) .
 			' Password: ' .
-			$cgi->password_field(-name => 'password', -value => '', -size => 12, -maxlength => 16, -override => 1) .
+			$cgi->password_field(-name => 'password', -value => '', -size => 12, -maxlength => 32, -override => 1) .
 			' ' .
 			$cgi->submit('Log in') .
 			$cgi->end_form;
 		$login_div .= '<p>Wrong username or password!</p>' if $login_attempt;
 	}
+
+	my @header_args = (-Content_Type => 'text/html; charset=utf-8');
+	push @header_args, -cookie => $cookie if defined $cookie;
 	
 	return
-		qq`Content-Type: text/html; charset=utf-8
-
-<!DOCTYPE html>
+		$cgi->header(@header_args) .
+		qq`<!DOCTYPE html>
 <html lang="en-US">
 <head>
 <meta charset="utf-8" />
@@ -103,18 +132,16 @@ sub header {
 	</div><div id="login">$login_div</div>` . 
 
 q`
-</div>
-<div style="margin:5px 5px 5px 5px">`;
+</div><div style="padding:5px;">`;
 }
 
 sub footer {
 	my $package = shift;
 	my $cgi = $package->cgi;
 	return
-		$cgi->hr .
+		q`</div><div style="clear:both;border-top:1px solid black;padding:5px;">` .
 		$cgi->p($package->info_str) .
-		$cgi->p('Copyright &copy; 2011 Miorel-Lucian Palii') .
-		q`</div>` .
+		$cgi->p('Copyright &copy; 2011 Miorel-Lucian Palii') . '</div>' .
 		$cgi->end_html;
 }
 

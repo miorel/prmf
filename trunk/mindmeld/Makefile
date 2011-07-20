@@ -8,7 +8,7 @@ mindmeld-dist.tbz2: $(PAGES) mm.db MindMeld.pm htaccess mindmeld.png codegen
 	mkdir mindmeld-dist/{MindMeld,img,css}
 	cp mm.db MindMeld.pm htaccess mindmeld.png mindmeld-dist
 	cp $(PAGES) mindmeld-dist
-	cp login.pl register.pl mindmeld-dist 
+	cp login.pl mindmeld-dist 
 	cp codegen/dist/MindMeld/* mindmeld-dist/MindMeld
 	yui-compressor css/green.css > mindmeld-dist/css/green.css
 	chmod -R go-rwx mindmeld-dist

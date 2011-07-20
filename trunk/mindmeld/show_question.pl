@@ -10,7 +10,8 @@ use MindMeld::Question;
 
 my $cgi = MindMeld->cgi;
 
-my $qid = $cgi->param('qid');
+my $qid = $cgi->param('id');
+$qid = $cgi->url_param('id') if !defined($qid);
 unless(defined $qid) {
 	print $cgi->redirect(-uri => 'study.pl', -status => 302);
 }

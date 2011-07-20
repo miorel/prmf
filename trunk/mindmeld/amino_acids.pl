@@ -9,11 +9,13 @@ use MindMeld;
 use MindMeld::Category;
 use MindMeld::Question;
 use MindMeld::User;
+use MindMeld::Session;
 
 MindMeld->dbh->begin_work;
 MindMeld::Category->_ensure_schema;
 MindMeld::Question->_ensure_schema;
 MindMeld::User->_ensure_schema;
+MindMeld::Session->_ensure_schema;
 MindMeld->dbh->commit;
 
 my @data = ();
