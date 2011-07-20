@@ -15,7 +15,6 @@ while(<>) {
 		open $fh, ">$file" or die "Failed to open $file for writing";
 	}
 	print $fh $_;
-	print;
 }
 
 close $fh if defined $fh;

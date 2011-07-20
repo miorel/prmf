@@ -1,3 +1,14 @@
+2011-07-19  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* codegen, codegen/codegen.pl, codegen/exec.sh, codegen/pipe.pl: Playing
+	  with some code generation for Perl packages to abstract away the SQL.
+	* index.pl, options.pl, set_grade.pl, stats.pl, study.pl: Refactored into
+	  multiple files, started taking advantage of some of the generated code.
+	* MindMeld.pm, amino_acids.pl, show_category.pl, show_question.pl,
+	  states.pl: Mostly refactoring to work with generated code.
+	* Makefile: Added target for generating code, made sure it gets included
+	  in distribution tarball.
+
 2011-07-17  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* mindmeld.xcf, mindmeld.png, Makefile: Made a simple logo (and added it to

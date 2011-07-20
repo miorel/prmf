@@ -13,7 +13,7 @@ my $cgi = MindMeld->cgi;
 
 my $cid = $cgi->param('cid');
 unless(defined $cid) {
-	print $cgi->redirect(-uri => 'index.pl?action=study', -status => 302);
+	print $cgi->redirect(-uri => 'study.pl', -status => 302);
 }
 else {
 	my $dbh = MindMeld->dbh;

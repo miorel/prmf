@@ -17,7 +17,7 @@ use constant CATEGORY_NAME_FROM_QUESTIONS => sprintf("(SELECT %s FROM categories
 use constant ACTIVE_FROM_CATEGORIES => 'categories.active';
 use constant ACTIVE_FROM_QUESTIONS => sprintf("(SELECT %s FROM categories WHERE %s = %s)", ACTIVE_FROM_CATEGORIES, CATEGORY_ID_FROM_CATEGORIES, CATEGORY_ID_FROM_QUESTIONS);
 
-my $info_str = 'MindMeld beta 201107191242';
+my $info_str = 'MindMeld beta 201107192042';
 my($cgi, $dbh);
 
 sub cgi {
@@ -42,9 +42,9 @@ sub _select {
 sub header {
 	my $cgi = cgi();
 	my @actions = (
-		['study' => 'Study'],
-		['opts' => 'Options'],
-		['stats' => 'Statistics'],
+		['study.pl' => 'Study'],
+		['options.pl' => 'Options'],
+		['stats.pl' => 'Statistics'],
 	);
 	
 	my $title = info_str();
@@ -121,7 +121,7 @@ a:hover {
 	<div id="beta">&beta;</div>
 	<div id="taskbar">
 		` .
-	join(" | ", map {$cgi->a({-href => "index.pl?action=$_->[0]"}, $_->[1])} @actions) . q`
+	join(" | ", map {$cgi->a({-href => $_->[0]}, $_->[1])} @actions) . q`
 	</div>
 </div>
 <div style="margin:5px 5px 5px 5px">`;
