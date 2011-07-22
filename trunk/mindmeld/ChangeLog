@@ -1,3 +1,18 @@
+2011-07-22  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* codegen/codegen.pl: Started making use of foreign keys. Implemented
+	  destroy() method for deleting objects from database (but I don't think I
+	  can do anything about existing references to now invalid objects).
+	* MindMeld.pm: Updated _dbh() method to create the proper tables if the
+	  database file didn't exist. Refactored login handling in a few new
+	  methods.
+	* amino_acids.pl, states.pl: Removed code that ensured schemata as it's no
+	  longer necessary here.
+	* logout.pl: Implemented log out page.
+	* set_grade.pl, study.pl: Non-integer grades now allowed after changing
+	  grade links to image map box.
+	* pixel.png: Single transparent pixel image (for use in image maps).
+
 2011-07-20  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* codegen/codegen.pl: Code generation now allows attributes to name

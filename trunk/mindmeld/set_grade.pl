@@ -12,10 +12,15 @@ print $cgi->redirect(-uri => 'study.pl', -status => 302);
 
 my $dbh = MindMeld->dbh;
 
-my $grade = $cgi->param('grade');
+my $width = 400;
+
 my $qid = $cgi->param('id');
-if(defined($grade) && defined($qid)) {
-	# needs error checking
-	$dbh->prepare("UPDATE questions SET grade = ? WHERE id = ?")->execute($grade, $qid);
+my $gc = $cgi->param('gc');
+if(defined($gc) && defined($qid) && $gc =~ /^\??(\d{1,5})/) {
+	my $grade = $1;
+	if($grade >= 0 && $grade < $width) {
+		$grade = $grade / ($width - 1) * 5;
+		$dbh->prepare("UPDATE questions SET grade = ? WHERE id = ?")->execute($grade, $qid);
+	}
 }
 

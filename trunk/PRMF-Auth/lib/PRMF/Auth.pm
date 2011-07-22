@@ -22,7 +22,6 @@ sub new {
 	my($pkg, %opts) = @_;
 	return bless({
 		db => $opts{db},
-		
 		err => undef,
 	}, $pkg);
 }

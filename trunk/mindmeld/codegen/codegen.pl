@@ -24,6 +24,7 @@ generate_code(
 			user => {type => 'user', constraint => 'NOT NULL'},
 #			location => {type => '_text', constraint => 'NOT NULL'},
 			text => {type => '_text', constraint => 'UNIQUE NOT NULL'},
+			expires => {type => '_integer'}, #, constraint => 'NOT NULL DEFAULT'},
 		}},
 	],
 );
@@ -52,6 +53,8 @@ sub generate_code {
 		
 		my @uses = ('DBI', '', 'MindMeld');
 		
+		my @foreign_keys = ();
+		
 		my %attr = %{$_->{attr}};
 		for my $attr_name (keys %attr) {
 			my $attr = $attr{$attr_name};
@@ -63,6 +66,7 @@ sub generate_code {
 			else {
 				$sql .= 'INTEGER';
 				push @uses, package_name($attr_type);
+				push @foreign_keys, sprintf('FOREIGN KEY(%s) REFERENCES %s(%s)', $attr_name, plural($attr_type), 'id');
 			}
 			
 			$sql .= ' ' . $attr->{constraint} if defined $attr->{constraint};
@@ -100,7 +104,7 @@ sub generate_code {
 		printf q^sub _ensure_schema {
 	my $dbh = MindMeld->dbh;
 	$dbh->do('CREATE TABLE IF NOT EXISTS %s (%s)');
-^, plural($name), join(', ', 'id INTEGER PRIMARY KEY', (grep {defined $_} map {$attr{$_}->{sql}} sort keys %attr));
+^, plural($name), join(', ', 'id INTEGER PRIMARY KEY', (grep {defined $_} map {$attr{$_}->{sql}} sort keys %attr), @foreign_keys);
 		print "}\n\n";
 
 		# creation
@@ -129,6 +133,16 @@ sub generate_code {
 }
 
 ^, plural($name), join(', ', map {"'$_'"} sort keys %attr);
+
+		# deletion
+		printf q^sub destroy {
+	my $self = shift;
+	my $ret = MindMeld->dbh->prepare_cached('DELETE FROM %1$s WHERE id = ?')->execute($self->{_id});
+	%%$self = () if $ret;
+	return $ret;
+}
+
+^, plural($name);
 
 		# retrieval
 		printf q^sub retrieve {
@@ -169,7 +183,7 @@ sub generate_code {
 			$self->{_%1$s} = $new_%1$s;
 		}
 	}
-	elsif(!exists $self->{_%1$s}) {
+	if(!exists $self->{_%1$s}) {
 		$self->{_%1$s} = %3$s;
 	}
 	return $self->{_%1$s};

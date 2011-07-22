@@ -74,3 +74,10 @@ img {
 	font-size: 200%;
 }
 
+#gr a {
+	background-color: #2aab2a;
+	border: 1px solid #000000;
+	width: 400px;
+	height: 50px;
+	display: inline-block;
+}

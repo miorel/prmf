@@ -28,11 +28,12 @@ $sth->execute;
 my($qid, $question, $answer, $category, $cid, $grade) = $sth->fetchrow_array;
 if(defined($qid)) {
 	print $cgi->p("Category: " . $cgi->a({-href => "show_category.pl?id=$cid"}, $category));
-	print $cgi->div({-style => 'text-align:center;'},
-		$cgi->p({-id => 'q'}, $question),
-		$cgi->p({-id => 'a', -style => 'visibility:hidden;'}, $answer),
-		$cgi->p({-id => 'sa'}, $cgi->a({-href => 'javascript:void(0);', -onclick => q{javascript:document.getElementById('sa').style.display='none';document.getElementById('a').style.visibility='visible';document.getElementById('gr').style.display='block';}}, 'Show Answer')),
-		$cgi->p({-id => 'gr', -style => 'display:none;'}, "Grade: " . join(" ", map {$cgi->a({-href => "set_grade.pl?id=$qid&grade=$_"}, $_)} 0..5)),
+	print $cgi->div({-style => 'text-align:center;'}, 
+		$cgi->p({-id => 'q'}, $question) .
+		$cgi->p({-id => 'a', -style => 'visibility:hidden;'}, $answer) .
+		$cgi->p({-id => 'sa'}, $cgi->a({-href => 'javascript:void(0);', -onclick => q{javascript:document.getElementById('sa').style.display='none';document.getElementById('a').style.visibility='visible';document.getElementById('gr').style.display='block';;document.getElementById('help').style.display='block';}}, 'Show Answer')) .
+		$cgi->p({-id => 'gr', -style => 'display:none;'}, qq^<a href="set_grade.pl?id=$qid&gc="><img src="pixel.png" width="400" height="50" ismap alt="target" /></a>^) .
+		'<p id="help" style="display:none;">Click the box to indicate how well you knew the answer. Left is no knowledge, right is perfect knowledge.</p>'
 	);
 }
 else {

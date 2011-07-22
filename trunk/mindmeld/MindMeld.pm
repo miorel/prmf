@@ -20,8 +20,9 @@ use constant CATEGORY_NAME_FROM_QUESTIONS => sprintf("(SELECT %s FROM categories
 use constant ACTIVE_FROM_CATEGORIES => 'categories.active';
 use constant ACTIVE_FROM_QUESTIONS => sprintf("(SELECT %s FROM categories WHERE %s = %s)", ACTIVE_FROM_CATEGORIES, CATEGORY_ID_FROM_CATEGORIES, CATEGORY_ID_FROM_QUESTIONS);
 
-my $info_str = 'MindMeld beta 201107200721';
-my($cgi, $dbh);
+my $info_str = 'MindMeld beta 201107221337';
+my $dbfile = 'mm.db';
+my($cgi, $dbh, $cookie, $user, $session, $login_attempt);
 
 sub cgi {
 	$cgi = CGI->new
@@ -30,8 +31,17 @@ sub cgi {
 }
 
 sub dbh {
-	$dbh = DBI->connect('dbi:SQLite:dbname=mm.db', '', '')
-		unless defined $dbh;
+	unless(defined $dbh) {
+		my $exists = -f $dbfile; # there's technically a race condition here, but amusingly it has no negative consequences, so I'm letting it be
+		$dbh = DBI->connect("dbi:SQLite:dbname=$dbfile", '', '');
+		if(!$exists) {
+			MindMeld::Category->_ensure_schema;
+			MindMeld::Question->_ensure_schema;
+			MindMeld::Session->_ensure_schema;
+			MindMeld::User->_ensure_schema;
+		}
+		$dbh->do('PRAGMA foreign_keys = ON');
+	}
 	return $dbh;
 }
 
@@ -42,6 +52,62 @@ sub _select {
 	my $ret = ($sth->fetchrow_array)[0];
 	$sth->fetch; # deactivate
 	return $ret;
+}
+
+sub user {
+	my $package = shift;
+	$package->_handle_login;
+	$user = $session->user
+		if defined($session) && !defined($user);
+	return $user;
+}
+
+sub session {
+	my $package = shift;
+	$package->_handle_login;
+	return $session;
+}
+
+sub login_attempted {
+	my $package = shift;
+	$package->_handle_login;
+	return $login_attempt;
+}
+
+sub cookie {
+	my $package = shift;
+	$package->_handle_login;
+	$cookie = $package->cgi->cookie(-name => 'mindmeld', -value => $session->text, -expires => '+15m')
+		if defined($session) && !defined($cookie);
+	return $cookie;
+}
+
+sub _handle_login {
+	return if defined $login_attempt;
+	my $package = shift;
+	my $cgi = $package->cgi;
+	$login_attempt = 0;
+	if(lc($cgi->request_method) eq 'post') {
+		my $action = $cgi->param('action');
+		if(defined($action) && $action eq 'login') {
+			$login_attempt = 1;
+			my $auth = PRMF::Auth->new(db => 'mm.db');
+			my $username = $cgi->param('username');
+			if($auth->login($username, $cgi->param('password'))) {
+				$user = MindMeld::User->retrieve(username => $username);
+				if(defined($user)) {
+					# insecure!
+					my $text = join('', map {my @arr = ('A'..'Z', 'a'..'z', 0..9, '.', '/'); $arr[int(rand(scalar(@arr)))]} 1..32);
+					$session = MindMeld::Session->create(user => $user, text => $text, expires => (time + 15 * 60));
+					undef $user if !defined($session);
+				}
+			}
+		}
+	}
+	else {
+		$session = MindMeld::Session->retrieve(text => $cgi->cookie('mindmeld'));
+		$session->destroy if defined($session) && ($session->expires < time);
+	}
 }
 
 sub header {
@@ -56,45 +122,12 @@ sub header {
 	);
 	my $title = $package->info_str;
 	
-	my $user;
-	my $login_attempt = 0;
-	my $cookie;
-	if(lc($cgi->request_method) eq 'post') {
-		my $action = $cgi->param('action');
-		if(defined($action) && $action eq 'login') {
-			$login_attempt = 1;
-			my $auth = PRMF::Auth->new(db => 'mm.db');
-			my $username = $cgi->param('username');
-			if($auth->login($username, $cgi->param('password'))) {
-				$user = MindMeld::User->retrieve(username => $username);
-				if(defined($user)) {
-					# insecure!
-					my $text = join('', map {my @arr = ('A'..'Z', 'a'..'z', 0..9, '.', '/'); $arr[int(rand(scalar(@arr)))]} 1..32);
-					my $session = MindMeld::Session->create(user => $user, text => $text);
-					if(defined($session)) {
-						$cookie = $cgi->cookie(-name => 'mindmeld', -value => $text, -expires => '+15m');
-					}
-					else {
-						undef $user;
-					}
-				}
-			}
-		}
-	}
-	elsif(defined($cookie = $cgi->cookie('mindmeld'))) {
-		my $session = MindMeld::Session->retrieve(text => $cookie);
-		undef $cookie;
-		if(defined($session)) {
-			$user = $session->user;
-			if(defined($user)) {
-				$cookie = $cgi->cookie(-name => 'mindmeld', -value => $session->text, -expires => '+15m');
-			}
-		}
-	}
+	my $user = $package->user;
 	
 	my $login_div;
 	if($user) {
-		$login_div = "Welcome, <strong>" . ($user->username) . "</strong>!";
+		$login_div = "Welcome, <strong>" . ($user->username) . "</strong>! " .
+			$cgi->a({-href => 'logout.pl'}, "Log out");
 	}
 	else {
 		$login_div =
@@ -107,10 +140,11 @@ sub header {
 			' ' .
 			$cgi->submit('Log in') .
 			$cgi->end_form;
-		$login_div .= '<p>Wrong username or password!</p>' if $login_attempt;
+		$login_div .= '<p>Wrong username or password!</p>' if $package->login_attempted;
 	}
 
 	my @header_args = (-Content_Type => 'text/html; charset=utf-8');
+	my $cookie = $package->cookie;
 	push @header_args, -cookie => $cookie if defined $cookie;
 	
 	return

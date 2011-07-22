@@ -52,7 +52,6 @@ else {
 	print $cgi->end_form;
 }
 
-
 print q`</div></div>`;
 
 print MindMeld->footer;
