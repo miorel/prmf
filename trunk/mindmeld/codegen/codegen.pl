@@ -9,11 +9,9 @@ generate_code(
 			question => {type => '_text', constraint => 'NOT NULL'},
 			answer => {type => '_text', constraint => 'NOT NULL'},
 			category => {type => 'category', constraint => 'NOT NULL'},
-			grade => {type => '_real', constraint => 'NOT NULL'},
 		}},
 		{name => 'category', attr => {
 			name => {type => '_text', constraint => 'UNIQUE NOT NULL'},
-			active => {type => '_boolean', constraint => 'NOT NULL'},
 		}},
 		{name => 'user', attr => {
 			username => {type => '_text', constraint => 'UNIQUE NOT NULL'},
@@ -24,7 +22,18 @@ generate_code(
 			user => {type => 'user', constraint => 'NOT NULL'},
 #			location => {type => '_text', constraint => 'NOT NULL'},
 			text => {type => '_text', constraint => 'UNIQUE NOT NULL'},
-			expires => {type => '_integer'}, #, constraint => 'NOT NULL DEFAULT'},
+			expires => {type => '_integer', constraint => 'NOT NULL'},
+		}},
+		{name => 'user_question_rel', sql => 'UNIQUE(user, question) ON CONFLICT REPLACE', attr => {
+			user => {type => 'user', constraint => 'NOT NULL'},
+			question => {type => 'question', constraint => 'NOT NULL'},
+			grade => {type => '_real', constraint => 'NOT NULL DEFAULT 0'},
+			easiness => {type => '_real', constraint => 'NOT NULL DEFAULT 2.5'},
+		}},
+		{name => 'user_category_rel', sql => 'UNIQUE(user, category) ON CONFLICT REPLACE', attr => {
+			user => {type => 'user', constraint => 'NOT NULL'},
+			category => {type => 'category', constraint => 'NOT NULL'},
+			active => {type => '_boolean', constraint => 'NOT NULL DEFAULT 1'},
 		}},
 	],
 );
@@ -104,7 +113,7 @@ sub generate_code {
 		printf q^sub _ensure_schema {
 	my $dbh = MindMeld->dbh;
 	$dbh->do('CREATE TABLE IF NOT EXISTS %s (%s)');
-^, plural($name), join(', ', 'id INTEGER PRIMARY KEY', (grep {defined $_} map {$attr{$_}->{sql}} sort keys %attr), @foreign_keys);
+^, plural($name), join(', ', 'id INTEGER PRIMARY KEY', (grep {defined $_} map {$attr{$_}->{sql}} sort keys %attr), @foreign_keys, ($_->{sql} ? $_->{sql} : ()) );
 		print "}\n\n";
 
 		# creation

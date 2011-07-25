@@ -1,13 +1,33 @@
+2011-07-23  Miorel-Lucian Palii <mlpalii@gmail.com>
+
+	* codegen/codegen.pl: Created user/question relationship class to hold
+	  question grades and user/category relationship class to hold
+	* set_grade.pl: Sets grades for the logged-in user, does nothing if no
+	  user is logged in.
+	* show_question.pl: Doesn't show grade anymore (because it's no longer a
+	  question attribute).
+	* stats.pl, options.pl: Now require a user to be logged in, showing grade
+	  statistics and active categories for that user, respectively.
+	* MindMeld.pm: Removed all the various SQL constants as they're not being
+	  used anymore. Changed layout to create rounded corners using some <div>s
+	  and images.
+	* green.css: Added style for the new elements.
+	* circle.svg: Circle picture that can be used to generate the rounded
+	  corner images.
+	* Makefile: Added make rules for the rounded corner images.
+	* questions/symbols.pl: Added code for periodic table questions.
+
 2011-07-22  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* codegen/codegen.pl: Started making use of foreign keys. Implemented
 	  destroy() method for deleting objects from database (but I don't think I
-	  can do anything about existing references to now invalid objects).
+	  can do anything about existing references to now invalid objects). Added
+	  expiration attribute to sessions.
 	* MindMeld.pm: Updated _dbh() method to create the proper tables if the
 	  database file didn't exist. Refactored login handling in a few new
-	  methods.
-	* amino_acids.pl, states.pl: Removed code that ensured schemata as it's no
-	  longer necessary here.
+	  methods. Started enforcing session expiration.
+	* questions/amino_acids.pl, questions/states.pl: Removed code that ensured
+	  schemata as it's no longer necessary here.
 	* logout.pl: Implemented log out page.
 	* set_grade.pl, study.pl: Non-integer grades now allowed after changing
 	  grade links to image map box.
@@ -19,7 +39,8 @@
 	  constraints. Generated create() and retrieve() now allow specifying
 	  attribute values (to set initialy, and search by, respectively).
 	  Overloaded stringify ("") of generated classes to give the id.
-	* amino_acids.pl, states.pl: Changed to use improved constructors.
+	* questions/amino_acids.pl, questions/states.pl: Changed to use improved
+	  constructors.
 	* css/green.css: Moved stylesheet outside of code.
 	* study.pl: Using visibiliy:hidden rather than display:none for initial
 	  hiding of the answer.
@@ -37,8 +58,8 @@
 	  with some code generation for Perl packages to abstract away the SQL.
 	* index.pl, options.pl, set_grade.pl, stats.pl, study.pl: Refactored into
 	  multiple files, started taking advantage of some of the generated code.
-	* MindMeld.pm, amino_acids.pl, show_category.pl, show_question.pl,
-	  states.pl: Mostly refactoring to work with generated code.
+	* MindMeld.pm, questions/amino_acids.pl, show_category.pl, show_question.pl,
+	  questions/states.pl: Mostly refactoring to work with generated code.
 
 2011-07-17  Miorel-Lucian Palii <mlpalii@gmail.com>
 
@@ -69,9 +90,9 @@
 	  a distribution tarball for easy deployment.
 	* mm.db: Removing question database from the repository now that it can
 	  just be regenerated during the build process.
-	* MindMeld.pm, index,pl, amino_acids.pl, states.pl: Reduced code
-	  duplication (and improved cleanliness a bit) by moving a few things into
-	  a (very bad) module.
+	* MindMeld.pm, index,pl, questions/amino_acids.pl, questions/states.pl:
+	  Reduced code duplication (and improved cleanliness a bit) by moving a few
+	  things into a (very bad) module.
 	* register.pl, login.pl: Hacked together a registration and login script,
 	  using Digest::SHA to avoid storing plaintext passwords, as well as per
 	  user salts. Some basic validation is applied (length, characters used).
@@ -80,11 +101,11 @@
 
 	* index.pl: Added concept of categories, which may be enabled or disabled
 	  through a new options page.
-	* amino_acids.pl: Generator script for questions about the amino acid
+	* questions/amino_acids.pl: Generator script for questions about the amino acid
 	  abbreviations.
 	* mm.db, states.db: Renamed database file now that there's more than one
 	  topic.
-	* states.pl: Updated generator script to use new database schema.
+	* questions/states.pl: Updated generator script to use new database schema.
 
 2011-06-26  Miorel-Lucian Palii <mlpalii@gmail.com>
 
@@ -94,7 +115,7 @@
 	  now asked randomly from those with lowest grade. Implmented basic
 	  statistics page to show grade distribution.
 	* states.db: Database with questions about the US state capitals. 
-	* states.pl: Generator script for the question database.
+	* questions/states.pl: Generator script for the question database.
 
 2011-06-25  Miorel-Lucian Palii <mlpalii@gmail.com>
 

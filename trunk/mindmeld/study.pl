@@ -12,27 +12,38 @@ my $dbh = MindMeld->dbh;
 
 print MindMeld->header;
 
-my $show_question = 0;
+my $user = MindMeld->user;
+my $sql;
+my @args = ();
+if(defined $user) {
+	my $max_new = 5;
+	
+	my $cat_is_active = '(SELECT active FROM user_category_rels WHERE user = ? AND category = %s) = 1';
+	my $cat_is_active_from_uqr = sprintf($cat_is_active, '(SELECT category FROM questions WHERE id = user_question_rels.question)');
+	my $cat_is_active_from_q = sprintf($cat_is_active, 'questions.category');
 
-my $grade_is_min = sprintf('%1$s = (SELECT MIN(%1$s) FROM questions WHERE %2$s = 1)', MindMeld::GRADE_FROM_QUESTIONS, MindMeld::ACTIVE_FROM_QUESTIONS);
-my $sth = $dbh->prepare(sprintf("SELECT %s, %s, %s, %s, %s, %s FROM questions WHERE %s = 1 AND $grade_is_min ORDER BY RANDOM() LIMIT 1",
-	MindMeld::QUESTION_ID_FROM_QUESTIONS,
-	MindMeld::QUESTION_TEXT_FROM_QUESTIONS,
-	MindMeld::ANSWER_FROM_QUESTIONS,
-	MindMeld::CATEGORY_NAME_FROM_QUESTIONS,
-	MindMeld::CATEGORY_ID_FROM_QUESTIONS,
-	MindMeld::GRADE_FROM_QUESTIONS,
-	MindMeld::ACTIVE_FROM_QUESTIONS,
-));
-$sth->execute;
-my($qid, $question, $answer, $category, $cid, $grade) = $sth->fetchrow_array;
-if(defined($qid)) {
+	my $reviewed = "SELECT question AS id, 1, RANDOM() FROM user_question_rels WHERE user = ? AND grade < 2 AND $cat_is_active_from_uqr";
+	my $random_new = "SELECT id, 2, RANDOM() FROM questions WHERE $cat_is_active_from_q ORDER BY 2, 3 LIMIT $max_new";
+	$sql = "SELECT id FROM ($reviewed UNION $random_new) ORDER BY RANDOM() LIMIT 1";
+	push @args, $user, $user, $user;
+}
+else {
+	$sql = "SELECT id FROM questions ORDER BY RANDOM() LIMIT 1";
+}
+
+my $qid = MindMeld->_select($sql, @args);
+if(defined $qid) {
+	my $q = MindMeld::Question->retrieve(id => $qid);
+	my $question = $q->question;
+	my $answer = $q->answer;
+	my $category = $q->category->name;
+	my $cid = $q->category;
 	print $cgi->p("Category: " . $cgi->a({-href => "show_category.pl?id=$cid"}, $category));
 	print $cgi->div({-style => 'text-align:center;'}, 
 		$cgi->p({-id => 'q'}, $question) .
 		$cgi->p({-id => 'a', -style => 'visibility:hidden;'}, $answer) .
 		$cgi->p({-id => 'sa'}, $cgi->a({-href => 'javascript:void(0);', -onclick => q{javascript:document.getElementById('sa').style.display='none';document.getElementById('a').style.visibility='visible';document.getElementById('gr').style.display='block';;document.getElementById('help').style.display='block';}}, 'Show Answer')) .
-		$cgi->p({-id => 'gr', -style => 'display:none;'}, qq^<a href="set_grade.pl?id=$qid&gc="><img src="pixel.png" width="400" height="50" ismap alt="target" /></a>^) .
+		$cgi->p({-id => 'gr', -style => 'display:none;'}, qq^<a href="set_grade.pl?id=$qid&amp;gc="><img src="pixel.png" width="400" height="50" ismap alt="target" /></a>^) .
 		'<p id="help" style="display:none;">Click the box to indicate how well you knew the answer. Left is no knowledge, right is perfect knowledge.</p>'
 	);
 }

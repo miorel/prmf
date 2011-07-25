@@ -23,7 +23,7 @@ else {
 		print $cgi->p("Category: " . $cgi->a({-href => "show_category.pl?cid=" . $q->category->{_id}}, $q->category->name));
 		print $cgi->p("Question: " . $q->question);
 		print $cgi->p("Answer: " . $q->answer);
-		print $cgi->p("Grade: " . $q->grade);
+		#print $cgi->p("Grade: " . $q->grade);
 	}
 	else {
 		print $cgi->p("Question doesn't exist :(");

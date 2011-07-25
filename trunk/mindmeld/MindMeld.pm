@@ -6,19 +6,14 @@ use strict;
 use CGI;
 use DBI;
 
+use MindMeld::Category;
+use MindMeld::Question;
 use MindMeld::Session;
-use PRMF::Auth;
+use MindMeld::User;
+use MindMeld::User_category_rel;
+use MindMeld::User_question_rel;
 
-use constant QUESTION_ID_FROM_QUESTIONS => 'questions.id';
-use constant QUESTION_TEXT_FROM_QUESTIONS => 'questions.question';
-use constant ANSWER_FROM_QUESTIONS => 'questions.answer';
-use constant GRADE_FROM_QUESTIONS => 'questions.grade';
-use constant CATEGORY_ID_FROM_QUESTIONS => 'questions.category';
-use constant CATEGORY_NAME_FROM_CATEGORIES => 'categories.name';
-use constant CATEGORY_ID_FROM_CATEGORIES => 'categories.id';
-use constant CATEGORY_NAME_FROM_QUESTIONS => sprintf("(SELECT %s FROM categories WHERE %s = %s)", CATEGORY_NAME_FROM_CATEGORIES, CATEGORY_ID_FROM_CATEGORIES, CATEGORY_ID_FROM_QUESTIONS);
-use constant ACTIVE_FROM_CATEGORIES => 'categories.active';
-use constant ACTIVE_FROM_QUESTIONS => sprintf("(SELECT %s FROM categories WHERE %s = %s)", ACTIVE_FROM_CATEGORIES, CATEGORY_ID_FROM_CATEGORIES, CATEGORY_ID_FROM_QUESTIONS);
+use PRMF::Auth;
 
 my $info_str = 'MindMeld beta 201107221337';
 my $dbfile = 'mm.db';
@@ -39,6 +34,8 @@ sub dbh {
 			MindMeld::Question->_ensure_schema;
 			MindMeld::Session->_ensure_schema;
 			MindMeld::User->_ensure_schema;
+			MindMeld::User_category_rel->_ensure_schema;
+			MindMeld::User_question_rel->_ensure_schema;
 		}
 		$dbh->do('PRAGMA foreign_keys = ON');
 	}
@@ -87,25 +84,24 @@ sub _handle_login {
 	my $package = shift;
 	my $cgi = $package->cgi;
 	$login_attempt = 0;
-	if(lc($cgi->request_method) eq 'post') {
-		my $action = $cgi->param('action');
-		if(defined($action) && $action eq 'login') {
-			$login_attempt = 1;
-			my $auth = PRMF::Auth->new(db => 'mm.db');
-			my $username = $cgi->param('username');
-			if($auth->login($username, $cgi->param('password'))) {
-				$user = MindMeld::User->retrieve(username => $username);
-				if(defined($user)) {
-					# insecure!
-					my $text = join('', map {my @arr = ('A'..'Z', 'a'..'z', 0..9, '.', '/'); $arr[int(rand(scalar(@arr)))]} 1..32);
-					$session = MindMeld::Session->create(user => $user, text => $text, expires => (time + 15 * 60));
-					undef $user if !defined($session);
-				}
+	my $action = $cgi->param('action');
+	if(lc($cgi->request_method) eq 'post' && defined($action) && $action eq 'login') {
+		$login_attempt = 1;
+		my $auth = PRMF::Auth->new(db => 'mm.db');
+		my $username = $cgi->param('username');
+		if($auth->login($username, $cgi->param('password'))) {
+			$user = MindMeld::User->retrieve(username => $username);
+			if(defined($user)) {
+				# insecure!
+				my $text = join('', map {my @arr = ('A'..'Z', 'a'..'z', 0..9, '.', '/'); $arr[int(rand(scalar(@arr)))]} 1..32);
+				$session = MindMeld::Session->create(user => $user, text => $text, expires => (time + 15 * 60));
+				undef $user if !defined($session);
 			}
 		}
 	}
 	else {
-		$session = MindMeld::Session->retrieve(text => $cgi->cookie('mindmeld'));
+		my $text = $cgi->cookie('mindmeld');
+		$session = MindMeld::Session->retrieve(text => $text) if defined($text);
 		$session->destroy if defined($session) && ($session->expires < time);
 	}
 }
@@ -166,14 +162,16 @@ sub header {
 	</div><div id="login">$login_div</div>` . 
 
 q`
-</div><div style="padding:5px;">`;
+</div><div class="rc_outbox"><div class="rc_top"><div></div></div><div class="rc_content">`;
 }
 
 sub footer {
 	my $package = shift;
 	my $cgi = $package->cgi;
 	return
-		q`</div><div style="clear:both;border-top:1px solid black;padding:5px;">` .
+		q`</div><div class="rc_bottom"><div></div></div></div>
+
+<div id="footer">` .
 		$cgi->p($package->info_str) .
 		$cgi->p('Copyright &copy; 2011 Miorel-Lucian Palii') . '</div>' .
 		$cgi->end_html;
