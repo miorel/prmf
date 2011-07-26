@@ -3,12 +3,11 @@
 use warnings;
 use strict;
 
-use lib qw(.);
-
 use MindMeld;
 
 use MindMeld::Category;
 use MindMeld::Question;
+use MindMeld::User;
 
 my @data = ();
 while(<DATA>) {
@@ -38,17 +37,20 @@ while(<DATA>) {
 }
 
 MindMeld->dbh->begin_work;
+MindMeld::User->create(username => 'admin', password => '!', salt => '!');
 
+my $user = MindMeld::User->retrieve(username => 'admin');
 my %cat = ();
 
 for(@data) {
 	my $cat = $_->{cat};
-	$cat{$cat} = MindMeld::Category->create(name => $cat)
+	$cat{$cat} = MindMeld::Category->create(name => $cat, author => $user)
 		unless exists $cat{$cat};
 	MindMeld::Question->create(
 		category => $cat{$_->{cat}},
 		question => $_->{Q},
 		answer => $_->{A},
+		author => $user,
 	);
 }
 
@@ -119,7 +121,7 @@ __DATA__
 52	tellurium	Te
 53	iodine	I
 54	xenon	Xe
-55	caesium/cesium	Cs
+55	caesium / cesium	Cs
 56	barium	Ba
 57	lanthanum	La
 58	cerium	Ce

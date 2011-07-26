@@ -1,12 +1,3 @@
-#!/usr/bin/perl
-
-use warnings;
-use strict;
-
-use lib qw(.);
-
-use MindMeld;
-
 my $cgi = MindMeld->cgi;
 my $dbh = MindMeld->dbh;
 

@@ -15,7 +15,7 @@ use MindMeld::User_question_rel;
 
 use PRMF::Auth;
 
-my $info_str = 'MindMeld beta 201107221337';
+my $info_str = 'MindMeld beta 201107260445';
 my $dbfile = 'mm.db';
 my($cgi, $dbh, $cookie, $user, $session, $login_attempt);
 
@@ -23,6 +23,14 @@ sub cgi {
 	$cgi = CGI->new
 		unless defined $cgi;
 	return $cgi;
+}
+
+sub param {
+	my($package, $param) = @_;
+	my $cgi = $package->cgi;
+	my $ret = $cgi->param($param);
+	$ret = $cgi->url_param($param) if !defined($ret);
+	return $ret;
 }
 
 sub dbh {
@@ -102,7 +110,14 @@ sub _handle_login {
 	else {
 		my $text = $cgi->cookie('mindmeld');
 		$session = MindMeld::Session->retrieve(text => $text) if defined($text);
-		$session->destroy if defined($session) && ($session->expires < time);
+		if(defined($session)) {
+			if($session->expires < time) {
+				$session->destroy;
+			}
+			else {
+				$session->expires(time + 15 * 60);
+			}
+		}
 	}
 }
 
@@ -111,14 +126,15 @@ sub header {
 	
 	my $cgi = $package->cgi;
 	
+	my $user = $package->user;
+	
 	my @actions = (
 		['study.pl' => 'Study'],
-		['options.pl' => 'Options'],
-		['stats.pl' => 'Statistics'],
+		($user ? ['options.pl' => 'Options'] : ()),
+		($user ? ['stats.pl' => 'Statistics'] : ()),
+		($user ? ['import.pl' => 'Upload'] : ()),
 	);
 	my $title = $package->info_str;
-	
-	my $user = $package->user;
 	
 	my $login_div;
 	if($user) {
@@ -149,13 +165,14 @@ sub header {
 <html lang="en-US">
 <head>
 <meta charset="utf-8" />
+<link rel="shortcut icon" href="mm.ico" />
 <link rel="stylesheet" type="text/css" href="css/green.css" />
 <meta name="description" content="$title" />
 <title>$title</title>
 </head>
 <body>
 <div id="topbar">
-	<div id="logo"><a href="index.pl"><img src="mindmeld.png" height="50" alt="MindMeld"/></a></div>
+	<div id="logo"><a href="index.pl" title="Go to MindMeld home"><img src="img/mindmeld.png" height="50" alt="MindMeld logo"/></a></div>
 	<div id="beta">&beta;</div>
 	<div id="taskbar">` .
 	join(" | ", map {$cgi->a({-href => $_->[0]}, $_->[1])} @actions) . qq`
@@ -169,12 +186,10 @@ sub footer {
 	my $package = shift;
 	my $cgi = $package->cgi;
 	return
-		q`</div><div class="rc_bottom"><div></div></div></div>
-
-<div id="footer">` .
-		$cgi->p($package->info_str) .
-		$cgi->p('Copyright &copy; 2011 Miorel-Lucian Palii') . '</div>' .
-		$cgi->end_html;
+		q^</div><div class="rc_bottom"><div></div></div></div>^ .
+		qq^<div id="footer"><p>^ .
+		$package->info_str .
+		'</p><p>Copyright &copy; 2011 Miorel-Lucian Palii</p><p><a href="todo.pl">TODO</a></p></div></body></html>';
 }
 
 sub info_str {

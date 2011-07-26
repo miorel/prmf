@@ -9,9 +9,11 @@ generate_code(
 			question => {type => '_text', constraint => 'NOT NULL'},
 			answer => {type => '_text', constraint => 'NOT NULL'},
 			category => {type => 'category', constraint => 'NOT NULL'},
+			author => {type => 'user', constraint => 'NOT NULL'},
 		}},
-		{name => 'category', attr => {
-			name => {type => '_text', constraint => 'UNIQUE NOT NULL'},
+		{name => 'category', sql => 'UNIQUE(name, author)', attr => {
+			name => {type => '_text', constraint => 'NOT NULL'},
+			author => {type => 'user', constraint => 'NOT NULL'},
 		}},
 		{name => 'user', attr => {
 			username => {type => '_text', constraint => 'UNIQUE NOT NULL'},

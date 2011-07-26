@@ -128,3 +128,28 @@ p {
 	background: #cbf3cb;
 }
 
+
+table {
+	border-collapse: collapse;
+	width: 80%;
+}
+
+tr:nth-child(odd) {
+	background: #8df68d;
+}
+
+tr:nth-child(even) {
+	background: #3cf63c;
+}
+
+tr:hover {
+	background: #cbf3cb;
+}
+
+td {
+	padding: 5px;
+}
+
+td:first-child {
+	text-align: right;
+}

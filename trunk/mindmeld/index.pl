@@ -1,16 +1,8 @@
-#!/usr/bin/perl
-
-use warnings;
-use strict;
-
-use lib qw(.);
-
-use MindMeld;
 use PRMF::Auth;
 
 print MindMeld->header;
 
-print q`<div><div style="float:left;width:560px;padding-right:50px;border-right:1px dotted black;"><p><strong>MindMeld</strong> will be a system for training your mind like a Vulcan. <span style="color:#bbb;">Not becoming an emotionless automaton is left as an exercise for the user.</span></p><iframe width="560" height="349" src="https://www.youtube.com/embed/ds7dBoWLlrc?rel=0" frameborder="0" allowfullscreen></iframe><p style="font-size:80%;">Scene from <em><a href="http://www.amazon.com/s/?url=search-alias%3Dmovies-tv&field-keywords=Star+Trek+IV+The+Voyage+Home" target="_blank">Star Trek IV: The Voyage Home</a></em>, distributed by <a href="http://www.paramount.com/" target="_blank">Paramount Pictures</a>.</p></div><div style="float:left;width:300px;padding-left:50px;">`;
+print q`<div><div style="float:left;width:560px;padding-right:50px;border-right:1px dotted black;"><p><strong>MindMeld</strong> will be a system for training your mind like a Vulcan. <span style="color:#bbb;">Not becoming an emotionless automaton is left as an exercise for the user.</span></p><iframe width="560" height="349" src="https://www.youtube.com/embed/ds7dBoWLlrc?rel=0" frameborder="0" allowfullscreen></iframe><p style="font-size:80%;">Scene from <em><a href="http://www.amazon.com/s/?url=search-alias%3Dmovies-tv&amp;field-keywords=Star+Trek+IV+The+Voyage+Home" target="_blank">Star Trek IV: The Voyage Home</a></em>, distributed by <a href="http://www.paramount.com/" target="_blank">Paramount Pictures</a>.</p></div><div style="float:left;width:300px;padding-left:50px;">`;
 
 my $message;
 my $success = 0;

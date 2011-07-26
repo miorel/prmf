@@ -3,12 +3,11 @@
 use warnings;
 use strict;
 
-use lib qw(.);
-
 use MindMeld;
 
 use MindMeld::Category;
 use MindMeld::Question;
+use MindMeld::User;
 
 my @data = ();
 while(<DATA>) {
@@ -27,17 +26,20 @@ while(<DATA>) {
 }
 
 MindMeld->dbh->begin_work;
+MindMeld::User->create(username => 'admin', password => '!', salt => '!');
 
+my $user = MindMeld::User->retrieve(username => 'admin');
 my %cat = ();
 
 for(@data) {
 	my $cat = $_->{cat};
-	$cat{$cat} = MindMeld::Category->create(name => $cat)
+	$cat{$cat} = MindMeld::Category->create(name => $cat, author => $user)
 		unless exists $cat{$cat};
 	MindMeld::Question->create(
 		category => $cat{$_->{cat}},
 		question => $_->{Q},
 		answer => $_->{A},
+		author => $user,
 	);
 }
 

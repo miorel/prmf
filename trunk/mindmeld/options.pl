@@ -1,12 +1,3 @@
-#!/usr/bin/perl
-
-use warnings;
-use strict;
-
-use lib qw(.);
-
-use MindMeld;
-
 my $cgi = MindMeld->cgi;
 my $dbh = MindMeld->dbh;
 
@@ -31,13 +22,16 @@ if(defined $user) {
 			print $cgi->p('Active categories successfully updated!');
 		}
 	}
-	my $sth = $dbh->prepare('SELECT id, name, (SELECT active FROM user_category_rels WHERE category = categories.id AND user = ?) FROM categories ORDER BY name');
-	my($id, $name, $active);
+	my $sth = $dbh->prepare('SELECT id, name, (SELECT active FROM user_category_rels WHERE category = categories.id AND user = ?), (SELECT username FROM users WHERE id = categories.author), (SELECT COUNT(*) FROM questions WHERE category = categories.id) FROM categories ORDER BY name');
+	my($cid, $name, $active, $cat_author, $q_count);
 	$sth->execute($user);
-	$sth->bind_columns(\$id, \$name, \$active);
+	$sth->bind_columns(\$cid, \$name, \$active, \$cat_author, \$q_count);
 	while($sth->fetch) {
-		my $cn = "cat_${id}_active";
-		print $cgi->p($cgi->checkbox(-name => $cn, -checked => ($active eq '1'), -label => $name, -value => 1, -override => 1));
+		my $cn = "cat_${cid}_active";
+		$q_count = 0 if $q_count !~ /^\d+$/;
+		$q_count .= $q_count == 1 ? " question" : " questions";
+		my $checked = $active eq '1' ? 'checked="checked" ' : ' ';
+		print $cgi->p( qq^<input type="checkbox" name="$cn" value="1" $checked/> <a href="show_category.pl?cid=$cid">$name</a> by <strong>$cat_author</strong> ($q_count)^ );
 	}
 	print $cgi->hidden(-name => 'action', -default => 'update_categories_active', -override => 1);
 	print $cgi->submit('Update');

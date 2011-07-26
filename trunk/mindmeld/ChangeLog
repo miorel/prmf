@@ -1,4 +1,4 @@
-2011-07-23  Miorel-Lucian Palii <mlpalii@gmail.com>
+2011-07-25  Miorel-Lucian Palii <mlpalii@gmail.com>
 
 	* codegen/codegen.pl: Created user/question relationship class to hold
 	  question grades and user/category relationship class to hold
@@ -6,16 +6,31 @@
 	  user is logged in.
 	* show_question.pl: Doesn't show grade anymore (because it's no longer a
 	  question attribute).
+  	* codegen/codegen.pl: Associated questions and categories to a user via the
+  	  "author" attribute. Changed schema for categories to allow duplicate
+  	  names if the users are different.
+	* import.pl: Page for importing questions in Mnemosyne XML format.
+	* edit_question.pl: Page for editing a question if you are its owner.
 	* stats.pl, options.pl: Now require a user to be logged in, showing grade
 	  statistics and active categories for that user, respectively.
+	* mm.ico: 16x16 shortcut icon.
 	* MindMeld.pm: Removed all the various SQL constants as they're not being
 	  used anymore. Changed layout to create rounded corners using some <div>s
-	  and images.
+	  and images. Included shortcut icon.
 	* green.css: Added style for the new elements.
 	* circle.svg: Circle picture that can be used to generate the rounded
 	  corner images.
-	* Makefile: Added make rules for the rounded corner images.
 	* questions/symbols.pl: Added code for periodic table questions.
+	* mindmeld.xcf, mindmeld.png: Deleted Gimp-format logo.
+	* logo.pl: New script to generate SVG logo.
+	* show_category.pl, css/green.css: Fancied up the category page a bit,
+	  added view and edit links for questions.
+	* lib: Added directory for "library" files.
+	* lib/header.pl: A basic header to be included in all page files.
+	* lib/svg.pl: Script containing a couple of subs for writing SVG files.
+	* Makefile: Added make rules for the rounded corner images and for the new
+	  SVG logo. Lots of cleanup.
+	* todo.pl: To-do list.
 
 2011-07-22  Miorel-Lucian Palii <mlpalii@gmail.com>
 

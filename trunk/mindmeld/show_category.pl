@@ -1,23 +1,15 @@
-#!/usr/bin/perl
-
-use warnings;
-use strict;
-
-use lib qw(.);
-
-use MindMeld;
 use MindMeld::Category;
 use MindMeld::Question;
 
 my $cgi = MindMeld->cgi;
 
-my $cid = $cgi->param('id');
-$cid = $cgi->url_param('id') if !defined($cid);
+my $cid = MindMeld->param('cid');
 unless(defined $cid) {
 	print $cgi->redirect(-uri => 'study.pl', -status => 302);
 }
 else {
 	my $dbh = MindMeld->dbh;
+	my $user = MindMeld->user;
 
 	print MindMeld->header;
 	
@@ -32,10 +24,20 @@ else {
 		push @q, $qid while $sth->fetch;
 
 		my $count = 0;
+		print "<table>";
 		for $qid (@q) {
 			my $q = MindMeld::Question->retrieve(id => $qid);
-			print $cgi->p(++$count . ". " . $cgi->a({-href => "show_question.pl?id=$qid"}, $q->question));
+			if(defined $q) {
+				printf("<tr>" . join('', map {"<td>$_</td>"} (
+					++$count. ".",
+					$cgi->escapeHTML($q->question),
+					$cgi->escapeHTML($q->answer),
+					qq^<a href="show_question.pl?qid=$qid">View</a>^,
+					((defined($user) && $user->{_id} eq $q->author->{_id}) ? qq^<a href="edit_question.pl?qid=$qid">Edit</a>^ : ''),
+				)));
+			}
 		}
+		print "</table>";
 	}
 	else {
 		print $cgi->p("Category doesn't exist :(");
