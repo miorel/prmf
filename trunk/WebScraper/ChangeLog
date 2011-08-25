@@ -1,0 +1,9 @@
+August 24 2011 -rsala004@ufl.edu
+-Project created
+-Added Page Class, base class ... just a container for an html document at the moment.
+-Added ScrapablePage Abstract class ... represents a page that data can be gathered from and other page urls can be derived from.
+-Added Search Abstract class ... represents an entry point for starting a search
+
+-Added a package for a basic implementation of this project using Yelp search.
+-Added YelpPage class which extends ScrapablePage, just stub methods for now
+-Added YelpSearch class which extends Search, just stub methods for now
