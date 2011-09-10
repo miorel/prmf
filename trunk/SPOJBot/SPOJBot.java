@@ -572,89 +572,217 @@ class SPOJBot extends Thread {
 		}
 	}
 
-	private String[][] spojaday()
-	{
-		List<String> haveSpojadayed = new ArrayList<String>();
-		List<String> notSpojadayed = new ArrayList<String>();
-		
-		for(User u : users)
-		{
-			u.update();
-			if(u.getSpojDay() > 0)
-			{
-				haveSpojadayed.add(u.getName() + "{" + u.getSpojDay() + "}");
-			} else {
-				notSpojadayed.add(u.getName());
-			}
+	class Counter {
+		public int val;
+		public Counter(int initVal) {
+			val = initVal;
 		}
+	}
+	
+	synchronized private String[][] spojaday()
+	{
+		final List<String> haveSpojadayed = new ArrayList<String>();
+		final List<String> notSpojadayed = new ArrayList<String>();
+		final Counter userThreads = new Counter(users.size());
+		final SPOJBot thisBot = this;
+		
+		try {
+			for(final User u : users)
+			{
+				Thread t = new Thread() {
+					public void run() {
+						try {
+							u.update();
+							if(u.getSpojDay() > 0)
+							{
+								haveSpojadayed.add(u.getName() + "{" + u.getSpojDay() + "}");
+							} else {
+								notSpojadayed.add(u.getName());
+							}
+						}
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+						--(userThreads.val);
+					}
+				};
+				t.setDaemon(true);
+				t.start();
+			}
+			long time = System.currentTimeMillis();
+			// Wait until either 15 seconds elapse (timeout) or all threads have returned
+			while (System.currentTimeMillis() - time < 15000 && userThreads.val > 0)
+				thisBot.wait(500); // Wait for a nominal half a second to make sure we don't endless wait
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		Collections.sort(haveSpojadayed);
+		Collections.sort(notSpojadayed);
 		String[][] ret = new String[2][];
 		ret[0] = haveSpojadayed.toArray(new String[0]);
 		ret[1] = notSpojadayed.toArray(new String[0]);
 		return ret;
 	}
 	
-	private String[] streak()
+	synchronized private String[] streak()
 	{
-		List<String> streak = new ArrayList<String>();
-		
-		for(User u : users)
-		{
-			u.update();
-			streak.add(u.getName() + "{" + u.getCurSpojStreak() + "}");
-			
-		}
-		return streak.toArray(new String[0]);
-	}
-	
-	private String[] maxstreak()
-	{
-		List<String> streak = new ArrayList<String>();
-		
-		for(User u : users)
-		{
-			u.update();
-			streak.add(u.getName() + "{" + u.getMaxSpojStreak() + "}");
-			
-		}
-		return streak.toArray(new String[0]);
-	}
-	
-	private String[][] spojaweek()
-	{
-		List<String> haveSpojadayed = new ArrayList<String>();
-		List<String> notSpojadayed = new ArrayList<String>();
-		
-		for(User u : users)
-		{
-			u.update();
-			if(u.getSpojWeek() > 0)
+		final List<String> streak = new ArrayList<String>();
+		final Counter userThreads = new Counter(users.size());
+		final SPOJBot thisBot = this;
+
+		try {
+			for(final User u : users)
 			{
-					haveSpojadayed.add(u.getName() + "{" + u.getSpojWeek() + "}");
-			} else {
-				notSpojadayed.add(u.getName());
+				Thread t = new Thread() {
+					public void run() {
+						try {
+							u.update();
+							streak.add(u.getName() + "{" + u.getCurSpojStreak() + "}");
+						}
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+						--(userThreads.val);
+					}
+				};
+				t.setDaemon(true);
+				t.start();
 			}
+			long time = System.currentTimeMillis();
+			// Wait until either 15 seconds elapse (timeout) or all threads have returned
+			while (System.currentTimeMillis() - time < 15000 && userThreads.val > 0)
+				thisBot.wait(500); // Wait for a nominal half a second to make sure we don't endless wait
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		Collections.sort(streak);
+		return streak.toArray(new String[0]);
+	}
+	
+	synchronized private String[] maxstreak()
+	{
+		final List<String> streak = new ArrayList<String>();
+		final Counter userThreads = new Counter(users.size());
+		final SPOJBot thisBot = this;
+
+		try {
+			for(final User u : users)
+			{
+				Thread t = new Thread() {
+					public void run() {
+						try {
+							u.update();
+							streak.add(u.getName() + "{" + u.getMaxSpojStreak() + "}");
+						}
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+						--(userThreads.val);
+					}
+				};
+				t.setDaemon(true);
+				t.start();
+			}
+			long time = System.currentTimeMillis();
+			// Wait until either 15 seconds elapse (timeout) or all threads have returned
+			while (System.currentTimeMillis() - time < 15000 && userThreads.val > 0)
+				thisBot.wait(500); // Wait for a nominal half a second to make sure we don't endless wait
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		Collections.sort(streak);
+		return streak.toArray(new String[0]);
+	}
+	
+	synchronized private String[][] spojaweek()
+	{
+		final List<String> haveSpojadayed = new ArrayList<String>();
+		final List<String> notSpojadayed = new ArrayList<String>();
+		final Counter userThreads = new Counter(users.size());
+		final SPOJBot thisBot = this;
+		
+		try {
+			for(final User u : users)
+			{
+				Thread t = new Thread() {
+					public void run() {
+						try {
+							u.update();
+							if(u.getSpojWeek() > 0)
+							{
+									haveSpojadayed.add(u.getName() + "{" + u.getSpojWeek() + "}");
+							} else {
+								notSpojadayed.add(u.getName());
+							}
+						}
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+						--(userThreads.val);
+					}
+				};
+				t.setDaemon(true);
+				t.start();
+			}
+			long time = System.currentTimeMillis();
+			// Wait until either 15 seconds elapse (timeout) or all threads have returned
+			while (System.currentTimeMillis() - time < 15000 && userThreads.val > 0)
+				thisBot.wait(500); // Wait for a nominal half a second to make sure we don't endless wait
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		Collections.sort(haveSpojadayed);
+		Collections.sort(notSpojadayed);
 		String[][] ret = new String[2][];
 		ret[0] = haveSpojadayed.toArray(new String[0]);
 		ret[1] = notSpojadayed.toArray(new String[0]);
 		return ret;
 	}
 	
-	private String[][] spojahour()
+	synchronized private String[][] spojahour()
 	{
-		List<String> haveSpojadayed = new ArrayList<String>();
-		List<String> notSpojadayed = new ArrayList<String>();
+		final List<String> haveSpojadayed = new ArrayList<String>();
+		final List<String> notSpojadayed = new ArrayList<String>();
+		final Counter userThreads = new Counter(users.size());
+		final SPOJBot thisBot = this;
 		
-		for(User u : users)
-		{
-			u.update();
-			if(u.getSpojHour() > 0)
+		try {
+			for(final User u : users)
 			{
-				haveSpojadayed.add(u.getName() +"{" +  u.getSpojHour() + "}");
-			} else {
-				notSpojadayed.add(u.getName());
+				Thread t = new Thread() {
+					public void run() {
+						try {
+							u.update();
+							if(u.getSpojHour() > 0)
+							{
+								haveSpojadayed.add(u.getName() +"{" +  u.getSpojHour() + "}");
+							} else {
+								notSpojadayed.add(u.getName());
+							}
+						}
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+						--(userThreads.val);
+					}
+				};
+				t.setDaemon(true);
+				t.start();
 			}
+			long time = System.currentTimeMillis();
+			// Wait until either 15 seconds elapse (timeout) or all threads have returned
+			while (System.currentTimeMillis() - time < 15000 && userThreads.val > 0)
+				thisBot.wait(500); // Wait for a nominal half a second to make sure we don't endless wait
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		Collections.sort(haveSpojadayed);
+		Collections.sort(notSpojadayed);
 		String[][] ret = new String[2][];
 		ret[0] = haveSpojadayed.toArray(new String[0]);
 		ret[1] = notSpojadayed.toArray(new String[0]);
@@ -693,21 +821,46 @@ class SPOJBot extends Thread {
 		return ret;
 	}
 	
-	public String[][] hasSolved(String prob)
+	synchronized public String[][] hasSolved(final String prob)
 	{
-		List<String> haveSpojadayed = new ArrayList<String>();
-		List<String> notSpojadayed = new ArrayList<String>();
+		final List<String> haveSpojadayed = new ArrayList<String>();
+		final List<String> notSpojadayed = new ArrayList<String>();
+		final Counter userThreads = new Counter(users.size());
+		final SPOJBot thisBot = this;
 		
-		for(User u : users)
-		{
-			u.update();
-			if(u.hasSolved(prob))
+		try {
+			for(final User u : users)
 			{
-				haveSpojadayed.add(u.getName());
-			} else {
-				notSpojadayed.add(u.getName());
+				Thread t = new Thread() {
+					public void run() {
+						try {
+							u.update();
+							if(u.hasSolved(prob))
+							{
+								haveSpojadayed.add(u.getName());
+							} else {
+								notSpojadayed.add(u.getName());
+							}
+						}
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+						--(userThreads.val);
+					}
+				};
+				t.setDaemon(true);
+				t.start();
 			}
+			long time = System.currentTimeMillis();
+			// Wait until either 15 seconds elapse (timeout) or all threads have returned
+			while (System.currentTimeMillis() - time < 15000 && userThreads.val > 0)
+				thisBot.wait(500); // Wait for a nominal half a second to make sure we don't endless wait
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		Collections.sort(haveSpojadayed);
+		Collections.sort(notSpojadayed);
 		String[][] ret = new String[2][];
 		ret[0] = haveSpojadayed.toArray(new String[0]);
 		ret[1] = notSpojadayed.toArray(new String[0]);

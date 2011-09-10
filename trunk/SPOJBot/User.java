@@ -60,16 +60,16 @@ public class User implements Comparable<User>{
 			}
 			if(lastUp.compareTo(Utility.getDateOfLastSolve(name)) < 0)
 			{
-				update();
+				try { update(); } catch (IOException e) { e.printStackTrace(); }
 			}
 		}
 		else
 		{
-			update();
+			try { update(); } catch (IOException e) { e.printStackTrace(); }
 		}
 	}
 	
-	public void update()
+	public void update() throws IOException
 	{
 		Date now = new Date();
 		if(!Utility.checkIfSameWeek(now,lastUp))
@@ -134,6 +134,7 @@ public class User implements Comparable<User>{
 			
 		} catch(IOException e) {
 			e.printStackTrace();
+			throw e;
 		}
 	}
 	
