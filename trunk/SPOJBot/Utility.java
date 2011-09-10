@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
+import java.util.regex.*;
 
 public class Utility {
 	public static Date getDateOfLastSolve(String name)
@@ -104,7 +104,24 @@ public class Utility {
 			
 		} catch (MalformedURLException e) {
 			in = null;
-			throw new IOException();
+			throw e;
+		}
+		return in;
+	}
+	
+	public static BufferedReader getUserInfoStream(String name) throws IOException
+	{
+		BufferedReader in;
+		try {
+			// Create a URL for the desired page
+			URL url = new  URL("http://www.spoj.pl/users/" + name.toLowerCase() + "/");
+			
+			// Get the input stream to read from the page
+			in = new BufferedReader(new InputStreamReader(url.openStream()));
+		}
+		catch (MalformedURLException e) {
+			in = null;
+			throw e;
 		}
 		return in;
 	}
@@ -146,12 +163,13 @@ public class Utility {
 			} catch(ParseException e)
 			{}	
 			
-			return(user + "'s last classical problem solved was " + prob + " on " + strDate);
+			return(user + "'s last solved classical problem was " + prob + " on " + strDate + ".");
 		} catch(IOException e) {
 			return("User " + user + " was not found on SPOJ.");
 		}
 		
 	}
+	
 	
 	public static String getTimeTillMidnight()
     {
@@ -177,10 +195,10 @@ public class Utility {
             
             if(hr >= 2)
             {
-                    ret += " " + hr + " hours";
+                    ret += hr + " hours";
             } else if(hr == 1)
             {       
-                    ret += " " + hr + " hour";
+                    ret += hr + " hour";
             }
             
             if(min >= 2)
@@ -232,10 +250,10 @@ public class Utility {
 	        
 	        if(min >= 2)
 	        {
-	                ret += " " + min + " minutes";
+	                ret += min + " minutes";
 	        } else if(min == 1)
 	        {       
-	                ret += " " + min + " minute";
+	                ret += min + " minute";
 	        }
 	        
 	        if(sec >= 2)
@@ -247,6 +265,30 @@ public class Utility {
 	        }
 	        
 	        return ret;
+	}
+	
+	public static String toGrammaticallyCorrectString(String[] users, String singularPredicate, String pluralPredicate, String ... noOneSpecialCase) {
+		if (users.length == 0) {
+			if (noOneSpecialCase.length > 0)
+				return noOneSpecialCase[0];
+			return "No one " + singularPredicate;
+		}
+		else if (users.length == 1) {
+			return users[0] + " " + singularPredicate;
+		}
+		else if (users.length == 2) {
+			return users[0] + " and " + users[1] + " " + pluralPredicate;
+		}
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < users.length - 1; ++i) {
+			result.append(users[i]);
+			result.append(", ");
+		}
+		result.append("and ");
+		result.append(users[users.length - 1]);
+		result.append(' ');
+		result.append(pluralPredicate);
+		return result.toString();
 	}
 
 	
