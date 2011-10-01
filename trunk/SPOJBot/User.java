@@ -8,7 +8,7 @@ import java.util.*;
 public class User implements Comparable<User>{
 	
 	final private File file;
-	private Date lastUp = new Date("Sat Sep 03 01:06:59 EDT 2001");
+	private Date lastUp = new Date(0);
 	private String name = "";
 	private int spojHour = 0;
 	private int spojDay = 0;
@@ -39,7 +39,8 @@ public class User implements Comparable<User>{
 			try
 			{
 				BufferedReader in = new BufferedReader(new FileReader(file));
-				lastUp = new Date(in.readLine());
+				DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+				lastUp = df.parse(in.readLine());
 				Date now = new Date();
 				spojWeek = Integer.parseInt(in.readLine());
 				spojDay = Integer.parseInt(in.readLine());
@@ -72,15 +73,20 @@ public class User implements Comparable<User>{
 	public void update() throws IOException
 	{
 		Date now = new Date();
-		if(!Utility.checkIfSameWeek(now,lastUp))
+		if(!Utility.checkIfSameWeek(now,lastUp)) {
 			spojWeek = 0;
+			hasChanged = true;
+		}
 		if(!Utility.checkIfSameDay(now,lastUp))
 		{
 			if(spojDay == 0)curSpojStreak = 0;
 			spojDay = 0;
+			hasChanged = true;
 		}
-		if(!Utility.checkIfSameHour(now,lastUp))
+		if(!Utility.checkIfSameHour(now,lastUp)) {
 			spojHour = 0;
+			hasChanged = true;
+		}
 		try {
 			BufferedReader in = Utility.getUserSolveStream(name);
 			String line = "";
@@ -97,18 +103,7 @@ public class User implements Comparable<User>{
 					{
 						hasChanged = true;
 						prevSolves.add(info[3]);
-						String strDate = info[2];
-						
-						DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-						Calendar c = new GregorianCalendar();
-						Date ret = new Date(0);
-						try
-						{
-							c.setTime(df.parse(strDate));
-							c.add(Calendar.HOUR_OF_DAY, -6);
-							ret = c.getTime();
-						} catch(ParseException e)
-						{}
+						Date ret = toDate(info[2]);
 						if(Utility.checkIfSameWeek(now,ret))
 						{
 							spojWeek++;
@@ -189,6 +184,31 @@ public class User implements Comparable<User>{
 	public boolean hasSolved(String prob)
 	{
 		return prevSolves.contains(prob);
+	}
+	
+	public Date getSolveDate(String prob) throws IOException {
+		Date solveDate = null;
+		try {
+			BufferedReader in = Utility.getUserSolveStream(name);
+			String line = "";
+			for(int i=0; i<10; ++i) {
+				line = in.readLine();
+			}
+			String[] info = line.split(" *\\| *");
+			while(info.length >= 5) {
+				if(info[3].equals(prob) && info[4].equalsIgnoreCase("AC")) {
+					solveDate = toDate(info[2]);
+				}
+				line = in.readLine();
+				info = line.split(" *\\| *");
+			}
+			in.close();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return solveDate;
 	}
 	
 	public String toString()

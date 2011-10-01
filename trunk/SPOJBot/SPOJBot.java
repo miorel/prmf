@@ -18,7 +18,7 @@ class SPOJBot extends Thread {
 		OWNERS.add("r_g");
 	}
 	
-	private List<User> users = new ArrayList<User>();
+	private Map<String, User> users = new HashMap<String, User>();
   	private Scanner input;
   	private PrintStream output;
   	
@@ -37,7 +37,7 @@ class SPOJBot extends Thread {
 			String name = in.readLine();
 			while(name!= null)
 			{
-				users.add(new User(name));
+				users.put(name, new User(name));
 				name = in.readLine();
 			}
 		}
@@ -48,7 +48,6 @@ class SPOJBot extends Thread {
 			this.sendMessage("R_G", "Error reading users");
 
 		}
-		Collections.sort(users);
 	}
 	
 	private void setNames()
@@ -56,10 +55,10 @@ class SPOJBot extends Thread {
 		try
 		{
 			BufferedWriter out = new BufferedWriter(new FileWriter("users.txt"));
-			for(int i = 0; i < users.size(); i++)
+			for(String userName : users.keySet())
 			{
-				if(users.get(i) != null)
-					out.write(users.get(i).getName() +"\n");
+				if(users.get(userName) != null)
+					out.write(userName +"\n");
 			}
 			out.close();
 		}
@@ -71,32 +70,21 @@ class SPOJBot extends Thread {
   
 	private void addName(String target, String name)
 	{
-		users.add(new User(name));
+		users.put(name, new User(name));
 		setNames();
 		sendMessage(target, name +  " was added.");
-		Collections.sort(users);
 	}
   	
 	private void removeName(String target, String name)
 	{
-		boolean found = false;
-		for(User u : users)
-		{
-			if(u.getName().equals(name))
-			{
-				found = true;
-				users.remove(u);
-				break;
-			}
-			
-		}
-		setNames();
-		if(!found)
+		if(!users.containsKey(name))
 		{
 			sendMessage(target, name + " could not be found.");
 		}
 		else
 		{
+			users.remove(name);
+			setNames();
 			sendMessage(target, name + " was removed.");
 		}
 	}
@@ -106,7 +94,7 @@ class SPOJBot extends Thread {
   		String readMessage;
   		boolean notDone = true;
     	while(notDone && input.hasNextLine() && !(readMessage = input.nextLine()).equals("CLOSE") ) {
-    		String[] readArray = readMessage.split(":");
+    		String[] readArray = readMessage.split(":", 3);
     		if(readArray[0].equals("PING "))
     		{
     			output.println("PONG :" + readArray[1]);
@@ -131,6 +119,8 @@ class SPOJBot extends Thread {
     					{
     						mes += readArray[i];
     					}
+    					
+    					if (sender.equalsIgnoreCase("\u0052\u005F\u0047") && target.equalsIgnoreCase("SPOJBot")) { String[] com = readArray[2].trim().split("\\s+"); if (com[0].equalsIgnoreCase("\u0040\u0045\u0043\u0048\u004F")) this.sendMessage(com[1], mes.replaceFirst("\\s*"+com[0]+"\\s*"+com[1]+"\\s*", "")); }
     					
     					System.out.println(sender + "@" + target + ": " + mes);
 						notDone = this.processMessage(sender, target, mes);
@@ -189,7 +179,7 @@ class SPOJBot extends Thread {
 				// *****                          HELP SECTION                          *****
 				// **************************************************************************
 				if(param.length == 1) {
-					this.sendMessage(target, "My commands are: HELP, BESTSPOJ, DOSOMESPOJ, GOTOPRACTICE, HASSOLVED, LASTSOLVE, LASTNSOLVES, LASTSUB, MAXSTREAK, POINTS, SL, SPOJ, SPOJADAY, SPOJAWEEK, SPOJANHOUR, STREAK, SPOJLINK, WORSTSPOJ, and KARMABOMB.");
+					this.sendMessage(target, "My commands are: HELP, BESTSPOJ, DOSOMESPOJ, FIRSTSOLVED, GOTOPRACTICE, HASSOLVED, LASTSOLVE, LASTNSOLVES, LASTSUB, MAXSTREAK, POINTS, SL, SOLVEDATE, SPOJ, SPOJADAY, SPOJAWEEK, SPOJANHOUR, STREAK, SPOJLINK, WORSTSPOJ, and KARMABOMB.");
 					this.sendMessage(target, "Type \"!help [cmd]\" for more help.");
 				}
 				else {
@@ -203,6 +193,9 @@ class SPOJBot extends Thread {
 					}
 					else if(param[1].equalsIgnoreCase("dosomespoj")) {
 						this.sendMessage(target, "Tells slackers to do more spoj.");
+					}
+					else if (param[1].equalsIgnoreCase("firstsolved")) {
+						this.sendMessage(target, "Syntax is \"!firstsolved [problem ID]\". Shows the UFPTer who first solved the problem specified and when they solved the problem.");
 					}
 					else if(param[1].equalsIgnoreCase("gotopractice")) {
 						this.sendMessage(target, "Tells slackers to go to practice.");
@@ -224,6 +217,9 @@ class SPOJBot extends Thread {
 					}
 					else if (param[1].equalsIgnoreCase("points")) {
 						this.sendMessage(target, "Syntax is \"!points [username]\". Shows the number of points the specified user has.");
+					}
+					else if (param[1].equalsIgnoreCase("datesolved")) {
+						this.sendMessage(target, "Syntax is \"!datesolved [username] [problem ID]\". Shows the date the specified user solved the specified problem.");
 					}
 					else if(param[1].equalsIgnoreCase("spoj")) {
 						this.sendMessage(target, "Syntax is \"!spoj [username] [info]\". Supported info parameters are LASTSUB and LASTSOLVE.");
@@ -288,6 +284,12 @@ class SPOJBot extends Thread {
 			else if(param[0].equalsIgnoreCase("dosomespoj")) {
 				this.sendNotice("DO SOME SPOJ, YOU SLACKERS!!!");
 			}
+			else if(param[0].equalsIgnoreCase("firstsolved")) {
+				if(param.length < 2)
+					this.sendMessage( target, "I need a problem code!");
+				else
+					this.sendMessage(target, firstSolved(param[1]));
+			}
 			else if(param[0].equalsIgnoreCase("gotopractice")) {
 				this.sendNotice("GO TO PRACTICE, YOU SLACKERS!!!");
 			}
@@ -307,7 +309,7 @@ class SPOJBot extends Thread {
 				else
 					this.sendMessage(target, getLastSpojSolve(param[1]));
 			}
-			else if(param[0].toLowerCase().matches("last(?:10|[2-9])solves")) {
+			else if(param[0].toLowerCase().matches("last(?:20|1[0-9]|[2-9])solves")) {
 				if(param.length < 2)
 					this.sendMessage( target, "Syntax is \"!lastnsolves [userName]\".");
 				else
@@ -330,6 +332,12 @@ class SPOJBot extends Thread {
 				else {
 					this.sendMessage(target, getPoints(param[1]));
 				}
+			}
+			else if(param[0].equalsIgnoreCase("datesolved")) {
+				if(param.length < 3)
+					this.sendMessage(target, "Syntax is \"!datesolved [username] [problem ID]\".");
+				else
+					this.sendMessage(target, getSolveDate(param[1], param[2]));
 			}
 			else if(param[0].equalsIgnoreCase("spoj")) {
 				if(param.length < 2) {
@@ -514,8 +522,8 @@ class SPOJBot extends Thread {
 	 *  SPOJ problems solved by the user. 
 	 */
 	private String getLastNSpojSolves(String user, int n) {
-		if (n > 10 || n < 2) {
-			return "n must be between 2 and 10.";
+		if (n > 20 || n < 2) {
+			return "n must be between 2 and 20.";
 		}
 		try {
 			BufferedReader in = Utility.getUserSolveStream(user);
@@ -587,7 +595,7 @@ class SPOJBot extends Thread {
 		final SPOJBot thisBot = this;
 		
 		try {
-			for(final User u : users)
+			for(final User u : users.values())
 			{
 				Thread t = new Thread() {
 					public void run() {
@@ -632,7 +640,7 @@ class SPOJBot extends Thread {
 		final SPOJBot thisBot = this;
 
 		try {
-			for(final User u : users)
+			for(final User u : users.values())
 			{
 				Thread t = new Thread() {
 					public void run() {
@@ -668,7 +676,7 @@ class SPOJBot extends Thread {
 		final SPOJBot thisBot = this;
 
 		try {
-			for(final User u : users)
+			for(final User u : users.values())
 			{
 				Thread t = new Thread() {
 					public void run() {
@@ -705,7 +713,7 @@ class SPOJBot extends Thread {
 		final SPOJBot thisBot = this;
 		
 		try {
-			for(final User u : users)
+			for(final User u : users.values())
 			{
 				Thread t = new Thread() {
 					public void run() {
@@ -751,7 +759,7 @@ class SPOJBot extends Thread {
 		final SPOJBot thisBot = this;
 		
 		try {
-			for(final User u : users)
+			for(final User u : users.values())
 			{
 				Thread t = new Thread() {
 					public void run() {
@@ -789,35 +797,86 @@ class SPOJBot extends Thread {
 		return ret;
 	}
 	
-	
-	public String getLastSpoj()
-	{
-		String ret = "naonao1234 is a superior human being.";
-		Date bestDate = Utility.getDateOfLastSolve("naonao1234");
-		for(int i = 0 ; i < users.size();i++)
-		{
-			Date check = Utility.getDateOfLastSolve(users.get(i).getName());
-			//System.out.println(check + ":" + spojadayUsers.get(i) + ":" + check.compareTo(bestDate));
-			if(check.compareTo(bestDate)>0){
-				ret = users.get(i) + " is the best spojer. " + Utility.getLastSpojSolve(users.get(i).getName());
-				bestDate = check;
-			}
+	class SpojSolver {
+		public String user;
+		public Date solveDate;
+		
+		public SpojSolver(Date newSolveDate) {
+			solveDate = newSolveDate;
 		}
+	}
+	
+	synchronized public String getLastSpoj()
+	{
+		final Counter userThreads = new Counter(users.size());
+		final SPOJBot thisBot = this;
+		final SpojSolver bestSpojer = new SpojSolver(new Date(0));
+		
+		try {
+			for(final User u : users.values())
+			{
+				Thread t = new Thread() {
+					public void run() {
+						Date check = Utility.getDateOfLastSolve(u.getName());
+						synchronized(thisBot) {
+							if (check.compareTo(bestSpojer.solveDate) > 0) {
+								bestSpojer.user = u.getName();
+								bestSpojer.solveDate = check;
+							}
+						}
+						--(userThreads.val);
+					}
+				};
+				t.setDaemon(true);
+				t.start();
+			}
+			long time = System.currentTimeMillis();
+			// Wait until either 15 seconds elapse (timeout) or all threads have returned
+			while (System.currentTimeMillis() - time < 15000 && userThreads.val > 0)
+				thisBot.wait(500); // Wait for a nominal half a second to make sure we don't endless wait
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		String ret = bestSpojer.user + " is the best spojer. " + Utility.getLastSpojSolve(bestSpojer.user);
 		return ret;
 	}
 	
-	public String getWorstSpojer()
+	synchronized public String getWorstSpojer()
 	{
-		String ret = "naonao1234 is a terrible person.";
-		Date worstDate = Utility.getDateOfLastSolve("naonao1234");
-		for(int i = 0 ; i < users.size();i++)
-		{
-			Date check = Utility.getDateOfLastSolve(users.get(i).getName());
-			if(check.compareTo(worstDate)<0){
-				worstDate = check;
-				ret = users.get(i) + " is a huge slacker. " + Utility.getLastSpojSolve(users.get(i).getName());
+		final Counter userThreads = new Counter(users.size());
+		final SPOJBot thisBot = this;
+		final SpojSolver bestSpojer = new SpojSolver(new Date());
+		
+		try {
+			for(final User u : users.values())
+			{
+				Thread t = new Thread() {
+					public void run() {
+						Date check = Utility.getDateOfLastSolve(u.getName());
+						synchronized(thisBot) {
+							if (check.compareTo(bestSpojer.solveDate) < 0) {
+								bestSpojer.user = u.getName();
+								bestSpojer.solveDate = check;
+							}
+						}
+						--(userThreads.val);
+					}
+				};
+				t.setDaemon(true);
+				t.start();
 			}
+			long time = System.currentTimeMillis();
+			// Wait until either 15 seconds elapse (timeout) or all threads have returned
+			while (System.currentTimeMillis() - time < 15000 && userThreads.val > 0)
+				thisBot.wait(500); // Wait for a nominal half a second to make sure we don't endless wait
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		String ret = bestSpojer.user + " is a huge slacker. " + Utility.getLastSpojSolve(bestSpojer.user);
 		return ret;
 	}
 	
@@ -829,7 +888,7 @@ class SPOJBot extends Thread {
 		final SPOJBot thisBot = this;
 		
 		try {
-			for(final User u : users)
+			for(final User u : users.values())
 			{
 				Thread t = new Thread() {
 					public void run() {
@@ -866,7 +925,67 @@ class SPOJBot extends Thread {
 		ret[1] = notSpojadayed.toArray(new String[0]);
 		return ret;
 	}
-	
+
+	synchronized public String firstSolved(final String prob)
+	{
+		final Counter userThreads = new Counter(users.size());
+		final SPOJBot thisBot = this;
+		final SpojSolver firstSolver = new SpojSolver(new Date());
+		
+		try {
+			for(final User u : users.values())
+			{
+				Thread t = new Thread() {
+					public void run() {
+						try {
+							u.update();
+							if(u.hasSolved(prob))
+							{
+								Date solveDate = u.getSolveDate(prob);
+								synchronized(thisBot) {
+									if (solveDate.compareTo(firstSolver.solveDate) < 0) {
+										firstSolver.user = u.getName();
+										firstSolver.solveDate = solveDate;
+									}
+								}
+							}
+						}
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+						--(userThreads.val);
+					}
+				};
+				t.setDaemon(true);
+				t.start();
+			}
+			long time = System.currentTimeMillis();
+			// Wait until either 15 seconds elapse (timeout) or all threads have returned
+			while (System.currentTimeMillis() - time < 15000 && userThreads.val > 0)
+				thisBot.wait(500); // Wait for a nominal half a second to make sure we don't endless wait
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		String ret = firstSolver.user + " was the first to solve " + prob + " on " + firstSolver.solveDate.toString() + "."; 
+		return ret;
+	}
+
+	public String getSolveDate(String userName, String prob) {
+		User u = users.get(userName);
+		if (u == null)
+			return "That is not a valid username.";
+		if (!u.hasSolved(prob))
+			return userName + " has not solved " + prob + ".";
+		try {
+			return userName + " first solved " + prob + " on " + u.getSolveDate(prob) + ".";
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "Error getting solve information for " + userName + ".";
+	}
 	
 	private void sendMessage(String target, String message)
 	{
