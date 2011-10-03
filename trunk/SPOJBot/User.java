@@ -99,11 +99,11 @@ public class User implements Comparable<User>{
 			{
 				if(info[4].equalsIgnoreCase("AC"))
 				{
-					if(!prevSolves.contains(info[3]) && lastUp.compareTo(toDate(info[1]) )>0)
+					if(!prevSolves.contains(info[3]) && lastUp.compareTo(Utility.toDate(info[1]) )>0)
 					{
 						hasChanged = true;
 						prevSolves.add(info[3]);
-						Date ret = toDate(info[2]);
+						Date ret = Utility.toDate(info[2]);
 						if(Utility.checkIfSameWeek(now,ret))
 						{
 							spojWeek++;
@@ -159,23 +159,6 @@ public class User implements Comparable<User>{
 		hasChanged=false;
 	}
 	
-
-	
-	private Date toDate(String date)
-	{
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Calendar c = new GregorianCalendar();
-		Date ret = new Date(0);
-		try
-		{
-			c.setTime(df.parse(date));
-			c.add(Calendar.HOUR_OF_DAY, -6);
-			ret = c.getTime();
-		} catch(ParseException e)
-		{}	
-		return ret;
-	}
-
 	@Override
 	public int compareTo(User arg0) {
 		return this.name.compareTo(arg0.name);
@@ -184,31 +167,6 @@ public class User implements Comparable<User>{
 	public boolean hasSolved(String prob)
 	{
 		return prevSolves.contains(prob);
-	}
-	
-	public Date getSolveDate(String prob) throws IOException {
-		Date solveDate = null;
-		try {
-			BufferedReader in = Utility.getUserSolveStream(name);
-			String line = "";
-			for(int i=0; i<10; ++i) {
-				line = in.readLine();
-			}
-			String[] info = line.split(" *\\| *");
-			while(info.length >= 5) {
-				if(info[3].equals(prob) && info[4].equalsIgnoreCase("AC")) {
-					solveDate = toDate(info[2]);
-				}
-				line = in.readLine();
-				info = line.split(" *\\| *");
-			}
-			in.close();
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-			throw e;
-		}
-		return solveDate;
 	}
 	
 	public String toString()

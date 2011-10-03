@@ -278,7 +278,7 @@ class SPOJBot extends Thread {
 			// **************************************************************************
 			// *****                       COMMANDS SECTION                         *****
 			// **************************************************************************
-			else if(param[0].equalsIgnoreCase("bestspoj") || param[0].equalsIgnoreCase("pro")) {
+			else if(param[0].equalsIgnoreCase("bestspoj") || param[0].equalsIgnoreCase("pro") || param[0].equalsIgnoreCase("gosu")) {
 				this.sendMessage(target, getLastSpoj());
 			}
 			else if(param[0].equalsIgnoreCase("dosomespoj")) {
@@ -286,9 +286,14 @@ class SPOJBot extends Thread {
 			}
 			else if(param[0].equalsIgnoreCase("firstsolved")) {
 				if(param.length < 2)
-					this.sendMessage( target, "I need a problem code!");
-				else
-					this.sendMessage(target, firstSolved(param[1]));
+					this.sendMessage(target, "I need a problem code!");
+				else {
+					param[1] = Utility.toValidProblemID(param[1]);
+					if (Utility.isValidProblemID(param[1]))
+						this.sendMessage(target, firstSolved(param[1]));
+					else
+						this.sendMessage(target, "That's not a valid problem code!");
+				}
 			}
 			else if(param[0].equalsIgnoreCase("gotopractice")) {
 				this.sendNotice("GO TO PRACTICE, YOU SLACKERS!!!");
@@ -298,9 +303,14 @@ class SPOJBot extends Thread {
 					this.sendMessage(target, "I need a problem code!");
 				else
 				{
-					String[][] lists = hasSolved(param[1].toUpperCase());
-					this.sendMessage(target, Utility.toGrammaticallyCorrectString(lists[0], "has solved " + param[1].toUpperCase() + ".", "have solved " + param[1].toUpperCase() + "."));
-					this.sendMessage(target, Utility.toGrammaticallyCorrectString(lists[1], "has not.", "have not."));
+					param[1] = Utility.toValidProblemID(param[1]);
+					if (Utility.isValidProblemID(param[1])) {
+						String[][] lists = hasSolved(param[1]);
+						this.sendMessage(target, Utility.toGrammaticallyCorrectString(lists[0], "has solved " + param[1] + ".", "have solved " + param[1] + "."));
+						this.sendMessage(target, Utility.toGrammaticallyCorrectString(lists[1], "has not.", "have not."));
+					}
+					else
+						this.sendMessage(target, "That's not a valid problem code!");
 				}
 			}
 			else if(param[0].equalsIgnoreCase("lastsolve")) {
@@ -336,8 +346,13 @@ class SPOJBot extends Thread {
 			else if(param[0].equalsIgnoreCase("datesolved")) {
 				if(param.length < 3)
 					this.sendMessage(target, "Syntax is \"!datesolved [username] [problem ID]\".");
-				else
-					this.sendMessage(target, getSolveDate(param[1], param[2]));
+				else {
+					param[2] = Utility.toValidProblemID(param[2]);
+					if (Utility.isValidProblemID(param[2]))
+						this.sendMessage(target, getSolveDate(param[1], param[2]));
+					else
+						this.sendMessage(target, "That's not a valid problem code!");
+				}
 			}
 			else if(param[0].equalsIgnoreCase("spoj")) {
 				if(param.length < 2) {
@@ -378,21 +393,24 @@ class SPOJBot extends Thread {
 			}
 			else if(param[0].equalsIgnoreCase("spojlink") || param[0].equalsIgnoreCase("sl")) {
 				if(param.length < 2)
-				{
-					this.sendMessage( target, "Syntax is \"!" + param[0].toLowerCase() + " [problem ID]\"");
-				} else {
-					this.sendMessage( target, "http://www.spoj.pl/problems/" + param[1].toUpperCase() + "/");
+					this.sendMessage(target, "Syntax is \"!" + param[0].toLowerCase() + " [problem ID]\"");
+				else {
+					param[1] = Utility.toValidProblemID(param[1]);
+					if (Utility.isValidProblemID(param[1]))
+						this.sendMessage(target, "http://www.spoj.pl/problems/" + param[1] + "/");
+					else
+						this.sendMessage(target, "That's not a valid problem code!");
 				}
 			}
-			else if(param[0].equalsIgnoreCase("worstspoj") || param[0].equalsIgnoreCase("noob")) {
+			else if(param[0].equalsIgnoreCase("worstspoj") || param[0].equalsIgnoreCase("noob") || param[0].equalsIgnoreCase("chobo")) {
 				this.sendMessage(target, getWorstSpojer());
 			}
 			else if(param[0].equalsIgnoreCase("karmabomb")) {
-				if(param.length < 2)
-				{
-					this.sendMessage( target, "Syntax is \"!karmabomb [target]\"" );
-				} else {
-					this.sendMessage( target, "Not cool, man.... --" + sender);
+				if(param.length < 2) {
+					this.sendMessage(target, "Syntax is \"!karmabomb [target]\"" );
+				}
+				else {
+					this.sendMessage(target, "Not cool, man.... --" + sender);
 				}
 			}
 			else if(param[0].equalsIgnoreCase("sau")) {
@@ -496,18 +514,8 @@ class SPOJBot extends Thread {
 			}
 			
 			String prob = info[3];
-			String strDate = info[2];
+			String strDate = Utility.toDate(info[2]).toString();
 			in.close();
-			
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Calendar c = new GregorianCalendar();
-			try
-			{
-				c.setTime(df.parse(strDate));
-				c.add(Calendar.HOUR_OF_DAY, -6);
-				strDate = c.getTime().toString();
-			} catch(ParseException e)
-			{}	
 			
 			return(user + "'s last solved classical problem was " + prob + " on " + strDate + ".");
 		} catch(IOException e) {
@@ -941,7 +949,7 @@ class SPOJBot extends Thread {
 							u.update();
 							if(u.hasSolved(prob))
 							{
-								Date solveDate = u.getSolveDate(prob);
+								Date solveDate = Utility.getSolveDate(u.getName(), prob);
 								synchronized(thisBot) {
 									if (solveDate.compareTo(firstSolver.solveDate) < 0) {
 										firstSolver.user = u.getName();
@@ -969,22 +977,24 @@ class SPOJBot extends Thread {
 		}
 		
 		String ret = firstSolver.user + " was the first to solve " + prob + " on " + firstSolver.solveDate.toString() + "."; 
+
+		if (firstSolver.user == null) {
+			ret = "No one has solved " + prob + ".";
+		}
+		
 		return ret;
 	}
 
 	public String getSolveDate(String userName, String prob) {
-		User u = users.get(userName);
-		if (u == null)
-			return "That is not a valid username.";
-		if (!u.hasSolved(prob))
-			return userName + " has not solved " + prob + ".";
 		try {
-			return userName + " first solved " + prob + " on " + u.getSolveDate(prob) + ".";
+			Date solveDate = Utility.getSolveDate(userName, prob);
+			if (solveDate == null)
+				return userName + " has not solved " + prob + ".";
+			return userName + " first solved " + prob + " on " + solveDate.toString() + ".";
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			return("User " + userName + " was not found on SPOJ.");
 		}
-		return "Error getting solve information for " + userName + ".";
 	}
 	
 	private void sendMessage(String target, String message)

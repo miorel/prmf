@@ -34,24 +34,27 @@ public class Utility {
 				return(new Date(0));
 			}
 			
-			String strDate = info[2];
 			in.close();
 			
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Calendar c = new GregorianCalendar();
-			Date ret = new Date(0);
-			try
-			{
-				c.setTime(df.parse(strDate));
-				c.add(Calendar.HOUR_OF_DAY, -6);
-				ret = c.getTime();
-			} catch(ParseException e)
-			{}	
-			
-			return(ret);
+			return toDate(info[2]);
 		} catch(IOException e) {
 			return(new Date(0));
 		}
+	}
+	
+	public static Date toDate(String date)
+	{
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar c = new GregorianCalendar();
+		Date ret = new Date(0);
+		try
+		{
+			c.setTime(df.parse(date));
+			c.add(Calendar.HOUR_OF_DAY, -6);
+			ret = c.getTime();
+		} catch(ParseException e)
+		{}	
+		return ret;
 	}
 	
 	public static boolean checkIfSameDay(Date d1, Date d2)
@@ -150,18 +153,8 @@ public class Utility {
 			
 			String retCode = info[4];
 			String prob = info[3];
-			String strDate = info[2];
+			String strDate = toDate(info[2]).toString();
 			in.close();
-			
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Calendar c = new GregorianCalendar();
-			try
-			{
-				c.setTime(df.parse(strDate));
-				c.add(Calendar.HOUR_OF_DAY, -6);
-				strDate = c.getTime().toString();
-			} catch(ParseException e)
-			{}	
 			
 			return(user + "'s last solved classical problem was " + prob + " on " + strDate + ".");
 		} catch(IOException e) {
@@ -170,6 +163,30 @@ public class Utility {
 		
 	}
 	
+	public static Date getSolveDate(String userName, String prob) throws IOException {
+		Date solveDate = null;
+		try {
+			BufferedReader in = Utility.getUserSolveStream(userName);
+			String line = "";
+			for(int i=0; i<10; ++i) {
+				line = in.readLine();
+			}
+			String[] info = line.split(" *\\| *");
+			while(info.length >= 5) {
+				if(info[3].equals(prob) && info[4].equalsIgnoreCase("AC")) {
+					solveDate = toDate(info[2]);
+				}
+				line = in.readLine();
+				info = line.split(" *\\| *");
+			}
+			in.close();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return solveDate;
+	}
 	
 	public static String getTimeTillMidnight()
     {
@@ -291,5 +308,12 @@ public class Utility {
 		return result.toString();
 	}
 
+	public static boolean isValidProblemID(String problemID) { 
+		return !(problemID.length() < 3 || problemID.length() > 8 || problemID.matches(".*[^A-Z0-9_].*"));	
+	}
+	
+	public static String toValidProblemID(String problemID) {
+		return problemID.toUpperCase().replaceAll("[^A-Z0-9_]*\\z", "");
+	}
 	
 }
