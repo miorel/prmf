@@ -129,6 +129,56 @@ public class Utility {
 		return in;
 	}
 	
+	public static BufferedReader getKongUserInfoStream(String name) throws IOException
+	{
+		BufferedReader in;
+		try {
+			// Create a URL for the desired page
+			URL url = new  URL("http://www.kongregate.com/accounts/" + name.toLowerCase());
+			
+			// Get the input stream to read from the page
+			in = new BufferedReader(new InputStreamReader(url.openStream()));
+		}
+		catch (MalformedURLException e) {
+			in = null;
+			throw e;
+		}
+		return in;
+	}
+	
+	public static BufferedReader getKongUserBadgeStream(String name, String sort) throws IOException
+	{
+		BufferedReader in;
+		try {
+			// Create a URL for the desired page
+			URL url = new  URL("http://www.kongregate.com/accounts/" + name.toLowerCase() + "/badges?sort=" + sort);
+			
+			// Get the input stream to read from the page
+			in = new BufferedReader(new InputStreamReader(url.openStream()));
+		}
+		catch (MalformedURLException e) {
+			in = null;
+			throw e;
+		}
+		return in;
+	}
+	
+	public static BufferedReader getKongBadgesStream() throws IOException
+	{
+		BufferedReader in;
+		try {
+			// Create a URL for the desired page
+			URL url = new  URL("http://www.kongregate.com/badges");
+			
+			// Get the input stream to read from the page
+			in = new BufferedReader(new InputStreamReader(url.openStream()));
+		}
+		catch (MalformedURLException e) {
+			in = null;
+			throw e;
+		}
+		return in;
+	}
 	public static String getLastSpojSolve(String user)
 	{
 		try {
@@ -155,7 +205,6 @@ public class Utility {
 			String prob = info[3];
 			String strDate = toDate(info[2]).toString();
 			in.close();
-			
 			return(user + "'s last solved classical problem was " + prob + " on " + strDate + ".");
 		} catch(IOException e) {
 			return("User " + user + " was not found on SPOJ.");

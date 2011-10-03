@@ -425,6 +425,35 @@ class SPOJBot extends Thread {
 					removeName(sender, param[1]);
 				}
 			}
+			else if(param[0].equalsIgnoreCase("lastbadge")) {
+				if(param.length < 2)
+					this.sendMessage( target, "Syntax is \"!lastbadge [username]\".");
+				else {
+					String[] badge = getKongBadge(param[1], "newest", "last");
+					this.sendMessage(target, badge[0]);
+					if(badge[1] != null) this.sendMessage(target, badge[1]);
+				}
+			}
+			else if(param[0].equalsIgnoreCase("firstbadge")) {
+				if(param.length < 2)
+					this.sendMessage( target, "Syntax is \"!firstbadge [username]\".");
+				else {
+					String[] badge = getKongBadge(param[1], "oldest", "first");
+					this.sendMessage(target, badge[0]);
+					if(badge[1] != null) this.sendMessage(target, badge[1]);
+				}
+			}
+			else if (param[0].equalsIgnoreCase("kongpoints")) {
+				if (param.length < 2) {
+					this.sendMessage(target, "Syntax is \"!kongpoints [username]\".");
+				}
+				else {
+					this.sendMessage(target, getKongPoints(param[1]));
+				}
+			}
+			else if (param[0].equalsIgnoreCase("badgeoftheday")) {
+				this.sendMessage(target, getBadgeOfTheDay());
+			}
 			// **************************************************************************
 			// *****                     END COMMANDS SECTION                       *****
 			// **************************************************************************
@@ -588,6 +617,98 @@ class SPOJBot extends Thread {
 		}
 	}
 
+	private String getKongPoints(String user) {
+		try {
+			BufferedReader in = Utility.getKongUserInfoStream(user);
+			String input, toReturn = null;
+			Pattern pointsPattern = Pattern.compile(".*Current Points:\\D*(\\d+).*");
+			while ((input = in.readLine()) != null) {
+				Matcher pointsMatcher = pointsPattern.matcher(input);
+				if (pointsMatcher.find()) {
+					toReturn = pointsMatcher.group(1);
+					break;
+				}
+			}
+			in.close();
+			if (toReturn == null) {
+				return ("User " + user + " was not found on Kongregate.");
+			}
+			return (user + " has " + toReturn + ".");
+		} catch(IOException e) {
+			return("User " + user + " was not found on Kongregate.");
+		}
+	}
+	
+	private String[] getKongBadge(String user, String sort, String type) {
+		try {
+			BufferedReader in = Utility.getKongUserBadgeStream(user, sort);
+			String input, toReturn = null, link = null, date = null;
+			Pattern badgeDetailsPattern = Pattern.compile("\"badge_details\""),
+					badgePattern = Pattern.compile(".*badge_link\">(.*) Badge<.*"),
+					linkPattern = Pattern.compile("(http://www.kongregate.com/games/.*)\" class"),
+					datePattern = Pattern.compile("[a-zA-Z]+. [0-9]+, [0-9]+");
+			A: while ((input = in.readLine()) != null) {
+				Matcher badgeDetailsMatcher = badgeDetailsPattern.matcher(input);
+				if (badgeDetailsMatcher.find()) {
+					input = in.readLine();
+					System.out.println(input);
+					Matcher badgeMatcher = badgePattern.matcher(input),
+							linkMatcher = linkPattern.matcher(input);;
+					if(badgeMatcher.find() && linkMatcher.find()) {
+						toReturn = badgeMatcher.group(1);
+						link = linkMatcher.group(1);
+					}
+					while((input = in.readLine()) != null) {
+						Matcher dateMatcher = datePattern.matcher(input);
+						if(dateMatcher.find()) {
+							date = dateMatcher.group();
+							break A;
+						}
+					}
+				}
+			}
+			in.close();
+			String[] ret = new String[2];
+			if (toReturn == null) {
+				ret[0] = "User " + user + " was not found on Kongregate.";
+				return ret;
+			}
+			ret[0] = user + "'s " + type + " badge was " + toReturn + " on " + date +".";
+			ret[1] = "The game that rewarded this badge was: " + link;
+			return ret;
+		} catch(IOException e) {
+			String[] ret = new String[2];
+			ret[0] = "User " + user + " was not found on Kongregate.";
+			return ret;
+		}
+	}
+	
+	private String getBadgeOfTheDay() {
+		try {
+			BufferedReader in = Utility.getKongBadgesStream();
+			String input, toReturn = null;
+			Pattern badgePattern = Pattern.compile("badge_details\""),
+					linkPattern = Pattern.compile("(http://www.kongregate.com/games.*)\" class");
+			while ((input = in.readLine()) != null) {
+				Matcher badgeMatcher = badgePattern.matcher(input);
+				if (badgeMatcher.find()) {
+					Matcher linkMatcher = linkPattern.matcher(in.readLine());
+					if(linkMatcher.find()) {
+						toReturn = linkMatcher.group(1);
+						break;
+					}
+				}
+			}
+			in.close();
+			if (toReturn == null) {
+				return ("Badge of the day not found.");
+			}
+			return toReturn;
+		} catch(IOException e) {
+			return("Badge of the day not found.");
+		}
+	}
+	
 	class Counter {
 		public int val;
 		public Counter(int initVal) {
