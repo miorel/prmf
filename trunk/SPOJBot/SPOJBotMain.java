@@ -1,18 +1,14 @@
-
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-
-
-
 public class SPOJBotMain {
-
+	
 	private static final String HOST_NAME = "chat.freenode.net";
 	private static final int PORT_NUMBER = 8001;
-	private static final String NICK = "KONGBot";
-	private static final String FULL_NAME = "Programmed by TJ Boyd, Cheran Wu, Uttam Thakore, & Jason Fisher";
+	private static final String NICK = "SPOJBot";
+	private static final String FULL_NAME = "Programmed by TJ Boyd, Cheran Wu, & Uttam Thakore";
 	private static final String CHANNEL = "#ufpt";
 	//private static final String PASSWORD = "";
 	
@@ -48,7 +44,7 @@ public class SPOJBotMain {
         	//}
 			//output.println(sendMsg);
 			
-			//stdIn.close();	
+			//stdIn.close();
 			
         }
         catch (IOException e) {
