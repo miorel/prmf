@@ -11,7 +11,6 @@ class KongBot extends Thread {
 	private static final HashSet<String> OWNERS = new HashSet<String>();
 	
 	static {
-		OWNERS.add("tww2");
 		OWNERS.add("r_g");
 		OWNERS.add("chemaba");
 	}
@@ -89,12 +88,12 @@ class KongBot extends Thread {
 		
 		message = message.trim();
 		
-		if(message.charAt(0) == '!')
+		if(message.charAt(0) == '$')
 		{
 			String[] param = message.substring(1).split(" +");
 			
 			/************************************************
-			*				TWW2Bot Commands				*
+			*				KongBot Commands				*
 			************************************************/
 
 			if(param[0].equalsIgnoreCase("help"))
@@ -103,7 +102,7 @@ class KongBot extends Thread {
 				// *****                          HELP SECTION                          *****
 				// **************************************************************************
 				if(param.length == 1) {
-					this.sendMessage(target, "My commands are: BADGEOFTHEDAY, FIRSTBADGE, KONGPOINTS, LASTBADGE.");
+					this.sendMessage(target, "My commands are: BADGEOFTHEDAY, BOTD, FIRSTBADGE, POINTS, LASTBADGE.");
 					this.sendMessage(target, "Type \"!help [cmd]\" for more help.");
 				}
 				else {
@@ -112,31 +111,17 @@ class KongBot extends Thread {
 					if(param[1].equalsIgnoreCase("help")) {
 						this.sendMessage(target, "I think you already got it...");
 					}
-					else if(param[1].equalsIgnoreCase("badgeoftheday")) {
-						this.sendMessage(target, "chemaba needs to implement this... D:<");
+					else if(param[1].equalsIgnoreCase("badgeoftheday") || param[1].equals("botd")) {
+						this.sendMessage(target, "Lists the url of the badge that gives the badge of the day.");
 					}
 					else if(param[1].equalsIgnoreCase("firstbadge")) {
-						this.sendMessage(target, "chemaba needs to implement this... D:<");
+						this.sendMessage(target, "Syntax is !firstbadge [username].  Username's first badge and when it was acquired.");
 					}
-					else if(param[1].equalsIgnoreCase("kongpoints")) {
-						this.sendMessage(target, "chemaba needs to implement this... D:<");
+					else if(param[1].equalsIgnoreCase("points")) {
+						this.sendMessage(target, "Syntax is !firstbadge [username].  Username's total kong points.");
 					}
 					else if(param[1].equalsIgnoreCase("lastbadge")) {
-						this.sendMessage(target, "chemaba needs to implement this... D:<");
-					}
-					//TROLL HELP OPTIONS
-					else if(param[1].equalsIgnoreCase("huabot")) {
-						this.sendMessage(target, "~help");
-						this.sendMessage(target, "He can do that himself");
-					}
-					else if(param[1].equalsIgnoreCase("maubot")) {
-						this.sendMessage(target, "LOL");
-					}
-					else if(param[1].equalsIgnoreCase("[cmd]")) {
-						this.sendMessage(target, "Well, aren't YOU Mr. Literal?");
-					}
-					else {
-						this.sendMessage(target, "I can't help you with " + param[1] + ".");
+						this.sendMessage(target, "Syntax is !lastbadge [username].  Username's last badge and when it was acquired.");
 					}
 				}
 				// **************************************************************************
@@ -164,7 +149,7 @@ class KongBot extends Thread {
 					if(badge[1] != null) this.sendMessage(target, badge[1]);
 				}
 			}
-			else if (param[0].equalsIgnoreCase("kongpoints")) {
+			else if (param[0].equalsIgnoreCase("points")) {
 				if (param.length < 2) {
 					this.sendMessage(target, "Syntax is \"!kongpoints [username]\".");
 				}
@@ -172,7 +157,7 @@ class KongBot extends Thread {
 					this.sendMessage(target, getKongPoints(param[1]));
 				}
 			}
-			else if (param[0].equalsIgnoreCase("badgeoftheday")) {
+			else if (param[0].equalsIgnoreCase("badgeoftheday") || param[0].equals("botd")) {
 				this.sendMessage(target, getBadgeOfTheDay());
 			}
 			// **************************************************************************
