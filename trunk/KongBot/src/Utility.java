@@ -40,12 +40,12 @@ public class Utility {
 		return in;
 	}
 	
-	public static BufferedReader getKongBadgesStream() throws IOException
+	public static BufferedReader getKongBadgesStream(String category) throws IOException
 	{
 		BufferedReader in;
 		try {
 			// Create a URL for the desired page
-			URL url = new  URL("http://www.kongregate.com/badges");
+			URL url = new  URL("http://www.kongregate.com/badges"+category);
 			
 			// Get the input stream to read from the page
 			in = new BufferedReader(new InputStreamReader(url.openStream()));

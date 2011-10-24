@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +11,7 @@ import java.util.regex.Pattern;
 class KongBot extends Thread {
 
 	private static final HashSet<String> OWNERS = new HashSet<String>();
+	private static final int BADGES_PER_PAGE = 20;
 	
 	static {
 		OWNERS.add("r_g");
@@ -46,7 +49,7 @@ class KongBot extends Thread {
     				 ********************************************************/
     				if(command.equals("PRIVMSG"))
     				{
-    					sender = sender.substring(0, sender.indexOf('!'));
+    					sender = sender.substring(0, sender.indexOf('$'));
     					String target = cmdLine[2];
     					String mes = "";
     					for(int i=2; i<readArray.length; ++i)
@@ -103,7 +106,7 @@ class KongBot extends Thread {
 				// **************************************************************************
 				if(param.length == 1) {
 					this.sendMessage(target, "My commands are: BADGEOFTHEDAY, BOTD, FIRSTBADGE, POINTS, LASTBADGE.");
-					this.sendMessage(target, "Type \"!help [cmd]\" for more help.");
+					this.sendMessage(target, "Type \"$help [cmd]\" for more help.");
 				}
 				else {
 					
@@ -115,13 +118,17 @@ class KongBot extends Thread {
 						this.sendMessage(target, "Lists the url of the badge that gives the badge of the day.");
 					}
 					else if(param[1].equalsIgnoreCase("firstbadge")) {
-						this.sendMessage(target, "Syntax is !firstbadge [username].  Username's first badge and when it was acquired.");
+						this.sendMessage(target, "Syntax is $firstbadge [username].  Username's first badge and when it was acquired.");
 					}
 					else if(param[1].equalsIgnoreCase("points")) {
-						this.sendMessage(target, "Syntax is !firstbadge [username].  Username's total kong points.");
+						this.sendMessage(target, "Syntax is $firstbadge [username].  Username's total kong points.");
 					}
 					else if(param[1].equalsIgnoreCase("lastbadge")) {
-						this.sendMessage(target, "Syntax is !lastbadge [username].  Username's last badge and when it was acquired.");
+						this.sendMessage(target, "Syntax is $lastbadge [username].  Username's last badge and when it was acquired.");
+					}
+					else if(param[1].equalsIgnoreCase("randombadge")) {
+						this.sendMessage(target, "Syntax is $randombadge [category].  Picks a random badge from the 100 newest badges of that category."+
+												 "Possible categories are: "+getBadgeCategories());
 					}
 				}
 				// **************************************************************************
@@ -133,7 +140,7 @@ class KongBot extends Thread {
 			// **************************************************************************
 			else if(param[0].equalsIgnoreCase("lastbadge")) {
 				if(param.length < 2)
-					this.sendMessage( target, "Syntax is \"!lastbadge [username]\".");
+					this.sendMessage( target, "Syntax is \"$lastbadge [username]\".");
 				else {
 					String[] badge = getKongBadge(param[1], "newest", "last");
 					this.sendMessage(target, badge[0]);
@@ -142,7 +149,7 @@ class KongBot extends Thread {
 			}
 			else if(param[0].equalsIgnoreCase("firstbadge")) {
 				if(param.length < 2)
-					this.sendMessage( target, "Syntax is \"!firstbadge [username]\".");
+					this.sendMessage( target, "Syntax is \"$firstbadge [username]\".");
 				else {
 					String[] badge = getKongBadge(param[1], "oldest", "first");
 					this.sendMessage(target, badge[0]);
@@ -151,7 +158,7 @@ class KongBot extends Thread {
 			}
 			else if (param[0].equalsIgnoreCase("points")) {
 				if (param.length < 2) {
-					this.sendMessage(target, "Syntax is \"!kongpoints [username]\".");
+					this.sendMessage(target, "Syntax is \"$kongpoints [username]\".");
 				}
 				else {
 					this.sendMessage(target, getKongPoints(param[1]));
@@ -159,6 +166,16 @@ class KongBot extends Thread {
 			}
 			else if (param[0].equalsIgnoreCase("badgeoftheday") || param[0].equals("botd")) {
 				this.sendMessage(target, getBadgeOfTheDay());
+			}
+			else if(param[0].equalsIgnoreCase("randombadge")) {
+				String[] badge;
+				if(param.length < 2) {
+					badge = getRandomBadge("all");
+				} else {
+					badge = getRandomBadge(param[1]);
+				}
+				this.sendMessage(target, badge[0]);
+				if(badge[1] != null) this.sendMessage(target, badge[1]);
 			}
 			// **************************************************************************
 			// *****                     END COMMANDS SECTION                       *****
@@ -202,7 +219,6 @@ class KongBot extends Thread {
 				Matcher badgeDetailsMatcher = badgeDetailsPattern.matcher(input);
 				if (badgeDetailsMatcher.find()) {
 					input = in.readLine();
-					System.out.println(input);
 					Matcher badgeMatcher = badgePattern.matcher(input),
 							linkMatcher = linkPattern.matcher(input);;
 					if(badgeMatcher.find() && linkMatcher.find()) {
@@ -234,9 +250,106 @@ class KongBot extends Thread {
 		}
 	}
 	
+	private ArrayList<String> getBadgeCategories() {
+		try {
+			BufferedReader in = Utility.getKongBadgesStream("");
+			Pattern badgeCategoryPattern = Pattern.compile("badges\\?category=(.*)\" class");
+			ArrayList<String> toRet = new ArrayList<String>();
+			toRet.add("all");
+			String input = null;
+			while((input = in.readLine()) != null) {
+				Matcher badgeCategoryMatcher = badgeCategoryPattern.matcher(input);
+				if(badgeCategoryMatcher.find()) {
+					toRet.add(badgeCategoryMatcher.group(1));
+				}
+			}
+			in.close();
+			return toRet;
+		} catch(IOException e) {
+			ArrayList<String> ret = new ArrayList<String>();
+			ret.add("Could not find all badge categories.");
+			return ret;
+		}
+	}
+	
+	private String[] getRandomBadge(String category) {
+		try {
+			ArrayList<String> categories = getBadgeCategories();
+			if(!categories.contains(category)) {
+				return new String[]{"Category: "+category+" not found.  Acceptable categories are: "+categories+".", null};
+			}
+			BufferedReader in = Utility.getKongBadgesStream("?category="+category);
+			String input, toReturn = null, link = null, nextPage = null;
+			Random random = new Random();
+			Pattern lastPagePattern = Pattern.compile("badges(.*srid=last)"),
+					totalBadgesPattern = Pattern.compile("srid=(\\d+)\""),
+					nextPagePattern = Pattern.compile("next.*badges(.*srid=\\d+)"),
+					badgeDetailsPattern = Pattern.compile("badge_details\""),
+					linkPattern = Pattern.compile("(http://www.kongregate.com/games.*)\" class.*>(.*)</a");
+			int totalBadges = 0;
+			String lastPage = "";
+			A: while ((input = in.readLine()) != null) {
+				Matcher lastPageMatcher = lastPagePattern.matcher(input);
+				if (lastPageMatcher.find()) {
+					lastPage = lastPageMatcher.group(1);
+					break A;
+				}
+			}
+			BufferedReader in2 = Utility.getKongBadgesStream(lastPage);
+			B: while((input = in2.readLine()) != null) {
+				Matcher totalBadgesMatcher = totalBadgesPattern.matcher(input);
+				if(totalBadgesMatcher.find()) {
+					totalBadges = Integer.parseInt(totalBadgesMatcher.group(1))+BADGES_PER_PAGE;
+					break B;
+				}
+			}
+			in2.close();
+			int randomBadge = random.nextInt(Math.min(totalBadges,100))+1;
+			in = Utility.getKongBadgesStream("?category="+category);
+			for(int i = 0; i < (randomBadge-1)/BADGES_PER_PAGE; ++i) {
+				C: while((input = in.readLine()) != null) {
+					Matcher nextPageMatcher = nextPagePattern.matcher(input);
+					if(nextPageMatcher.find()) {
+						nextPage = nextPageMatcher.group(1);
+						break C;
+					}
+				}
+				in = Utility.getKongBadgesStream(nextPage);
+			}
+			randomBadge %= 20;
+			if(category=="all") ++randomBadge;
+			while((input = in.readLine()) != null) {
+				Matcher badgeDetailsMatcher = badgeDetailsPattern.matcher(input);
+				if(badgeDetailsMatcher.find()) {
+					if(--randomBadge==0) {
+						input = in.readLine();
+						Matcher linkMatcher = linkPattern.matcher(input);
+						if(linkMatcher.find()) {
+							toReturn = linkMatcher.group(2);
+							link = linkMatcher.group(1);
+						}
+					}
+				}
+			}
+			in.close();
+			String[] ret = new String[2];
+			if (toReturn == null) {
+				ret[0] = "Random badge for the category: "+category+" was not found on Kongregate.";
+				return ret;
+			}
+			ret[0] = "Random badge for the category "+category+": "+toReturn;
+			ret[1] = "The game that rewards this badge is: " + link;
+			return ret;
+		} catch(IOException e) {
+			String[] ret = new String[2];
+			ret[0] = "Random badge for the category: "+category+" was not found on Kongregate.";
+			return ret;
+		}
+	}
+	
 	private String getBadgeOfTheDay() {
 		try {
-			BufferedReader in = Utility.getKongBadgesStream();
+			BufferedReader in = Utility.getKongBadgesStream("");
 			String input, toReturn = null;
 			Pattern badgePattern = Pattern.compile("badge_details\""),
 					linkPattern = Pattern.compile("(http://www.kongregate.com/games.*)\" class");
