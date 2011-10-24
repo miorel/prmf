@@ -49,7 +49,7 @@ class KongBot extends Thread {
     				 ********************************************************/
     				if(command.equals("PRIVMSG"))
     				{
-    					sender = sender.substring(0, sender.indexOf('$'));
+    					sender = sender.substring(0, sender.indexOf('!'));
     					String target = cmdLine[2];
     					String mes = "";
     					for(int i=2; i<readArray.length; ++i)
