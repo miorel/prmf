@@ -121,14 +121,13 @@ class KongBot extends Thread {
 						this.sendMessage(target, "Syntax is $firstbadge [username].  Username's first badge and when it was acquired.");
 					}
 					else if(param[1].equalsIgnoreCase("points")) {
-						this.sendMessage(target, "Syntax is $firstbadge [username].  Username's total kong points.");
+						this.sendMessage(target, "Syntax is $points [username].  Username's total kong points.");
 					}
 					else if(param[1].equalsIgnoreCase("lastbadge")) {
 						this.sendMessage(target, "Syntax is $lastbadge [username].  Username's last badge and when it was acquired.");
 					}
 					else if(param[1].equalsIgnoreCase("randombadge")) {
-						this.sendMessage(target, "Syntax is $randombadge [category].  Picks a random badge from the 100 newest badges of that category."+
-												 "Possible categories are: "+getBadgeCategories());
+						this.sendMessage(target, "Syntax is $randombadge [category].  Picks a random badge from the 100 newest badges of that category."+"Possible categories are: "+getBadgeCategories());
 					}
 				}
 				// **************************************************************************
@@ -158,7 +157,7 @@ class KongBot extends Thread {
 			}
 			else if (param[0].equalsIgnoreCase("points")) {
 				if (param.length < 2) {
-					this.sendMessage(target, "Syntax is \"$kongpoints [username]\".");
+					this.sendMessage(target, "Syntax is \"$points [username]\".");
 				}
 				else {
 					this.sendMessage(target, getKongPoints(param[1]));
@@ -189,7 +188,7 @@ class KongBot extends Thread {
 		try {
 			BufferedReader in = Utility.getKongUserInfoStream(user);
 			String input, toReturn = null;
-			Pattern pointsPattern = Pattern.compile(".*Current Points:\\D*(\\d+).*");
+			Pattern pointsPattern = Pattern.compile(".*Current Points:.*\".*\">(\\d+).*");
 			while ((input = in.readLine()) != null) {
 				Matcher pointsMatcher = pointsPattern.matcher(input);
 				if (pointsMatcher.find()) {
