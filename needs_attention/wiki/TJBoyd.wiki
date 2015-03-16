@@ -1,7 +1,0 @@
-#summary People page for TJ Boyd
-#labels People
-
-|| *Real name* || Thomas Julian Boyd III ||
-|| *Goes by* || TJ, Thomas, Tom ||
-|| *Aliases* || TWW2, Twuwutu, Runeguy (Runeguy37) ||
-|| *Technologies* || Java, C# ||
